@@ -9,6 +9,7 @@ import seoServerRoutes from "./src/server/seoServerRoutes";
 import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
+import { getAISettings, recordAIRequest } from "./src/server/admin/aiSettingsStore.js";
 import {
   configureSecurityHeaders,
   globalRateLimiter,
@@ -54,65 +55,119 @@ async function startServer() {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
-  // AI Tool execution endpoint
+  // AI Tool execution endpoint with multi-model fallback and logging
   app.post("/api/tools/execute", async (req, res) => {
-    try {
-      const { toolId, toolName, prompt, options } = req.body;
-
-      if (!prompt || typeof prompt !== "string") {
-        return res.status(400).json({ error: "Prompt is required" });
-      }
-
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        return res.status(500).json({
-          error: "GEMINI_API_KEY environment variable is not configured.",
-        });
-      }
-
-      const ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            "User-Agent": "aistudio-build",
-          },
-        },
-      });
-
-      // Construct tailored prompt instructions based on tool type and options
-      let systemInstruction = `You are an expert AI assistant executing the tool "${toolName}". Provide clear, accurate, highly professional, and ready-to-use output. Return formatted markdown with headings, bullet points, and code blocks as appropriate. Do not include meta commentary or introductory fluff unless requested.`;
-
-      if (options) {
-        if (options.tone) systemInstruction += ` Tone: ${options.tone}.`;
-        if (options.length) systemInstruction += ` Length: ${options.length}.`;
-        if (options.language) systemInstruction += ` Output Language: ${options.language}.`;
-        if (options.format) systemInstruction += ` Format: ${options.format}.`;
-      }
-
-      const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: prompt,
-        config: {
-          systemInstruction,
-          temperature: options?.temperature || 0.7,
-        },
-      });
-
-      const resultText = response.text || "No response text generated.";
-
-      return res.json({
-        success: true,
-        toolId,
-        output: resultText,
-        executionTimeMs: Math.floor(Math.random() * 200) + 300,
-        wordsCount: resultText.trim().split(/\s+/).length,
-      });
-    } catch (error: any) {
-      console.error("Error executing AI tool:", error);
-      return res.status(500).json({
-        error: error.message || "Failed to process AI request. Please try again.",
+    const aiSettings = getAISettings();
+    if (!aiSettings.aiEnabled) {
+      return res.status(403).json({
+        success: false,
+        error: "AI features are currently disabled by the system administrator.",
       });
     }
+
+    const { toolId, toolName, prompt, options, selectedModel } = req.body;
+
+    if (!prompt || typeof prompt !== "string") {
+      return res.status(400).json({ success: false, error: "Prompt is required" });
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({
+        success: false,
+        error: "GEMINI_API_KEY environment variable is not configured.",
+      });
+    }
+
+    const ai = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          "User-Agent": "aistudio-build",
+        },
+      },
+    });
+
+    let systemInstruction = `You are an expert AI assistant executing the tool "${toolName}". Provide clear, accurate, highly professional, and ready-to-use output. Return formatted markdown with headings, bullet points, and code blocks as appropriate. Do not include meta commentary or introductory fluff unless requested.`;
+
+    if (options) {
+      if (options.tone) systemInstruction += ` Tone: ${options.tone}.`;
+      if (options.length) systemInstruction += ` Length: ${options.length}.`;
+      if (options.language) systemInstruction += ` Output Language: ${options.language}.`;
+      if (options.format) systemInstruction += ` Format: ${options.format}.`;
+    }
+
+    // Determine model fallback order
+    const enabledModels = aiSettings.models.filter((m) => m.enabled).map((m) => m.id);
+    const candidateModels: string[] = [];
+    if (selectedModel && enabledModels.includes(selectedModel)) {
+      candidateModels.push(selectedModel);
+    }
+    if (aiSettings.defaultModel && enabledModels.includes(aiSettings.defaultModel)) {
+      if (!candidateModels.includes(aiSettings.defaultModel)) {
+        candidateModels.push(aiSettings.defaultModel);
+      }
+    }
+    for (const m of enabledModels) {
+      if (!candidateModels.includes(m)) {
+        candidateModels.push(m);
+      }
+    }
+    // Fallback default list if empty
+    if (candidateModels.length === 0) {
+      candidateModels.push("gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-3.1-pro-preview");
+    }
+
+    let lastError: any = null;
+    let successfulModel = "";
+
+    for (const modelToTry of candidateModels) {
+      try {
+        const response = await ai.models.generateContent({
+          model: modelToTry,
+          contents: prompt,
+          config: {
+            systemInstruction,
+            temperature: options?.temperature || 0.7,
+          },
+        });
+
+        const resultText = response.text || "No response text generated.";
+        successfulModel = modelToTry;
+        recordAIRequest(true);
+
+        return res.json({
+          success: true,
+          toolId,
+          output: resultText,
+          modelUsed: successfulModel,
+          executionTimeMs: Math.floor(Math.random() * 200) + 300,
+          wordsCount: resultText.trim().split(/\s+/).length,
+        });
+      } catch (error: any) {
+        lastError = error;
+        const errStatus = error.status || error.statusCode || 500;
+        const errMsg = error.message || "Unknown error";
+        const isRateLimit = errStatus === 429 || errMsg.includes("429") || errMsg.includes("quota") || errMsg.includes("rate");
+
+        console.warn(`Model ${modelToTry} failed for tool ${toolName}: ${errMsg}. Trying next model...`);
+        
+        // Record failure in background log
+        recordAIRequest(false, isRateLimit, {
+          toolName,
+          model: modelToTry,
+          error: errMsg,
+          status: errStatus,
+        });
+      }
+    }
+
+    // If all models failed
+    return res.status(503).json({
+      success: false,
+      error: "All AI models are currently experiencing high traffic or temporary rate limits. Please try again in a few moments.",
+      details: lastError?.message || "All models failed",
+    });
   });
 
   // Newsletter endpoint

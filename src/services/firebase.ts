@@ -71,7 +71,7 @@ export interface UserDocument {
     theme: "dark" | "light" | "system";
     notifications: boolean;
   };
-  role: "user" | "admin";
+  role: "user" | "moderator" | "admin" | "super_admin";
   guestUsageCount: number;
   guestUsage: number;
   registeredStatus: boolean;
@@ -93,6 +93,10 @@ export async function syncUserDocument(user: FirebaseUser, extraName?: string): 
     const nameVal = user.displayName || extraName || existing.name || existing.displayName || "User";
     const photoVal = user.photoURL || existing.photo || existing.photoURL || "";
     
+    const determinedRole = user.email === "hamza.web.dev5324@gmail.com" 
+      ? "super_admin" 
+      : (existing.role || (user.email === "admin@security.hub" || user.email?.endsWith("@aitoolshub.com") ? "admin" : "user"));
+
     const updatedData = {
       lastLogin: now,
       name: nameVal,
@@ -100,6 +104,7 @@ export async function syncUserDocument(user: FirebaseUser, extraName?: string): 
       photo: photoVal,
       photoURL: photoVal,
       email: user.email || existing.email || "",
+      role: determinedRole,
     };
     await updateDoc(userRef, updatedData);
     return { ...existing, ...updatedData };
@@ -109,6 +114,10 @@ export async function syncUserDocument(user: FirebaseUser, extraName?: string): 
 
     const nameVal = user.displayName || extraName || (user.email ? user.email.split("@")[0] : "User");
     const photoVal = user.photoURL || "";
+
+    const determinedRole = user.email === "hamza.web.dev5324@gmail.com"
+      ? "super_admin"
+      : (user.email === "admin@security.hub" || user.email?.endsWith("@aitoolshub.com") ? "admin" : "user");
 
     const newUserDoc: UserDocument = {
       uid: user.uid,
@@ -126,7 +135,7 @@ export async function syncUserDocument(user: FirebaseUser, extraName?: string): 
         theme: "system",
         notifications: true,
       },
-      role: user.email === "admin@security.hub" || user.email?.endsWith("@aitoolshub.com") ? "admin" : "user",
+      role: determinedRole,
       guestUsageCount: 0,
       guestUsage: 0,
       registeredStatus: true,

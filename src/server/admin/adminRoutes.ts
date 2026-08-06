@@ -2,6 +2,8 @@ import { Router } from "express";
 import fs from "fs";
 import path from "path";
 import { getSecurityAlerts } from "../security/authService.js";
+import { emailProvider } from "../../services/emailProvider.js";
+import { getAISettings, updateAISettings } from "./aiSettingsStore.js";
 
 const router = Router();
 
@@ -38,6 +40,17 @@ let adminSettings = {
     jwtSecretConfigured: !!process.env.JWT_SECRET,
     rateLimitMax: 150,
   },
+  newsletterSubscribers: [
+    { email: "hamza.web.dev5324@gmail.com", createdAt: new Date().toISOString(), status: "active", source: "footer" },
+    { email: "sarah.dev@enterprise.io", createdAt: new Date(Date.now() - 86400000).toISOString(), status: "active", source: "hero" },
+    { email: "alex.growth@startup.co", createdAt: new Date(Date.now() - 172800000).toISOString(), status: "active", source: "modal" },
+  ],
+  usersMock: [
+    { uid: "usr_super", name: "Hamza (Super Admin)", email: "hamza.web.dev5324@gmail.com", role: "super_admin", status: "active", verified: true, provider: "google", createdAt: "2026-01-01T00:00:00.000Z", lastLogin: new Date().toISOString() },
+    { uid: "usr_admin", name: "Security Admin", email: "admin@security.hub", role: "admin", status: "active", verified: true, provider: "password", createdAt: "2026-01-10T00:00:00.000Z", lastLogin: new Date().toISOString() },
+    { uid: "usr_1", name: "John Doe", email: "john@example.com", role: "user", status: "active", verified: true, provider: "google", createdAt: "2026-02-01T00:00:00.000Z", lastLogin: new Date(Date.now() - 3600000).toISOString() },
+    { uid: "usr_2", name: "Emily Smith", email: "emily@example.com", role: "moderator", status: "active", verified: true, provider: "password", createdAt: "2026-03-15T00:00:00.000Z", lastLogin: new Date(Date.now() - 7200000).toISOString() },
+  ],
 };
 
 // 1. Analytics & Overview Metrics
@@ -181,6 +194,113 @@ router.get("/backup-export", (req, res) => {
   };
   res.setHeader("Content-Disposition", "attachment; filename=aitoolshub-backup.json");
   return res.json(backupData);
+});
+
+// 10. Newsletter Subscribers Management
+router.get("/newsletter/subscribers", (req, res) => {
+  return res.json({ success: true, subscribers: adminSettings.newsletterSubscribers });
+});
+
+router.delete("/newsletter/subscribers", (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ success: false, error: "Email required." });
+  adminSettings.newsletterSubscribers = adminSettings.newsletterSubscribers.filter((s: any) => s.email !== email);
+  return res.json({ success: true, message: `Subscriber ${email} deleted successfully.` });
+});
+
+router.post("/newsletter/subscribers/bulk-delete", (req, res) => {
+  const { emails } = req.body;
+  if (!Array.isArray(emails)) return res.status(400).json({ success: false, error: "Emails array required." });
+  adminSettings.newsletterSubscribers = adminSettings.newsletterSubscribers.filter((s: any) => !emails.includes(s.email));
+  return res.json({ success: true, message: `Successfully deleted ${emails.length} subscribers.` });
+});
+
+// 11. Email Campaigns Dispatcher
+router.post("/campaigns/send", async (req, res) => {
+  const { subject, htmlContent, testEmail } = req.body;
+  if (!subject || !htmlContent) {
+    return res.status(400).json({ success: false, error: "Subject and HTML content required." });
+  }
+
+  try {
+    const recipients = testEmail 
+      ? [testEmail] 
+      : adminSettings.newsletterSubscribers.filter((s: any) => s.status === "active").map((s: any) => s.email);
+
+    if (recipients.length === 0) {
+      return res.status(400).json({ success: false, error: "No active recipients found." });
+    }
+
+    const result = await emailProvider.sendEmail({
+      to: recipients,
+      subject,
+      html: htmlContent,
+    });
+
+    return res.json({
+      success: true,
+      message: testEmail ? `Test email sent to ${testEmail}` : `Campaign broadcast successfully sent to ${recipients.length} subscribers.`,
+      result,
+    });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message || "Failed to dispatch campaign." });
+  }
+});
+
+// 12. User Management Endpoints
+router.get("/users", (req, res) => {
+  return res.json({ success: true, users: adminSettings.usersMock });
+});
+
+router.post("/users/role", (req, res) => {
+  const { uid, role } = req.body;
+  const user = adminSettings.usersMock.find((u: any) => u.uid === uid);
+  if (!user) return res.status(404).json({ success: false, error: "User not found." });
+  user.role = role;
+  return res.json({ success: true, message: `User role updated to ${role}.`, user });
+});
+
+router.post("/users/status", (req, res) => {
+  const { uid, status } = req.body;
+  const user = adminSettings.usersMock.find((u: any) => u.uid === uid);
+  if (!user) return res.status(404).json({ success: false, error: "User not found." });
+  user.status = status;
+  return res.json({ success: true, message: `User status updated to ${status}.`, user });
+});
+
+router.delete("/users/:uid", (req, res) => {
+  const { uid } = req.params;
+  adminSettings.usersMock = adminSettings.usersMock.filter((u: any) => u.uid !== uid);
+  return res.json({ success: true, message: "User deleted successfully." });
+});
+
+router.post("/users/bulk-action", (req, res) => {
+  const { uids, action, value } = req.body;
+  if (!Array.isArray(uids)) return res.status(400).json({ success: false, error: "uids array required." });
+
+  if (action === "delete") {
+    adminSettings.usersMock = adminSettings.usersMock.filter((u: any) => !uids.includes(u.uid));
+  } else if (action === "status") {
+    adminSettings.usersMock.forEach((u: any) => {
+      if (uids.includes(u.uid)) u.status = value;
+    });
+  } else if (action === "role") {
+    adminSettings.usersMock.forEach((u: any) => {
+      if (uids.includes(u.uid)) u.role = value;
+    });
+  }
+
+  return res.json({ success: true, message: `Bulk action ${action} executed on ${uids.length} users.` });
+});
+
+// 13. AI Settings & Logs Management
+router.get("/ai-settings", (req, res) => {
+  return res.json({ success: true, settings: getAISettings() });
+});
+
+router.post("/ai-settings", (req, res) => {
+  const updated = updateAISettings(req.body);
+  return res.json({ success: true, message: "AI settings successfully updated.", settings: updated });
 });
 
 export default router;
