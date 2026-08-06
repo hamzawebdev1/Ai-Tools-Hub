@@ -1,0 +1,6 @@
+{
+  "name": "AI Tools Hub",
+  "description": "A production-ready suite of AI-powered web tools for text, media, documents, and code with fast performance and SEO optimization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

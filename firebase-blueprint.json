@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profile",
+      "description": "User account information, preferences, favorites, and activity history",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "photo": { "type": "string" },
+        "provider": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastLogin": { "type": "string" },
+        "favorites": { "type": "array", "items": { "type": "string" } },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "toolId": { "type": "string" },
+              "toolName": { "type": "string" },
+              "prompt": { "type": "string" },
+              "output": { "type": "string" },
+              "timestamp": { "type": "string" },
+              "wordCount": { "type": "number" },
+              "executionTimeMs": { "type": "number" }
+            }
+          }
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "theme": { "type": "string" },
+            "notifications": { "type": "boolean" }
+          }
+        },
+        "role": { "type": "string" },
+        "guestUsageCount": { "type": "number" },
+        "registeredStatus": { "type": "boolean" }
+      },
+      "required": ["uid", "email", "registeredStatus"]
+    }
+  }
+}
