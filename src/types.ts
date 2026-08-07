@@ -5,6 +5,10 @@ export type ToolCategory =
   | "text"
   | "developer"
   | "seo"
+  | "website"
+  | "network"
+  | "security"
+  | "calculators"
   | "writing"
   | "coding"
   | "media"
@@ -12,6 +16,8 @@ export type ToolCategory =
   | "productivity"
   | "utilities"
   | "business";
+
+export type ToolStatus = "ACTIVE" | "DISABLED" | "BROKEN" | "NEEDS_REVIEW";
 
 export interface CategoryInfo {
   id: ToolCategory;
@@ -61,11 +67,20 @@ export interface AITool {
   tagline: string;
   description: string;
   category: ToolCategory;
+  subcategory?: string;
   iconName: string;
   tags: string[];
   isTrending?: boolean;
   isPopular?: boolean;
+  isFeatured?: boolean;
   isNew?: boolean;
+  isActive?: boolean;
+  status?: ToolStatus;
+  route?: string;
+  searchKeywords?: string[];
+  seoTitle?: string;
+  seoDescription?: string;
+  createdAt?: string;
   rating: number;
   ratingCount: number;
   usageCount: number;

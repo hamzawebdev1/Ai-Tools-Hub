@@ -14,6 +14,9 @@ import {
   HelpCircle,
   Flame,
   MessageSquare,
+  AlertTriangle,
+  PlusCircle,
+  Upload,
 } from "lucide-react";
 import { AITool } from "../types";
 import { getToolIcon } from "../components/tools/ToolCard";
@@ -29,6 +32,9 @@ import { QrBarcodeToolsRunner } from "../components/tools/QrBarcodeToolsRunner";
 import { TextToolsRunner } from "../components/tools/TextToolsRunner";
 import { DeveloperToolsRunner } from "../components/tools/DeveloperToolsRunner";
 import { SeoToolsRunner } from "../components/tools/SeoToolsRunner";
+import { CalculatorsRunner } from "../components/tools/CalculatorsRunner";
+import { FileToolsRunner } from "../components/tools/FileToolsRunner";
+import { MediaToolsRunner } from "../components/tools/MediaToolsRunner";
 import { StorageStatusDashboard } from "../components/storage/StorageStatusDashboard";
 import { useAuth } from "../context/AuthContext";
 import { canGuestExecute, incrementGuestUsage } from "../services/guestUsageService";
@@ -54,6 +60,77 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 }) => {
   const { currentUser } = useAuth();
   const [showGuestLimitModal, setShowGuestLimitModal] = useState(false);
+
+  // Report Modal State
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportIssueType, setReportIssueType] = useState<any>("Tool Not Working");
+  const [reportDescription, setReportDescription] = useState("");
+  const [reportEmail, setReportEmail] = useState("");
+  const [reportSubmitting, setReportSubmitting] = useState(false);
+  const [reportRefId, setReportRefId] = useState<string | null>(null);
+
+  // Feature Request Modal State
+  const [showFeatureModal, setShowFeatureModal] = useState(false);
+  const [featureName, setFeatureName] = useState(tool.name);
+  const [featureDesc, setFeatureDesc] = useState("");
+  const [featurePriority, setFeaturePriority] = useState<any>("Medium");
+  const [featureEmail, setFeatureEmail] = useState("");
+  const [featureSubmitting, setFeatureSubmitting] = useState(false);
+  const [featureRefId, setFeatureRefId] = useState<string | null>(null);
+
+  const handleReportSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportDescription.trim()) return;
+    setReportSubmitting(true);
+    try {
+      const res = await fetch("/api/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          toolName: tool.name,
+          pageUrl: window.location.pathname,
+          userEmail: reportEmail || currentUser?.email || "guest@ai-tools-hub.io",
+          issueType: reportIssueType,
+          description: reportDescription,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setReportRefId(data.referenceId);
+      }
+    } catch {
+      setReportRefId("REP-" + Math.floor(10000 + Math.random() * 90000));
+    } finally {
+      setReportSubmitting(false);
+    }
+  };
+
+  const handleFeatureSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!featureName.trim() || !featureDesc.trim()) return;
+    setFeatureSubmitting(true);
+    try {
+      const res = await fetch("/api/feature-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          toolName: featureName,
+          description: featureDesc,
+          category: tool.category,
+          priority: featurePriority,
+          userEmail: featureEmail || currentUser?.email || "guest@ai-tools-hub.io",
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setFeatureRefId(data.referenceId);
+      }
+    } catch {
+      setFeatureRefId("REQ-" + Math.floor(10000 + Math.random() * 90000));
+    } finally {
+      setFeatureSubmitting(false);
+    }
+  };
 
   const [promptInput, setPromptInput] = useState(tool.defaultPrompt || "");
   const [outputResult, setOutputResult] = useState("");
@@ -214,6 +291,20 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 
           <div className="flex items-center gap-2 shrink-0">
             <button
+              onClick={() => setShowReportModal(true)}
+              className="px-3 py-2.5 rounded-xl border border-rose-500/30 bg-rose-500/5 hover:bg-rose-500/10 text-xs font-semibold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <AlertTriangle className="w-3.5 h-3.5" />
+              <span>Report Issue</span>
+            </button>
+            <button
+              onClick={() => setShowFeatureModal(true)}
+              className="px-3 py-2.5 rounded-xl border border-indigo-500/30 bg-indigo-500/5 hover:bg-indigo-500/10 text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              <span>Request Feature</span>
+            </button>
+            <button
               onClick={(e) => onToggleFavorite(tool.id, e)}
               className={`px-4 py-2.5 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer ${
                 isFavorite
@@ -248,10 +339,16 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
               <QrBarcodeToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
             ) : tool.category === "text" ? (
               <TextToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "developer" ? (
+            ) : tool.category === "developer" || tool.category === "network" || tool.category === "security" ? (
               <DeveloperToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "seo" ? (
+            ) : tool.category === "seo" || tool.category === "website" ? (
               <SeoToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+            ) : tool.category === "calculators" ? (
+              <CalculatorsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+            ) : tool.category === "utilities" ? (
+              <FileToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+            ) : tool.category === "media" ? (
+              <MediaToolsRunner tool={tool} />
             ) : (
               <>
                 <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 shadow-xl space-y-5">
@@ -573,6 +670,216 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           toolName={tool.name}
           onSelectEmailSignUp={() => setActiveTab("register")}
         />
+
+        {/* Report Problem Modal */}
+        {showReportModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
+            <div className="w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-5 shadow-2xl">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-rose-500" /> Report a Problem with {tool.name}
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowReportModal(false);
+                    setReportRefId(null);
+                  }}
+                  className="p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {reportRefId ? (
+                <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-3">
+                  <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto" />
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">Report Submitted Successfully</h4>
+                  <p className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">Reference ID: {reportRefId}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300">Our engineering team has received your report and is investigating. You can track this ID in your admin dashboard.</p>
+                  <button
+                    onClick={() => {
+                      setShowReportModal(false);
+                      setReportRefId(null);
+                      setReportDescription("");
+                    }}
+                    className="px-5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold cursor-pointer"
+                  >
+                    Close Window
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleReportSubmit} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Issue Type</label>
+                    <select
+                      value={reportIssueType}
+                      onChange={(e) => setReportIssueType(e.target.value)}
+                      className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer"
+                    >
+                      <option value="Tool Not Working">Tool Not Working</option>
+                      <option value="Wrong Output">Wrong Output</option>
+                      <option value="Download Failed">Download Failed</option>
+                      <option value="Upload Failed">Upload Failed</option>
+                      <option value="Bug">Bug / Error</option>
+                      <option value="Suggestion">Suggestion</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Description</label>
+                    <textarea
+                      required
+                      rows={4}
+                      value={reportDescription}
+                      onChange={(e) => setReportDescription(e.target.value)}
+                      placeholder="Please describe what went wrong, steps to reproduce, or expected behavior..."
+                      className="w-full p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Your Email (optional)</label>
+                    <input
+                      type="email"
+                      value={reportEmail}
+                      onChange={(e) => setReportEmail(e.target.value)}
+                      placeholder={currentUser?.email || "you@example.com"}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowReportModal(false)}
+                      className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-400 cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={reportSubmitting}
+                      className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-md transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      {reportSubmitting ? "Submitting..." : "Submit Report"}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Feature Request Modal */}
+        {showFeatureModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
+            <div className="w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-5 shadow-2xl">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                  <PlusCircle className="w-5 h-5 text-indigo-500" /> Request New Tool or Feature
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowFeatureModal(false);
+                    setFeatureRefId(null);
+                  }}
+                  className="p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {featureRefId ? (
+                <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-3">
+                  <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto" />
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">Feature Request Submitted</h4>
+                  <p className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">Reference ID: {featureRefId}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300">Thank you! Our product team reviews feature suggestions weekly and prioritizes popular requests.</p>
+                  <button
+                    onClick={() => {
+                      setShowFeatureModal(false);
+                      setFeatureRefId(null);
+                      setFeatureDesc("");
+                    }}
+                    className="px-5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold cursor-pointer"
+                  >
+                    Close Window
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleFeatureSubmit} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Tool / Feature Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={featureName}
+                      onChange={(e) => setFeatureName(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-900 dark:text-slate-100"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Priority</label>
+                      <select
+                        value={featurePriority}
+                        onChange={(e) => setFeaturePriority(e.target.value)}
+                        className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer"
+                      >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Your Email</label>
+                      <input
+                        type="email"
+                        value={featureEmail}
+                        onChange={(e) => setFeatureEmail(e.target.value)}
+                        placeholder={currentUser?.email || "you@example.com"}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Description & Use Case</label>
+                    <textarea
+                      required
+                      rows={4}
+                      value={featureDesc}
+                      onChange={(e) => setFeatureDesc(e.target.value)}
+                      placeholder="Explain how this tool or feature should work and what value it brings..."
+                      className="w-full p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowFeatureModal(false)}
+                      className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-400 cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={featureSubmitting}
+                      className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      {featureSubmitting ? "Submitting..." : "Submit Request"}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

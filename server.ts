@@ -6,10 +6,12 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import { GoogleGenAI } from "@google/genai";
 import seoServerRoutes from "./src/server/seoServerRoutes";
+import webAnalysisRoutes from "./src/server/webAnalysisRoutes";
 import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
 import { getAISettings, recordAIRequest } from "./src/server/admin/aiSettingsStore.js";
+import { addContactMessage, addBugReport, addFeatureRequest } from "./src/server/admin/submissionsStore.js";
 import {
   configureSecurityHeaders,
   globalRateLimiter,
@@ -49,6 +51,9 @@ async function startServer() {
 
   // SEO XML Sitemaps & robots.txt routes
   app.use(seoServerRoutes);
+
+  // Web analysis, HTTP inspection & SSRF-safe URL checking routes
+  app.use(webAnalysisRoutes);
 
   // Health check endpoint
   app.get("/api/health", (req, res) => {
@@ -182,14 +187,84 @@ async function startServer() {
     });
   });
 
+  // Contact message endpoint
+  app.post("/api/contact", (req, res) => {
+    const { name, email, subject, category, message, attachmentName, recaptchaVerified } = req.body;
+    if (!name || !email || !message) {
+      return res.status(400).json({ success: false, error: "Name, email, and message are required." });
+    }
+    const item = addContactMessage({
+      name,
+      email,
+      subject: subject || "General Support",
+      category: category || "General Support",
+      message,
+      attachmentName,
+      recaptchaVerified: !!recaptchaVerified,
+    });
+    return res.json({ success: true, referenceId: item.referenceId, message: "Contact message stored successfully." });
+  });
+
+  // Tool problem report endpoint
+  app.post("/api/reports", (req, res) => {
+    const { toolName, pageUrl, userEmail, issueType, description, screenshotName } = req.body;
+    if (!toolName || !description) {
+      return res.status(400).json({ success: false, error: "Tool name and description are required." });
+    }
+    const item = addBugReport({
+      toolName,
+      pageUrl: pageUrl || "/",
+      userEmail: userEmail || "anonymous@ai-tools-hub.io",
+      issueType: issueType || "Bug",
+      description,
+      screenshotName,
+    });
+    return res.json({ success: true, referenceId: item.referenceId, message: "Problem report logged successfully." });
+  });
+
+  // Feature request endpoint
+  app.post("/api/feature-requests", (req, res) => {
+    const { toolName, description, category, priority, userEmail } = req.body;
+    if (!toolName || !description) {
+      return res.status(400).json({ success: false, error: "Tool name and description are required." });
+    }
+    const item = addFeatureRequest({
+      toolName,
+      description,
+      category: category || "General",
+      priority: priority || "Medium",
+      userEmail: userEmail || "anonymous@ai-tools-hub.io",
+    });
+    return res.json({ success: true, referenceId: item.referenceId, message: "Feature request submitted successfully." });
+  });
+
   // Feedback / Suggestion endpoint
   app.post("/api/feedback", (req, res) => {
-    const { type, message, email } = req.body;
+    const { type, message, email, toolTitle, category, description } = req.body;
+    if (type === "suggest-tool" && toolTitle) {
+      const item = addFeatureRequest({
+        toolName: toolTitle,
+        description: description || toolTitle,
+        category: category || "General",
+        priority: "Medium",
+        userEmail: email || "anonymous@ai-tools-hub.io",
+      });
+      return res.json({ success: true, referenceId: item.referenceId, message: "Tool suggestion stored successfully." });
+    }
     if (!message) {
       return res.status(400).json({ error: "Message content required" });
     }
+    const item = addContactMessage({
+      name: email ? email.split("@")[0] : "Anonymous User",
+      email: email || "anonymous@ai-tools-hub.io",
+      subject: "User Feedback",
+      category: "Feedback",
+      message,
+      recaptchaVerified: true,
+    });
     return res.json({
       success: true,
+      referenceId: item.referenceId,
       message: "Your submission has been received. Thank you!",
     });
   });
