@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Analytics } from '@vercel/analytics/react';
 import { TOOLS_DATA } from "./data/toolsData";
 import { CATEGORIES_DATA } from "./data/categoriesData";
 import { BLOG_POSTS_DATA } from "./data/blogData";
@@ -328,6 +329,7 @@ export default function App() {
   return (
     <AuthProvider>
       <AppContent />
+      <Analytics />
     </AuthProvider>
   );
 }
