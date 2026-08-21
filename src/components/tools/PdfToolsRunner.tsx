@@ -71,6 +71,17 @@ import {
   convertPdfToGrayscale,
   searchPdfText,
   applyIndependentPageRotations,
+  duplicatePdfPages,
+  reversePdfPages,
+  pdfToWebpImages,
+  imagesToPdfCustom,
+  pdfToHtmlString,
+  pdfToDocxBlob,
+  docxToPdfBlob,
+  docxToTxtString,
+  csvToPdfBlob,
+  applyAnnotationsToPdf,
+  PdfAnnotation,
   PdfMetrics,
   PdfMetadata,
   PageLayoutInfo,
@@ -142,6 +153,14 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
   // Visual Organizer State
   const [organizerPages, setOrganizerPages] = useState<Array<{ originalIndex: number; rotation: number; thumbnail: string }>>([]);
 
+  // Phase 4 New States
+  const [duplicateCopies, setDuplicateCopies] = useState(1);
+  const [csvTextInput, setCsvTextInput] = useState("Name, Department, Role, Salary\nJohn Doe, Engineering, Senior Lead, $145,000\nJane Smith, Design, Creative Lead, $130,000\nAlex Rivera, Product, Product Manager, $138,000");
+  const [pdfAnnotations, setPdfAnnotations] = useState<PdfAnnotation[]>([]);
+  const [annotationType, setAnnotationType] = useState<"text" | "highlight" | "rect" | "stamp" | "redaction">("stamp");
+  const [annText, setAnnText] = useState("APPROVED");
+  const [annColor, setAnnColor] = useState("#ef4444");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
 
@@ -194,12 +213,24 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
     setSearchResults([]);
     setThumbnails([]);
 
-    // Validate main file
+    // Validate main file for PDF tools
+    const isNonPdfTool = ["jpg-to-pdf", "png-to-pdf", "webp-to-pdf", "bmp-to-pdf", "images-to-pdf", "docx-to-pdf", "csv-to-pdf"].includes(toolId);
     const firstFile = fileList[0];
-    const validation = await validatePdfFile(firstFile);
-    if (!validation.valid && validation.error) {
-      setErrorMessage(validation.error.message);
-      return;
+    if (!isNonPdfTool && firstFile) {
+      const validation = await validatePdfFile(firstFile);
+      if (!validation.valid && validation.error) {
+        setErrorMessage(validation.error.message);
+        return;
+      }
+    }
+
+    if (toolId === "csv-to-pdf" && firstFile) {
+      try {
+        const text = await firstFile.text();
+        if (text) setCsvTextInput(text);
+      } catch {
+        // keep existing default
+      }
     }
 
     setFiles(fileList);
@@ -510,6 +541,59 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
           outFileName = `page_rotated_${primaryFile.name}`;
           break;
 
+        case "pdf-duplicate-pages":
+          outBytes = await duplicatePdfPages(primaryFile, pageRangeInput, duplicateCopies);
+          outFileName = `duplicated_${primaryFile.name}`;
+          break;
+
+        case "pdf-reverse-pages":
+          outBytes = await reversePdfPages(primaryFile);
+          outFileName = `reversed_${primaryFile.name}`;
+          break;
+
+        case "pdf-to-webp":
+          const webpRes = await pdfToWebpImages(primaryFile);
+          outBlobUrl = URL.createObjectURL(webpRes.blob);
+          outFileName = webpRes.fileName;
+          break;
+
+        case "webp-to-pdf":
+        case "bmp-to-pdf":
+          outBytes = await imagesToPdfCustom(files);
+          outFileName = `converted_images.pdf`;
+          break;
+
+        case "pdf-to-html":
+          const htmlContent = await pdfToHtmlString(primaryFile);
+          const htmlBlob = new Blob([htmlContent], { type: "text/html" });
+          outBlobUrl = URL.createObjectURL(htmlBlob);
+          outFileName = `${primaryFile.name.replace(".pdf", "")}.html`;
+          setExtractedText(htmlContent);
+          break;
+
+        case "pdf-to-docx":
+          const docxBlob = await pdfToDocxBlob(primaryFile);
+          outBlobUrl = URL.createObjectURL(docxBlob);
+          outFileName = `${primaryFile.name.replace(".pdf", "")}.docx`;
+          break;
+
+        case "docx-to-pdf":
+          const docxPdfBlob = await docxToPdfBlob(primaryFile);
+          outBlobUrl = URL.createObjectURL(docxPdfBlob);
+          outFileName = `${primaryFile.name.replace(/\.docx$/i, "")}.pdf`;
+          break;
+
+        case "csv-to-pdf":
+          const csvPdfBlob = await csvToPdfBlob(csvTextInput);
+          outBlobUrl = URL.createObjectURL(csvPdfBlob);
+          outFileName = `table_report.pdf`;
+          break;
+
+        case "pdf-editor":
+          outBytes = await applyAnnotationsToPdf(primaryFile, pdfAnnotations);
+          outFileName = `edited_annotated_${primaryFile.name}`;
+          break;
+
         default:
           outBytes = await compressPdf(primaryFile);
           outFileName = `processed_${primaryFile.name}`;
@@ -610,10 +694,14 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
             <input
               ref={fileInputRef}
               type="file"
-              multiple={["pdf-merge", "jpg-to-pdf", "png-to-pdf", "images-to-pdf"].includes(toolId)}
+              multiple={["pdf-merge", "jpg-to-pdf", "png-to-pdf", "webp-to-pdf", "bmp-to-pdf", "images-to-pdf"].includes(toolId)}
               accept={
-                ["jpg-to-pdf", "png-to-pdf", "images-to-pdf"].includes(toolId)
+                ["jpg-to-pdf", "png-to-pdf", "webp-to-pdf", "bmp-to-pdf", "images-to-pdf"].includes(toolId)
                   ? "image/jpeg,image/png,image/webp,image/bmp"
+                  : toolId === "docx-to-pdf"
+                  ? ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  : toolId === "csv-to-pdf"
+                  ? ".csv,text/csv,text/plain"
                   : ".pdf,application/pdf"
               }
               onChange={handleFileChange}
@@ -923,6 +1011,164 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
                 placeholder="Type keyword to search inside document..."
                 className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-red-500"
               />
+            </div>
+          )}
+
+          {/* DUPLICATE PAGES OPTIONS */}
+          {toolId === "pdf-duplicate-pages" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  Pages to Duplicate (Leave empty for all pages, or e.g. "1, 3-5")
+                </label>
+                <input
+                  type="text"
+                  value={pageRangeInput}
+                  onChange={(e) => setPageRangeInput(e.target.value)}
+                  placeholder="All pages or 1, 2, 3..."
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-red-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  Number of Duplicate Copies
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  max={10}
+                  value={duplicateCopies}
+                  onChange={(e) => setDuplicateCopies(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-red-500"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* CSV TO PDF EDITOR */}
+          {toolId === "csv-to-pdf" && (
+            <div className="space-y-3">
+              <label className="block text-xs font-semibold text-slate-300">
+                CSV Data Table Content (Paste or Edit CSV)
+              </label>
+              <textarea
+                rows={6}
+                value={csvTextInput}
+                onChange={(e) => setCsvTextInput(e.target.value)}
+                placeholder="Column1, Column2, Column3..."
+                className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs font-mono focus:outline-none focus:border-red-500"
+              />
+            </div>
+          )}
+
+          {/* PDF EDITOR & ANNOTATOR PANEL */}
+          {toolId === "pdf-editor" && (
+            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+                  Add Annotation / Stamp Layer
+                </span>
+                <span className="text-xs text-slate-400">
+                  {pdfAnnotations.length} annotations added
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                    Annotation Type
+                  </label>
+                  <select
+                    value={annotationType}
+                    onChange={(e) => setAnnotationType(e.target.value as any)}
+                    className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                  >
+                    <option value="stamp">Official Stamp</option>
+                    <option value="text">Text Note</option>
+                    <option value="highlight">Yellow Highlight</option>
+                    <option value="redaction">Black Redaction Box</option>
+                    <option value="rect">Border Rectangle</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                    Stamp / Note Text
+                  </label>
+                  <input
+                    type="text"
+                    value={annText}
+                    onChange={(e) => setAnnText(e.target.value)}
+                    placeholder="e.g. APPROVED, CONFIDENTIAL"
+                    className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newAnn: PdfAnnotation = {
+                        type: annotationType,
+                        text: annText,
+                        color: annotationType === "highlight" ? "#fef08a" : annColor,
+                        x: 50,
+                        y: 100 + pdfAnnotations.length * 40,
+                        width: 160,
+                        height: 40,
+                        pageNumber: 1,
+                        fontSize: 16,
+                        opacity: annotationType === "highlight" ? 0.4 : 0.9,
+                      };
+                      setPdfAnnotations([...pdfAnnotations, newAnn]);
+                    }}
+                    className="w-full py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white font-semibold text-xs transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <Check className="w-3.5 h-3.5" /> + Add to Page 1
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stamps Bar */}
+              <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-800/80">
+                <span className="text-[11px] text-slate-400 self-center mr-1">Quick Stamps:</span>
+                {["APPROVED", "CONFIDENTIAL", "URGENT", "DRAFT", "FINAL", "PAID"].map((stamp) => (
+                  <button
+                    key={stamp}
+                    type="button"
+                    onClick={() => {
+                      setAnnText(stamp);
+                      setAnnotationType("stamp");
+                    }}
+                    className="px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-[11px] font-medium transition-all"
+                  >
+                    {stamp}
+                  </button>
+                ))}
+              </div>
+
+              {/* Added Annotations List */}
+              {pdfAnnotations.length > 0 && (
+                <div className="space-y-2 pt-2">
+                  <div className="text-[11px] font-semibold text-slate-400">Current Annotations:</div>
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                    {pdfAnnotations.map((ann, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-xs"
+                      >
+                        <span className="font-mono text-red-400 font-medium uppercase">
+                          [{ann.type}] {ann.text || "Shape overlay"} (Page {ann.pageNumber})
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setPdfAnnotations(pdfAnnotations.filter((_, idx) => idx !== i))}
+                          className="text-rose-400 hover:text-rose-300 p-1"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

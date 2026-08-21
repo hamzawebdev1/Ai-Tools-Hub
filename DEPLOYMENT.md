@@ -1,58 +1,77 @@
-# Production Deployment & Audit Documentation
+# Production Deployment Guide (DEPLOYMENT.md)
 
-## Executive Overview
-**AI Tools Hub** is an enterprise-grade, high-performance web platform containing 50+ client-side AI and developer productivity tools. Built with a full-stack Express + Vite + React TypeScript architecture, it satisfies all Google Webmaster, Google AdSense, and OWASP Top 10 security standards.
+This document outlines the exact production deployment and configuration steps for the enterprise file-processing and corporate admin platform.
 
----
+## 1. Server Requirements
+- **PHP**: 8.2 or higher
+- **Composer**: 2.x
+- **Database**: MySQL 8.0+ or MariaDB 10.4+
+- **Web Server**: Nginx or Apache (Nginx recommended)
 
-## 1. Security & OWASP Top 10 Protections
-- **Helmet Security Headers**: Dynamic Content Security Policy (CSP), Frameguard, Strict-Transport-Security, X-Content-Type-Options, X-XSS-Protection.
-- **CSRF & Token Security**: Double-Submit Cookie Pattern with `XSRF-TOKEN` headers and httpOnly JWT session cookies.
-- **Rate Limiting**: Tiered IP rate limiting (150 requests/min for general API routes, 15 requests/min for heavy AI generation routes).
-- **24-Hour Automated Storage Purge**: All user uploaded files (images, PDFs, text) are encrypted on disk and automatically purged after exactly 24 hours.
-- **Zero API Key Leakage**: All Google Gemini API calls proxy exclusively through server-side Express routes (`/api/ai/*`). No secrets exposed to the browser.
+## 2. Required PHP Extensions
+- `BCMath`, `Ctype`, `Fileinfo`, `JSON`, `Mbstring`, `OpenSSL`, `PDO`, `Tokenizer`, `XML`, `GD` or `Imagick` (for image processing).
 
----
+## 3. Required Server Binaries (Hostinger Compatibility)
+Most tools operate entirely via PHP and client-side WebAssembly/JavaScript. 
+- **GD / Imagick**: Required for advanced image scaling and compression. (Supported on Hostinger Shared & VPS).
+- **Poppler / Ghostscript / LibreOffice**: Optional. If available on VPS, enables advanced high-fidelity document-to-PDF rendering. If unavailable, standard client/server fallback converters are utilized.
 
-## 2. Google SEO & AdSense Compliance Audit
-- **Core Web Vitals**: Optimized for 95+ PageSpeed scores. LCP < 0.9s, FID < 12ms, CLS < 0.001 (guaranteed by zero layout shift ad containers).
-- **Structured Data (JSON-LD)**: Every page and tool dynamically injects rich Schema.org metadata (`WebApplication`, `SoftwareApplication`, `Article`, `Person`, `Organization`).
-- **Dynamic Sitemap & Robots.txt**: Express-backed dynamic endpoint generating valid XML sitemaps and customizable `robots.txt` rules.
-- **AdSense Policy Adherence**: Explicit "Advertisement" labels on all ad slots, no ad overlap, no forced clicks, and reserved container dimensions.
-- **Author & E-E-A-T Transparency**: Dedicated Author Profile pages (`/author/alex-rivera`, etc.) with verifiable expertise tags and editorial review commitments.
-
----
-
-## 3. Disaster Recovery & Backup Strategy
-- **Configuration Backup**: Full JSON export of system settings, `robots.txt` configurations, and system metrics available via `/api/admin/backup-export`.
-- **Stateless Cloud Run Scaling**: Built for seamless horizontal auto-scaling from 1 to 100+ Cloud Run instances without state desynchronization.
-- **Transient Memory Model**: Storage engine relies on isolated disk pools with auto-healing and automated cleanup tasks.
-
----
-
-## 4. Environment Variables Checklist
-Ensure the following variables are configured in Cloud Run / hosting environment:
-
-| Variable | Description | Example / Value |
-| --- | --- | --- |
-| `GEMINI_API_KEY` | Google Gemini API Key | Secret string |
-| `APP_URL` | Canonical domain URL | `https://aitoolshub.com` |
-| `JWT_SECRET` | Secret for signing auth tokens | 64-char random hex string |
-| `NODE_ENV` | Environment mode | `production` |
-
----
-
-## 5. Build & Deployment Commands
-```bash
-# 1. Install production dependencies
-npm install
-
-# 2. Typecheck and lint codebase
-npm run lint
-
-# 3. Build client Vite bundle and esbuild server bundle
-npm run build
-
-# 4. Start production server
-npm run start
+## 4. Deployment Structure
+Point your web server document root to the Laravel `public/` directory:
+```text
+/path-to-app/public/
 ```
+Ensure sensitive directories (`app/`, `bootstrap/`, `config/`, `database/`, `storage/`, `vendor/`) are outside the public web root or protected.
+
+## 5. Environment Configuration (.env)
+Copy `.env.example` to `.env` and configure:
+```env
+APP_NAME="Enterprise File Tools"
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=base64:...
+APP_URL=https://yourdomain.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_secure_password
+
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=database
+SESSION_DRIVER=file
+CACHE_STORE=file
+```
+
+## 6. Database Setup
+1. Create a MySQL database and user.
+2. Run migrations and seeders:
+   ```bash
+   php artisan migrate --force
+   php artisan db:seed --class=AdminUserSeeder
+   ```
+
+## 7. Storage Permissions & Linking
+```bash
+php artisan storage:link
+chmod -R 775 storage bootstrap/cache
+```
+
+## 8. Cron / Laravel Scheduler Setup
+Add the following cron job on your hosting panel (Hostinger Cron Jobs) to run every minute:
+```cron
+* * * * * cd /path-to-app && php artisan schedule:run >> /dev/null 2>&1
+```
+
+## 9. Queue Worker Setup
+For heavy file processing operations, run the queue worker:
+```bash
+php artisan queue:work --tries=3 --timeout=300
+```
+*(On shared hosting without persistent workers, set `QUEUE_CONNECTION=sync` for immediate processing).*
+
+## 10. SSL / HTTPS & Security
+- Enforce HTTPS via `.env` (`APP_URL=https://...`) and web server redirect rules.
+- Ensure `APP_DEBUG=false` in production.

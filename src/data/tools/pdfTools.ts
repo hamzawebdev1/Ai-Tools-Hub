@@ -40,7 +40,17 @@ const rawPdfTools = [
   { id: 'pdf-ocr-extractor', name: 'PDF OCR Text Extractor', slug: 'pdf-ocr-extractor', tagline: 'Extract text from scanned PDF images client-side.' },
   { id: 'pdf-grayscale', name: 'PDF Grayscale Converter', slug: 'pdf-grayscale', tagline: 'Convert colored PDF pages into black and white print style.' },
   { id: 'pdf-text-search', name: 'PDF Text Search & Inspector', slug: 'pdf-text-search', tagline: 'Search terms inside PDF with line numbers and snippets.' },
-  { id: 'pdf-page-rotation-manager', name: 'PDF Page Rotation Manager', slug: 'pdf-page-rotation-manager', tagline: 'Rotate individual pages independently in your PDF.' }
+  { id: 'pdf-page-rotation-manager', name: 'PDF Page Rotation Manager', slug: 'pdf-page-rotation-manager', tagline: 'Rotate individual pages independently in your PDF.' },
+  { id: 'pdf-duplicate-pages', name: 'Duplicate PDF Pages', slug: 'pdf-duplicate-pages', tagline: 'Duplicate specific or all pages inside a PDF document.' },
+  { id: 'pdf-reverse-pages', name: 'Reverse PDF Page Order', slug: 'pdf-reverse-pages', tagline: 'Invert page sequence from last to first instantly.' },
+  { id: 'pdf-to-webp', name: 'Convert PDF to WEBP', slug: 'pdf-to-webp', tagline: 'Convert PDF pages into modern high-efficiency WEBP image files.' },
+  { id: 'webp-to-pdf', name: 'Convert WEBP to PDF', slug: 'webp-to-pdf', tagline: 'Convert WEBP photos into a clean formatted PDF document.' },
+  { id: 'bmp-to-pdf', name: 'Convert BMP to PDF', slug: 'bmp-to-pdf', tagline: 'Convert Windows BMP bitmap files into standard PDF.' },
+  { id: 'pdf-to-html', name: 'Convert PDF to HTML', slug: 'pdf-to-html', tagline: 'Convert PDF text and page layouts into structured HTML.' },
+  { id: 'pdf-to-docx', name: 'Convert PDF to Word DOCX', slug: 'pdf-to-docx', tagline: 'Convert PDF files into editable Microsoft Word DOCX documents.' },
+  { id: 'docx-to-pdf', name: 'Convert Word DOCX to PDF', slug: 'docx-to-pdf', tagline: 'Convert Microsoft Word (.docx) documents into styled PDF files.' },
+  { id: 'csv-to-pdf', name: 'Convert CSV to PDF Table', slug: 'csv-to-pdf', tagline: 'Convert CSV spreadsheet tables into formatted PDF reports.' },
+  { id: 'pdf-editor', name: 'PDF Editor & Annotator', slug: 'pdf-editor', tagline: 'Annotate PDF with custom text, highlighter, shapes, redaction, and stamps.' }
 ];
 
 export const PDFTOOLS: AITool[] = rawPdfTools.map((item, idx) => ({

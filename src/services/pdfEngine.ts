@@ -1118,3 +1118,580 @@ export async function applyIndependentPageRotations(
 
   return await pdf.save();
 }
+
+// ==========================================
+// 41. DUPLICATE PDF PAGES
+// ==========================================
+export async function duplicatePdfPages(
+  file: File,
+  pagesToDuplicateStr: string,
+  copies = 1
+): Promise<Uint8Array> {
+  const buffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(buffer, { ignoreEncryption: true });
+  const total = pdf.getPageCount();
+  const toDuplicate = new Set(parsePageRange(pagesToDuplicateStr, total));
+
+  const newPdf = await PDFDocument.create();
+
+  for (let i = 0; i < total; i++) {
+    const [page] = await newPdf.copyPages(pdf, [i]);
+    newPdf.addPage(page);
+
+    if (toDuplicate.has(i)) {
+      for (let c = 0; c < copies; c++) {
+        const [dupPage] = await newPdf.copyPages(pdf, [i]);
+        newPdf.addPage(dupPage);
+      }
+    }
+  }
+
+  return await newPdf.save();
+}
+
+// ==========================================
+// 42. REVERSE PDF PAGES
+// ==========================================
+export async function reversePdfPages(file: File): Promise<Uint8Array> {
+  const buffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(buffer, { ignoreEncryption: true });
+  const total = pdf.getPageCount();
+  const reversedIndices = Array.from({ length: total }, (_, i) => total - 1 - i);
+
+  const newPdf = await PDFDocument.create();
+  const pages = await newPdf.copyPages(pdf, reversedIndices);
+  pages.forEach((p) => newPdf.addPage(p));
+
+  return await newPdf.save();
+}
+
+// ==========================================
+// 43. PDF TO WEBP IMAGES
+// ==========================================
+export async function pdfToWebpImages(
+  file: File,
+  dpi = 150
+): Promise<{ blob: Blob; fileName: string }> {
+  const buffer = await file.arrayBuffer();
+  const loadingTask = pdfjs.getDocument({ data: buffer });
+  const pdf = await loadingTask.promise;
+
+  const scale = dpi / 72;
+  const zip = new JSZip();
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const viewport = page.getViewport({ scale });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) continue;
+
+    await page.render({ canvasContext: ctx, viewport, canvas } as any).promise;
+
+    const dataUrl = canvas.toDataURL("image/webp", 0.92);
+    const base64Data = dataUrl.split(",")[1];
+    zip.file(`page_${i}.webp`, base64Data, { base64: true });
+  }
+
+  const zipBlob = await zip.generateAsync({ type: "blob" });
+  return {
+    blob: zipBlob,
+    fileName: `${file.name.replace(".pdf", "")}_webp_pages.zip`,
+  };
+}
+
+// ==========================================
+// 44. WEBP & BMP TO PDF
+// ==========================================
+export async function imagesToPdfCustom(
+  files: File[],
+  pageSize: "A4" | "LETTER" | "FIT" = "A4"
+): Promise<Uint8Array> {
+  const pdfDoc = await PDFDocument.create();
+
+  for (const file of files) {
+    const imgDataUrl = await new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target?.result as string);
+      reader.readAsDataURL(file);
+    });
+
+    // Create an image element to draw onto canvas and get PNG bytes
+    const img = new Image();
+    await new Promise((resolve) => {
+      img.onload = resolve;
+      img.src = imgDataUrl;
+    });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) continue;
+    ctx.drawImage(img, 0, 0);
+
+    const pngUrl = canvas.toDataURL("image/png");
+    const base64 = pngUrl.split(",")[1];
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+
+    const embedded = await pdfDoc.embedPng(bytes.buffer);
+
+    let pageW = PAPER_SIZES.A4.width;
+    let pageH = PAPER_SIZES.A4.height;
+
+    if (pageSize === "LETTER") {
+      pageW = PAPER_SIZES.LETTER.width;
+      pageH = PAPER_SIZES.LETTER.height;
+    } else if (pageSize === "FIT") {
+      pageW = img.width;
+      pageH = img.height;
+    }
+
+    const page = pdfDoc.addPage([pageW, pageH]);
+    const scale = Math.min(pageW / img.width, pageH / img.height);
+    const drawW = img.width * scale;
+    const drawH = img.height * scale;
+    const x = (pageW - drawW) / 2;
+    const y = (pageH - drawH) / 2;
+
+    page.drawImage(embedded, { x, y, width: drawW, height: drawH });
+  }
+
+  return await pdfDoc.save();
+}
+
+// ==========================================
+// 45. PDF TO HTML
+// ==========================================
+export async function pdfToHtmlString(file: File): Promise<string> {
+  const buffer = await file.arrayBuffer();
+  const loadingTask = pdfjs.getDocument({ data: buffer });
+  const pdf = await loadingTask.promise;
+
+  let html = `<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<title>${file.name}</title>\n<style>\nbody{font-family:system-ui,-apple-system,sans-serif;line-height:1.6;max-width:800px;margin:40px auto;padding:0 20px;color:#1e293b;background:#f8fafc}\n.pdf-page{background:#fff;padding:40px;margin-bottom:30px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}\n.page-header{color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #e2e8f0;padding-bottom:8px;margin-bottom:20px}\np{margin:0 0 12px 0}\n</style>\n</head>\n<body>\n`;
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    
+    html += `  <div class="pdf-page" id="page-${i}">\n`;
+    html += `    <div class="page-header">Page ${i} of ${pdf.numPages}</div>\n`;
+
+    let currentLine = "";
+    content.items.forEach((item: any) => {
+      if (item.hasEOL) {
+        currentLine += item.str;
+        if (currentLine.trim()) {
+          html += `    <p>${escapeHtml(currentLine)}</p>\n`;
+        }
+        currentLine = "";
+      } else {
+        currentLine += item.str + " ";
+      }
+    });
+
+    if (currentLine.trim()) {
+      html += `    <p>${escapeHtml(currentLine)}</p>\n`;
+    }
+
+    html += `  </div>\n`;
+  }
+
+  html += `</body>\n</html>`;
+  return html;
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// ==========================================
+// 46. PDF TO DOCX BLOB (Word Document)
+// ==========================================
+export async function pdfToDocxBlob(file: File): Promise<Blob> {
+  const buffer = await file.arrayBuffer();
+  const loadingTask = pdfjs.getDocument({ data: buffer });
+  const pdf = await loadingTask.promise;
+
+  let docxBodyXml = "";
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+
+    let currentPara = "";
+    content.items.forEach((item: any) => {
+      if (item.hasEOL) {
+        currentPara += item.str;
+        if (currentPara.trim()) {
+          docxBodyXml += `<w:p><w:r><w:t xml:space="preserve">${escapeXml(currentPara)}</w:t></w:r></w:p>`;
+        }
+        currentPara = "";
+      } else {
+        currentPara += item.str + " ";
+      }
+    });
+
+    if (currentPara.trim()) {
+      docxBodyXml += `<w:p><w:r><w:t xml:space="preserve">${escapeXml(currentPara)}</w:t></w:r></w:p>`;
+    }
+
+    if (i < pdf.numPages) {
+      docxBodyXml += `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+  }
+
+  const zip = new JSZip();
+
+  zip.file(
+    "[Content_Types].xml",
+    `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>`
+  );
+
+  zip.file(
+    "_rels/.rels",
+    `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`
+  );
+
+  zip.file(
+    "word/document.xml",
+    `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    ${docxBodyXml}
+    <w:sectPr>
+      <w:pgSz w:w="11906" w:h="16838"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>
+    </w:sectPr>
+  </w:body>
+</w:document>`
+  );
+
+  return await zip.generateAsync({
+    type: "blob",
+    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  });
+}
+
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+// ==========================================
+// 47. DOCX TO PDF & DOCX TO TXT
+// ==========================================
+export async function docxToTxtString(file: File): Promise<string> {
+  const buffer = await file.arrayBuffer();
+  const zip = await JSZip.loadAsync(buffer);
+  const docXmlFile = zip.file("word/document.xml");
+  if (!docXmlFile) throw new Error("Invalid .docx file: word/document.xml missing.");
+
+  const xmlText = await docXmlFile.async("text");
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+
+  const paragraphs = xmlDoc.getElementsByTagName("w:p");
+  let outputText = "";
+
+  for (let i = 0; i < paragraphs.length; i++) {
+    const p = paragraphs[i];
+    const textNodes = p.getElementsByTagName("w:t");
+    let pText = "";
+    for (let j = 0; j < textNodes.length; j++) {
+      pText += textNodes[j].textContent || "";
+    }
+    if (pText.trim()) {
+      outputText += pText + "\n\n";
+    }
+  }
+
+  return outputText.trim();
+}
+
+export async function docxToPdfBlob(file: File): Promise<Blob> {
+  const text = await docxToTxtString(file);
+  const pdfBytes = await textToPdfDocument(text, file.name.replace(/\.docx$/i, ""));
+  return new Blob([pdfBytes], { type: "application/pdf" });
+}
+
+// Helper to convert formatted text lines to PDF document
+export async function textToPdfDocument(text: string, title?: string): Promise<Uint8Array> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const pageW = PAPER_SIZES.A4.width;
+  const pageH = PAPER_SIZES.A4.height;
+  const margin = 50;
+  const maxWidth = pageW - margin * 2;
+  const fontSize = 11;
+  const lineHeight = 16;
+
+  let currentPage = pdfDoc.addPage([pageW, pageH]);
+  let y = pageH - margin;
+
+  if (title) {
+    currentPage.drawText(title, {
+      x: margin,
+      y,
+      size: 16,
+      font: boldFont,
+      color: rgb(0.1, 0.1, 0.15),
+    });
+    y -= 30;
+  }
+
+  const lines = text.split("\n");
+
+  for (const rawLine of lines) {
+    if (!rawLine.trim()) {
+      y -= lineHeight * 0.7;
+      if (y < margin) {
+        currentPage = pdfDoc.addPage([pageW, pageH]);
+        y = pageH - margin;
+      }
+      continue;
+    }
+
+    // Word wrap line
+    const words = rawLine.split(" ");
+    let currentLine = "";
+
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const width = font.widthOfTextAtSize(testLine, fontSize);
+
+      if (width > maxWidth) {
+        if (y < margin + lineHeight) {
+          currentPage = pdfDoc.addPage([pageW, pageH]);
+          y = pageH - margin;
+        }
+        currentPage.drawText(currentLine, {
+          x: margin,
+          y,
+          size: fontSize,
+          font,
+          color: rgb(0.15, 0.15, 0.2),
+        });
+        y -= lineHeight;
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+
+    if (currentLine) {
+      if (y < margin + lineHeight) {
+        currentPage = pdfDoc.addPage([pageW, pageH]);
+        y = pageH - margin;
+      }
+      currentPage.drawText(currentLine, {
+        x: margin,
+        y,
+        size: fontSize,
+        font,
+        color: rgb(0.15, 0.15, 0.2),
+      });
+      y -= lineHeight;
+    }
+  }
+
+  return await pdfDoc.save();
+}
+
+// ==========================================
+// 48. CSV TO PDF TABLE
+// ==========================================
+export async function csvToPdfBlob(csvContent: string): Promise<Blob> {
+  const rows = csvContent
+    .split("\n")
+    .map((r) => r.split(",").map((c) => c.trim()))
+    .filter((r) => r.length > 0 && r.some((c) => c !== ""));
+
+  if (rows.length === 0) throw new Error("CSV data is empty.");
+
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const pageW = PAPER_SIZES.A4.height; // Landscape A4 for tables
+  const pageH = PAPER_SIZES.A4.width;
+  const margin = 40;
+  const rowHeight = 24;
+
+  const colCount = Math.max(...rows.map((r) => r.length));
+  const colWidth = (pageW - margin * 2) / colCount;
+
+  let currentPage = pdfDoc.addPage([pageW, pageH]);
+  let y = pageH - margin;
+
+  // Title
+  currentPage.drawText("CSV Data Export", {
+    x: margin,
+    y,
+    size: 16,
+    font: boldFont,
+    color: rgb(0.1, 0.1, 0.2),
+  });
+  y -= 30;
+
+  for (let rIdx = 0; rIdx < rows.length; rIdx++) {
+    if (y < margin + rowHeight) {
+      currentPage = pdfDoc.addPage([pageW, pageH]);
+      y = pageH - margin;
+    }
+
+    const row = rows[rIdx];
+    const isHeader = rIdx === 0;
+
+    // Background highlight for header
+    if (isHeader) {
+      currentPage.drawRectangle({
+        x: margin,
+        y: y - rowHeight + 16,
+        width: pageW - margin * 2,
+        height: rowHeight,
+        color: rgb(0.92, 0.94, 0.98),
+      });
+    }
+
+    for (let cIdx = 0; cIdx < colCount; cIdx++) {
+      const cellText = row[cIdx] || "";
+      const textX = margin + cIdx * colWidth + 6;
+      const textY = y;
+
+      currentPage.drawText(cellText.substring(0, 28), {
+        x: textX,
+        y: textY,
+        size: 10,
+        font: isHeader ? boldFont : font,
+        color: isHeader ? rgb(0.1, 0.2, 0.4) : rgb(0.2, 0.2, 0.25),
+      });
+    }
+
+    y -= rowHeight;
+  }
+
+  const bytes = await pdfDoc.save();
+  return new Blob([bytes], { type: "application/pdf" });
+}
+
+// ==========================================
+// 49. PDF EDITOR ANNOTATIONS EMBEDDER
+// ==========================================
+export interface PdfAnnotation {
+  id?: string;
+  type: "text" | "highlight" | "rect" | "freehand" | "stamp" | "redaction";
+  pageNumber: number;
+  x: number; // In points from bottom-left
+  y: number;
+  width?: number;
+  height?: number;
+  text?: string;
+  color?: string;
+  strokeWidth?: number;
+  opacity?: number;
+  fontSize?: number;
+  points?: Array<{ x: number; y: number }>;
+}
+
+export async function applyAnnotationsToPdf(
+  file: File,
+  annotations: PdfAnnotation[]
+): Promise<Uint8Array> {
+  const buffer = await file.arrayBuffer();
+  const pdfDoc = await PDFDocument.load(buffer, { ignoreEncryption: true });
+  const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+  for (const ann of annotations) {
+    const pageIndex = ann.pageNumber - 1;
+    const page = pdfDoc.getPage(pageIndex);
+    if (!page) continue;
+
+    const col = hexToPdfRgb(ann.color || "#ff0000");
+    const opacity = ann.opacity !== undefined ? ann.opacity : 1.0;
+
+    if (ann.type === "text" && ann.text) {
+      page.drawText(ann.text, {
+        x: ann.x,
+        y: ann.y,
+        size: 14,
+        font: regularFont,
+        color: col,
+        opacity,
+      });
+    } else if (ann.type === "highlight") {
+      page.drawRectangle({
+        x: ann.x,
+        y: ann.y,
+        width: ann.width || 120,
+        height: ann.height || 18,
+        color: rgb(1, 0.95, 0.2),
+        opacity: 0.45,
+      });
+    } else if (ann.type === "redaction") {
+      page.drawRectangle({
+        x: ann.x,
+        y: ann.y,
+        width: ann.width || 100,
+        height: ann.height || 20,
+        color: rgb(0, 0, 0),
+        opacity: 1.0,
+      });
+    } else if (ann.type === "rect") {
+      page.drawRectangle({
+        x: ann.x,
+        y: ann.y,
+        width: ann.width || 80,
+        height: ann.height || 60,
+        borderColor: col,
+        borderWidth: ann.strokeWidth || 2,
+        opacity,
+      });
+    } else if (ann.type === "stamp" && ann.text) {
+      page.drawRectangle({
+        x: ann.x - 6,
+        y: ann.y - 4,
+        width: (ann.width || 140) + 12,
+        height: (ann.height || 36) + 8,
+        borderColor: col,
+        borderWidth: 2,
+        opacity: 0.8,
+      });
+      page.drawText(ann.text, {
+        x: ann.x,
+        y: ann.y,
+        size: 16,
+        font,
+        color: col,
+        opacity: 0.9,
+      });
+    }
+  }
+
+  return await pdfDoc.save();
+}
