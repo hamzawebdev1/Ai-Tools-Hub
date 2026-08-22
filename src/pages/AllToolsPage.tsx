@@ -45,8 +45,8 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="All AI Tools Directory - Browse 30+ Free AI Utilities"
-        description="Search and filter our complete catalog of free AI tools for paraphrasing, grammar, code debugging, SEO, and productivity."
+        title="All Utility Tools Directory - Browse 50+ Free Online Utilities"
+        description="Search and filter our complete catalog of free online utility tools for PDF, images, developers, SEO, and productivity."
       />
 
       <div className="space-y-6 pb-12">
@@ -60,13 +60,13 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-slate-800">
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-              All AI Tools Directory
+              All Utility Tools Directory
               <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
                 {filteredTools.length} Tools
               </span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Explore our full suite of production-grade AI utilities
+              Explore our full suite of production-grade browser utilities
             </p>
           </div>
 

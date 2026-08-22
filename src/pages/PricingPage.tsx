@@ -11,8 +11,8 @@ export const PricingPage: React.FC<PricingPageProps> = ({ setActiveTab }) => {
   return (
     <>
       <SchemaHead
-        title="Simple, Transparent Pricing - AI Tools Hub"
-        description="AI Tools Hub is 100% free with unlimited daily usage supported by Google AdSense."
+        title="Simple, Transparent Pricing - Utility Tools Hub"
+        description="Utility Tools Hub is 100% free with unlimited daily usage supported by Google AdSense."
       />
 
       <div className="max-w-4xl mx-auto space-y-10 pb-16">
@@ -51,15 +51,15 @@ export const PricingPage: React.FC<PricingPageProps> = ({ setActiveTab }) => {
             <ul className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>30+ Production AI Utilities</span>
+                <span>50+ Fast Online Web Utilities</span>
               </li>
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>Gemini 3.6 Flash Engine Speed</span>
+                <span>Sub-100ms Browser Processing</span>
               </li>
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>Transient 24h Auto-Purging Storage</span>
+                <span>100% Private Client-Side Privacy</span>
               </li>
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-500 shrink-0" />

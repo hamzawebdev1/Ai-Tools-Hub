@@ -39,7 +39,6 @@ import { StorageStatusDashboard } from "../components/storage/StorageStatusDashb
 import { useAuth } from "../context/AuthContext";
 import { canGuestExecute, incrementGuestUsage } from "../services/guestUsageService";
 import { GuestLimitModal } from "../components/auth/GuestLimitModal";
-import { ModelSelector } from "../components/common/ModelSelector";
 
 interface ToolDetailPageProps {
   tool: AITool;
@@ -89,7 +88,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
         body: JSON.stringify({
           toolName: tool.name,
           pageUrl: window.location.pathname,
-          userEmail: reportEmail || currentUser?.email || "guest@ai-tools-hub.io",
+          userEmail: reportEmail || currentUser?.email || "guest@utilitytoolshub.com",
           issueType: reportIssueType,
           description: reportDescription,
         }),
@@ -118,7 +117,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           description: featureDesc,
           category: tool.category,
           priority: featurePriority,
-          userEmail: featureEmail || currentUser?.email || "guest@ai-tools-hub.io",
+          userEmail: featureEmail || currentUser?.email || "guest@utilitytoolshub.com",
         }),
       });
       const data = await res.json();
@@ -145,12 +144,6 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
   const [selectedLength, setSelectedLength] = useState("Balanced");
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [customOptionValues, setCustomOptionValues] = useState<Record<string, string>>({});
-  const [selectedModel, setSelectedModel] = useState(() => localStorage.getItem("preferred_gemini_model") || "gemini-3.6-flash");
-
-  const handleModelChange = (m: string) => {
-    setSelectedModel(m);
-    localStorage.setItem("preferred_gemini_model", m);
-  };
 
   const isFavorite = favorites.includes(tool.id);
 
@@ -185,7 +178,6 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           toolName: tool.name,
           prompt: promptInput,
           options: optionsPayload,
-          selectedModel,
         }),
       });
 
@@ -371,17 +363,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                   />
 
                   {/* Options Selectors Bar */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                    <div>
-                      <label className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 block mb-1 flex items-center gap-1">
-                        <Zap className="w-3.5 h-3.5" /> Gemini Model
-                      </label>
-                      <ModelSelector
-                        selectedModel={selectedModel}
-                        onModelChange={handleModelChange}
-                        compact={true}
-                      />
-                    </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
                     {tool.optionsConfig.hasTone && (
                       <div>
                         <label className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block mb-1">
@@ -543,7 +525,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                       <div className="py-12 text-center space-y-3">
                         <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
                         <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                          Synthesizing response with Gemini 3.6 Flash...
+                          Processing utility request...
                         </p>
                       </div>
                     ) : (

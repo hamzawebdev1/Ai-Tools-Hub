@@ -11,7 +11,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
   return (
     <>
       <SchemaHead
-        title="About AI Tools Hub - Free Web-Native AI Suite"
+        title="About Utility Tools Hub - Free Web-Native AI Suite"
         description="Learn about our mission to provide lightning-fast, privacy-respecting, free AI tools for developers, creators, and marketers."
       />
 
@@ -27,7 +27,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
             Built for Speed, Privacy, and Organic Excellence
           </h1>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            AI Tools Hub was founded with a singular purpose: to deliver production-ready, zero-friction artificial intelligence tools accessible to everyone without paywalls or invasive tracking.
+            Utility Tools Hub was founded with a singular purpose: to deliver production-ready, zero-friction online browser utility tools accessible to everyone without paywalls or invasive tracking.
           </p>
         </div>
 
@@ -37,9 +37,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
             <div className="p-3 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 w-fit">
               <Zap className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-lg text-slate-900 dark:text-white">Sub-300ms Performance</h3>
+            <h3 className="font-bold text-lg text-slate-900 dark:text-white">Sub-100ms Performance</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Powered by Google Gemini 3.6 Flash and Cloud Run edge containers to deliver responses in fractions of a second.
+              Powered by high-performance browser engines and Cloud Run edge containers to deliver instant processing.
             </p>
           </div>
 
@@ -49,7 +49,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
             </div>
             <h3 className="font-bold text-lg text-slate-900 dark:text-white">Zero Data Storage</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Your prompt content processes transiently in RAM. We never sell, log, or train foundational AI models on your inputs.
+              Your files and inputs process locally or transiently in RAM. We never store, sell, or log your personal data.
             </p>
           </div>
 

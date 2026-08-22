@@ -49,9 +49,9 @@ export const removeHistoryItem = (id: string): HistoryItem[] => {
 export const getStoredFavorites = (): string[] => {
   try {
     const data = localStorage.getItem(FAVORITES_KEY);
-    return data ? JSON.parse(data) : ["ai-paraphraser", "ai-code-assistant", "ai-text-summarizer"];
+    return data ? JSON.parse(data) : ["pdf-compressor", "image-compressor", "json-formatter"];
   } catch {
-    return ["ai-paraphraser", "ai-code-assistant"];
+    return ["pdf-compressor", "image-compressor"];
   }
 };
 
@@ -76,8 +76,8 @@ export const getStoredProfile = (): UserProfile => {
   }
 
   const defaultProfile: UserProfile = {
-    name: "AI Power User",
-    email: "user@aitoolshub.com",
+    name: "Power User",
+    email: "user@utilitytoolshub.com",
     plan: "Free Tier",
     dailyUsageLimit: 50,
     usageToday: 4,

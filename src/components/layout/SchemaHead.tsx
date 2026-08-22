@@ -11,13 +11,13 @@ interface SchemaHeadProps {
 export const SchemaHead: React.FC<SchemaHeadProps> = ({
   title,
   description,
-  canonicalUrl = typeof window !== "undefined" ? window.location.href : "https://aitoolshub.com",
+  canonicalUrl = typeof window !== "undefined" ? window.location.href : "https://utilitytoolshub.com",
   schemaType = "WebSite",
   schemaData,
 }) => {
   useEffect(() => {
     // Update Document Title
-    const fullTitle = `${title} | AI Tools Hub - Free Production AI Suite`;
+    const fullTitle = `${title} | Utility Tools Hub - Free Production AI Suite`;
     document.title = fullTitle;
 
     // Update Meta Description
@@ -54,11 +54,11 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
     setMetaTag("og:description", description);
     setMetaTag("og:url", canonicalUrl);
     setMetaTag("og:type", schemaType === "Article" ? "article" : "website");
-    setMetaTag("og:image", "https://aitoolshub.com/og-image.png");
+    setMetaTag("og:image", "https://utilitytoolshub.com/og-image.png");
     setMetaTag("twitter:card", "summary_large_image", true);
     setMetaTag("twitter:title", title, true);
     setMetaTag("twitter:description", description, true);
-    setMetaTag("twitter:image", "https://aitoolshub.com/og-image.png", true);
+    setMetaTag("twitter:image", "https://utilitytoolshub.com/og-image.png", true);
 
     // Default WebSite Schema JSON-LD
     let ldJsonObject: any = {
@@ -73,11 +73,11 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
       ldJsonObject = {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "AI Tools Hub",
+        name: "Utility Tools Hub",
         url: canonicalUrl,
         potentialAction: {
           "@type": "SearchAction",
-          target: "https://aitoolshub.com/search?q={search_term_string}",
+          target: "https://utilitytoolshub.com/search?q={search_term_string}",
           "query-input": "required name=search_term_string",
         },
       };

@@ -60,8 +60,8 @@ export const HomePage: React.FC<HomePageProps> = ({
   return (
     <>
       <SchemaHead
-        title="AI Tools Hub - Free Production AI Web Utilities Suite"
-        description="Access 30+ free AI tools for text rephrasing, grammar checking, code generation, SEO meta tags, and summarization. Fast, private, and powered by Gemini."
+        title="UtilityTools Hub - Free Online Utility Tools for Text, PDF, Images & Developers"
+        description="Access 150+ free online utility tools including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% browser-based."
       />
 
       <div className="space-y-12 pb-16">
@@ -73,19 +73,19 @@ export const HomePage: React.FC<HomePageProps> = ({
 
           <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-semibold tracking-wide">
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>Next-Gen Gemini 3.6 Flash Engine</span>
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>100% Browser-First Privacy & Speed</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight sm:leading-none">
-              Supercharge Your Workflow with{" "}
+              Free Online Tools That{" "}
               <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
-                Free Production AI Tools
+                Just Work
               </span>
             </h1>
 
             <p className="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-              Instant AI paraphrasing, code debugging, document summarization, and SEO meta tag generation. Zero sign-up wall, zero API key required.
+              Convert, compress, calculate, format, and generate instantly with fast, secure browser-based online tools. Zero sign-up wall, zero file uploads required for local utilities.
             </p>
 
             {/* Hero Search Box */}
@@ -99,7 +99,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="What tool do you need? (e.g. Paraphraser, Code Debugger, Meta Tags...)"
+                  placeholder="Search 150+ tools (e.g. PDF Compressor, JSON Formatter, Word Counter)..."
                   className="w-full pl-12 pr-32 py-4 rounded-2xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-400 text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-xl"
                 />
                 <button
@@ -114,7 +114,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             {/* Quick Keyword Pills */}
             <div className="flex items-center justify-center gap-2 flex-wrap text-xs text-slate-400 pt-2">
               <span>Popular:</span>
-              {["AI Paraphraser", "Code Debugger", "Text Summarizer", "Grammar Checker", "SEO Meta Tags"].map((kw, i) => (
+              {["Image Compressor", "PDF Merger", "JSON Formatter", "Word Counter", "QR Code Generator"].map((kw, i) => (
                 <button
                   key={i}
                   onClick={() => {
@@ -169,8 +169,8 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <Cpu className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-white">Gemini 3.6</div>
-                  <div className="text-[11px] text-slate-400">Latest AI Engine</div>
+                  <div className="text-lg font-bold text-white">Sub-100ms</div>
+                  <div className="text-[11px] text-slate-400">Fast Execution Engine</div>
                 </div>
               </div>
             </div>
@@ -188,7 +188,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 Explore Tool Categories
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Pick a category to find specialized AI helpers
+                Pick a category to find specialized online utilities
               </p>
             </div>
             <button
@@ -325,23 +325,23 @@ export const HomePage: React.FC<HomePageProps> = ({
               Frequently Asked Questions
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Everything you need to know about AI Tools Hub
+              Everything you need to know about Utility Tools Hub
             </p>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
             {[
               {
-                q: "Are all AI tools on this website free?",
-                a: "Yes! AI Tools Hub provides free daily executions for all tools powered by server-side Google Gemini models.",
+                q: "Are all utility tools on this website free?",
+                a: "Yes! Utility Tools Hub provides 100% free online browser utility tools with instant execution and zero paywalls.",
               },
               {
                 q: "Do I need to sign up or enter a credit card?",
-                a: "No registration or payment details are required to use our suite of AI utilities.",
+                a: "No registration or payment details are required to use our suite of web utilities.",
               },
               {
                 q: "Is my data and text kept private?",
-                a: "Absolutely. Inputs are sent via SSL encryption and temporary session outputs automatically purge after 24 hours.",
+                a: "Absolutely. All conversions and calculations execute client-side or transiently in memory, ensuring complete data privacy.",
               },
             ].map((faq, idx) => (
               <div

@@ -19,8 +19,8 @@ export interface SEOMetadata {
   breadcrumbs?: { name: string; url: string }[];
 }
 
-const SITE_NAME = "AI Tools Hub";
-const DEFAULT_DOMAIN = typeof window !== "undefined" ? window.location.origin : "https://aitoolshub.com";
+const SITE_NAME = "UtilityTools Hub";
+const DEFAULT_DOMAIN = typeof window !== "undefined" ? window.location.origin : "https://utilitytoolshub.com";
 const DEFAULT_OG_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80";
 
 /**
@@ -39,9 +39,9 @@ export function getCanonicalUrl(path: string): string {
  */
 export function generateAutoTitle(topic: string, category?: string): string {
   if (category) {
-    return `${topic} - Best Free AI ${category.toUpperCase()} Tool | ${SITE_NAME}`;
+    return `${topic} - Free Online ${category.toUpperCase()} Utility | ${SITE_NAME}`;
   }
-  return `${topic} | Free Online AI Generator & Assistant | ${SITE_NAME}`;
+  return `${topic} | Free Online Utility Tool | ${SITE_NAME}`;
 }
 
 /**
@@ -49,7 +49,7 @@ export function generateAutoTitle(topic: string, category?: string): string {
  */
 export function generateAutoDescription(text: string, fallbackSubject: string): string {
   if (!text) {
-    return `Access our free online ${fallbackSubject} tool powered by advanced AI models. Fast, reliable, no registration required on ${SITE_NAME}.`;
+    return `Access our free online ${fallbackSubject} tool. Fast, reliable, no registration required on ${SITE_NAME}.`;
   }
   const cleanText = text.replace(/<[^>]*>?/gm, "").trim();
   if (cleanText.length <= 155) return cleanText;
@@ -60,8 +60,8 @@ export function generateAutoDescription(text: string, fallbackSubject: string): 
  * Image Alt Text Generator
  */
 export function generateSeoAltText(item: { name?: string; title?: string; category?: string; tagline?: string }): string {
-  const label = item.name || item.title || "AI Tool";
-  const desc = item.tagline || item.category || "AI Tools Hub";
+  const label = item.name || item.title || "Utility Tool";
+  const desc = item.tagline || item.category || "UtilityTools Hub";
   return `${label} - ${desc} Preview Graphic`;
 }
 
@@ -123,16 +123,16 @@ export function getOrganizationSchema() {
       "width": 512,
       "height": 512
     },
-    "description": "Free web-native directory & execution suite of 50+ cutting-edge AI tools powered by Google Gemini.",
+    "description": "Free web-native directory & execution suite of 150+ cutting-edge utility tools for PDF, images, text, and developers.",
     "sameAs": [
-      "https://twitter.com/aitoolshub",
-      "https://github.com/aitoolshub",
-      "https://linkedin.com/company/aitoolshub"
+      "https://twitter.com/utilitytoolshub",
+      "https://github.com/utilitytoolshub",
+      "https://linkedin.com/company/utilitytoolshub"
     ],
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer support",
-      "email": "support@aitoolshub.com",
+      "email": "support@utilitytoolshub.com",
       "availableLanguage": ["English"]
     }
   };
@@ -148,7 +148,7 @@ export function getWebsiteSchema() {
     "@id": `${DEFAULT_DOMAIN}/#website`,
     "url": DEFAULT_DOMAIN,
     "name": SITE_NAME,
-    "description": "Discover and execute 50+ free AI tools for writing, coding, SEO, media, and productivity.",
+    "description": "Discover and execute 150+ free online utility tools for PDF, image, text, and developer tasks.",
     "publisher": {
       "@id": `${DEFAULT_DOMAIN}/#organization`
     },
@@ -322,9 +322,9 @@ export function buildSEOMetadata(
     case "home": {
       const canonicalUrl = getCanonicalUrl("/");
       return {
-        title: "AI Tools Hub - 50+ Free Online AI Tools & Gemini Generators",
-        description: "Discover and use 50+ free AI tools for writing, coding, SEO keyword research, social media, and workflow productivity. Powered by Google Gemini 3.6 Flash.",
-        keywords: ["AI tools", "free AI generator", "AI paraphraser", "AI writing assistant", "SEO tools", "Gemini AI online"],
+        title: "UtilityTools Hub - Free Online Utility Tools for Text, PDF, Images & Developers",
+        description: "Access 150+ free online utility tools including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% browser-based.",
+        keywords: ["utility tools", "free online tools", "PDF tools", "image compressor", "JSON formatter", "text tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -333,12 +333,12 @@ export function buildSEOMetadata(
           websiteSchema,
           getFAQSchema([
             {
-              question: "Are all AI tools on AI Tools Hub free?",
-              answer: "Yes, all 50+ AI tools are 100% free to use online with generous daily limits."
+              question: "Are all utility tools on UtilityTools Hub free?",
+              answer: "Yes, all 150+ utility tools are 100% free to use online with no registration required."
             },
             {
-              question: "Which AI model powers the tools?",
-              answer: "All tools are powered by Google's flagship Gemini 3.6 Flash model for sub-second, highly coherent responses."
+              question: "Are my files secure and private?",
+              answer: "Yes! Most file processing (PDF and image manipulation) happens entirely client-side in your browser, ensuring your files are never uploaded to any server."
             }
           ])!
         ],
@@ -353,7 +353,7 @@ export function buildSEOMetadata(
         { name: "All AI Tools", url: "/tools" }
       ];
       return {
-        title: "All Free AI Tools Directory - Browse 50+ Online Generators | AI Tools Hub",
+        title: "All Free AI Tools Directory - Browse 50+ Online Generators | Utility Tools Hub",
         description: "Explore our comprehensive directory of 50+ free AI tools categorized by writing, coding, SEO, social media, media, and productivity utilities.",
         keywords: ["AI directory", "free AI tools list", "AI text tools", "AI coding tools"],
         canonicalUrl,
@@ -453,7 +453,7 @@ export function buildSEOMetadata(
         { name: "Blog & Guides", url: "/blog" }
       ];
       return {
-        title: "AI Insights, Tutorials & Prompt Engineering Guides | AI Tools Hub Blog",
+        title: "AI Insights, Tutorials & Prompt Engineering Guides | Utility Tools Hub Blog",
         description: "Read expert guides on prompt engineering, workflow automation, AI content strategies, and tool reviews written by leading engineers.",
         keywords: ["AI blog", "prompt engineering guides", "AI tutorials 2026", "AI tool reviews"],
         canonicalUrl,
@@ -477,7 +477,7 @@ export function buildSEOMetadata(
       ];
 
       return {
-        title: `${post.title} | AI Tools Hub`,
+        title: `${post.title} | Utility Tools Hub`,
         description: post.excerpt,
         keywords: post.tags,
         canonicalUrl,
@@ -501,9 +501,9 @@ export function buildSEOMetadata(
         { name: "About Us", url: "/about" }
       ];
       return {
-        title: "About AI Tools Hub - Our Mission & Web-Native AI Ecosystem",
-        description: "Learn about AI Tools Hub, our vision for democratizing high-speed AI utilities, and how we empower creators, developers, and marketers worldwide.",
-        keywords: ["About AI Tools Hub", "AI mission", "free AI ecosystem"],
+        title: "About Utility Tools Hub - Our Mission & Web-Native AI Ecosystem",
+        description: "Learn about Utility Tools Hub, our vision for democratizing high-speed AI utilities, and how we empower creators, developers, and marketers worldwide.",
+        keywords: ["About Utility Tools Hub", "AI mission", "free AI ecosystem"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -513,7 +513,7 @@ export function buildSEOMetadata(
           {
             "@context": "https://schema.org",
             "@type": "AboutPage",
-            "name": "About AI Tools Hub",
+            "name": "About Utility Tools Hub",
             "url": canonicalUrl
           }
         ],
@@ -528,9 +528,9 @@ export function buildSEOMetadata(
         { name: "Pricing", url: "/pricing" }
       ];
       return {
-        title: "Simple, Transparent AI Tools Hub Plans - Free & Pro Pass",
-        description: "Choose the plan that fits your execution volume. Start 100% free or upgrade to Pro Pass for unlimited instant Gemini generations.",
-        keywords: ["AI Tools Hub pricing", "free AI plan", "pro AI pass"],
+        title: "Simple, Transparent Utility Tools Hub Plans - 100% Free Access",
+        description: "Explore our 100% free online utility tools platform with zero paywalls and sub-100ms execution.",
+        keywords: ["Utility Tools Hub pricing", "free web utilities", "free developer tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -539,12 +539,12 @@ export function buildSEOMetadata(
           getBreadcrumbSchema(breadcrumbs),
           getFAQSchema([
             {
-              question: "Can I use AI Tools Hub for free without a credit card?",
-              answer: "Yes, our Free Tier provides generous daily tokens across all 50+ tools with zero registration or payment needed."
+              question: "Can I use Utility Tools Hub for free without a credit card?",
+              answer: "Yes, our Free Access model provides 100% free usage across all 50+ web utility tools with zero registration or payment needed."
             },
             {
-              question: "What is included in the Pro Pass?",
-              answer: "Pro Pass offers unlimited daily executions, zero rate limits, priority Gemini response queues, and batch export features."
+              question: "Are there any usage limits or paywalls?",
+              answer: "No, all web tools are freely accessible with instant browser execution and zero paywalls."
             }
           ])!
         ],
@@ -556,8 +556,8 @@ export function buildSEOMetadata(
       const query = data?.searchQuery || "";
       const canonicalUrl = getCanonicalUrl(`/search${query ? `?q=${encodeURIComponent(query)}` : ""}`);
       return {
-        title: query ? `Search Results for "${query}" - AI Tools Hub` : "Search AI Tools Directory",
-        description: `Browse matching free AI tools, categories, and articles for "${query}" on AI Tools Hub.`,
+        title: query ? `Search Results for "${query}" - Utility Tools Hub` : "Search AI Tools Directory",
+        description: `Browse matching free AI tools, categories, and articles for "${query}" on Utility Tools Hub.`,
         keywords: ["search AI tools", query],
         canonicalUrl,
         ogType: "website",
@@ -570,9 +570,9 @@ export function buildSEOMetadata(
     default: {
       const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
       return {
-        title: `${activeTab.replace("-", " ").toUpperCase()} - AI Tools Hub`,
-        description: "AI Tools Hub - Discover free web-native AI utilities.",
-        keywords: ["AI Tools Hub"],
+        title: `${activeTab.replace("-", " ").toUpperCase()} - Utility Tools Hub`,
+        description: "Utility Tools Hub - Discover free web-native AI utilities.",
+        keywords: ["Utility Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,

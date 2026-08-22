@@ -7,7 +7,7 @@ export const PrivacyPolicyPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Privacy Policy - AI Tools Hub Data Protection & AdSense Compliance"
+        title="Privacy Policy - Utility Tools Hub Data Protection & AdSense Compliance"
         description="Read our GDPR and CCPA compliant Privacy Policy. Learn how we handle transient AI prompt data, local memory storage, and AdSense cookies."
       />
 
@@ -28,18 +28,18 @@ export const PrivacyPolicyPage: React.FC = () => {
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">1. Overview & Data Philosophy</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              AI Tools Hub ("we", "our", or "us") is committed to protecting your privacy while delivering lightning-fast, web-native AI utilities. This Privacy Policy details how information is collected, used, processed, and safeguarded when you visit or interact with our suite of free online tools.
+              Utility Tools Hub ("we", "our", or "us") is committed to protecting your privacy while delivering lightning-fast, web-native online utilities. This Privacy Policy details how information is collected, used, processed, and safeguarded when you visit or interact with our suite of free online tools.
             </p>
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">2. AI Inputs & 24-Hour Transient Auto-Purge</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">2. Data Processing & Privacy</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              When you submit prompts, text, code, or images to our tools, the payload is transmitted securely over TLS/SSL encryption to server-side Google Gemini 3.6 Flash endpoints.
+              When you submit text, code, files, or parameters to our tools, processing occurs locally in your browser or is transmitted securely over TLS/SSL encryption to isolated server-side endpoints.
             </p>
             <ul className="list-disc pl-5 text-slate-600 dark:text-slate-300 space-y-1">
-              <li><strong>Zero Foundation Model Training:</strong> Your inputs are NEVER used to train, fine-tune, or improve foundational AI models.</li>
-              <li><strong>Transient Execution:</strong> Uploaded files and processing outputs are held strictly in memory and automatically deleted after exactly 24 hours.</li>
+              <li><strong>Zero Permanent Storage:</strong> Your inputs and uploaded files are never sold or logged permanently.</li>
+              <li><strong>Transient Execution:</strong> Uploaded files and processing outputs are held strictly in memory for execution and automatically deleted.</li>
               <li><strong>Local Memory Storage:</strong> Tool usage history and preferences are saved locally on your device via browser LocalStorage and cleared whenever you click "Clear History".</li>
             </ul>
           </section>
@@ -47,7 +47,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">3. Google AdSense & Third-Party Advertising Cookies</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              We serve non-intrusive advertisements provided by Google AdSense to keep our AI tools 100% free for all users. In accordance with Google Advertising Policies:
+              We serve non-intrusive advertisements provided by Google AdSense to keep our online tools 100% free for all users. In accordance with Google Advertising Policies:
             </p>
             <ul className="list-disc pl-5 text-slate-600 dark:text-slate-300 space-y-1">
               <li>Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to our website or other websites.</li>
@@ -75,7 +75,7 @@ export const PrivacyPolicyPage: React.FC = () => {
               Under the California Consumer Privacy Act (CCPA), California residents have specific rights regarding personal information:
             </p>
             <ul className="list-disc pl-5 text-slate-600 dark:text-slate-300 space-y-1">
-              <li><strong>Do Not Sell My Personal Information:</strong> AI Tools Hub NEVER sells, rents, or trades user personal data to third parties.</li>
+              <li><strong>Do Not Sell My Personal Information:</strong> Utility Tools Hub NEVER sells, rents, or trades user personal data to third parties.</li>
               <li><strong>Right to Know & Delete:</strong> You can request disclosure or deletion of any stored metadata by contacting our privacy compliance desk.</li>
             </ul>
           </section>
@@ -90,7 +90,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           <section className="space-y-2 border-t border-slate-200 dark:border-slate-800 pt-4">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">7. Contact Our Privacy Officer</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              If you have any questions or concerns regarding this Privacy Policy, please submit an inquiry on our <span className="font-semibold text-indigo-500">Contact Page</span> or email our legal team at <span className="font-mono text-indigo-500">privacy@aitoolshub.com</span>.
+              If you have any questions or concerns regarding this Privacy Policy, please submit an inquiry on our <span className="font-semibold text-indigo-500">Contact Page</span> or email our legal team at <span className="font-mono text-indigo-500">privacy@utilitytoolshub.com</span>.
             </p>
           </section>
         </div>

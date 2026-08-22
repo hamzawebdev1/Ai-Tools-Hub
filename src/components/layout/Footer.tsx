@@ -40,23 +40,23 @@ export const Footer: React.FC<FooterProps> = ({
                 <Sparkles className="w-5 h-5" />
               </div>
               <span className="font-extrabold text-lg text-slate-900 dark:text-white">
-                AI Tools <span className="text-indigo-600 dark:text-indigo-400">Hub</span>
+                UtilityTools <span className="text-indigo-600 dark:text-indigo-400">Hub</span>
               </span>
             </div>
 
             <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed max-w-sm">
-              The premier free suite of web-native AI utilities for writing, programming, marketing, media prompt generation, and document summarization. Built for performance, security, and organic search.
+              The premier free suite of web-native utility tools for PDF manipulation, image processing, text formatting, and developer tasks. Built for performance, privacy, and speed.
             </p>
 
             <div className="flex items-center gap-3 pt-2 text-[11px] font-medium text-slate-500 dark:text-slate-400">
               <span className="inline-flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> OWASP Top 10 Secure
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> 100% Secure Client-Side
               </span>
               <span className="inline-flex items-center gap-1">
                 <Zap className="w-3.5 h-3.5 text-amber-500" /> Core Web Vitals Ready
               </span>
               <span className="inline-flex items-center gap-1">
-                <Lock className="w-3.5 h-3.5 text-indigo-500" /> 24h Auto-Purge
+                <Lock className="w-3.5 h-3.5 text-indigo-500" /> Zero Upload Privacy
               </span>
             </div>
           </div>
@@ -64,7 +64,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Popular Tools Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-              Popular AI Tools
+              Popular Utilities
             </h4>
             <ul className="space-y-2">
               {popularTools.map((tool) => (
@@ -152,7 +152,7 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <button onClick={() => setActiveTab("disclaimer")} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">
-                  AI Disclaimer
+                  Disclaimer & Ad Disclosure
                 </button>
               </li>
               <li>
@@ -166,7 +166,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 dark:text-slate-500 text-[11px]">
-          <p>© 2026 AI Tools Hub. All rights reserved. Powered by Google Gemini 3.6 Flash.</p>
+          <p>© 2026 Utility Tools Hub. All rights reserved. Powered by high-performance browser engines & Cloud Run edge containers.</p>
           <div className="flex items-center gap-4">
             <span className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer" onClick={() => setActiveTab("privacy")}>
               GDPR Compliant

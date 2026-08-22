@@ -54,8 +54,8 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     // 2. Standard Meta Tags
     updateMetaTag("name", "description", metadata.description);
     updateMetaTag("name", "keywords", metadata.keywords.join(", "));
-    updateMetaTag("name", "generator", "AI Tools Hub v1.0 - Core Web Vitals & Google SEO Engine");
-    updateMetaTag("name", "author", metadata.author || "AI Tools Hub Team");
+    updateMetaTag("name", "generator", "Utility Tools Hub v1.0 - Core Web Vitals & Google SEO Engine");
+    updateMetaTag("name", "author", metadata.author || "Utility Tools Hub Team");
     updateMetaTag(
       "name",
       "robots",
@@ -90,7 +90,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     updateMetaTag("property", "og:type", metadata.ogType);
     updateMetaTag("property", "og:url", metadata.canonicalUrl);
     updateMetaTag("property", "og:image", metadata.ogImage);
-    updateMetaTag("property", "og:site_name", "AI Tools Hub");
+    updateMetaTag("property", "og:site_name", "Utility Tools Hub");
 
     if (metadata.publishedDate) {
       updateMetaTag("property", "article:published_time", new Date(metadata.publishedDate).toISOString());
@@ -101,7 +101,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     updateMetaTag("name", "twitter:title", metadata.title);
     updateMetaTag("name", "twitter:description", metadata.description);
     updateMetaTag("name", "twitter:image", metadata.ogImage);
-    updateMetaTag("name", "twitter:site", "@aitoolshub");
+    updateMetaTag("name", "twitter:site", "@utilitytoolshub");
 
     // 6. JSON-LD Structured Data Injection
     const existingScript = document.getElementById("seo-jsonld-schemas");

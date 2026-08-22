@@ -394,9 +394,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   const [usersList, setUsersList] = useState<any[]>([
     { id: "usr_super", name: "Hamza (Super Admin)", email: "hamza.web.dev5324@gmail.com", role: "super_admin", status: "Active", provider: "Google", lastLogin: "2026-08-07 13:30", joinedDate: "2026-01-01" },
     { id: "usr_admin", name: "Security Officer", email: "admin@security.hub", role: "admin", status: "Active", provider: "Email", lastLogin: "2026-08-07 11:15", joinedDate: "2026-01-10" },
-    { id: "usr_mgr", name: "Operations Lead", email: "manager@aitoolshub.io", role: "manager", status: "Active", provider: "Email", lastLogin: "2026-08-07 09:40", joinedDate: "2026-02-14" },
-    { id: "usr_edit", name: "Content Editor", email: "editor@aitoolshub.io", role: "editor", status: "Active", provider: "Google", lastLogin: "2026-08-06 18:20", joinedDate: "2026-03-01" },
-    { id: "usr_supp", name: "Support Rep", email: "support@aitoolshub.io", role: "support", status: "Active", provider: "Email", lastLogin: "2026-08-07 10:05", joinedDate: "2026-03-15" },
+    { id: "usr_mgr", name: "Operations Lead", email: "manager@utilitytoolshub.io", role: "manager", status: "Active", provider: "Email", lastLogin: "2026-08-07 09:40", joinedDate: "2026-02-14" },
+    { id: "usr_edit", name: "Content Editor", email: "editor@utilitytoolshub.io", role: "editor", status: "Active", provider: "Google", lastLogin: "2026-08-06 18:20", joinedDate: "2026-03-01" },
+    { id: "usr_supp", name: "Support Rep", email: "support@utilitytoolshub.io", role: "support", status: "Active", provider: "Email", lastLogin: "2026-08-07 10:05", joinedDate: "2026-03-15" },
   ]);
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState("all");
@@ -452,34 +452,34 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     { email: "alex.growth@startup.co", source: "Modal", joined: "2026-03-04", status: "Active" },
   ]);
   const [campaignSubject, setCampaignSubject] = useState("");
-  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from AI Tools Hub!</h2><p>Check out our latest free developer and media conversion upgrades.</p>");
+  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Utility Tools Hub!</h2><p>Check out our latest free developer and media conversion upgrades.</p>");
   const [testEmail, setTestEmail] = useState("");
   const [campaignSending, setCampaignSending] = useState(false);
 
   // SEO & Sitemap State
   const [robotsTxt, setRobotsTxt] = useState(
-    `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://aitoolshub.com/sitemap.xml`
+    `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://utilitytoolshub.com/sitemap.xml`
   );
   const [sitemapXml, setSitemapXml] = useState(
-    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://aitoolshub.com/</loc><priority>1.0</priority></url>\n</urlset>`
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://utilitytoolshub.com/</loc><priority>1.0</priority></url>\n</urlset>`
   );
 
   // Settings & Maintenance Mode
   const [siteSettings, setSiteSettings] = useState({
-    siteName: "AI Tools Hub",
+    siteName: "Utility Tools Hub",
     tagline: "50+ Free Professional Developer & Multimedia Tools",
     maintenanceMode: false,
     googleAnalyticsId: "G-AITOOLSHUB99",
     adsenseStatus: "Active & Policy Compliant",
-    announcementBar: "🚀 OWASP Top 10 Security & Fast AI Processing Active!",
+    announcementBar: "🚀 OWASP Top 10 Security & Fast Browser Processing Active!",
   });
 
   // Environment Variables Masked Preview
   const envVars = [
-    { name: "GEMINI_API_KEY", maskedValue: "AIzaSy••••••••••••••••••••38f", status: "Configured (Server Secret)" },
-    { name: "FIREBASE_PROJECT_ID", maskedValue: "ai-studio-aitoolshub-f93338eb", status: "Active Firestore" },
+    { name: "APP_SESSION_SECRET", maskedValue: "sec_sess_••••••••••••••••••••38f", status: "Configured (Server Secret)" },
+    { name: "FIREBASE_PROJECT_ID", maskedValue: "ai-studio-utilitytoolshub-f93338eb", status: "Active Firestore" },
     { name: "JWT_SECRET", maskedValue: "super_secret_jwt_••••••••", status: "Configured" },
-    { name: "STORAGE_BUCKET", maskedValue: "aitoolshub-production.appspot.com", status: "Active Cloud Storage" },
+    { name: "STORAGE_BUCKET", maskedValue: "utilitytoolshub-production.appspot.com", status: "Active Cloud Storage" },
     { name: "NODE_ENV", maskedValue: "production", status: "Production Cluster" },
   ];
 
@@ -694,7 +694,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="Enterprise Admin Panel - AI Tools Hub Control Center"
+        title="Enterprise Admin Panel - Utility Tools Hub Control Center"
         description="Role-based administration center for security, users, tools, SEO, newsletter, and system configuration."
       />
 
@@ -757,7 +757,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = "aitoolshub-enterprise-backup.json";
+                    a.download = "utilitytoolshub-enterprise-backup.json";
                     a.click();
                     showNotification("Full enterprise system configuration exported successfully.");
                   }}
@@ -1167,7 +1167,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                       <button
                         onClick={() => {
                           setActiveReplyMessage(msg);
-                          setReplyText(`Hi ${msg.name},\n\nThank you for reaching out to AI Tools Hub support regarding "${msg.subject}".\n\n`);
+                          setReplyText(`Hi ${msg.name},\n\nThank you for reaching out to Utility Tools Hub support regarding "${msg.subject}".\n\n`);
                         }}
                         className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1 cursor-pointer"
                       >

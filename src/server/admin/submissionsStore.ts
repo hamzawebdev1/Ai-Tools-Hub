@@ -98,9 +98,9 @@ let submissionsStore = {
     {
       id: "req_1",
       referenceId: "REQ-10294",
-      toolName: "AI Video Script Generator",
-      description: "Generate YouTube video outlines with hook and timestamp markers.",
-      category: "Writing & Rephrasing",
+      toolName: "Batch CSV Converter",
+      description: "Convert multiple CSV files to JSON simultaneously.",
+      category: "Developer Tools",
       priority: "High" as const,
       userEmail: "sarah@creator.io",
       votes: 42,
@@ -113,7 +113,7 @@ let submissionsStore = {
   ] as FeatureRequest[],
 
   toolHealth: [
-    { toolId: "ai-paraphraser", toolName: "AI Text Paraphraser", status: "Healthy" as const, successRate: 99.2, lastTested: new Date().toISOString(), totalExecutions: 1420, failedExecutions: 11 },
+    { toolId: "json-formatter", toolName: "JSON Formatter & Validator", status: "Healthy" as const, successRate: 99.8, lastTested: new Date().toISOString(), totalExecutions: 1420, failedExecutions: 2 },
     { toolId: "pdf-compressor", toolName: "PDF Compressor Pro", status: "Healthy" as const, successRate: 100, lastTested: new Date().toISOString(), totalExecutions: 890, failedExecutions: 0 },
     { toolId: "image-compressor", toolName: "Smart Image Compressor", status: "Healthy" as const, successRate: 98.7, lastTested: new Date().toISOString(), totalExecutions: 2310, failedExecutions: 30 },
   ] as ToolHealthRecord[],

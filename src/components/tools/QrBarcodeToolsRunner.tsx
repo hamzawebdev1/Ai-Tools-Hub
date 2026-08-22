@@ -250,7 +250,7 @@ export const QrBarcodeToolsRunner: React.FC<QrBarcodeToolsRunnerProps> = ({
     setIsProcessing(true);
 
     setTimeout(() => {
-      setScannedResult(`Decoded Content from ${file.name}:\nhttps://aitoolshub.com/sample-decoded-qr-data`);
+      setScannedResult(`Decoded Content from ${file.name}:\nhttps://utilitytoolshub.com/sample-decoded-qr-data`);
       setIsProcessing(false);
       incrementGuestUsage(toolId, !!currentUser);
 

@@ -1,6 +1,6 @@
 {
-  "name": "AI Tools Hub",
-  "description": "A production-ready suite of AI-powered web tools for text, media, documents, and code with fast performance and SEO optimization.",
+  "name": "UtilityTools Hub",
+  "description": "A production-ready suite of free online browser-based utility tools for text, developer, image, PDF, and SEO processing.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }

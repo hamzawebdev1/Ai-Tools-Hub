@@ -88,10 +88,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                AI Tools <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Hub</span>
+                UtilityTools <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Hub</span>
               </span>
               <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 tracking-wider uppercase -mt-1">
-                Fast & Free AI Suite
+                Free Online Utilities
               </span>
             </div>
           </div>
@@ -327,7 +327,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick("all-tools")}
               className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-left cursor-pointer"
             >
-              🚀 All AI Tools
+              🚀 All Utility Tools
             </button>
             <button
               onClick={() => handleNavClick("categories")}

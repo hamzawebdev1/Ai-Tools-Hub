@@ -27,7 +27,7 @@ export const SeoImage: React.FC<SeoImageProps> = ({
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const calculatedAlt = alt || (itemData ? generateSeoAltText(itemData) : title || "AI Tools Hub Visual Content");
+  const calculatedAlt = alt || (itemData ? generateSeoAltText(itemData) : title || "Utility Tools Hub Visual Content");
 
   const getAspectClass = () => {
     switch (aspectRatio) {

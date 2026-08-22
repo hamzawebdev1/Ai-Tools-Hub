@@ -25,7 +25,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Basic Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Basic Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Basic Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Basic Calculator. Perform standard addition, subtraction, multiplication, and division arithmetic. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Basic Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -81,7 +81,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Scientific Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Scientific Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Scientific Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Scientific Calculator. Advanced mathematical calculations including trigonometry, powers, and logs. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Scientific Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -137,7 +137,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Percentage Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Percentage Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Percentage Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Percentage Calculator. Calculate percentages, percentage of numbers, and proportions. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Percentage Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -193,7 +193,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Percentage Increase Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Percentage Increase Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Percentage Increase Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Percentage Increase Calculator. Calculate percentage growth between original and new values. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Percentage Increase Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -249,7 +249,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Percentage Decrease Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Percentage Decrease Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Percentage Decrease Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Percentage Decrease Calculator. Calculate percentage reduction between original and new values. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Percentage Decrease Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -305,7 +305,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Fraction Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Fraction Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Fraction Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Fraction Calculator. Perform addition, subtraction, multiplication, and division on fractions. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Fraction Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -361,7 +361,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Decimal to Fraction...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Decimal to Fraction - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Decimal to Fraction - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Decimal to Fraction. Convert floating point decimal numbers into reduced fractions. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Decimal to Fraction offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -417,7 +417,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Fraction to Decimal...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Fraction to Decimal - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Fraction to Decimal - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Fraction to Decimal. Convert numerators and denominators into exact decimal values. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Fraction to Decimal offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -473,7 +473,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Ratio Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Ratio Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Ratio Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Ratio Calculator. Calculate and simplify ratios between two or three values. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Ratio Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -529,7 +529,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Proportion Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Proportion Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Proportion Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Proportion Calculator. Solve A:B = C:D direct and inverse proportions. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Proportion Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -585,7 +585,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Average Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Average Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Average Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Average Calculator. Compute arithmetic mean across any list of numbers. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Average Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -641,7 +641,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Mean Median Mode Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Mean Median Mode Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Mean Median Mode Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Mean Median Mode Calculator. Compute mean, median, mode, and range for dataset arrays. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Mean Median Mode Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -697,7 +697,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Standard Deviation Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Standard Deviation Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Standard Deviation Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Standard Deviation Calculator. Calculate sample and population standard deviation and variance. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Standard Deviation Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -753,7 +753,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Variance Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Variance Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Variance Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Variance Calculator. Compute statistical sample and population variance. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Variance Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -809,7 +809,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Range Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Range Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Range Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Range Calculator. Calculate mathematical min, max, and range interval. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Range Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -865,7 +865,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Random Number Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Random Number Generator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Random Number Generator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Random Number Generator. Generate cryptographically secure random numbers within min/max bounds. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Random Number Generator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -921,7 +921,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Prime Number Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Prime Number Checker - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Prime Number Checker - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Prime Number Checker. Test if an integer is prime and view all integer factors. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Prime Number Checker offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -977,7 +977,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Prime Number Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Prime Number Generator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Prime Number Generator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Prime Number Generator. Generate list of prime numbers up to a specified limit. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Prime Number Generator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1033,7 +1033,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Factorial Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Factorial Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Factorial Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Factorial Calculator. Compute exact factorial n! for positive integers. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Factorial Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1089,7 +1089,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Factors Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Factors Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Factors Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Factors Calculator. Find all prime and composite factors for any integer. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Factors Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1145,7 +1145,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for GCD Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "GCD Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "GCD Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "GCD Calculator. Calculate Greatest Common Divisor (GCD) / Highest Common Factor. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "GCD Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1201,7 +1201,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for LCM Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "LCM Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "LCM Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "LCM Calculator. Calculate Least Common Multiple (LCM) for multiple numbers. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "LCM Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1257,7 +1257,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Power Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Power Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Power Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Power Calculator. Calculate x raised to exponent y (x^y). 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Power Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1313,7 +1313,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Square Root Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Square Root Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Square Root Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Square Root Calculator. Compute exact square roots with step-by-step simplification. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Square Root Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1369,7 +1369,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Cube Root Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Cube Root Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Cube Root Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Cube Root Calculator. Compute real cube roots for positive and negative numbers. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Cube Root Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1425,7 +1425,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Logarithm Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Logarithm Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Logarithm Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Logarithm Calculator. Compute base-10, natural log (ln), and custom base logarithms. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Logarithm Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1481,7 +1481,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Exponent Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Exponent Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Exponent Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Exponent Calculator. Evaluate base e, base 10, and custom exponents. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Exponent Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1537,7 +1537,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Scientific Notation Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Scientific Notation Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Scientific Notation Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Scientific Notation Converter. Convert standard numbers into scientific notation (E-notation). 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Scientific Notation Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1593,7 +1593,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Binary Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Binary Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Binary Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Binary Calculator. Perform binary addition, subtraction, AND, OR, and XOR operations. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Binary Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1649,7 +1649,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Hex Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Hex Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Hex Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Hex Calculator. Perform hexadecimal arithmetic and bitwise calculations. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Hex Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1705,7 +1705,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Simple Interest Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Simple Interest Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Simple Interest Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Simple Interest Calculator. Calculate simple interest earned on principal investment. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Simple Interest Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1761,7 +1761,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Compound Interest Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Compound Interest Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Compound Interest Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Compound Interest Calculator. Calculate compound interest with monthly/annual compounding frequencies. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Compound Interest Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1817,7 +1817,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Loan Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Loan Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Loan Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Loan Calculator. Calculate total loan payment, monthly installment, and total interest. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Loan Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1873,7 +1873,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for EMI Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "EMI Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "EMI Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "EMI Calculator. Calculate Equated Monthly Installment for personal, car, or home loans. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "EMI Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1929,7 +1929,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Mortgage Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Mortgage Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Mortgage Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Mortgage Calculator. Estimate monthly mortgage payments including principal and interest. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Mortgage Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -1985,7 +1985,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Auto Loan Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Auto Loan Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Auto Loan Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Auto Loan Calculator. Calculate monthly vehicle financing payments and loan costs. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Auto Loan Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2041,7 +2041,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Investment Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Investment Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Investment Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Investment Calculator. Forecast portfolio growth based on monthly contributions and returns. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Investment Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2097,7 +2097,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Savings Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Savings Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Savings Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Savings Calculator. Calculate accumulated savings over time with compound interest. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Savings Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2153,7 +2153,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Retirement Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Retirement Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Retirement Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Retirement Calculator. Estimate required retirement nest egg and monthly savings target. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Retirement Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2209,7 +2209,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Profit Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Profit Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Profit Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Profit Calculator. Compute net profit and loss from revenue and costs. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Profit Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2265,7 +2265,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Profit Margin Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Profit Margin Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Profit Margin Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Profit Margin Calculator. Calculate gross and net profit margin percentages. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Profit Margin Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2321,7 +2321,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Markup Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Markup Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Markup Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Markup Calculator. Calculate selling price and markup percentage over cost. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Markup Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2377,7 +2377,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Discount Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Discount Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Discount Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Discount Calculator. Calculate sale price after percentage and flat discounts. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Discount Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2433,7 +2433,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Sale Price Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Sale Price Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Sale Price Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Sale Price Calculator. Calculate final discounted price and total savings. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Sale Price Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2489,7 +2489,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Break-Even Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Break-Even Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Break-Even Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Break-Even Calculator. Determine break-even unit sales volume and revenue. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Break-Even Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2545,7 +2545,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for ROI Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "ROI Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "ROI Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "ROI Calculator. Calculate Return on Investment percentage and total gain. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "ROI Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2601,7 +2601,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for CAGR Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "CAGR Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "CAGR Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "CAGR Calculator. Compute Compound Annual Growth Rate over multi-year periods. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "CAGR Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2657,7 +2657,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for VAT Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "VAT Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "VAT Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "VAT Calculator. Calculate Value Added Tax inclusive and exclusive amounts. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "VAT Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2713,7 +2713,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for GST Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "GST Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "GST Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "GST Calculator. Calculate Goods & Services Tax additions and subtractions. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "GST Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2769,7 +2769,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Tax Percentage Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Tax Percentage Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Tax Percentage Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Tax Percentage Calculator. Compute effective tax percentage rate on income or sales. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Tax Percentage Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2825,7 +2825,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Salary Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Salary Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Salary Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Salary Calculator. Convert annual salary into monthly, bi-weekly, weekly, and hourly pay. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Salary Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2881,7 +2881,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Hourly Wage Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Hourly Wage Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Hourly Wage Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Hourly Wage Calculator. Convert hourly rate into annual, monthly, and weekly gross income. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Hourly Wage Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2937,7 +2937,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Overtime Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Overtime Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Overtime Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Overtime Calculator. Calculate 1.5x time-and-a-half and 2.0x double-time overtime pay. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Overtime Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -2993,7 +2993,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Commission Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Commission Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Commission Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Commission Calculator. Calculate sales commission earnings based on percentage tiers. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Commission Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3049,7 +3049,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Tip Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Tip Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Tip Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Tip Calculator. Calculate gratuity amount and total bill. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Tip Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3105,7 +3105,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Split Bill Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Split Bill Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Split Bill Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Split Bill Calculator. Split total restaurant bill and tip evenly among a group. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Split Bill Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3161,7 +3161,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Currency Calculation Helper...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Currency Calculation Helper - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Currency Calculation Helper - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Currency Calculation Helper. Perform manual exchange rate conversions with user-customized rates. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Currency Calculation Helper offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3217,7 +3217,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for BMI Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "BMI Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "BMI Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "BMI Calculator. Calculate Body Mass Index and healthy weight categories. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "BMI Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3273,7 +3273,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for BMR Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "BMR Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "BMR Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "BMR Calculator. Calculate Basal Metabolic Rate using Mifflin-St Jeor formula. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "BMR Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3329,7 +3329,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Daily Calorie Estimate...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Daily Calorie Estimate - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Daily Calorie Estimate - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Daily Calorie Estimate. Estimate Total Daily Energy Expenditure (TDEE) based on activity level. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Daily Calorie Estimate offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3385,7 +3385,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Ideal Weight Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Ideal Weight Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Ideal Weight Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Ideal Weight Calculator. Estimate healthy ideal body weight range based on height and frame. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Ideal Weight Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3441,7 +3441,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Body Fat Estimate Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Body Fat Estimate Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Body Fat Estimate Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Body Fat Estimate Calculator. Estimate body fat percentage using US Navy circumference measurements. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Body Fat Estimate Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3497,7 +3497,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Age Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Age Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Age Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Age Calculator. Calculate exact age in years, months, weeks, days, and hours. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Age Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3553,7 +3553,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Date of Birth Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Date of Birth Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Date of Birth Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Date of Birth Calculator. Determine birth date from given age and reference date. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Date of Birth Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3609,7 +3609,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Date Difference Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Date Difference Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Date Difference Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Date Difference Calculator. Calculate exact days, weeks, and months between two calendar dates. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Date Difference Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3665,7 +3665,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Add Days to Date...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Add Days to Date - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Add Days to Date - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Add Days to Date. Calculate future date by adding days to a starting calendar date. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Add Days to Date offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3721,7 +3721,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Subtract Days from Date...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Subtract Days from Date - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Subtract Days from Date - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Subtract Days from Date. Calculate past date by subtracting days from a calendar date. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Subtract Days from Date offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3777,7 +3777,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Add Months to Date...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Add Months to Date - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Add Months to Date - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Add Months to Date. Add or subtract months from a starting date. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Add Months to Date offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3833,7 +3833,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Date to Unix Timestamp...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Date to Unix Timestamp - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Date to Unix Timestamp - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Date to Unix Timestamp. Convert standard date string into 10-digit Unix epoch timestamp. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Date to Unix Timestamp offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3889,7 +3889,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Unix Timestamp to Date...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Unix Timestamp to Date - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Unix Timestamp to Date - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Unix Timestamp to Date. Convert Unix epoch timestamp seconds or milliseconds into UTC and local date. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Unix Timestamp to Date offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -3945,7 +3945,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Unix Timestamp Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Unix Timestamp Generator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Unix Timestamp Generator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Unix Timestamp Generator. Generate current Unix timestamp in seconds, milliseconds, and microseconds. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Unix Timestamp Generator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4001,7 +4001,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Time Duration Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Time Duration Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Time Duration Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Time Duration Calculator. Add or subtract hours, minutes, and seconds to calculate total duration. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Time Duration Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4057,7 +4057,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Time Difference Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Time Difference Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Time Difference Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Time Difference Calculator. Compute difference between start time and end time. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Time Difference Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4113,7 +4113,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Countdown Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Countdown Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Countdown Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Countdown Calculator. Live countdown timer to specific future target date and time. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Countdown Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4169,7 +4169,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Week Number Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Week Number Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Week Number Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Week Number Calculator. Determine ISO 8601 week number for any calendar date. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Week Number Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4225,7 +4225,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Day of Week Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Day of Week Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Day of Week Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Day of Week Calculator. Find the weekday name (Monday-Sunday) for any historical or future date. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Day of Week Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4281,7 +4281,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Leap Year Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Leap Year Checker - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Leap Year Checker - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Leap Year Checker. Check whether a given year is a leap year (366 days). 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Leap Year Checker offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4337,7 +4337,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Days in Month Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Days in Month Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Days in Month Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Days in Month Calculator. Determine number of days in any month and year. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Days in Month Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4393,7 +4393,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Business Days Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Business Days Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Business Days Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Business Days Calculator. Calculate business days between dates excluding weekends. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Business Days Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4449,7 +4449,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Working Days Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Working Days Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Working Days Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Working Days Calculator. Count working days and custom weekend schedules. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Working Days Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4505,7 +4505,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Date Format Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Date Format Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Date Format Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Date Format Converter. Convert date formats between ISO 8601, US, EU, and custom strings. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Date Format Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4561,7 +4561,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Time Format Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Time Format Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Time Format Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Time Format Converter. Convert time strings across formats. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Time Format Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4617,7 +4617,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for 12 Hour ↔ 24 Hour Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "12 Hour ↔ 24 Hour Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "12 Hour ↔ 24 Hour Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "12 Hour ↔ 24 Hour Converter. Convert 12-hour AM/PM times to 24-hour military time. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "12 Hour ↔ 24 Hour Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4673,7 +4673,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Timezone Offset Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Timezone Offset Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Timezone Offset Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Timezone Offset Calculator. Calculate UTC offsets and convert times across global timezones. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Timezone Offset Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4729,7 +4729,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Length Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Length Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Length Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Length Converter. Convert meters, feet, inches, kilometers, miles, and yards. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Length Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4785,7 +4785,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Distance Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Distance Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Distance Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Distance Converter. Convert long-distance units including miles, km, and nautical miles. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Distance Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4841,7 +4841,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Weight Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Weight Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Weight Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Weight Converter. Convert kilograms, pounds, ounces, grams, and stone. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Weight Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4897,7 +4897,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Mass Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Mass Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Mass Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Mass Converter. Convert mass units including grams, metric tons, and pounds. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Mass Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -4953,7 +4953,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Area Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Area Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Area Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Area Converter. Convert square meters, square feet, acres, and hectares. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Area Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5009,7 +5009,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Volume Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Volume Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Volume Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Volume Converter. Convert liters, gallons, milliliters, cups, and fluid ounces. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Volume Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5065,7 +5065,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Temperature Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Temperature Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Temperature Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Temperature Converter. Convert Celsius, Fahrenheit, and Kelvin temperature scales. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Temperature Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5121,7 +5121,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Speed Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Speed Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Speed Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Speed Converter. Convert mph, km/h, m/s, and knots. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Speed Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5177,7 +5177,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Time Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Time Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Time Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Time Converter. Convert seconds, minutes, hours, days, weeks, and years. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Time Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5233,7 +5233,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Pressure Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Pressure Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Pressure Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Pressure Converter. Convert Pascals, bar, psi, and atmospheres. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Pressure Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5289,7 +5289,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Energy Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Energy Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Energy Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Energy Converter. Convert Joules, Kilojoules, Calories, and Kilowatt-hours. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Energy Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5345,7 +5345,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Power Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Power Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Power Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Power Converter. Convert Watts, Kilowatts, Megawatts, and Horsepower. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Power Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5401,7 +5401,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Frequency Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Frequency Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Frequency Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Frequency Converter. Convert Hertz, Kilohertz, Megahertz, and Gigahertz. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Frequency Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5457,7 +5457,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Data Storage Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Data Storage Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Data Storage Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Data Storage Converter. Convert Bytes, Kilobytes, Megabytes, Gigabytes, and Terabytes. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Data Storage Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5513,7 +5513,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Digital Bandwidth Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Digital Bandwidth Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Digital Bandwidth Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Digital Bandwidth Converter. Convert bps, Kbps, Mbps, and Gbps network speeds. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Digital Bandwidth Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5569,7 +5569,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Angle Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Angle Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Angle Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Angle Converter. Convert Degrees, Radians, and Gradians. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Angle Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5625,7 +5625,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Force Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Force Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Force Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Force Converter. Convert Newtons, Kilonewtons, and Pound-force. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Force Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5681,7 +5681,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Torque Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Torque Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Torque Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Torque Converter. Convert Newton-meters and Pound-feet. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Torque Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5737,7 +5737,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Acceleration Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Acceleration Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Acceleration Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Acceleration Converter. Convert m/s², g-force, and ft/s². 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Acceleration Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5793,7 +5793,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Density Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Density Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Density Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Density Converter. Convert kg/m³, g/cm³, and lb/ft³. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Density Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5849,7 +5849,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Fuel Economy Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Fuel Economy Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Fuel Economy Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Fuel Economy Converter. Convert MPG, L/100km, and km/L fuel consumption. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Fuel Economy Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5905,7 +5905,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Cooking Measurement Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Cooking Measurement Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Cooking Measurement Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Cooking Measurement Converter. Convert teaspoons, tablespoons, cups, and milliliters. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Cooking Measurement Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -5961,7 +5961,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Bits to Bytes Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Bits to Bytes Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Bits to Bytes Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Bits to Bytes Converter. Convert digital bits into bytes, KB, MB, and GB. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Bits to Bytes Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6017,7 +6017,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Bytes to KB Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Bytes to KB Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Bytes to KB Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Bytes to KB Converter. Convert bytes into kilobytes, megabytes, and gigabytes. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Bytes to KB Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6073,7 +6073,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for KB to MB Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "KB to MB Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "KB to MB Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "KB to MB Converter. Convert kilobytes to megabytes and gigabytes. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "KB to MB Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6129,7 +6129,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for MB to GB Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "MB to GB Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "MB to GB Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "MB to GB Converter. Convert megabytes into gigabytes and terabytes. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "MB to GB Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6185,7 +6185,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for GB to TB Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "GB to TB Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "GB to TB Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "GB to TB Converter. Convert gigabytes into terabytes. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "GB to TB Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6241,7 +6241,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Binary ↔ Decimal Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Binary ↔ Decimal Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Binary ↔ Decimal Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Binary ↔ Decimal Converter. Convert binary 01 strings to decimal numbers and back. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Binary ↔ Decimal Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6297,7 +6297,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Binary ↔ Hexadecimal Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Binary ↔ Hexadecimal Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Binary ↔ Hexadecimal Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Binary ↔ Hexadecimal Converter. Convert binary code into hexadecimal notation. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Binary ↔ Hexadecimal Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6353,7 +6353,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Decimal ↔ Hexadecimal Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Decimal ↔ Hexadecimal Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Decimal ↔ Hexadecimal Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Decimal ↔ Hexadecimal Converter. Convert decimal integers into hexadecimal strings. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Decimal ↔ Hexadecimal Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6409,7 +6409,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Octal ↔ Decimal Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Octal ↔ Decimal Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Octal ↔ Decimal Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Octal ↔ Decimal Converter. Convert octal base-8 numbers into decimal base-10. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Octal ↔ Decimal Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6465,7 +6465,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Number Base Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Number Base Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Number Base Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Number Base Converter. Convert numbers across base-2, base-8, base-10, and base-16. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Number Base Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6521,7 +6521,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for ASCII ↔ Decimal Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "ASCII ↔ Decimal Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "ASCII ↔ Decimal Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "ASCII ↔ Decimal Converter. Convert ASCII text characters into decimal byte values. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "ASCII ↔ Decimal Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6577,7 +6577,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for ASCII ↔ Hex Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "ASCII ↔ Hex Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "ASCII ↔ Hex Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "ASCII ↔ Hex Converter. Convert text characters into hexadecimal representations. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "ASCII ↔ Hex Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6633,7 +6633,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Roman Numeral Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Roman Numeral Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Roman Numeral Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Roman Numeral Converter. Convert integers to Roman numerals (I, V, X, L, C, D, M) and vice versa. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Roman Numeral Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6689,7 +6689,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for HEX to RGB Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HEX to RGB Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "HEX to RGB Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "HEX to RGB Converter. Convert HEX color codes into RGB and RGBA values. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "HEX to RGB Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6745,7 +6745,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for RGB to HEX Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "RGB to HEX Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "RGB to HEX Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "RGB to HEX Converter. Convert Red, Green, and Blue integer channels into #HEX code. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "RGB to HEX Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6801,7 +6801,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for RGB to HSL Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "RGB to HSL Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "RGB to HSL Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "RGB to HSL Converter. Convert RGB values into Hue, Saturation, and Lightness. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "RGB to HSL Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6857,7 +6857,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for HSL to RGB Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HSL to RGB Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "HSL to RGB Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "HSL to RGB Converter. Convert HSL values into RGB color components. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "HSL to RGB Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6913,7 +6913,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for HSL to HEX Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HSL to HEX Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "HSL to HEX Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "HSL to HEX Converter. Convert HSL color values into HEX hex code. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "HSL to HEX Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -6969,7 +6969,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for CMYK Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "CMYK Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "CMYK Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "CMYK Converter. Convert RGB/HEX colors into CMYK print channels. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "CMYK Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -7025,7 +7025,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for HSV Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HSV Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "HSV Converter - Free Online Utility | Utility Tools Hub",
       "metaDescription": "HSV Converter. Convert RGB/HEX colors into HSV (Hue, Saturation, Value). 100% free online calculator running 100% locally with zero server lag.",
       "overview": "HSV Converter offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -7081,7 +7081,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Color Contrast Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Color Contrast Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Color Contrast Calculator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Color Contrast Calculator. Check WCAG 2.1 color contrast ratio between text and background. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Color Contrast Calculator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -7137,7 +7137,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Color Palette Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Color Palette Generator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Color Palette Generator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Color Palette Generator. Generate complementary, triadic, and analogous color palettes. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Color Palette Generator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -7193,7 +7193,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for Gradient Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Gradient Generator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Gradient Generator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "Gradient Generator. Create linear and radial CSS background gradients. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "Gradient Generator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [
@@ -7249,7 +7249,7 @@ export const CALCULATORTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input values for CSS Color Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "CSS Color Generator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "CSS Color Generator - Free Online Utility | Utility Tools Hub",
       "metaDescription": "CSS Color Generator. Generate CSS color formats including RGB, HSL, and HEX. 100% free online calculator running 100% locally with zero server lag.",
       "overview": "CSS Color Generator offers instant, high-precision mathematical and analytical processing directly in your browser.",
       "useCases": [

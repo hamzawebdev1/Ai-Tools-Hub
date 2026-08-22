@@ -12,7 +12,6 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@google/genai": "^2.4.0",
     "@tailwindcss/vite": "^4.1.14",
     "@types/bcryptjs": "^3.0.0",
     "@types/cookie-parser": "^1.4.10",
@@ -31,7 +30,6 @@
     "express-rate-limit": "^8.6.2",
     "figlet": "^1.11.4",
     "firebase": "^12.17.1",
-    "googleapis": "^174.0.1",
     "helmet": "^8.3.0",
     "jsbarcode": "^3.12.3",
     "jsonwebtoken": "^9.0.3",

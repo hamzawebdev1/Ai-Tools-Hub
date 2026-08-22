@@ -41,6 +41,7 @@ import { BLOG_POSTS_DATA } from "../../data/blogData";
 
 type AdminTab =
   | "overview"
+  | "analytics"
   | "users"
   | "newsletter"
   | "campaigns"
@@ -51,14 +52,17 @@ type AdminTab =
   | "adsense"
   | "security"
   | "inbox"
-  | "backup"
-  | "ai-settings";
+  | "backup";
 
 export const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>("overview");
   const [metrics, setMetrics] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [actionMsg, setActionMsg] = useState<string | null>(null);
+
+  // Real Analytics State
+  const [analyticsRange, setAnalyticsRange] = useState("today");
+  const [analyticsSummary, setAnalyticsSummary] = useState<any>(null);
 
   // AI Settings Admin State
   const [aiSettingsAdmin, setAiSettingsAdmin] = useState<any>(null);
@@ -77,7 +81,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Campaign State
   const [campaignSubject, setCampaignSubject] = useState("");
-  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from AI Tools Hub!</h2><p>Discover our latest enterprise AI tools and performance upgrades.</p>");
+  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Utility Tools Hub!</h2><p>Discover our latest enterprise AI tools and performance upgrades.</p>");
   const [testEmail, setTestEmail] = useState("");
   const [campaignSending, setCampaignSending] = useState(false);
   const [campaignResult, setCampaignResult] = useState<any>(null);
@@ -85,7 +89,7 @@ export const AdminDashboard: React.FC = () => {
   // Robots & Sitemap State
   const [robotsTxt, setRobotsTxt] = useState("");
   const [sitemapXml, setSitemapXml] = useState("");
-  const [indexPingUrl, setIndexPingUrl] = useState("https://aitoolshub.com/sitemap.xml");
+  const [indexPingUrl, setIndexPingUrl] = useState("https://utilitytoolshub.com/sitemap.xml");
 
   // Announcements State
   const [annTitle, setAnnTitle] = useState("");
@@ -172,6 +176,16 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
+  const fetchAnalytics = async () => {
+    try {
+      const res = await fetch(`/api/admin/analytics?range=${analyticsRange}`);
+      const data = await res.json();
+      if (data.success) setAnalyticsSummary(data.summary);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     fetchMetrics();
     fetchUsers();
@@ -180,7 +194,8 @@ export const AdminDashboard: React.FC = () => {
     fetchSitemap();
     fetchSecurityAndInbox();
     fetchAISettingsAdmin();
-  }, []);
+    fetchAnalytics();
+  }, [analyticsRange]);
 
   const handleSaveAISettings = async (updatedSettings: any) => {
     try {
@@ -451,6 +466,7 @@ export const AdminDashboard: React.FC = () => {
       <div className="flex overflow-x-auto no-scrollbar gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
         {[
           { id: "overview", label: "Dashboard", icon: BarChart3 },
+          { id: "analytics", label: "Real Analytics", icon: Activity },
           { id: "users", label: "Users & RBAC", icon: Users },
           { id: "newsletter", label: "Newsletter", icon: Mail },
           { id: "campaigns", label: "Email Campaigns", icon: Send },
@@ -462,7 +478,6 @@ export const AdminDashboard: React.FC = () => {
           { id: "security", label: "WAF & Security", icon: ShieldAlert },
           { id: "inbox", label: "Inbox & Feedback", icon: MessageSquare },
           { id: "backup", label: "Backup & Broadcast", icon: Database },
-          { id: "ai-settings", label: "AI & Model Settings", icon: Zap },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -545,6 +560,213 @@ export const AdminDashboard: React.FC = () => {
                 <span className="text-[10px] text-slate-400 block">CLS (Cumulative Layout Shift)</span>
                 <span className="text-lg font-bold text-emerald-400">0.001</span>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Real Analytics Tab */}
+      {activeTab === "analytics" && (
+        <div className="space-y-8 animate-fade-in">
+          {/* Date Range Selector & Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Activity className="w-5 h-5 text-indigo-500" /> Real Website Activity & Tool Intelligence
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                100% genuine visitor telemetry, tool executions, downloads, and conversion funnels.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1 flex-wrap">
+              {[
+                { id: "today", label: "Today" },
+                { id: "yesterday", label: "Yesterday" },
+                { id: "last7", label: "Last 7 Days" },
+                { id: "last30", label: "Last 30 Days" },
+                { id: "this_month", label: "This Month" },
+                { id: "last_month", label: "Last Month" }
+              ].map((r) => (
+                <button
+                  key={r.id}
+                  onClick={() => setAnalyticsRange(r.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    analyticsRange === r.id
+                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
+                      : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  }`}
+                >
+                  {r.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Key Analytics KPI Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Visitors ({analyticsRange})</span>
+              <p className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                {analyticsSummary?.visitorsToday || 0}
+              </p>
+              <span className="text-[10px] text-slate-400">Unique visitors (cookie ID)</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Page Views</span>
+              <p className="text-2xl font-extrabold text-indigo-500">
+                {analyticsSummary?.pageViewsToday || 0}
+              </p>
+              <span className="text-[10px] text-slate-400">Total route hits</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tool Uses</span>
+              <p className="text-2xl font-extrabold text-emerald-500">
+                {analyticsSummary?.toolUsesToday || 0}
+              </p>
+              <span className="text-[10px] text-emerald-500 font-semibold">Real executions</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Downloads</span>
+              <p className="text-2xl font-extrabold text-purple-500">
+                {analyticsSummary?.downloadsToday || 0}
+              </p>
+              <span className="text-[10px] text-purple-500 font-semibold">Generated output downloads</span>
+            </div>
+          </div>
+
+          {/* Top Tools Performance Table */}
+          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Tool Analytics & Performance (Top Tools)
+            </h4>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-semibold">
+                    <th className="pb-3">Tool Name</th>
+                    <th className="pb-3">Category</th>
+                    <th className="pb-3 text-right">Views</th>
+                    <th className="pb-3 text-right">Uses</th>
+                    <th className="pb-3 text-right">Completed</th>
+                    <th className="pb-3 text-right">Downloads</th>
+                    <th className="pb-3 text-right">Errors</th>
+                    <th className="pb-3 text-right">Completion Rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                  {analyticsSummary?.topTools && analyticsSummary.topTools.length > 0 ? (
+                    analyticsSummary.topTools.map((t: any, i: number) => (
+                      <tr key={i} className="hover:bg-slate-100/50 dark:hover:bg-slate-900/50">
+                        <td className="py-3 font-bold text-slate-900 dark:text-white">{t.name}</td>
+                        <td className="py-3 uppercase text-[10px] font-mono text-indigo-500">{t.category}</td>
+                        <td className="py-3 text-right">{t.views}</td>
+                        <td className="py-3 text-right">{t.uses}</td>
+                        <td className="py-3 text-right">{t.completions}</td>
+                        <td className="py-3 text-right font-bold text-emerald-500">{t.downloads}</td>
+                        <td className="py-3 text-right text-rose-500">{t.errors}</td>
+                        <td className="py-3 text-right font-mono font-bold">{t.completionRate}%</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={8} className="py-6 text-center text-slate-400">No tool usage recorded for this date range. Try using a tool on the website!</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Country & Device Breakdown */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <Globe className="w-4 h-4 text-indigo-500" /> Visitors by Country
+              </h4>
+              <div className="space-y-3">
+                {analyticsSummary?.countries && analyticsSummary.countries.length > 0 ? (
+                  analyticsSummary.countries.map((c: any, i: number) => (
+                    <div key={i} className="space-y-1">
+                      <div className="flex justify-between text-xs">
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">{c.country}</span>
+                        <span className="text-slate-500">{c.count} visits ({c.percentage}%)</span>
+                      </div>
+                      <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                        <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${c.percentage}%` }}></div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs text-slate-400">No country data available.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-emerald-500" /> Device & Browser Breakdown
+              </h4>
+              <div className="space-y-3">
+                {analyticsSummary?.devices && analyticsSummary.devices.map((d: any, i: number) => (
+                  <div key={i} className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{d.device}</span>
+                      <span className="text-slate-500">{d.count} ({d.percentage}%)</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                      <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${d.percentage}%` }}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Tool Conversion Funnel */}
+          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Tool Usage Conversion Funnel
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center">
+              {analyticsSummary?.toolFunnel && analyticsSummary.toolFunnel.map((f: any, i: number) => (
+                <div key={i} className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
+                  <span className="text-[10px] text-slate-400 uppercase font-semibold">{f.stage}</span>
+                  <p className="text-xl font-extrabold text-slate-900 dark:text-white">{f.count}</p>
+                  <span className="text-xs font-mono text-indigo-500 font-bold">{f.percentage}% retention</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activity Log */}
+          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Recent Real Visitor & Tool Activity Feed
+            </h4>
+            <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
+              {analyticsSummary?.recentActivity && analyticsSummary.recentActivity.length > 0 ? (
+                analyticsSummary.recentActivity.map((evt: any, i: number) => (
+                  <div key={i} className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <div>
+                        <span className="font-bold text-slate-900 dark:text-white capitalize">{evt.type.replace("_", " ")}</span>
+                        <span className="text-slate-400 ml-2">({evt.toolName || evt.path})</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 text-slate-400 font-mono text-[10px]">
+                      <span>{evt.country}</span>
+                      <span>{new Date(evt.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-slate-400 text-center py-4">No recent activity logged.</p>
+              )}
             </div>
           </div>
         </div>
@@ -1021,146 +1243,11 @@ export const AdminDashboard: React.FC = () => {
             </div>
             <a
               href="/api/admin/backup-export"
-              download="aitoolshub-backup.json"
+              download="utilitytoolshub-backup.json"
               className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5"
             >
               <Download className="w-4 h-4" /> Download Backup JSON
             </a>
-          </div>
-        </div>
-      )}
-
-      {/* 12. AI & Model Settings Panel */}
-      {activeTab === "ai-settings" && aiSettingsAdmin && (
-        <div className="space-y-6 animate-fade-in">
-          {/* AI Feature Toggle & Default Model */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-4">
-              <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
-                <Zap className="w-4 h-4 text-indigo-500" /> Global AI Engine Control
-              </h4>
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block">Enable AI Features</span>
-                  <span className="text-[11px] text-slate-500">Master switch for all AI-powered tools</span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={aiSettingsAdmin.aiEnabled}
-                  onChange={(e) => handleSaveAISettings({ ...aiSettingsAdmin, aiEnabled: e.target.checked })}
-                  className="w-5 h-5 accent-indigo-600 rounded cursor-pointer"
-                />
-              </div>
-
-              <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-slate-800">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">Default Gemini Model</label>
-                <select
-                  value={aiSettingsAdmin.defaultModel}
-                  onChange={(e) => handleSaveAISettings({ ...aiSettingsAdmin, defaultModel: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer"
-                >
-                  {aiSettingsAdmin.models?.map((m: any) => (
-                    <option key={m.id} value={m.id}>{m.name} ({m.id})</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-[11px] text-indigo-600 dark:text-indigo-400">
-                🔒 <strong>API Key Security Notice:</strong> The Google AI Studio Gemini API key is securely stored in server environment variables and is never exposed to the browser or admin panel UI.
-              </div>
-            </div>
-
-            {/* AI Usage Statistics */}
-            <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-4">
-              <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-emerald-500" /> AI Usage & Performance Metrics
-              </h4>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Total Requests</span>
-                  <p className="text-lg font-black text-slate-900 dark:text-white">{aiSettingsAdmin.stats?.totalRequests || 0}</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Success Rate</span>
-                  <p className="text-lg font-black text-emerald-500">
-                    {aiSettingsAdmin.stats?.totalRequests > 0 
-                      ? ((aiSettingsAdmin.stats.successfulRequests / aiSettingsAdmin.stats.totalRequests) * 100).toFixed(1) + "%" 
-                      : "100%"}
-                  </p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Failed Requests</span>
-                  <p className="text-lg font-black text-rose-500">{aiSettingsAdmin.stats?.failedRequests || 0}</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Rate Limit (429)</span>
-                  <p className="text-lg font-black text-amber-500">{aiSettingsAdmin.stats?.rateLimitErrors || 0}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Configured Models Table */}
-          <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-4">
-            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white">
-              Configured Gemini Models & Automatic Fallback Order
-            </h4>
-            <div className="space-y-2">
-              {aiSettingsAdmin.models?.map((model: any, idx: number) => (
-                <div key={model.id} className="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-slate-900 dark:text-white">{model.name}</span>
-                      <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 font-mono text-[10px] text-slate-500">{model.id}</span>
-                      {model.id === aiSettingsAdmin.defaultModel && (
-                        <span className="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">Default</span>
-                      )}
-                    </div>
-                    <p className="text-[11px] text-slate-500">{model.description}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-semibold text-slate-500">Fallback Priority #{idx + 1}</span>
-                    <input
-                      type="checkbox"
-                      checked={model.enabled}
-                      onChange={(e) => {
-                        const updatedModels = aiSettingsAdmin.models.map((m: any) => 
-                          m.id === model.id ? { ...m, enabled: e.target.checked } : m
-                        );
-                        handleSaveAISettings({ ...aiSettingsAdmin, models: updatedModels });
-                      }}
-                      className="w-4 h-4 accent-indigo-600 rounded cursor-pointer"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Failed Requests & Rate Limit Errors Log */}
-          <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-4">
-            <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 dark:text-white">
-              Recent AI Errors, Rate Limits (429) & Fallback Event Logs
-            </h4>
-            <div className="max-h-64 overflow-y-auto space-y-2 font-mono text-xs">
-              {aiSettingsAdmin.failedRequestsLog?.length > 0 ? (
-                aiSettingsAdmin.failedRequestsLog.map((log: any) => (
-                  <div key={log.id} className="p-3 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 flex items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-slate-500">[{new Date(log.timestamp).toLocaleTimeString()}]</span>
-                        <span className="font-bold text-indigo-400">{log.toolName}</span>
-                        <span className="text-slate-400">({log.model})</span>
-                      </div>
-                      <p className="text-rose-400 text-[11px]">{log.error}</p>
-                    </div>
-                    <span className="px-2 py-1 rounded bg-rose-500/10 text-rose-400 text-[10px] font-bold">HTTP {log.status}</span>
-                  </div>
-                ))
-              ) : (
-                <p className="text-slate-500 text-xs italic">No error or rate limit logs recorded.</p>
-              )}
-            </div>
           </div>
         </div>
       )}

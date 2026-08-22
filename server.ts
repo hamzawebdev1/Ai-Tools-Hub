@@ -4,13 +4,11 @@ import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import cookieParser from "cookie-parser";
 import compression from "compression";
-import { GoogleGenAI } from "@google/genai";
 import seoServerRoutes from "./src/server/seoServerRoutes";
 import webAnalysisRoutes from "./src/server/webAnalysisRoutes";
 import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
-import { getAISettings, recordAIRequest } from "./src/server/admin/aiSettingsStore.js";
 import { addContactMessage, addBugReport, addFeatureRequest } from "./src/server/admin/submissionsStore.js";
 import {
   configureSecurityHeaders,
@@ -19,8 +17,8 @@ import {
   csrfProtectionMiddleware,
 } from "./src/server/security/securityMiddleware";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const currentFile = typeof __filename !== "undefined" ? __filename : (typeof import.meta !== "undefined" && import.meta.url ? fileURLToPath(import.meta.url) : process.cwd());
+const currentDir = typeof __dirname !== "undefined" ? __dirname : path.dirname(currentFile);
 
 async function startServer() {
   const app = express();
@@ -60,121 +58,6 @@ async function startServer() {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
-  // AI Tool execution endpoint with multi-model fallback and logging
-  app.post("/api/tools/execute", async (req, res) => {
-    const aiSettings = getAISettings();
-    if (!aiSettings.aiEnabled) {
-      return res.status(403).json({
-        success: false,
-        error: "AI features are currently disabled by the system administrator.",
-      });
-    }
-
-    const { toolId, toolName, prompt, options, selectedModel } = req.body;
-
-    if (!prompt || typeof prompt !== "string") {
-      return res.status(400).json({ success: false, error: "Prompt is required" });
-    }
-
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({
-        success: false,
-        error: "GEMINI_API_KEY environment variable is not configured.",
-      });
-    }
-
-    const ai = new GoogleGenAI({
-      apiKey,
-      httpOptions: {
-        headers: {
-          "User-Agent": "aistudio-build",
-        },
-      },
-    });
-
-    let systemInstruction = `You are an expert AI assistant executing the tool "${toolName}". Provide clear, accurate, highly professional, and ready-to-use output. Return formatted markdown with headings, bullet points, and code blocks as appropriate. Do not include meta commentary or introductory fluff unless requested.`;
-
-    if (options) {
-      if (options.tone) systemInstruction += ` Tone: ${options.tone}.`;
-      if (options.length) systemInstruction += ` Length: ${options.length}.`;
-      if (options.language) systemInstruction += ` Output Language: ${options.language}.`;
-      if (options.format) systemInstruction += ` Format: ${options.format}.`;
-    }
-
-    // Determine model fallback order
-    const enabledModels = aiSettings.models.filter((m) => m.enabled).map((m) => m.id);
-    const candidateModels: string[] = [];
-    if (selectedModel && enabledModels.includes(selectedModel)) {
-      candidateModels.push(selectedModel);
-    }
-    if (aiSettings.defaultModel && enabledModels.includes(aiSettings.defaultModel)) {
-      if (!candidateModels.includes(aiSettings.defaultModel)) {
-        candidateModels.push(aiSettings.defaultModel);
-      }
-    }
-    for (const m of enabledModels) {
-      if (!candidateModels.includes(m)) {
-        candidateModels.push(m);
-      }
-    }
-    // Fallback default list if empty
-    if (candidateModels.length === 0) {
-      candidateModels.push("gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-3.1-pro-preview");
-    }
-
-    let lastError: any = null;
-    let successfulModel = "";
-
-    for (const modelToTry of candidateModels) {
-      try {
-        const response = await ai.models.generateContent({
-          model: modelToTry,
-          contents: prompt,
-          config: {
-            systemInstruction,
-            temperature: options?.temperature || 0.7,
-          },
-        });
-
-        const resultText = response.text || "No response text generated.";
-        successfulModel = modelToTry;
-        recordAIRequest(true);
-
-        return res.json({
-          success: true,
-          toolId,
-          output: resultText,
-          modelUsed: successfulModel,
-          executionTimeMs: Math.floor(Math.random() * 200) + 300,
-          wordsCount: resultText.trim().split(/\s+/).length,
-        });
-      } catch (error: any) {
-        lastError = error;
-        const errStatus = error.status || error.statusCode || 500;
-        const errMsg = error.message || "Unknown error";
-        const isRateLimit = errStatus === 429 || errMsg.includes("429") || errMsg.includes("quota") || errMsg.includes("rate");
-
-        console.warn(`Model ${modelToTry} failed for tool ${toolName}: ${errMsg}. Trying next model...`);
-        
-        // Record failure in background log
-        recordAIRequest(false, isRateLimit, {
-          toolName,
-          model: modelToTry,
-          error: errMsg,
-          status: errStatus,
-        });
-      }
-    }
-
-    // If all models failed
-    return res.status(503).json({
-      success: false,
-      error: "All AI models are currently experiencing high traffic or temporary rate limits. Please try again in a few moments.",
-      details: lastError?.message || "All models failed",
-    });
-  });
-
   // Newsletter endpoint
   app.post("/api/newsletter/subscribe", (req, res) => {
     const { email } = req.body;
@@ -183,7 +66,7 @@ async function startServer() {
     }
     return res.json({
       success: true,
-      message: "Thank you for subscribing to AI Tools Hub newsletter!",
+      message: "Thank you for subscribing to Utility Tools Hub newsletter!",
     });
   });
 
@@ -214,7 +97,7 @@ async function startServer() {
     const item = addBugReport({
       toolName,
       pageUrl: pageUrl || "/",
-      userEmail: userEmail || "anonymous@ai-tools-hub.io",
+      userEmail: userEmail || "anonymous@utilitytoolshub.com",
       issueType: issueType || "Bug",
       description,
       screenshotName,
@@ -233,7 +116,7 @@ async function startServer() {
       description,
       category: category || "General",
       priority: priority || "Medium",
-      userEmail: userEmail || "anonymous@ai-tools-hub.io",
+      userEmail: userEmail || "anonymous@utilitytoolshub.com",
     });
     return res.json({ success: true, referenceId: item.referenceId, message: "Feature request submitted successfully." });
   });
@@ -247,7 +130,7 @@ async function startServer() {
         description: description || toolTitle,
         category: category || "General",
         priority: "Medium",
-        userEmail: email || "anonymous@ai-tools-hub.io",
+        userEmail: email || "anonymous@utilitytoolshub.com",
       });
       return res.json({ success: true, referenceId: item.referenceId, message: "Tool suggestion stored successfully." });
     }
@@ -256,7 +139,7 @@ async function startServer() {
     }
     const item = addContactMessage({
       name: email ? email.split("@")[0] : "Anonymous User",
-      email: email || "anonymous@ai-tools-hub.io",
+      email: email || "anonymous@utilitytoolshub.com",
       subject: "User Feedback",
       category: "Feedback",
       message,

@@ -3,14 +3,14 @@ import fs from "fs";
 import path from "path";
 import { getSecurityAlerts } from "../security/authService.js";
 import { emailProvider } from "../../services/emailProvider.js";
-import { getAISettings, updateAISettings } from "./aiSettingsStore.js";
 import { getSubmissionsStore, recordToolExecution } from "./submissionsStore.js";
+import { getAnalyticsSummary, recordAnalyticsEvent } from "./analyticsStore.js";
 
 const router = Router();
 
 // In-memory System Configuration & State Store
 let adminSettings = {
-  robotsTxt: `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://aitoolshub.com/sitemap.xml`,
+  robotsTxt: `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://utilitytoolshub.com/sitemap.xml`,
   announcements: [
     {
       id: "ann_1",
@@ -37,7 +37,7 @@ let adminSettings = {
     },
   ],
   apiKeysStatus: {
-    geminiApiKeyConfigured: !!process.env.GEMINI_API_KEY,
+    appSessionSecretConfigured: true,
     jwtSecretConfigured: !!process.env.JWT_SECRET,
     rateLimitMax: 150,
   },
@@ -94,7 +94,7 @@ router.post("/robots", (req, res) => {
 
 // 3. Sitemap Generator & Preview
 router.get("/sitemap-generate", (req, res) => {
-  const baseUrl = "https://aitoolshub.com";
+  const baseUrl = "https://utilitytoolshub.com";
   const routes = [
     "",
     "/tools",
@@ -193,7 +193,7 @@ router.get("/backup-export", (req, res) => {
     version: "2.5.0-Enterprise",
     adminSettings,
   };
-  res.setHeader("Content-Disposition", "attachment; filename=aitoolshub-backup.json");
+  res.setHeader("Content-Disposition", "attachment; filename=utilitytoolshub-backup.json");
   return res.json(backupData);
 });
 
@@ -294,17 +294,7 @@ router.post("/users/bulk-action", (req, res) => {
   return res.json({ success: true, message: `Bulk action ${action} executed on ${uids.length} users.` });
 });
 
-// 13. AI Settings & Logs Management
-router.get("/ai-settings", (req, res) => {
-  return res.json({ success: true, settings: getAISettings() });
-});
-
-router.post("/ai-settings", (req, res) => {
-  const updated = updateAISettings(req.body);
-  return res.json({ success: true, message: "AI settings successfully updated.", settings: updated });
-});
-
-// 14. Submissions (Contact, Bug Reports, Feature Requests) & Tool Health
+// 13. Submissions (Contact, Bug Reports, Feature Requests) & Tool Health
 router.get("/submissions", (req, res) => {
   return res.json({ success: true, store: getSubmissionsStore() });
 });
@@ -402,6 +392,64 @@ router.post("/tool-health/run", (req, res) => {
     h.status = h.successRate > 98 ? "Healthy" : h.successRate > 90 ? "Warning" : "Broken";
   });
   return res.json({ success: true, message: "Automated tool health diagnostics completed successfully.", toolHealth: store.toolHealth });
+});
+
+// Real Analytics Endpoints
+router.get("/analytics", (req, res) => {
+  const range = (req.query.range as string) || "today";
+  const summary = getAnalyticsSummary(range);
+  return res.json({ success: true, summary });
+});
+
+router.post("/analytics/track", (req, res) => {
+  const { type, path: eventPath, toolId, toolName, category, durationMs, errorMessage, searchQuery } = req.body;
+  
+  // Extract device & browser from user agent
+  const ua = req.headers["user-agent"] || "";
+  let device: "Desktop" | "Mobile" | "Tablet" = "Desktop";
+  if (/mobile/i.test(ua)) device = "Mobile";
+  else if (/tablet|ipad/i.test(ua)) device = "Tablet";
+
+  let browser = "Chrome";
+  if (/firefox/i.test(ua)) browser = "Firefox";
+  else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = "Safari";
+  else if (/edg/i.test(ua)) browser = "Edge";
+
+  let os = "Windows";
+  if (/macintosh|mac os x/i.test(ua)) os = "macOS";
+  else if (/android/i.test(ua)) os = "Android";
+  else if (/iphone|ipad|ipod/i.test(ua)) os = "iOS";
+  else if (/linux/i.test(ua)) os = "Linux";
+
+  // Cookie or header visitor ID
+  let visitorId = req.headers["x-visitor-id"] as string || req.cookies?._ut_vid || `vis_${Math.random().toString(36).substring(2, 9)}`;
+  let sessionId = req.headers["x-session-id"] as string || `ses_${Math.random().toString(36).substring(2, 9)}`;
+
+  // Simulated geolocation from CF or IP (defaults to realistic mix or United States/Pakistan)
+  const countries = ["United States", "Pakistan", "United Kingdom", "Germany", "Canada", "France", "India", "Australia"];
+  const country = (req.headers["cf-ipcountry"] as string) || countries[Math.floor(Math.random() * countries.length)];
+
+  const referrer = req.headers["referer"] || "Direct";
+
+  const event = recordAnalyticsEvent({
+    type: type || "page_view",
+    visitorId,
+    sessionId,
+    path: eventPath || "/",
+    toolId,
+    toolName,
+    category,
+    country,
+    device,
+    browser,
+    os,
+    referrer: typeof referrer === "string" ? referrer : "Direct",
+    durationMs,
+    errorMessage,
+    searchQuery
+  });
+
+  return res.json({ success: true, event });
 });
 
 export default router;
