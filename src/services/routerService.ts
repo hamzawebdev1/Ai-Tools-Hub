@@ -12,6 +12,15 @@ export interface RouteState {
   isNotFound?: boolean;
 }
 
+export const TOOL_SLUG_ALIASES: Record<string, string> = {
+  "pdf-split": "split-pdf-pages",
+  "pdf-to-docx": "pdf-to-word",
+  "image-compress": "image-compressor",
+  "image-resize": "image-resizer",
+  "image-crop": "image-cropper",
+  "image-rotate": "image-rotator",
+};
+
 /**
  * Normalizes any path into a clean route state
  */
@@ -109,7 +118,10 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
 
   // Handle prefixed /tool/:slug or /tools/:slug
   if (cleanPath.startsWith("tool/") || cleanPath.startsWith("tools/")) {
-    const toolSlug = cleanPath.split("/")[1]?.toLowerCase();
+    let toolSlug = cleanPath.split("/")[1]?.toLowerCase();
+    if (TOOL_SLUG_ALIASES[toolSlug]) {
+      toolSlug = TOOL_SLUG_ALIASES[toolSlug];
+    }
     const matchedTool = TOOLS_DATA.find(
       (t) => t.slug === toolSlug || t.id === toolSlug
     );
@@ -118,8 +130,11 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
     }
   }
 
-  // Handle DIRECT tool slug: e.g. /jpg-to-pdf, /pdf-merge, /image-compressor
-  const directSlug = cleanPath.toLowerCase();
+  // Handle DIRECT tool slug: e.g. /split-pdf-pages, /jpg-to-pdf, /pdf-to-word, /image-compressor
+  let directSlug = cleanPath.toLowerCase();
+  if (TOOL_SLUG_ALIASES[directSlug]) {
+    directSlug = TOOL_SLUG_ALIASES[directSlug];
+  }
   const matchedTool = TOOLS_DATA.find(
     (t) => t.slug === directSlug || t.id === directSlug
   );

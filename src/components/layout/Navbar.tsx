@@ -77,8 +77,14 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
-          <div
-            onClick={() => handleNavClick("home")}
+          <a
+            href="/"
+            onClick={(e) => {
+              if (!e.defaultPrevented && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) {
+                e.preventDefault();
+                handleNavClick("home");
+              }
+            }}
             className="flex items-center gap-2.5 cursor-pointer group shrink-0"
           >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 p-0.5 shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
@@ -94,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 500+ Online Tools
               </span>
             </div>
-          </div>
+          </a>
 
           {/* Desktop Search Bar */}
           <form
@@ -119,8 +125,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Desktop Nav Items */}
           <nav className="hidden md:flex items-center gap-1 text-xs lg:text-sm font-medium">
-            <button
-              onClick={() => handleNavClick("all-tools")}
+            <a
+              href="/tools"
+              onClick={(e) => {
+                if (!e.defaultPrevented && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) {
+                  e.preventDefault();
+                  handleNavClick("all-tools");
+                }
+              }}
               className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                 activeTab === "all-tools"
                   ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold"
@@ -128,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               All Tools
-            </button>
+            </a>
 
             {/* Categories Dropdown */}
             <div className="relative">
@@ -147,23 +159,35 @@ export const Navbar: React.FC<NavbarProps> = ({
                     Browse Categories
                   </div>
                   {CATEGORIES_DATA.map((cat) => (
-                    <button
+                    <a
                       key={cat.id}
-                      onClick={() => handleCategoryClick(cat.slug)}
-                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
+                      href={`/category/${cat.slug}`}
+                      onClick={(e) => {
+                        if (!e.defaultPrevented && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) {
+                          e.preventDefault();
+                          handleCategoryClick(cat.slug);
+                        }
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer block"
                     >
                       <span>{cat.name}</span>
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
                         {cat.count}
                       </span>
-                    </button>
+                    </a>
                   ))}
                 </div>
               )}
             </div>
 
-            <button
-              onClick={() => handleNavClick("blog")}
+            <a
+              href="/blog"
+              onClick={(e) => {
+                if (!e.defaultPrevented && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) {
+                  e.preventDefault();
+                  handleNavClick("blog");
+                }
+              }}
               className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                 activeTab === "blog"
                   ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold"
@@ -171,10 +195,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               Blog
-            </button>
+            </a>
 
-            <button
-              onClick={() => handleNavClick("dashboard")}
+            <a
+              href="/dashboard"
+              onClick={(e) => {
+                if (!e.defaultPrevented && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) {
+                  e.preventDefault();
+                  handleNavClick("dashboard");
+                }
+              }}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                 activeTab === "dashboard"
                   ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold"
@@ -183,7 +213,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <LayoutDashboard className="w-4 h-4" />
               <span>Dashboard</span>
-            </button>
+            </a>
           </nav>
 
           {/* Action Icons */}

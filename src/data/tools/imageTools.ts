@@ -4,7 +4,7 @@ export const IMAGETOOLS: AITool[] = [
   // 1. Image Compressor
   {
     id: "image-compress",
-    slug: "image-compress",
+    slug: "image-compressor",
     name: "Image Compressor",
     tagline: "Shrink image file size in megabytes while keeping crisp visual quality.",
     description: "Compress JPG, PNG, WEBP, and AVIF image files with customizable quality level, real-time preview, and size savings calculator.",
@@ -36,7 +36,7 @@ export const IMAGETOOLS: AITool[] = [
   // 2. Image Resizer
   {
     id: "image-resize",
-    slug: "image-resize",
+    slug: "image-resizer",
     name: "Image Resizer",
     tagline: "Change pixel dimensions of PNG, JPG, and WEBP photos instantly.",
     description: "Resize photo pixel dimensions with lock aspect ratio, resolution presets (4K, 1080p, 720p), and percentage scale slider.",
@@ -65,7 +65,7 @@ export const IMAGETOOLS: AITool[] = [
   // 3. Image Cropper
   {
     id: "image-crop",
-    slug: "image-crop",
+    slug: "image-cropper",
     name: "Image Cropper",
     tagline: "Cut out unwanted outer sections and crop fixed aspect ratios.",
     description: "Crop image rectangular boundaries with interactive frame selection, aspect ratio lock (1:1, 16:9, 4:3, 9:16), and angle rotation.",
@@ -94,7 +94,7 @@ export const IMAGETOOLS: AITool[] = [
   // 4. Image Rotator
   {
     id: "image-rotate",
-    slug: "image-rotate",
+    slug: "image-rotator",
     name: "Image Rotator",
     tagline: "Spin images 90, 180, or 270 degrees in high quality.",
     description: "Rotate images clockwise, counter-clockwise, 180 degrees, or custom angles with smooth canvas rotation.",

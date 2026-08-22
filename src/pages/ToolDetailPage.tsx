@@ -246,8 +246,8 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
       <div className="space-y-6 pb-16">
         <Breadcrumb
           items={[
-            { label: "All Tools", onClick: () => setActiveTab("all-tools") },
-            { label: tool.name, active: true },
+            { label: "All Tools", href: "/tools", onClick: () => setActiveTab("all-tools") },
+            { label: tool.name, href: `/${tool.slug}`, active: true },
           ]}
         />
 

@@ -77,17 +77,28 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {matchingCategories.map((cat) => (
-                <div
+                <a
                   key={cat.id}
-                  onClick={() => {
-                    onSelectCategory(cat.slug);
-                    setActiveTab("category-detail");
+                  href={`/category/${cat.slug}`}
+                  onClick={(e) => {
+                    if (
+                      !e.defaultPrevented &&
+                      !e.ctrlKey &&
+                      !e.metaKey &&
+                      !e.shiftKey &&
+                      !e.altKey &&
+                      e.button === 0
+                    ) {
+                      e.preventDefault();
+                      onSelectCategory(cat.slug);
+                      setActiveTab("category-detail");
+                    }
                   }}
-                  className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:border-indigo-500 cursor-pointer transition-colors"
+                  className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:border-indigo-500 cursor-pointer transition-colors block"
                 >
                   <h4 className="font-bold text-sm text-slate-900 dark:text-white">{cat.name}</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">{cat.description}</p>
-                </div>
+                </a>
               ))}
             </div>
           </section>
@@ -123,17 +134,28 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {matchingPosts.map((post) => (
-                <div
+                <a
                   key={post.id}
-                  onClick={() => {
-                    onSelectPost(post.slug);
-                    setActiveTab("blog-post");
+                  href={`/blog/${post.slug}`}
+                  onClick={(e) => {
+                    if (
+                      !e.defaultPrevented &&
+                      !e.ctrlKey &&
+                      !e.metaKey &&
+                      !e.shiftKey &&
+                      !e.altKey &&
+                      e.button === 0
+                    ) {
+                      e.preventDefault();
+                      onSelectPost(post.slug);
+                      setActiveTab("blog-post");
+                    }
                   }}
-                  className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:border-indigo-500 cursor-pointer transition-colors space-y-2"
+                  className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:border-indigo-500 cursor-pointer transition-colors space-y-2 block"
                 >
                   <h4 className="font-bold text-sm text-slate-900 dark:text-white">{post.title}</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">{post.excerpt}</p>
-                </div>
+                </a>
               ))}
             </div>
           </section>

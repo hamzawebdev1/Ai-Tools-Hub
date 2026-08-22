@@ -2,7 +2,7 @@ import { AITool } from '../../types';
 
 const rawPdfTools = [
   { id: 'pdf-merge', name: 'Merge PDF Documents', slug: 'pdf-merge', tagline: 'Combine multiple PDF files into one seamless document.' },
-  { id: 'pdf-split', name: 'Split PDF Pages', slug: 'pdf-split', tagline: 'Extract single pages or ranges from any PDF document.' },
+  { id: 'pdf-split', name: 'Split PDF Pages', slug: 'split-pdf-pages', tagline: 'Extract single pages or ranges from any PDF document.' },
   { id: 'pdf-extract-pages', name: 'Extract PDF Pages', slug: 'pdf-extract-pages', tagline: 'Save specific pages from a PDF as a new standalone file.' },
   { id: 'pdf-delete-pages', name: 'Delete PDF Pages', slug: 'pdf-delete-pages', tagline: 'Remove unwanted pages from your PDF file in seconds.' },
   { id: 'pdf-reorder-pages', name: 'Reorder PDF Pages', slug: 'pdf-reorder-pages', tagline: 'Drag and re-arrange PDF page sequences effortlessly.' },
@@ -47,7 +47,7 @@ const rawPdfTools = [
   { id: 'webp-to-pdf', name: 'Convert WEBP to PDF', slug: 'webp-to-pdf', tagline: 'Convert WEBP photos into a clean formatted PDF document.' },
   { id: 'bmp-to-pdf', name: 'Convert BMP to PDF', slug: 'bmp-to-pdf', tagline: 'Convert Windows BMP bitmap files into standard PDF.' },
   { id: 'pdf-to-html', name: 'Convert PDF to HTML', slug: 'pdf-to-html', tagline: 'Convert PDF text and page layouts into structured HTML.' },
-  { id: 'pdf-to-docx', name: 'Convert PDF to Word DOCX', slug: 'pdf-to-docx', tagline: 'Convert PDF files into editable Microsoft Word DOCX documents.' },
+  { id: 'pdf-to-docx', name: 'Convert PDF to Word DOCX', slug: 'pdf-to-word', tagline: 'Convert PDF files into editable Microsoft Word DOCX documents.' },
   { id: 'docx-to-pdf', name: 'Convert Word DOCX to PDF', slug: 'docx-to-pdf', tagline: 'Convert Microsoft Word (.docx) documents into styled PDF files.' },
   { id: 'csv-to-pdf', name: 'Convert CSV to PDF Table', slug: 'csv-to-pdf', tagline: 'Convert CSV spreadsheet tables into formatted PDF reports.' },
   { id: 'pdf-editor', name: 'PDF Editor & Annotator', slug: 'pdf-editor', tagline: 'Annotate PDF with custom text, highlighter, shapes, redaction, and stamps.' }

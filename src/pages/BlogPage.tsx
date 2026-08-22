@@ -62,10 +62,23 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onSelectPost }) => {
         {/* Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredPosts.map((post) => (
-            <article
+            <a
               key={post.id}
-              onClick={() => onSelectPost(post.slug)}
-              className="group rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md overflow-hidden shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              href={`/blog/${post.slug}`}
+              onClick={(e) => {
+                if (
+                  !e.defaultPrevented &&
+                  !e.ctrlKey &&
+                  !e.metaKey &&
+                  !e.shiftKey &&
+                  !e.altKey &&
+                  e.button === 0
+                ) {
+                  e.preventDefault();
+                  onSelectPost(post.slug);
+                }
+              }}
+              className="group rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md overflow-hidden shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between block"
             >
               <div className="space-y-4">
                 <div className="relative h-48 overflow-hidden">
@@ -114,7 +127,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onSelectPost }) => {
                   Read Article <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </div>
-            </article>
+            </a>
           ))}
         </div>
 

@@ -36,8 +36,8 @@ export const CategoryDetailPage: React.FC<CategoryDetailPageProps> = ({
       <div className="space-y-6 pb-12">
         <Breadcrumb
           items={[
-            { label: "Categories", onClick: () => setActiveTab("categories") },
-            { label: category.name, active: true },
+            { label: "Categories", href: "/categories", onClick: () => setActiveTab("categories") },
+            { label: category.name, href: `/category/${category.slug}`, active: true },
           ]}
         />
 

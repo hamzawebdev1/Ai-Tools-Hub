@@ -34,10 +34,23 @@ export const CategoriesPage: React.FC<CategoriesPageProps> = ({ onSelectCategory
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {CATEGORIES_DATA.map((category) => (
-            <div
+            <a
               key={category.id}
-              onClick={() => onSelectCategory(category.slug)}
-              className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-6 shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              href={`/category/${category.slug}`}
+              onClick={(e) => {
+                if (
+                  !e.defaultPrevented &&
+                  !e.ctrlKey &&
+                  !e.metaKey &&
+                  !e.shiftKey &&
+                  !e.altKey &&
+                  e.button === 0
+                ) {
+                  e.preventDefault();
+                  onSelectCategory(category.slug);
+                }
+              }}
+              className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-6 shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between block"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -62,7 +75,7 @@ export const CategoriesPage: React.FC<CategoriesPageProps> = ({ onSelectCategory
                 <span>Browse Category</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
