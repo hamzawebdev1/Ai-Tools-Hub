@@ -64,6 +64,7 @@ export const AdminDashboard: React.FC = () => {
   // Real Analytics State
   const [analyticsRange, setAnalyticsRange] = useState("today");
   const [analyticsSummary, setAnalyticsSummary] = useState<any>(null);
+  const [selectedToolDetail, setSelectedToolDetail] = useState<any>(null);
 
   // AI Settings Admin State
   const [aiSettingsAdmin, setAiSettingsAdmin] = useState<any>(null);
@@ -566,17 +567,17 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Real Analytics Tab */}
+      {/* Real Analytics Tab — Phase 14 Advanced Business Dashboard */}
       {activeTab === "analytics" && (
         <div className="space-y-8 animate-fade-in">
-          {/* Date Range Selector & Header */}
+          {/* Header & Date Range Selector */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
             <div>
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Activity className="w-5 h-5 text-indigo-500" /> Real Website Activity & Tool Intelligence
+                <Activity className="w-5 h-5 text-indigo-500" /> Advanced Real-Time Business & Analytics Dashboard
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                100% genuine visitor telemetry, tool executions, downloads, and conversion funnels.
+                Production telemetry, genuine visitor records, conversion funnels, user stats, and system health.
               </p>
             </div>
 
@@ -604,122 +605,260 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Key Analytics KPI Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Visitors ({analyticsRange})</span>
-              <p className="text-2xl font-extrabold text-slate-900 dark:text-white">
-                {analyticsSummary?.visitorsToday || 0}
-              </p>
-              <span className="text-[10px] text-slate-400">Unique visitors (cookie ID)</span>
-            </div>
+          {/* 1. TODAY'S DASHBOARD OVERVIEW */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Today's Real-Time Performance & Metrics ({analyticsSummary?.range || "today"})
+            </h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Unique Visitors</span>
+                <p className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                  {analyticsSummary?.today?.uniqueVisitors || 0}
+                </p>
+                <span className="text-[10px] text-slate-400">Returning: {analyticsSummary?.today?.returningVisitors || 0}</span>
+              </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Page Views</span>
-              <p className="text-2xl font-extrabold text-indigo-500">
-                {analyticsSummary?.pageViewsToday || 0}
-              </p>
-              <span className="text-[10px] text-slate-400">Total route hits</span>
-            </div>
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">New Users</span>
+                <p className="text-2xl font-extrabold text-indigo-500">
+                  {analyticsSummary?.today?.newUsers || 0}
+                </p>
+                <span className="text-[10px] text-slate-400">Registered today</span>
+              </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tool Uses</span>
-              <p className="text-2xl font-extrabold text-emerald-500">
-                {analyticsSummary?.toolUsesToday || 0}
-              </p>
-              <span className="text-[10px] text-emerald-500 font-semibold">Real executions</span>
-            </div>
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tool Uses</span>
+                <p className="text-2xl font-extrabold text-emerald-500">
+                  {analyticsSummary?.today?.toolUses || 0}
+                </p>
+                <span className="text-[10px] text-emerald-500 font-semibold">Success: {analyticsSummary?.today?.successfulToolUses || 0}</span>
+              </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Downloads</span>
-              <p className="text-2xl font-extrabold text-purple-500">
-                {analyticsSummary?.downloadsToday || 0}
-              </p>
-              <span className="text-[10px] text-purple-500 font-semibold">Generated output downloads</span>
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Failed Uses</span>
+                <p className="text-2xl font-extrabold text-rose-500">
+                  {analyticsSummary?.today?.failedToolUses || 0}
+                </p>
+                <span className="text-[10px] text-rose-400">Errors encountered</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Downloads</span>
+                <p className="text-2xl font-extrabold text-purple-500">
+                  {analyticsSummary?.today?.downloads || 0}
+                </p>
+                <span className="text-[10px] text-purple-400">Generated files</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Contact Messages</span>
+                <p className="text-2xl font-extrabold text-amber-500">
+                  {analyticsSummary?.today?.contactMessages || 0}
+                </p>
+                <span className="text-[10px] text-slate-400">New inquiries</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Newsletter Subs</span>
+                <p className="text-2xl font-extrabold text-cyan-500">
+                  {analyticsSummary?.today?.newsletterSubscriptions || 0}
+                </p>
+                <span className="text-[10px] text-slate-400">New opt-ins</span>
+              </div>
             </div>
           </div>
 
-          {/* Top Tools Performance Table */}
+          {/* 2. LIVE ACTIVITY FEED (No private user input exposed) */}
           <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Tool Analytics & Performance (Top Tools)
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-emerald-500 animate-pulse" /> Live Real-Time Activity Feed
             </h4>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-semibold">
-                    <th className="pb-3">Tool Name</th>
-                    <th className="pb-3">Category</th>
-                    <th className="pb-3 text-right">Views</th>
-                    <th className="pb-3 text-right">Uses</th>
-                    <th className="pb-3 text-right">Completed</th>
-                    <th className="pb-3 text-right">Downloads</th>
-                    <th className="pb-3 text-right">Errors</th>
-                    <th className="pb-3 text-right">Completion Rate</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
-                  {analyticsSummary?.topTools && analyticsSummary.topTools.length > 0 ? (
-                    analyticsSummary.topTools.map((t: any, i: number) => (
-                      <tr key={i} className="hover:bg-slate-100/50 dark:hover:bg-slate-900/50">
-                        <td className="py-3 font-bold text-slate-900 dark:text-white">{t.name}</td>
-                        <td className="py-3 uppercase text-[10px] font-mono text-indigo-500">{t.category}</td>
-                        <td className="py-3 text-right">{t.views}</td>
-                        <td className="py-3 text-right">{t.uses}</td>
-                        <td className="py-3 text-right">{t.completions}</td>
-                        <td className="py-3 text-right font-bold text-emerald-500">{t.downloads}</td>
-                        <td className="py-3 text-right text-rose-500">{t.errors}</td>
-                        <td className="py-3 text-right font-mono font-bold">{t.completionRate}%</td>
-                      </tr>
+            <div className="space-y-2 max-h-56 overflow-y-auto pr-2">
+              {analyticsSummary?.liveActivity && analyticsSummary.liveActivity.length > 0 ? (
+                analyticsSummary.liveActivity.map((act: any, i: number) => (
+                  <div key={i} className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      <span className="font-bold text-slate-900 dark:text-white">{act.visitor}</span>
+                      <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px] text-indigo-400">{act.country}</span>
+                      <span className="text-slate-600 dark:text-slate-300 font-medium">→ {act.tool}</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">({act.action})</span>
+                    </div>
+                    <span className="font-mono text-[10px] text-slate-400">{act.time}</span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-slate-400 text-center py-4">No live activity recorded yet.</p>
+              )}
+            </div>
+          </div>
+
+          {/* 3. USER, CONTACT, NEWSLETTER & BLOG ANALYTICS GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* User Analytics */}
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <Users className="w-4 h-4 text-indigo-500" /> User Analytics
+              </h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Total Registered</span>
+                  <span className="font-bold text-slate-900 dark:text-white">{analyticsSummary?.userAnalytics?.totalUsers || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">New Today</span>
+                  <span className="font-bold text-indigo-500">{analyticsSummary?.userAnalytics?.newUsersToday || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">New This Week</span>
+                  <span className="font-bold text-indigo-500">{analyticsSummary?.userAnalytics?.newUsersThisWeek || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">New This Month</span>
+                  <span className="font-bold text-indigo-500">{analyticsSummary?.userAnalytics?.newUsersThisMonth || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Active Users</span>
+                  <span className="font-bold text-emerald-500">{analyticsSummary?.userAnalytics?.activeUsers || 0}</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-slate-500">Disabled Users</span>
+                  <span className="font-bold text-rose-500">{analyticsSummary?.userAnalytics?.disabledUsers || 0}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Analytics */}
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-amber-500" /> Contact Analytics
+              </h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">New Messages</span>
+                  <span className="font-bold text-amber-500">{analyticsSummary?.contactAnalytics?.newMessages || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Read</span>
+                  <span className="font-bold text-slate-900 dark:text-white">{analyticsSummary?.contactAnalytics?.read || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Replied</span>
+                  <span className="font-bold text-emerald-500">{analyticsSummary?.contactAnalytics?.replied || 0}</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-slate-500">Closed</span>
+                  <span className="font-bold text-slate-400">{analyticsSummary?.contactAnalytics?.closed || 0}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Newsletter Analytics */}
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <Mail className="w-4 h-4 text-cyan-500" /> Newsletter Analytics
+              </h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Total Subscribers</span>
+                  <span className="font-bold text-slate-900 dark:text-white">{analyticsSummary?.newsletterAnalytics?.totalSubscribers || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">New Subscribers</span>
+                  <span className="font-bold text-cyan-500">{analyticsSummary?.newsletterAnalytics?.newSubscribers || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Unsubscribed</span>
+                  <span className="font-bold text-rose-500">{analyticsSummary?.newsletterAnalytics?.unsubscribed || 0}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Campaigns Sent</span>
+                  <span className="font-bold text-indigo-500">{analyticsSummary?.newsletterAnalytics?.campaignsSent || 0}</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-slate-500">Successful Sends</span>
+                  <span className="font-bold text-emerald-500">{analyticsSummary?.newsletterAnalytics?.successfulSends || 0}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Blog Analytics */}
+            <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-purple-500" /> Blog Analytics
+              </h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-slate-500">Total Article Views</span>
+                  <span className="font-bold text-purple-500">{analyticsSummary?.blogAnalytics?.articleViews || 0}</span>
+                </div>
+                <div className="mt-2 space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase">Top Articles</span>
+                  {analyticsSummary?.blogAnalytics?.topArticles && analyticsSummary.blogAnalytics.topArticles.length > 0 ? (
+                    analyticsSummary.blogAnalytics.topArticles.slice(0, 3).map((art: any, idx: number) => (
+                      <div key={idx} className="flex justify-between text-[11px] truncate">
+                        <span className="truncate text-slate-700 dark:text-slate-300 pr-2">{art.title}</span>
+                        <span className="font-bold font-mono text-indigo-400">{art.views}</span>
+                      </div>
                     ))
                   ) : (
-                    <tr>
-                      <td colSpan={8} className="py-6 text-center text-slate-400">No tool usage recorded for this date range. Try using a tool on the website!</td>
-                    </tr>
+                    <p className="text-[10px] text-slate-400">No views recorded</p>
                   )}
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Country & Device Breakdown */}
+          {/* 4. COUNTRY & DEVICE ANALYTICS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                <Globe className="w-4 h-4 text-indigo-500" /> Visitors by Country
+                <Globe className="w-4 h-4 text-indigo-500" /> Country Analytics (Visitors, Users, Tool Uses)
               </h4>
-              <div className="space-y-3">
-                {analyticsSummary?.countries && analyticsSummary.countries.length > 0 ? (
-                  analyticsSummary.countries.map((c: any, i: number) => (
-                    <div key={i} className="space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span className="font-semibold text-slate-800 dark:text-slate-200">{c.country}</span>
-                        <span className="text-slate-500">{c.count} visits ({c.percentage}%)</span>
-                      </div>
-                      <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
-                        <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${c.percentage}%` }}></div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-xs text-slate-400">No country data available.</p>
-                )}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-semibold">
+                      <th className="pb-2">Country</th>
+                      <th className="pb-2 text-right">Visitors</th>
+                      <th className="pb-2 text-right">Users</th>
+                      <th className="pb-2 text-right">Tool Uses</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                    {analyticsSummary?.countryAnalytics && analyticsSummary.countryAnalytics.length > 0 ? (
+                      analyticsSummary.countryAnalytics.map((c: any, i: number) => (
+                        <tr key={i} className="hover:bg-slate-100/50 dark:hover:bg-slate-900/50">
+                          <td className="py-2.5 font-bold text-slate-900 dark:text-white">{c.country}</td>
+                          <td className="py-2.5 text-right font-mono">{c.visitors}</td>
+                          <td className="py-2.5 text-right font-mono text-indigo-400">{c.users}</td>
+                          <td className="py-2.5 text-right font-mono text-emerald-400">{c.toolUses}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={4} className="py-4 text-center text-slate-400">No country analytics recorded.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
 
             <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-emerald-500" /> Device & Browser Breakdown
+                <BarChart3 className="w-4 h-4 text-emerald-500" /> Device Analytics (Desktop, Mobile, Tablet)
               </h4>
-              <div className="space-y-3">
-                {analyticsSummary?.devices && analyticsSummary.devices.map((d: any, i: number) => (
+              <div className="space-y-3 pt-2">
+                {analyticsSummary?.deviceAnalytics && analyticsSummary.deviceAnalytics.map((d: any, i: number) => (
                   <div key={i} className="space-y-1">
                     <div className="flex justify-between text-xs">
                       <span className="font-semibold text-slate-800 dark:text-slate-200">{d.device}</span>
-                      <span className="text-slate-500">{d.count} ({d.percentage}%)</span>
+                      <span className="text-slate-500 font-mono">{d.count} visits ({d.percentage}%)</span>
                     </div>
-                    <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${d.percentage}%` }}></div>
+                    <div className="w-full h-2.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                      <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${d.percentage}%` }}></div>
                     </div>
                   </div>
                 ))}
@@ -727,49 +866,210 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Tool Conversion Funnel */}
+          {/* 5. TOP TOOLS BY PERIOD */}
           <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Tool Usage Conversion Funnel
+              Top Tools (Today, Last 7 Days, Last 30 Days)
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center">
-              {analyticsSummary?.toolFunnel && analyticsSummary.toolFunnel.map((f: any, i: number) => (
-                <div key={i} className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
-                  <span className="text-[10px] text-slate-400 uppercase font-semibold">{f.stage}</span>
-                  <p className="text-xl font-extrabold text-slate-900 dark:text-white">{f.count}</p>
-                  <span className="text-xs font-mono text-indigo-500 font-bold">{f.percentage}% retention</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+                <span className="text-[10px] font-bold uppercase text-indigo-500">Top Tools Today</span>
+                {analyticsSummary?.topTools?.today && analyticsSummary.topTools.today.length > 0 ? (
+                  analyticsSummary.topTools.today.map((t: any, idx: number) => (
+                    <div key={idx} className="flex justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/50">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">{t.name}</span>
+                      <span className="font-mono text-emerald-500">{t.uses} uses</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs text-slate-400">Zero usage today</p>
+                )}
+              </div>
+
+              <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+                <span className="text-[10px] font-bold uppercase text-indigo-500">Top Tools (7 Days)</span>
+                {analyticsSummary?.topTools?.last7 && analyticsSummary.topTools.last7.length > 0 ? (
+                  analyticsSummary.topTools.last7.map((t: any, idx: number) => (
+                    <div key={idx} className="flex justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/50">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">{t.name}</span>
+                      <span className="font-mono text-emerald-500">{t.uses} uses</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs text-slate-400">Zero usage in 7 days</p>
+                )}
+              </div>
+
+              <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+                <span className="text-[10px] font-bold uppercase text-indigo-500">Top Tools (30 Days)</span>
+                {analyticsSummary?.topTools?.last30 && analyticsSummary.topTools.last30.length > 0 ? (
+                  analyticsSummary.topTools.last30.map((t: any, idx: number) => (
+                    <div key={idx} className="flex justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/50">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">{t.name}</span>
+                      <span className="font-mono text-emerald-500">{t.uses} uses</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs text-slate-400">Zero usage in 30 days</p>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Recent Activity Log */}
+          {/* 6. COMPREHENSIVE TOOL ANALYTICS & DETAIL INSPECTOR */}
           <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Recent Real Visitor & Tool Activity Feed
-            </h4>
-            <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
-              {analyticsSummary?.recentActivity && analyticsSummary.recentActivity.length > 0 ? (
-                analyticsSummary.recentActivity.map((evt: any, i: number) => (
-                  <div key={i} className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                      <div>
-                        <span className="font-bold text-slate-900 dark:text-white capitalize">{evt.type.replace("_", " ")}</span>
-                        <span className="text-slate-400 ml-2">({evt.toolName || evt.path})</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 text-slate-400 font-mono text-[10px]">
-                      <span>{evt.country}</span>
-                      <span>{new Date(evt.timestamp).toLocaleTimeString()}</span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-xs text-slate-400 text-center py-4">No recent activity logged.</p>
-              )}
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Detailed Tool Performance Analytics (Click any tool for deep inspection)
+              </h4>
+              <span className="text-[10px] text-slate-400">Range: {analyticsRange}</span>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-semibold">
+                    <th className="pb-3">Tool Name</th>
+                    <th className="pb-3">Category</th>
+                    <th className="pb-3 text-right">Views</th>
+                    <th className="pb-3 text-right">Starts</th>
+                    <th className="pb-3 text-right">Completions</th>
+                    <th className="pb-3 text-right">Downloads</th>
+                    <th className="pb-3 text-right">Errors</th>
+                    <th className="pb-3 text-right">Completion Rate</th>
+                    <th className="pb-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                  {analyticsSummary?.toolAnalytics && analyticsSummary.toolAnalytics.length > 0 ? (
+                    analyticsSummary.toolAnalytics.map((t: any, i: number) => (
+                      <tr key={i} className="hover:bg-slate-100/50 dark:hover:bg-slate-900/50 cursor-pointer" onClick={() => setSelectedToolDetail(t)}>
+                        <td className="py-3 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                          {t.name}
+                        </td>
+                        <td className="py-3 uppercase text-[10px] font-mono text-indigo-500">{t.category}</td>
+                        <td className="py-3 text-right font-mono">{t.views}</td>
+                        <td className="py-3 text-right font-mono">{t.starts}</td>
+                        <td className="py-3 text-right font-mono">{t.completions}</td>
+                        <td className="py-3 text-right font-mono font-bold text-emerald-500">{t.downloads}</td>
+                        <td className="py-3 text-right font-mono text-rose-500">{t.errors}</td>
+                        <td className="py-3 text-right font-mono font-bold">{t.completionRate}%</td>
+                        <td className="py-3 text-right">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setSelectedToolDetail(t); }}
+                            className="px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-500 hover:bg-indigo-500/20 text-[10px] font-bold"
+                          >
+                            Inspect
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={9} className="py-8 text-center text-slate-400">
+                        No tool usage recorded for this date range. Try using any tool on the website to generate telemetry!
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
+
+          {/* TOOL DETAIL INSPECTOR MODAL */}
+          {selectedToolDetail && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-2xl w-full p-6 space-y-6 shadow-2xl">
+                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                  <div>
+                    <span className="text-[10px] uppercase font-mono text-indigo-500 font-bold">{selectedToolDetail.category}</span>
+                    <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">{selectedToolDetail.name} — Detailed Telemetry</h3>
+                  </div>
+                  <button
+                    onClick={() => setSelectedToolDetail(null)}
+                    className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase">Views</span>
+                    <p className="text-xl font-extrabold text-slate-900 dark:text-white">{selectedToolDetail.views}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase">Completions</span>
+                    <p className="text-xl font-extrabold text-emerald-500">{selectedToolDetail.completions}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase">Downloads</span>
+                    <p className="text-xl font-extrabold text-purple-500">{selectedToolDetail.downloads}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase">Errors</span>
+                    <p className="text-xl font-extrabold text-rose-500">{selectedToolDetail.errors}</p>
+                  </div>
+                </div>
+
+                {/* Usage Graph over time */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase text-slate-400">Usage Over Time</h4>
+                  {selectedToolDetail.usageGraph && selectedToolDetail.usageGraph.length > 0 ? (
+                    <div className="space-y-1.5 max-h-36 overflow-y-auto">
+                      {selectedToolDetail.usageGraph.map((g: any, idx: number) => (
+                        <div key={idx} className="flex items-center justify-between text-xs p-2 rounded-lg bg-slate-50 dark:bg-slate-950">
+                          <span className="font-mono text-slate-500">{g.date}</span>
+                          <span className="font-bold text-indigo-500">{g.count} executions</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-slate-400">No date series recorded for this tool.</p>
+                  )}
+                </div>
+
+                {/* Countries & Devices breakdown for this tool */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold uppercase text-slate-400">Top Countries</h4>
+                    {selectedToolDetail.countries && selectedToolDetail.countries.length > 0 ? (
+                      selectedToolDetail.countries.map((c: any, idx: number) => (
+                        <div key={idx} className="flex justify-between text-xs p-2 rounded-lg bg-slate-50 dark:bg-slate-950">
+                          <span>{c.country}</span>
+                          <span className="font-mono font-bold">{c.count}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-xs text-slate-400">No country breakdown</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold uppercase text-slate-400">Device Breakdown</h4>
+                    {selectedToolDetail.devices && selectedToolDetail.devices.length > 0 ? (
+                      selectedToolDetail.devices.map((d: any, idx: number) => (
+                        <div key={idx} className="flex justify-between text-xs p-2 rounded-lg bg-slate-50 dark:bg-slate-950">
+                          <span>{d.device}</span>
+                          <span className="font-mono font-bold">{d.count}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-xs text-slate-400">No device breakdown</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <button
+                    onClick={() => setSelectedToolDetail(null)}
+                    className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20"
+                  >
+                    Close Inspector
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

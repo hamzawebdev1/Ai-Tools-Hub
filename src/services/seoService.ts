@@ -20,7 +20,12 @@ export interface SEOMetadata {
 }
 
 const SITE_NAME = "Mehzan Digital";
-const DEFAULT_DOMAIN = typeof window !== "undefined" ? window.location.origin : "https://mehzandigital.com";
+export function getDomain(): string {
+  if (typeof window !== "undefined" && window.location.origin) {
+    return window.location.origin;
+  }
+  return "";
+}
 const DEFAULT_OG_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80";
 
 /**
@@ -28,10 +33,8 @@ const DEFAULT_OG_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8b
  */
 export function getCanonicalUrl(path: string): string {
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  if (typeof window !== "undefined") {
-    return `${window.location.origin}${cleanPath}`;
-  }
-  return `${DEFAULT_DOMAIN}${cleanPath}`;
+  const origin = getDomain();
+  return `${origin}${cleanPath}`;
 }
 
 /**
@@ -111,15 +114,16 @@ export function getAutoRelatedArticles(categorySlug?: string, toolTags?: string[
  * Organization Schema (JSON-LD)
  */
 export function getOrganizationSchema() {
+  const domain = getDomain();
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": `${DEFAULT_DOMAIN}/#organization`,
+    "@id": `${domain}/#organization`,
     "name": SITE_NAME,
-    "url": DEFAULT_DOMAIN,
+    "url": domain || "/",
     "logo": {
       "@type": "ImageObject",
-      "url": `${DEFAULT_DOMAIN}/icon.png`,
+      "url": `${domain}/icon.png`,
       "width": 512,
       "height": 512
     },
@@ -142,21 +146,22 @@ export function getOrganizationSchema() {
  * Website Schema + Search Action Schema for Sitelinks Searchbox
  */
 export function getWebsiteSchema() {
+  const domain = getDomain();
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${DEFAULT_DOMAIN}/#website`,
-    "url": DEFAULT_DOMAIN,
+    "@id": `${domain}/#website`,
+    "url": domain || "/",
     "name": SITE_NAME,
     "description": "Discover and execute 500+ free online utility tools for PDF, image, text, and developer tasks on Mehzan Digital.",
     "publisher": {
-      "@id": `${DEFAULT_DOMAIN}/#organization`
+      "@id": `${domain}/#organization`
     },
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": `${DEFAULT_DOMAIN}/search?q={search_term_string}`
+        "urlTemplate": `${domain}/search?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     }
@@ -209,7 +214,7 @@ export function getToolSoftwareSchema(tool: AITool) {
     },
     "featureList": tool.seoContent?.keyFeatures?.join(", ") || tool.tags.join(", "),
     "author": {
-      "@id": `${DEFAULT_DOMAIN}/#organization`
+      "@id": `${getDomain()}/#organization`
     }
   };
 }
@@ -297,7 +302,7 @@ export function getArticleSchema(post: BlogPost) {
       "image": post.author.avatar
     },
     "publisher": {
-      "@id": `${DEFAULT_DOMAIN}/#organization`
+      "@id": `${getDomain()}/#organization`
     },
     "keywords": post.tags.join(", ")
   };

@@ -4,13 +4,25 @@ import path from "path";
 import { getSecurityAlerts } from "../security/authService.js";
 import { emailProvider } from "../../services/emailProvider.js";
 import { getSubmissionsStore, recordToolExecution } from "./submissionsStore.js";
-import { getAnalyticsSummary, recordAnalyticsEvent } from "./analyticsStore.js";
+import { getAdvancedAnalyticsSummary, recordAnalyticsEvent } from "./analyticsStore.js";
+import { BLOG_POSTS_DATA } from "../../data/blogData.js";
 
 const router = Router();
 
+const getBaseHost = (req: any): string => {
+  if (req.get("x-forwarded-host")) {
+    const proto = req.get("x-forwarded-proto") || req.protocol || "https";
+    return `${proto}://${req.get("x-forwarded-host")}`;
+  }
+  if (req.get("host")) {
+    return `${req.protocol}://${req.get("host")}`;
+  }
+  return process.env.APP_URL || "";
+};
+
 // In-memory System Configuration & State Store
 let adminSettings = {
-  robotsTxt: `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://mehzandigital.com/sitemap.xml`,
+  robotsTxt: `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: /sitemap.xml`,
   announcements: [
     {
       id: "ann_1",
@@ -34,16 +46,25 @@ let adminSettings = {
 
 // 1. Analytics & Overview Metrics
 router.get("/metrics", (req, res) => {
-  const analytics = getAnalyticsSummary("today");
+  const contactMessages = getSubmissionsStore().contactMessages.length > 0 
+    ? getSubmissionsStore().contactMessages 
+    : adminSettings.contactMessages;
+  const analytics = getAdvancedAnalyticsSummary(
+    "today",
+    adminSettings.usersMock,
+    contactMessages,
+    adminSettings.newsletterSubscribers,
+    BLOG_POSTS_DATA
+  );
   const securityAlerts = getSecurityAlerts();
 
   return res.json({
     success: true,
     metrics: {
       totalUsers: adminSettings.usersMock.length,
-      activeSessions: analytics.visitorsToday || 0,
+      activeSessions: analytics.today.uniqueVisitors || 0,
       totalTools: 50,
-      filesProcessedToday: analytics.toolUsesToday || 0,
+      filesProcessedToday: analytics.today.toolUses || 0,
       totalStorageUsedMb: 0,
       securityThreatsBlocked: securityAlerts.length,
       coreWebVitals: {
@@ -75,7 +96,7 @@ router.post("/robots", (req, res) => {
 
 // 3. Sitemap Generator & Preview
 router.get("/sitemap-generate", (req, res) => {
-  const baseUrl = "https://mehzandigital.com";
+  const baseUrl = getBaseHost(req);
   const routes = [
     "",
     "/all-tools",
@@ -422,7 +443,16 @@ router.post("/tool-health/run", (req, res) => {
 // Real Analytics Endpoints
 router.get("/analytics", (req, res) => {
   const range = (req.query.range as string) || "today";
-  const summary = getAnalyticsSummary(range);
+  const contactMessages = getSubmissionsStore().contactMessages.length > 0 
+    ? getSubmissionsStore().contactMessages 
+    : adminSettings.contactMessages;
+  const summary = getAdvancedAnalyticsSummary(
+    range,
+    adminSettings.usersMock,
+    contactMessages,
+    adminSettings.newsletterSubscribers,
+    BLOG_POSTS_DATA
+  );
   return res.json({ success: true, summary });
 });
 

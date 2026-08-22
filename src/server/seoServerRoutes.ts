@@ -5,13 +5,22 @@ import { BLOG_POSTS_DATA } from "../data/blogData";
 
 const router = Router();
 
-const DOMAIN = "https://mehzandigital.com"; // Standard clean domain reference
+const getBaseHost = (req: any): string => {
+  if (req.get("x-forwarded-host")) {
+    const proto = req.get("x-forwarded-proto") || req.protocol || "https";
+    return `${proto}://${req.get("x-forwarded-host")}`;
+  }
+  if (req.get("host")) {
+    return `${req.protocol}://${req.get("host")}`;
+  }
+  return process.env.APP_URL || "";
+};
 
 /**
  * Main XML Sitemap (/sitemap.xml)
  */
 router.get("/sitemap.xml", (req, res) => {
-  const host = req.get("host") ? `${req.protocol}://${req.get("host")}` : DOMAIN;
+  const host = getBaseHost(req);
   const now = new Date().toISOString();
 
   // Core static pages
@@ -82,7 +91,7 @@ router.get("/sitemap.xml", (req, res) => {
  * Image XML Sitemap (/image-sitemap.xml)
  */
 router.get("/image-sitemap.xml", (req, res) => {
-  const host = req.get("host") ? `${req.protocol}://${req.get("host")}` : DOMAIN;
+  const host = getBaseHost(req);
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
@@ -121,7 +130,7 @@ router.get("/image-sitemap.xml", (req, res) => {
  * Google News XML Sitemap (/news-sitemap.xml)
  */
 router.get("/news-sitemap.xml", (req, res) => {
-  const host = req.get("host") ? `${req.protocol}://${req.get("host")}` : DOMAIN;
+  const host = getBaseHost(req);
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`;
@@ -150,7 +159,7 @@ router.get("/news-sitemap.xml", (req, res) => {
  * SEO Robots File (/robots.txt)
  */
 router.get("/robots.txt", (req, res) => {
-  const host = req.get("host") ? `${req.protocol}://${req.get("host")}` : DOMAIN;
+  const host = getBaseHost(req);
 
   let txt = `User-agent: *\n`;
   txt += `Allow: /\n`;
