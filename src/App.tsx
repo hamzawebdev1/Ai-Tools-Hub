@@ -60,13 +60,20 @@ import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 
+// Router Service
+import { parseRoute, getUrlForRoute, navigateTo } from "./services/routerService";
+
 function AppContent() {
+  const initialRoute = typeof window !== "undefined"
+    ? parseRoute(window.location.pathname, window.location.search)
+    : { tab: "home" };
+
   const [theme, setTheme] = useState<"dark" | "light">(getStoredTheme());
-  const [activeTab, setActiveTab] = useState<string>("home");
-  const [selectedToolSlug, setSelectedToolSlug] = useState<string>(TOOLS_DATA[0].slug);
-  const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>(CATEGORIES_DATA[0].slug);
-  const [selectedPostSlug, setSelectedPostSlug] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<string>(initialRoute.tab || "home");
+  const [selectedToolSlug, setSelectedToolSlug] = useState<string>(initialRoute.toolSlug || TOOLS_DATA[0].slug);
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>(initialRoute.categorySlug || CATEGORIES_DATA[0].slug);
+  const [selectedPostSlug, setSelectedPostSlug] = useState<string>(initialRoute.postSlug || "");
+  const [searchQuery, setSearchQuery] = useState<string>(initialRoute.searchQuery || "");
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const [profile, setProfile] = useState<UserProfile>(getStoredProfile());
@@ -82,6 +89,32 @@ function AppContent() {
     }
   }, [userDoc]);
 
+  // Sync state with URL location
+  const syncRouteFromLocation = () => {
+    if (typeof window === "undefined") return;
+    const route = parseRoute(window.location.pathname, window.location.search);
+    setActiveTab(route.tab);
+    if (route.toolSlug) setSelectedToolSlug(route.toolSlug);
+    if (route.categorySlug) setSelectedCategorySlug(route.categorySlug);
+    if (route.postSlug) setSelectedPostSlug(route.postSlug);
+    if (route.searchQuery !== undefined) setSearchQuery(route.searchQuery);
+  };
+
+  useEffect(() => {
+    syncRouteFromLocation();
+
+    const handlePopState = () => syncRouteFromLocation();
+    const handleCustomRoute = () => syncRouteFromLocation();
+
+    window.addEventListener("popstate", handlePopState);
+    window.addEventListener("mehzandigital_route_change", handleCustomRoute);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("mehzandigital_route_change", handleCustomRoute);
+    };
+  }, []);
+
   // Apply Theme class to HTML document element
   useEffect(() => {
     if (theme === "dark") {
@@ -94,7 +127,7 @@ function AppContent() {
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
-    localStorage.setItem("ai_tools_hub_theme", nextTheme);
+    localStorage.setItem("mehzandigital_theme", nextTheme);
   };
 
   const handleToggleFavorite = async (toolId: string, e: React.MouseEvent) => {
@@ -106,22 +139,33 @@ function AppContent() {
     await firebaseToggleFavorite(toolId);
   };
 
+  const handleNavigate = (tab: string, params?: { toolSlug?: string; categorySlug?: string; postSlug?: string; search?: string }) => {
+    setActiveTab(tab);
+    if (params?.toolSlug) setSelectedToolSlug(params.toolSlug);
+    if (params?.categorySlug) setSelectedCategorySlug(params.categorySlug);
+    if (params?.postSlug) setSelectedPostSlug(params.postSlug);
+    if (params?.search !== undefined) setSearchQuery(params.search);
+
+    const url = getUrlForRoute(tab, params);
+    navigateTo(url);
+  };
+
   const handleSelectTool = (slug: string) => {
     setSelectedToolSlug(slug);
     setActiveTab("tool-detail");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigateTo(`/${slug}`);
   };
 
   const handleSelectCategory = (slug: string) => {
     setSelectedCategorySlug(slug);
     setActiveTab("category-detail");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigateTo(`/category/${slug}`);
   };
 
   const handleSelectPost = (slug: string) => {
     setSelectedPostSlug(slug);
     setActiveTab("blog-post");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigateTo(`/blog/${slug}`);
   };
 
   const currentTool = TOOLS_DATA.find((t) => t.slug === selectedToolSlug) || TOOLS_DATA[0];
@@ -142,7 +186,7 @@ function AppContent() {
       {/* Sticky Header Navigation */}
       <Navbar
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleNavigate}
         theme={theme}
         toggleTheme={toggleTheme}
         searchQuery={searchQuery}
@@ -160,7 +204,7 @@ function AppContent() {
             onSelectCategory={handleSelectCategory}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
           />
@@ -172,7 +216,7 @@ function AppContent() {
             onSelectTool={handleSelectTool}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
           />
         )}
 
@@ -187,7 +231,7 @@ function AppContent() {
             onSelectTool={handleSelectTool}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
           />
         )}
 
@@ -198,22 +242,22 @@ function AppContent() {
             onSelectTool={handleSelectTool}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
           />
         )}
 
         {activeTab === "blog" && <BlogPage onSelectPost={handleSelectPost} />}
 
         {activeTab === "blog-post" && (
-          <BlogPostPage postSlug={selectedPostSlug} setActiveTab={setActiveTab} />
+          <BlogPostPage postSlug={selectedPostSlug} setActiveTab={handleNavigate} />
         )}
 
-        {activeTab === "about" && <AboutPage setActiveTab={setActiveTab} />}
+        {activeTab === "about" && <AboutPage setActiveTab={handleNavigate} />}
 
         {activeTab.startsWith("author-") && (
           <AuthorPage
             authorSlug={activeTab.replace("author-", "")}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
             onSelectPost={handleSelectPost}
           />
         )}
@@ -237,14 +281,14 @@ function AppContent() {
             onSelectPost={handleSelectPost}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
           />
         )}
 
         {/* Dedicated Auth Pages */}
-        {activeTab === "login" && <LoginPage onNavigate={setActiveTab} />}
-        {activeTab === "register" && <SignupPage onNavigate={setActiveTab} />}
-        {activeTab === "forgot-password" && <ForgotPasswordPage onNavigate={setActiveTab} />}
+        {activeTab === "login" && <LoginPage onNavigate={handleNavigate} />}
+        {activeTab === "register" && <SignupPage onNavigate={handleNavigate} />}
+        {activeTab === "forgot-password" && <ForgotPasswordPage onNavigate={handleNavigate} />}
 
         {/* Admin Dashboard */}
         {activeTab === "admin" && (
@@ -252,7 +296,7 @@ function AppContent() {
             <AdminDashboardPage
               theme={theme}
               toggleTheme={toggleTheme}
-              onNavigate={setActiveTab}
+              onNavigate={handleNavigate}
             />
           </ProtectedRoute>
         )}
@@ -267,7 +311,7 @@ function AppContent() {
               onSelectTool={handleSelectTool}
               favorites={favorites}
               onToggleFavorite={handleToggleFavorite}
-              setActiveTab={setActiveTab}
+              setActiveTab={handleNavigate}
               theme={theme}
               toggleTheme={toggleTheme}
             />
@@ -279,7 +323,7 @@ function AppContent() {
           <HistoryPage
             history={history}
             setHistory={setHistory}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
           />
         )}
 
@@ -289,7 +333,7 @@ function AppContent() {
             onSelectTool={handleSelectTool}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
           />
         )}
 
@@ -297,14 +341,14 @@ function AppContent() {
 
         {activeTab === "suggest-tool" && <SuggestToolPage />}
 
-        {activeTab === "pricing" && <PricingPage setActiveTab={setActiveTab} />}
+        {activeTab === "pricing" && <PricingPage setActiveTab={handleNavigate} />}
 
-        {activeTab === "404" && <NotFoundPage setActiveTab={setActiveTab} />}
+        {activeTab === "404" && <NotFoundPage setActiveTab={handleNavigate} />}
       </main>
 
       {/* Footer */}
       <Footer
-        setActiveTab={setActiveTab}
+        setActiveTab={handleNavigate}
         onSelectCategory={handleSelectCategory}
         onSelectTool={handleSelectTool}
       />

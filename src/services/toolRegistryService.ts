@@ -67,7 +67,7 @@ function buildCanonicalTools(): AITool[] {
     const tool: AITool = {
       ...raw,
       slug,
-      route: raw.route || `/tools/${slug}`,
+      route: `/${slug}`,
       status: raw.status || "ACTIVE",
       isActive: raw.isActive !== undefined ? raw.isActive : true,
       isFeatured: raw.isFeatured !== undefined ? raw.isFeatured : !!raw.isTrending,
@@ -75,8 +75,8 @@ function buildCanonicalTools(): AITool[] {
       isNew: raw.isNew !== undefined ? raw.isNew : false,
       subcategory: raw.subcategory || raw.category,
       searchKeywords: raw.searchKeywords || raw.tags || [],
-      seoTitle: raw.seoContent?.metaTitle || `${raw.name} - Free Online Tool`,
-      seoDescription: raw.seoContent?.metaDescription || raw.description,
+      seoTitle: raw.seoContent?.metaTitle || `${raw.name} Online - Free Tool | Mehzan Digital`,
+      seoDescription: raw.seoContent?.metaDescription || `${raw.description} 100% free, private in-browser utility on Mehzan Digital.`,
       createdAt: raw.createdAt || "2025-01-01",
     };
 

@@ -10,7 +10,7 @@ const router = Router();
 
 // In-memory System Configuration & State Store
 let adminSettings = {
-  robotsTxt: `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://utilitytoolshub.com/sitemap.xml`,
+  robotsTxt: `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://mehzandigital.com/sitemap.xml`,
   announcements: [
     {
       id: "ann_1",
@@ -21,50 +21,31 @@ let adminSettings = {
       createdAt: new Date().toISOString(),
     },
   ],
-  suggestedTools: [
-    { id: "sug_1", name: "AI Video Script Generator", category: "text", votes: 42, status: "under_review" },
-    { id: "sug_2", name: "HEIC to PNG Converter", category: "image", votes: 89, status: "planned" },
-  ],
-  contactMessages: [
-    {
-      id: "msg_1",
-      name: "Marcus Vance",
-      email: "marcus@enterprise.com",
-      subject: "AdSense Integration Inquiry",
-      message: "Great performance on Core Web Vitals. All ad zones render with zero CLS.",
-      date: "2026-08-06",
-      read: false,
-    },
-  ],
+  suggestedTools: [] as any[],
+  contactMessages: [] as any[],
   apiKeysStatus: {
     appSessionSecretConfigured: true,
     jwtSecretConfigured: !!process.env.JWT_SECRET,
     rateLimitMax: 150,
   },
-  newsletterSubscribers: [
-    { email: "hamza.web.dev5324@gmail.com", createdAt: new Date().toISOString(), status: "active", source: "footer" },
-    { email: "sarah.dev@enterprise.io", createdAt: new Date(Date.now() - 86400000).toISOString(), status: "active", source: "hero" },
-    { email: "alex.growth@startup.co", createdAt: new Date(Date.now() - 172800000).toISOString(), status: "active", source: "modal" },
-  ],
-  usersMock: [
-    { uid: "usr_super", name: "Hamza (Super Admin)", email: "hamza.web.dev5324@gmail.com", role: "super_admin", status: "active", verified: true, provider: "google", createdAt: "2026-01-01T00:00:00.000Z", lastLogin: new Date().toISOString() },
-    { uid: "usr_admin", name: "Security Admin", email: "admin@security.hub", role: "admin", status: "active", verified: true, provider: "password", createdAt: "2026-01-10T00:00:00.000Z", lastLogin: new Date().toISOString() },
-    { uid: "usr_1", name: "John Doe", email: "john@example.com", role: "user", status: "active", verified: true, provider: "google", createdAt: "2026-02-01T00:00:00.000Z", lastLogin: new Date(Date.now() - 3600000).toISOString() },
-    { uid: "usr_2", name: "Emily Smith", email: "emily@example.com", role: "moderator", status: "active", verified: true, provider: "password", createdAt: "2026-03-15T00:00:00.000Z", lastLogin: new Date(Date.now() - 7200000).toISOString() },
-  ],
+  newsletterSubscribers: [] as any[],
+  usersMock: [] as any[],
 };
 
 // 1. Analytics & Overview Metrics
 router.get("/metrics", (req, res) => {
+  const analytics = getAnalyticsSummary("today");
+  const securityAlerts = getSecurityAlerts();
+
   return res.json({
     success: true,
     metrics: {
-      totalUsers: 1420,
-      activeSessions: 84,
-      totalTools: 24,
-      filesProcessedToday: 312,
-      totalStorageUsedMb: 128.4,
-      securityThreatsBlocked: 19,
+      totalUsers: adminSettings.usersMock.length,
+      activeSessions: analytics.visitorsToday || 0,
+      totalTools: 50,
+      filesProcessedToday: analytics.toolUsesToday || 0,
+      totalStorageUsedMb: 0,
+      securityThreatsBlocked: securityAlerts.length,
       coreWebVitals: {
         lcp: "0.82s",
         fid: "12ms",
@@ -94,12 +75,15 @@ router.post("/robots", (req, res) => {
 
 // 3. Sitemap Generator & Preview
 router.get("/sitemap-generate", (req, res) => {
-  const baseUrl = "https://utilitytoolshub.com";
+  const baseUrl = "https://mehzandigital.com";
   const routes = [
     "",
-    "/tools",
-    "/pdf-compressor",
-    "/image-compressor",
+    "/all-tools",
+    "/categories",
+    "/pdf-tools",
+    "/image-tools",
+    "/developer-tools",
+    "/text-tools",
     "/blog",
     "/about",
     "/contact",
@@ -253,19 +237,60 @@ router.get("/users", (req, res) => {
   return res.json({ success: true, users: adminSettings.usersMock });
 });
 
+router.post("/users/create", (req, res) => {
+  const { name, email, role, status } = req.body;
+  if (!email || !email.includes("@")) {
+    return res.status(400).json({ success: false, error: "Valid email address is required." });
+  }
+
+  const existing = adminSettings.usersMock.find((u: any) => u.email === email);
+  if (existing) {
+    return res.status(400).json({ success: false, error: "A user with this email already exists." });
+  }
+
+  const newUser = {
+    uid: "usr_" + Math.random().toString(36).substring(2, 10),
+    name: name || email.split("@")[0],
+    email,
+    role: role || "user",
+    status: status || "active",
+    verified: true,
+    provider: "email",
+    createdAt: new Date().toISOString(),
+    lastLogin: new Date().toISOString(),
+  };
+
+  adminSettings.usersMock.unshift(newUser);
+  return res.json({ success: true, message: "User account created successfully.", user: newUser });
+});
+
+router.post("/users/sync", (req, res) => {
+  const { users } = req.body;
+  if (Array.isArray(users)) {
+    // Merge without duplicates based on uid or email
+    const map = new Map<string, any>();
+    adminSettings.usersMock.forEach((u: any) => map.set(u.uid || u.email, u));
+    users.forEach((u: any) => map.set(u.uid || u.email, u));
+    adminSettings.usersMock = Array.from(map.values());
+  }
+  return res.json({ success: true, count: adminSettings.usersMock.length, users: adminSettings.usersMock });
+});
+
 router.post("/users/role", (req, res) => {
   const { uid, role } = req.body;
   const user = adminSettings.usersMock.find((u: any) => u.uid === uid);
-  if (!user) return res.status(404).json({ success: false, error: "User not found." });
-  user.role = role;
+  if (user) {
+    user.role = role;
+  }
   return res.json({ success: true, message: `User role updated to ${role}.`, user });
 });
 
 router.post("/users/status", (req, res) => {
   const { uid, status } = req.body;
   const user = adminSettings.usersMock.find((u: any) => u.uid === uid);
-  if (!user) return res.status(404).json({ success: false, error: "User not found." });
-  user.status = status;
+  if (user) {
+    user.status = status;
+  }
   return res.json({ success: true, message: `User status updated to ${status}.`, user });
 });
 

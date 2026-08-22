@@ -57,11 +57,26 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   onToggleFavorite,
   layout = "grid",
 }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (
+      !e.defaultPrevented &&
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.shiftKey &&
+      !e.altKey &&
+      e.button === 0
+    ) {
+      e.preventDefault();
+      onSelectTool(tool.slug);
+    }
+  };
+
   if (layout === "list") {
     return (
-      <div
-        onClick={() => onSelectTool(tool.slug)}
-        className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-4 sm:p-5 shadow-xs hover:shadow-xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+      <a
+        href={`/${tool.slug}`}
+        onClick={handleClick}
+        className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-4 sm:p-5 shadow-xs hover:shadow-xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 block"
       >
         <div className="flex items-start gap-4 flex-1">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
@@ -93,7 +108,12 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 
         <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-0 pt-3 sm:pt-0 border-slate-100 dark:border-slate-800">
           <button
-            onClick={(e) => onToggleFavorite(tool.id, e)}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onToggleFavorite(tool.id, e);
+            }}
             className={`p-2 rounded-xl border transition-colors cursor-pointer ${
               isFavorite
                 ? "bg-pink-500/10 border-pink-500/30 text-pink-500"
@@ -107,14 +127,15 @@ export const ToolCard: React.FC<ToolCardProps> = ({
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </span>
         </div>
-      </div>
+      </a>
     );
   }
 
   return (
-    <div
-      onClick={() => onSelectTool(tool.slug)}
-      className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-5 shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+    <a
+      href={`/${tool.slug}`}
+      onClick={handleClick}
+      className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-5 shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between block"
     >
       <div className="space-y-3">
         {/* Header Badges & Favorite */}
@@ -130,7 +151,12 @@ export const ToolCard: React.FC<ToolCardProps> = ({
               </span>
             )}
             <button
-              onClick={(e) => onToggleFavorite(tool.id, e)}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onToggleFavorite(tool.id, e);
+              }}
               className={`p-2 rounded-xl border transition-colors cursor-pointer ${
                 isFavorite
                   ? "bg-pink-500/10 border-pink-500/30 text-pink-500"
@@ -177,6 +203,6 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           Try Now <ArrowRight className="w-3.5 h-3.5" />
         </span>
       </div>
-    </div>
+    </a>
   );
 };

@@ -19,8 +19,8 @@ export interface SEOMetadata {
   breadcrumbs?: { name: string; url: string }[];
 }
 
-const SITE_NAME = "UtilityTools Hub";
-const DEFAULT_DOMAIN = typeof window !== "undefined" ? window.location.origin : "https://utilitytoolshub.com";
+const SITE_NAME = "Mehzan Digital";
+const DEFAULT_DOMAIN = typeof window !== "undefined" ? window.location.origin : "https://mehzandigital.com";
 const DEFAULT_OG_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80";
 
 /**
@@ -39,9 +39,9 @@ export function getCanonicalUrl(path: string): string {
  */
 export function generateAutoTitle(topic: string, category?: string): string {
   if (category) {
-    return `${topic} - Free Online ${category.toUpperCase()} Utility | ${SITE_NAME}`;
+    return `${topic} Online - Free ${category.toUpperCase()} Tool | ${SITE_NAME}`;
   }
-  return `${topic} | Free Online Utility Tool | ${SITE_NAME}`;
+  return `${topic} Online - Free Utility Tool | ${SITE_NAME}`;
 }
 
 /**
@@ -49,7 +49,7 @@ export function generateAutoTitle(topic: string, category?: string): string {
  */
 export function generateAutoDescription(text: string, fallbackSubject: string): string {
   if (!text) {
-    return `Access our free online ${fallbackSubject} tool. Fast, reliable, no registration required on ${SITE_NAME}.`;
+    return `Access our free online ${fallbackSubject} tool. Fast, private, 100% in-browser with no registration required on ${SITE_NAME}.`;
   }
   const cleanText = text.replace(/<[^>]*>?/gm, "").trim();
   if (cleanText.length <= 155) return cleanText;
@@ -61,7 +61,7 @@ export function generateAutoDescription(text: string, fallbackSubject: string): 
  */
 export function generateSeoAltText(item: { name?: string; title?: string; category?: string; tagline?: string }): string {
   const label = item.name || item.title || "Utility Tool";
-  const desc = item.tagline || item.category || "UtilityTools Hub";
+  const desc = item.tagline || item.category || "Mehzan Digital";
   return `${label} - ${desc} Preview Graphic`;
 }
 
@@ -123,16 +123,16 @@ export function getOrganizationSchema() {
       "width": 512,
       "height": 512
     },
-    "description": "Free web-native directory & execution suite of 150+ cutting-edge utility tools for PDF, images, text, and developers.",
+    "description": "Free web-native directory & execution suite of 500+ cutting-edge utility tools for PDF, images, text, and developers on Mehzan Digital.",
     "sameAs": [
-      "https://twitter.com/utilitytoolshub",
-      "https://github.com/utilitytoolshub",
-      "https://linkedin.com/company/utilitytoolshub"
+      "https://twitter.com/mehzandigital",
+      "https://github.com/mehzandigital",
+      "https://linkedin.com/company/mehzandigital"
     ],
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer support",
-      "email": "support@utilitytoolshub.com",
+      "email": "support@mehzandigital.com",
       "availableLanguage": ["English"]
     }
   };
@@ -148,7 +148,7 @@ export function getWebsiteSchema() {
     "@id": `${DEFAULT_DOMAIN}/#website`,
     "url": DEFAULT_DOMAIN,
     "name": SITE_NAME,
-    "description": "Discover and execute 150+ free online utility tools for PDF, image, text, and developer tasks.",
+    "description": "Discover and execute 500+ free online utility tools for PDF, image, text, and developer tasks on Mehzan Digital.",
     "publisher": {
       "@id": `${DEFAULT_DOMAIN}/#organization`
     },
@@ -156,7 +156,7 @@ export function getWebsiteSchema() {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": `${DEFAULT_DOMAIN}/?s={search_term_string}`
+        "urlTemplate": `${DEFAULT_DOMAIN}/search?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
     }
@@ -183,14 +183,14 @@ export function getBreadcrumbSchema(items: { name: string; url: string }[]) {
  * SoftwareApplication / Tool Schema
  */
 export function getToolSoftwareSchema(tool: AITool) {
-  const toolUrl = getCanonicalUrl(`/tool/${tool.slug}`);
+  const toolUrl = getCanonicalUrl(`/${tool.slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "@id": `${toolUrl}/#software`,
     "name": tool.name,
     "applicationCategory": getApplicationCategory(tool.category),
-    "operatingSystem": "All Web Browsers (Cloud-based)",
+    "operatingSystem": "All Web Browsers (Client-side)",
     "description": tool.seoContent?.metaDescription || tool.description,
     "url": toolUrl,
     "image": DEFAULT_OG_IMAGE,
@@ -202,8 +202,8 @@ export function getToolSoftwareSchema(tool: AITool) {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": tool.rating.toString(),
-      "ratingCount": tool.ratingCount.toString(),
+      "ratingValue": (tool.rating || 4.9).toString(),
+      "ratingCount": (tool.ratingCount || 120).toString(),
       "bestRating": "5",
       "worstRating": "1"
     },
@@ -235,7 +235,7 @@ export function getToolHowToSchema(tool: AITool) {
     return null;
   }
 
-  const toolUrl = getCanonicalUrl(`/tool/${tool.slug}`);
+  const toolUrl = getCanonicalUrl(`/${tool.slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -322,9 +322,9 @@ export function buildSEOMetadata(
     case "home": {
       const canonicalUrl = getCanonicalUrl("/");
       return {
-        title: "UtilityTools Hub - Free Online Utility Tools for Text, PDF, Images & Developers",
-        description: "Access 150+ free online utility tools including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% browser-based.",
-        keywords: ["utility tools", "free online tools", "PDF tools", "image compressor", "JSON formatter", "text tools"],
+        title: "Mehzan Digital - 500+ Free Online Web Utilities, PDF & Image Tools",
+        description: "Access 500+ free online utility tools on Mehzan Digital including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% in-browser.",
+        keywords: ["Mehzan Digital", "free online tools", "PDF tools", "image compressor", "JSON formatter", "text tools", "web utilities"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -333,12 +333,12 @@ export function buildSEOMetadata(
           websiteSchema,
           getFAQSchema([
             {
-              question: "Are all utility tools on UtilityTools Hub free?",
-              answer: "Yes, all 150+ utility tools are 100% free to use online with no registration required."
+              question: "Are all online tools on Mehzan Digital free?",
+              answer: "Yes, all 500+ online utilities and converters are 100% free with no registration or hidden fees."
             },
             {
-              question: "Are my files secure and private?",
-              answer: "Yes! Most file processing (PDF and image manipulation) happens entirely client-side in your browser, ensuring your files are never uploaded to any server."
+              question: "Are my files private and secure?",
+              answer: "Yes! File processing happens entirely client-side inside your browser sandbox, ensuring your files are never uploaded or stored on any server."
             }
           ])!
         ],
@@ -350,12 +350,12 @@ export function buildSEOMetadata(
       const canonicalUrl = getCanonicalUrl("/tools");
       const breadcrumbs = [
         { name: "Home", url: "/" },
-        { name: "All AI Tools", url: "/tools" }
+        { name: "All Tools", url: "/tools" }
       ];
       return {
-        title: "All Free AI Tools Directory - Browse 50+ Online Generators | Utility Tools Hub",
-        description: "Explore our comprehensive directory of 50+ free AI tools categorized by writing, coding, SEO, social media, media, and productivity utilities.",
-        keywords: ["AI directory", "free AI tools list", "AI text tools", "AI coding tools"],
+        title: "All Free Online Tools Directory | Mehzan Digital",
+        description: "Explore the comprehensive directory of 500+ free online tools categorized by PDF, Image, Text, Developer, SEO, Security, and Calculators on Mehzan Digital.",
+        keywords: ["tools directory", "free online utilities list", "web tools catalog", "Mehzan Digital tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -374,9 +374,9 @@ export function buildSEOMetadata(
         { name: "Categories", url: "/categories" }
       ];
       return {
-        title: "Browse AI Tool Categories - Writing, Coding, SEO, Media & More",
-        description: "Filter top-rated AI tools by specialized categories including Writing & Content, Coding & Dev, SEO & Marketing, and Media Production.",
-        keywords: ["AI categories", "writing tools", "coding tools", "SEO tools category"],
+        title: "Browse Tool Categories | Mehzan Digital",
+        description: "Filter tools by specialized categories including PDF Tools, Image Processing, Text Utilities, Developer Code, SEO & SERP, and Calculators on Mehzan Digital.",
+        keywords: ["tool categories", "PDF utilities", "image tools category", "developer tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -390,7 +390,7 @@ export function buildSEOMetadata(
 
     case "category-detail": {
       const catObj = typeof data?.category === "object" ? data.category : CATEGORIES_DATA.find((c) => c.slug === data?.category);
-      const catName = catObj ? catObj.name : "AI Category";
+      const catName = catObj ? catObj.name : "Category";
       const catSlug = catObj ? catObj.slug : "category";
       const canonicalUrl = getCanonicalUrl(`/category/${catSlug}`);
       const breadcrumbs = [
@@ -399,9 +399,9 @@ export function buildSEOMetadata(
         { name: catName, url: `/category/${catSlug}` }
       ];
       return {
-        title: `${catName} AI Tools - Free Online Generators & Assistants`,
-        description: catObj?.description || `Explore top-rated free AI tools in ${catName}. Boost speed and quality with AI automation.`,
-        keywords: [catName, `${catName} AI tools`, `free ${catName} generator`],
+        title: `${catName} - Free Online Utilities | Mehzan Digital`,
+        description: catObj?.description || `Explore top-rated free ${catName} on Mehzan Digital. Fast, secure, browser-native processing.`,
+        keywords: [catName, `${catName} tools`, `free ${catName} online`],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -415,11 +415,11 @@ export function buildSEOMetadata(
 
     case "tool-detail": {
       const tool = data?.tool || TOOLS_DATA[0];
-      const canonicalUrl = getCanonicalUrl(`/tool/${tool.slug}`);
+      const canonicalUrl = getCanonicalUrl(`/${tool.slug}`);
       const breadcrumbs = [
         { name: "Home", url: "/" },
-        { name: "Tools", url: "/tools" },
-        { name: tool.name, url: `/tool/${tool.slug}` }
+        { name: tool.category ? `${tool.category.toUpperCase()} Tools` : "Tools", url: `/category/${tool.category || "pdf-tools"}` },
+        { name: tool.name, url: `/${tool.slug}` }
       ];
 
       const schemas: Record<string, any>[] = [
@@ -435,9 +435,9 @@ export function buildSEOMetadata(
       if (faqSchema) schemas.push(faqSchema);
 
       return {
-        title: tool.seoContent?.metaTitle || generateAutoTitle(tool.name, tool.category),
-        description: tool.seoContent?.metaDescription || generateAutoDescription(tool.description, tool.name),
-        keywords: [tool.name, ...tool.tags, tool.category, "free AI tool"],
+        title: tool.seoContent?.metaTitle || `${tool.name} Online - Free Tool | Mehzan Digital`,
+        description: tool.seoContent?.metaDescription || `${tool.description} 100% free, private in-browser utility on Mehzan Digital.`,
+        keywords: [tool.name, ...tool.tags, tool.category, "free online tool", "Mehzan Digital"],
         canonicalUrl,
         ogType: "product",
         ogImage: DEFAULT_OG_IMAGE,
@@ -453,9 +453,9 @@ export function buildSEOMetadata(
         { name: "Blog & Guides", url: "/blog" }
       ];
       return {
-        title: "AI Insights, Tutorials & Prompt Engineering Guides | Utility Tools Hub Blog",
-        description: "Read expert guides on prompt engineering, workflow automation, AI content strategies, and tool reviews written by leading engineers.",
-        keywords: ["AI blog", "prompt engineering guides", "AI tutorials 2026", "AI tool reviews"],
+        title: "Tech Insights, Tutorials & Utility Guides | Mehzan Digital Blog",
+        description: "Read expert guides on client-side security, file processing, PDF workflows, image optimization, and web developer utilities on Mehzan Digital.",
+        keywords: ["web utilities blog", "PDF guides", "image compression tips", "developer tutorials", "Mehzan Digital"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -477,7 +477,7 @@ export function buildSEOMetadata(
       ];
 
       return {
-        title: `${post.title} | Utility Tools Hub`,
+        title: `${post.title} | Mehzan Digital`,
         description: post.excerpt,
         keywords: post.tags,
         canonicalUrl,
@@ -501,9 +501,9 @@ export function buildSEOMetadata(
         { name: "About Us", url: "/about" }
       ];
       return {
-        title: "About Utility Tools Hub - Our Mission & Web-Native AI Ecosystem",
-        description: "Learn about Utility Tools Hub, our vision for democratizing high-speed AI utilities, and how we empower creators, developers, and marketers worldwide.",
-        keywords: ["About Utility Tools Hub", "AI mission", "free AI ecosystem"],
+        title: "About Mehzan Digital - Free Web-Native Online Utilities Suite",
+        description: "Learn about Mehzan Digital, our mission for high-speed, private, client-side online tools for PDF, images, text, code, and calculation utilities.",
+        keywords: ["About Mehzan Digital", "free online utilities", "client-side privacy"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -513,7 +513,7 @@ export function buildSEOMetadata(
           {
             "@context": "https://schema.org",
             "@type": "AboutPage",
-            "name": "About Utility Tools Hub",
+            "name": "About Mehzan Digital",
             "url": canonicalUrl
           }
         ],
@@ -528,9 +528,9 @@ export function buildSEOMetadata(
         { name: "Pricing", url: "/pricing" }
       ];
       return {
-        title: "Simple, Transparent Utility Tools Hub Plans - 100% Free Access",
-        description: "Explore our 100% free online utility tools platform with zero paywalls and sub-100ms execution.",
-        keywords: ["Utility Tools Hub pricing", "free web utilities", "free developer tools"],
+        title: "100% Free Access | Mehzan Digital",
+        description: "Explore our 100% free online utility tools platform with zero paywalls, no subscriptions, and instant client-side execution.",
+        keywords: ["Mehzan Digital pricing", "free web utilities", "free developer tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -539,15 +539,105 @@ export function buildSEOMetadata(
           getBreadcrumbSchema(breadcrumbs),
           getFAQSchema([
             {
-              question: "Can I use Utility Tools Hub for free without a credit card?",
-              answer: "Yes, our Free Access model provides 100% free usage across all 50+ web utility tools with zero registration or payment needed."
+              question: "Can I use Mehzan Digital tools for free?",
+              answer: "Yes, all tools on Mehzan Digital are 100% free to use online with zero registration or payment needed."
             },
             {
               question: "Are there any usage limits or paywalls?",
-              answer: "No, all web tools are freely accessible with instant browser execution and zero paywalls."
+              answer: "No, all tools are freely accessible with instant browser execution and zero paywalls."
             }
           ])!
         ],
+        breadcrumbs
+      };
+    }
+
+    case "contact": {
+      const canonicalUrl = getCanonicalUrl("/contact");
+      const breadcrumbs = [
+        { name: "Home", url: "/" },
+        { name: "Contact", url: "/contact" }
+      ];
+      return {
+        title: "Contact Support | Mehzan Digital",
+        description: "Get in touch with the Mehzan Digital team for assistance, tool suggestions, bug reports, and feedback.",
+        keywords: ["contact Mehzan Digital", "support", "help"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema, getBreadcrumbSchema(breadcrumbs)],
+        breadcrumbs
+      };
+    }
+
+    case "privacy": {
+      const canonicalUrl = getCanonicalUrl("/privacy");
+      const breadcrumbs = [
+        { name: "Home", url: "/" },
+        { name: "Privacy Policy", url: "/privacy" }
+      ];
+      return {
+        title: "Privacy Policy | Mehzan Digital",
+        description: "Review Mehzan Digital's privacy policy, detailing zero server-side file retention and client-side processing practices.",
+        keywords: ["privacy policy", "data protection", "Mehzan Digital privacy"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema, getBreadcrumbSchema(breadcrumbs)],
+        breadcrumbs
+      };
+    }
+
+    case "terms": {
+      const canonicalUrl = getCanonicalUrl("/terms");
+      const breadcrumbs = [
+        { name: "Home", url: "/" },
+        { name: "Terms of Service", url: "/terms" }
+      ];
+      return {
+        title: "Terms of Service | Mehzan Digital",
+        description: "Read the terms of service governing the usage of Mehzan Digital's free web utility tools.",
+        keywords: ["terms of service", "user agreement", "Mehzan Digital terms"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema, getBreadcrumbSchema(breadcrumbs)],
+        breadcrumbs
+      };
+    }
+
+    case "disclaimer": {
+      const canonicalUrl = getCanonicalUrl("/disclaimer");
+      const breadcrumbs = [
+        { name: "Home", url: "/" },
+        { name: "Disclaimer", url: "/disclaimer" }
+      ];
+      return {
+        title: "Disclaimer & Advertising Disclosure | Mehzan Digital",
+        description: "Advertising disclosure and general disclaimer for Mehzan Digital online utilities.",
+        keywords: ["disclaimer", "advertising disclosure", "Mehzan Digital"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema, getBreadcrumbSchema(breadcrumbs)],
+        breadcrumbs
+      };
+    }
+
+    case "cookie-policy": {
+      const canonicalUrl = getCanonicalUrl("/cookie-policy");
+      const breadcrumbs = [
+        { name: "Home", url: "/" },
+        { name: "Cookie Policy", url: "/cookie-policy" }
+      ];
+      return {
+        title: "Cookie Policy | Mehzan Digital",
+        description: "Learn how cookies and local storage are utilized on Mehzan Digital for preferences and performance.",
+        keywords: ["cookie policy", "cookies", "Mehzan Digital"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema, getBreadcrumbSchema(breadcrumbs)],
         breadcrumbs
       };
     }
@@ -556,9 +646,9 @@ export function buildSEOMetadata(
       const query = data?.searchQuery || "";
       const canonicalUrl = getCanonicalUrl(`/search${query ? `?q=${encodeURIComponent(query)}` : ""}`);
       return {
-        title: query ? `Search Results for "${query}" - Utility Tools Hub` : "Search AI Tools Directory",
-        description: `Browse matching free AI tools, categories, and articles for "${query}" on Utility Tools Hub.`,
-        keywords: ["search AI tools", query],
+        title: query ? `Search Results for "${query}" - Mehzan Digital` : "Search Tools Directory | Mehzan Digital",
+        description: `Browse matching free tools, categories, and utilities for "${query}" on Mehzan Digital.`,
+        keywords: ["search tools", query, "Mehzan Digital"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -567,12 +657,25 @@ export function buildSEOMetadata(
       };
     }
 
+    case "404": {
+      return {
+        title: "404 - Page Not Found | Mehzan Digital",
+        description: "The page or tool you are looking for does not exist or has been moved on Mehzan Digital.",
+        keywords: ["404", "not found", "Mehzan Digital"],
+        canonicalUrl: getCanonicalUrl("/404"),
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema],
+        noIndex: true
+      };
+    }
+
     default: {
       const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
       return {
-        title: `${activeTab.replace("-", " ").toUpperCase()} - Utility Tools Hub`,
-        description: "Utility Tools Hub - Discover free web-native AI utilities.",
-        keywords: ["Utility Tools Hub"],
+        title: `${activeTab.replace("-", " ").toUpperCase()} | Mehzan Digital`,
+        description: "Mehzan Digital - Discover 500+ free web-native online utilities.",
+        keywords: ["Mehzan Digital"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,

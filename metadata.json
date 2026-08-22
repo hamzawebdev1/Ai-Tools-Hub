@@ -1,6 +1,6 @@
 {
-  "name": "UtilityTools Hub",
-  "description": "A production-ready suite of free online browser-based utility tools for text, developer, image, PDF, and SEO processing.",
+  "name": "Mehzan Digital",
+  "description": "500+ free online utility tools for PDF, image, text, developer, SEO, and calculation processing on Mehzan Digital.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -5,7 +5,7 @@ import { BLOG_POSTS_DATA } from "../data/blogData";
 
 const router = Router();
 
-const DOMAIN = "https://aitoolshub.com"; // Standard clean domain reference
+const DOMAIN = "https://mehzandigital.com"; // Standard clean domain reference
 
 /**
  * Main XML Sitemap (/sitemap.xml)
@@ -42,10 +42,10 @@ router.get("/sitemap.xml", (req, res) => {
     xml += `  </url>\n`;
   }
 
-  // 2. Add AI Tools pages (/tool/:slug)
+  // 2. Add Direct Clean Tool URLs (e.g. /jpg-to-pdf, /pdf-merge)
   for (const tool of TOOLS_DATA) {
     xml += `  <url>\n`;
-    xml += `    <loc>${host}/tool/${tool.slug}</loc>\n`;
+    xml += `    <loc>${host}/${tool.slug}</loc>\n`;
     xml += `    <lastmod>${now}</lastmod>\n`;
     xml += `    <changefreq>daily</changefreq>\n`;
     xml += `    <priority>0.9</priority>\n`;
@@ -90,11 +90,11 @@ router.get("/image-sitemap.xml", (req, res) => {
   // Add tool images
   for (const tool of TOOLS_DATA) {
     xml += `  <url>\n`;
-    xml += `    <loc>${host}/tool/${tool.slug}</loc>\n`;
+    xml += `    <loc>${host}/${tool.slug}</loc>\n`;
     xml += `    <image:image>\n`;
     xml += `      <image:loc>https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>\n`;
-    xml += `      <image:title>${escapeXml(tool.name)} - AI Generator</image:title>\n`;
-    xml += `      <image:caption>${escapeXml(tool.tagline)}</image:caption>\n`;
+    xml += `      <image:title>${escapeXml(tool.name)} - Online Tool</image:title>\n`;
+    xml += `      <image:caption>${escapeXml(tool.tagline || tool.description)}</image:caption>\n`;
     xml += `    </image:image>\n`;
     xml += `  </url>\n`;
   }
@@ -131,7 +131,7 @@ router.get("/news-sitemap.xml", (req, res) => {
     xml += `    <loc>${host}/blog/${post.slug}</loc>\n`;
     xml += `    <news:news>\n`;
     xml += `      <news:publication>\n`;
-    xml += `        <news:name>AI Tools Hub News</news:name>\n`;
+    xml += `        <news:name>Mehzan Digital Tech News</news:name>\n`;
     xml += `        <news:language>en</news:language>\n`;
     xml += `      </news:publication>\n`;
     xml += `      <news:publication_date>${new Date(post.date).toISOString()}</news:publication_date>\n`;

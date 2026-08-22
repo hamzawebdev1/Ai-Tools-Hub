@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import { TOOLS_DATA } from "../../data/toolsData";
 import { BLOG_POSTS_DATA } from "../../data/blogData";
+import { UserManagementSection } from "./UserManagementSection";
 
 type AdminTab =
   | "overview"
@@ -506,9 +507,9 @@ export const AdminDashboard: React.FC = () => {
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Users</span>
               <p className="text-xl font-extrabold text-slate-900 dark:text-white">
-                {users.length || 1420}
+                {users.length}
               </p>
-              <span className="text-[10px] text-emerald-500 font-semibold">↑ +14% this week</span>
+              <span className="text-[10px] text-emerald-500 font-semibold">Real-time Registered</span>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
@@ -522,7 +523,7 @@ export const AdminDashboard: React.FC = () => {
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Files Processed</span>
               <p className="text-xl font-extrabold text-slate-900 dark:text-white">
-                {metrics?.filesProcessedToday || 312}
+                {metrics?.filesProcessedToday || 0}
               </p>
               <span className="text-[10px] text-slate-400">24-Hr Auto Purge Active</span>
             </div>
@@ -530,7 +531,7 @@ export const AdminDashboard: React.FC = () => {
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Security Threats</span>
               <p className="text-xl font-extrabold text-indigo-500">
-                {metrics?.securityThreatsBlocked || 19}
+                {metrics?.securityThreatsBlocked || 0}
               </p>
               <span className="text-[10px] text-slate-400">Blocked by OWASP WAF</span>
             </div>
@@ -774,148 +775,13 @@ export const AdminDashboard: React.FC = () => {
 
       {/* 2. User & RBAC Management */}
       {activeTab === "users" && (
-        <div className="space-y-6 animate-fade-in">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search users..."
-                  value={userSearch}
-                  onChange={(e) => setUserSearch(e.target.value)}
-                  className="pl-9 pr-4 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 w-60"
-                />
-              </div>
-
-              <select
-                value={userRoleFilter}
-                onChange={(e) => setUserRoleFilter(e.target.value)}
-                className="px-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
-              >
-                <option value="all">All Roles</option>
-                <option value="super_admin">Super Admin</option>
-                <option value="admin">Admin</option>
-                <option value="moderator">Moderator</option>
-                <option value="user">User</option>
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={exportUsersCSV}
-                className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5"
-              >
-                <Download className="w-3.5 h-3.5" /> Export CSV
-              </button>
-              {selectedUserUids.length > 0 && (
-                <>
-                  <button
-                    onClick={() => handleBulkUserAction("status", "suspended")}
-                    className="px-3 py-2 rounded-xl bg-rose-500/10 text-rose-500 hover:bg-rose-500/20 text-xs font-bold"
-                  >
-                    Suspend ({selectedUserUids.length})
-                  </button>
-                  <button
-                    onClick={() => handleBulkUserAction("delete")}
-                    className="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold"
-                  >
-                    Delete Selected
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
-            <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
-              <thead className="bg-slate-100 dark:bg-slate-950 font-bold uppercase text-[10px] text-slate-400 border-b border-slate-200 dark:border-slate-800">
-                <tr>
-                  <th className="p-3 w-10">
-                    <input
-                      type="checkbox"
-                      onChange={(e) => {
-                        if (e.target.checked) setSelectedUserUids(filteredUsers.map(u => u.uid));
-                        else setSelectedUserUids([]);
-                      }}
-                      checked={selectedUserUids.length === filteredUsers.length && filteredUsers.length > 0}
-                    />
-                  </th>
-                  <th className="p-3">User</th>
-                  <th className="p-3">Role</th>
-                  <th className="p-3">Provider</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Last Login</th>
-                  <th className="p-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                {filteredUsers.map((u) => (
-                  <tr key={u.uid} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                    <td className="p-3">
-                      <input
-                        type="checkbox"
-                        checked={selectedUserUids.includes(u.uid)}
-                        onChange={(e) => {
-                          if (e.target.checked) setSelectedUserUids([...selectedUserUids, u.uid]);
-                          else setSelectedUserUids(selectedUserUids.filter(id => id !== u.uid));
-                        }}
-                      />
-                    </td>
-                    <td className="p-3 font-bold text-slate-900 dark:text-white">
-                      {u.name}
-                      <span className="block text-[10px] font-normal text-slate-400">{u.email}</span>
-                    </td>
-                    <td className="p-3">
-                      <select
-                        value={u.role}
-                        onChange={(e) => handleUpdateUserRole(u.uid, e.target.value)}
-                        className={`px-2 py-1 rounded-md font-bold text-[10px] border border-slate-300 dark:border-slate-700 ${
-                          u.role === "super_admin"
-                            ? "bg-purple-500/20 text-purple-400"
-                            : u.role === "admin"
-                            ? "bg-indigo-500/20 text-indigo-400"
-                            : u.role === "moderator"
-                            ? "bg-amber-500/20 text-amber-400"
-                            : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
-                        }`}
-                      >
-                        <option value="super_admin">Super Admin</option>
-                        <option value="admin">Admin</option>
-                        <option value="moderator">Moderator</option>
-                        <option value="user">User</option>
-                      </select>
-                    </td>
-                    <td className="p-3 uppercase font-mono text-[10px]">{u.provider}</td>
-                    <td className="p-3">
-                      <span className={`inline-flex items-center gap-1 font-semibold ${u.status === "suspended" ? "text-rose-500" : "text-emerald-500"}`}>
-                        {u.status === "suspended" ? <UserX className="w-3.5 h-3.5" /> : <UserCheck className="w-3.5 h-3.5" />}
-                        {u.status || "active"}
-                      </span>
-                    </td>
-                    <td className="p-3 font-mono text-[10px] text-slate-400">
-                      {new Date(u.lastLogin || Date.now()).toLocaleDateString()}
-                    </td>
-                    <td className="p-3 text-right space-x-2">
-                      <button
-                        onClick={() => handleUpdateUserStatus(u.uid, u.status === "suspended" ? "active" : "suspended")}
-                        className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-[10px] font-bold"
-                      >
-                        {u.status === "suspended" ? "Activate" : "Suspend"}
-                      </button>
-                      <button
-                        onClick={() => handleDeleteUser(u.uid)}
-                        className="px-2.5 py-1 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500/20 text-[10px] font-bold"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <UserManagementSection
+          currentAdminRole="super_admin"
+          onShowNotification={(msg) => {
+            setActionMsg(msg);
+            setTimeout(() => setActionMsg(null), 3500);
+          }}
+        />
       )}
 
       {/* 3. Newsletter Module */}

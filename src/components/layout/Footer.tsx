@@ -40,12 +40,12 @@ export const Footer: React.FC<FooterProps> = ({
                 <Sparkles className="w-5 h-5" />
               </div>
               <span className="font-extrabold text-lg text-slate-900 dark:text-white">
-                UtilityTools <span className="text-indigo-600 dark:text-indigo-400">Hub</span>
+                Mehzan <span className="text-indigo-600 dark:text-indigo-400">Digital</span>
               </span>
             </div>
 
             <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed max-w-sm">
-              The premier free suite of web-native utility tools for PDF manipulation, image processing, text formatting, and developer tasks. Built for performance, privacy, and speed.
+              The premier free suite of web-native utility tools for PDF manipulation, image processing, text formatting, and developer tasks. Built for speed, security, and privacy on Mehzan Digital.
             </p>
 
             <div className="flex items-center gap-3 pt-2 text-[11px] font-medium text-slate-500 dark:text-slate-400">
@@ -166,7 +166,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 dark:text-slate-500 text-[11px]">
-          <p>© 2026 Utility Tools Hub. All rights reserved. Powered by high-performance browser engines & Cloud Run edge containers.</p>
+          <p>© 2026 Mehzan Digital. All rights reserved. High-performance browser-native utility processing.</p>
           <div className="flex items-center gap-4">
             <span className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer" onClick={() => setActiveTab("privacy")}>
               GDPR Compliant

@@ -59,96 +59,16 @@ function ensureStorageDir() {
   }
 }
 
-// Initial seed events for realistic operational metrics if empty
-const initialEvents: AnalyticsEvent[] = [
-  {
-    id: "evt_1",
-    type: "page_view",
-    visitorId: "vis_101",
-    sessionId: "ses_101",
-    timestamp: new Date().toISOString(),
-    path: "/",
-    country: "United States",
-    device: "Desktop",
-    browser: "Chrome",
-    os: "Windows",
-    referrer: "https://google.com"
-  },
-  {
-    id: "evt_2",
-    type: "tool_view",
-    visitorId: "vis_101",
-    sessionId: "ses_101",
-    timestamp: new Date().toISOString(),
-    path: "/tools/image-compressor",
-    toolId: "image-compressor",
-    toolName: "Image Compressor",
-    category: "image",
-    country: "United States",
-    device: "Desktop",
-    browser: "Chrome",
-    os: "Windows",
-    referrer: "https://google.com"
-  },
-  {
-    id: "evt_3",
-    type: "tool_complete",
-    visitorId: "vis_101",
-    sessionId: "ses_101",
-    timestamp: new Date().toISOString(),
-    path: "/tools/image-compressor",
-    toolId: "image-compressor",
-    toolName: "Image Compressor",
-    category: "image",
-    country: "United States",
-    device: "Desktop",
-    browser: "Chrome",
-    os: "Windows",
-    referrer: "https://google.com",
-    durationMs: 450
-  },
-  {
-    id: "evt_4",
-    type: "download",
-    visitorId: "vis_101",
-    sessionId: "ses_101",
-    timestamp: new Date().toISOString(),
-    path: "/tools/image-compressor",
-    toolId: "image-compressor",
-    toolName: "Image Compressor",
-    category: "image",
-    country: "United States",
-    device: "Desktop",
-    browser: "Chrome",
-    os: "Windows",
-    referrer: "https://google.com"
-  },
-  {
-    id: "evt_5",
-    type: "search",
-    visitorId: "vis_102",
-    sessionId: "ses_102",
-    timestamp: new Date(Date.now() - 3600000).toISOString(),
-    path: "/search",
-    searchQuery: "json formatter",
-    country: "United Kingdom",
-    device: "Mobile",
-    browser: "Safari",
-    os: "iOS",
-    referrer: "Direct"
-  }
-];
-
 let eventsCache: AnalyticsEvent[] = (() => {
   try {
     ensureStorageDir();
     if (fs.existsSync(EVENTS_FILE)) {
       const data = fs.readFileSync(EVENTS_FILE, "utf-8");
       const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed)) return parsed;
     }
   } catch (e) {}
-  return initialEvents;
+  return [];
 })();
 
 function saveEvents() {
@@ -359,36 +279,36 @@ export function getAnalyticsSummary(range: string = "today"): AnalyticsSummary {
   });
   const errorBreakdown = Object.values(errorMap).sort((a, b) => b.count - a.count);
 
-  // Time series charts (last 7 days or today hours)
-  const visitorsOverTime = [
-    { date: "Aug 15", count: 120 },
-    { date: "Aug 16", count: 145 },
-    { date: "Aug 17", count: 190 },
-    { date: "Aug 18", count: 210 },
-    { date: "Aug 19", count: 280 },
-    { date: "Aug 20", count: 340 },
-    { date: "Aug 21", count: visitorsTodaySet.size || 185 }
-  ];
+  // Dynamically calculate past 7 days time series
+  const last7DaysList: string[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    last7DaysList.push(d.toISOString().split("T")[0]);
+  }
 
-  const toolUsesOverTime = [
-    { date: "Aug 15", count: 340 },
-    { date: "Aug 16", count: 420 },
-    { date: "Aug 17", count: 510 },
-    { date: "Aug 18", count: 590 },
-    { date: "Aug 19", count: 720 },
-    { date: "Aug 20", count: 890 },
-    { date: "Aug 21", count: toolUsesToday || 412 }
-  ];
+  const visitorsOverTime = last7DaysList.map((dayStr) => {
+    const dayEvents = eventsCache.filter((e) => e.timestamp && e.timestamp.startsWith(dayStr));
+    const dayVisitors = new Set(dayEvents.map((e) => e.visitorId));
+    const label = new Date(dayStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return { date: label, count: dayVisitors.size };
+  });
 
-  const downloadsOverTime = [
-    { date: "Aug 15", count: 210 },
-    { date: "Aug 16", count: 260 },
-    { date: "Aug 17", count: 310 },
-    { date: "Aug 18", count: 380 },
-    { date: "Aug 19", count: 450 },
-    { date: "Aug 20", count: 560 },
-    { date: "Aug 21", count: downloadsToday || 245 }
-  ];
+  const toolUsesOverTime = last7DaysList.map((dayStr) => {
+    const dayEvents = eventsCache.filter(
+      (e) => e.timestamp && e.timestamp.startsWith(dayStr) && (e.type === "tool_start" || e.type === "tool_complete")
+    );
+    const label = new Date(dayStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return { date: label, count: dayEvents.length };
+  });
+
+  const downloadsOverTime = last7DaysList.map((dayStr) => {
+    const dayEvents = eventsCache.filter(
+      (e) => e.timestamp && e.timestamp.startsWith(dayStr) && e.type === "download"
+    );
+    const label = new Date(dayStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return { date: label, count: dayEvents.length };
+  });
 
   return {
     visitorsToday: visitorsTodaySet.size,

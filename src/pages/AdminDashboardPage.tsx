@@ -66,6 +66,7 @@ import { useAuth } from "../context/AuthContext";
 import { TOOLS_DATA } from "../data/toolsData";
 import { CATEGORIES_DATA } from "../data/categoriesData";
 import { BLOG_POSTS_DATA } from "../data/blogData";
+import { UserManagementSection } from "../components/admin/UserManagementSection";
 
 interface AdminDashboardPageProps {
   theme?: "dark" | "light";
@@ -367,63 +368,40 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
   // General Metrics State
   const [metrics, setMetrics] = useState({
-    totalUsers: 1420,
-    todaysUsers: 84,
-    monthlyUsers: 3410,
-    googleSignups: 980,
-    emailSignups: 440,
-    guestUsers: 120,
-    onlineUsers: 42,
-    newsletterSubscribers: 890,
+    totalUsers: 0,
+    todaysUsers: 0,
+    monthlyUsers: 0,
+    googleSignups: 0,
+    emailSignups: 0,
+    guestUsers: 0,
+    onlineUsers: 1,
+    newsletterSubscribers: 0,
     totalTools: TOOLS_DATA.length,
-    workingTools: TOOLS_DATA.length - 1,
-    brokenTools: 1,
-    pendingReports: 4,
-    resolvedReports: 28,
-    contactMessages: 12,
-    featureRequests: 8,
-    storageUsageGb: 12.4,
-    googleDriveUsageGb: 4.8,
+    workingTools: TOOLS_DATA.length,
+    brokenTools: 0,
+    pendingReports: 0,
+    resolvedReports: 0,
+    contactMessages: 0,
+    featureRequests: 0,
+    storageUsageGb: 0.1,
+    googleDriveUsageGb: 0,
     blogPostsCount: BLOG_POSTS_DATA.length,
     categoriesCount: CATEGORIES_DATA.length,
     faqsCount: 16,
     pagesCount: 8,
   });
 
-  // Users Management State
-  const [usersList, setUsersList] = useState<any[]>([
-    { id: "usr_super", name: "Hamza (Super Admin)", email: "hamza.web.dev5324@gmail.com", role: "super_admin", status: "Active", provider: "Google", lastLogin: "2026-08-07 13:30", joinedDate: "2026-01-01" },
-    { id: "usr_admin", name: "Security Officer", email: "admin@security.hub", role: "admin", status: "Active", provider: "Email", lastLogin: "2026-08-07 11:15", joinedDate: "2026-01-10" },
-    { id: "usr_mgr", name: "Operations Lead", email: "manager@utilitytoolshub.io", role: "manager", status: "Active", provider: "Email", lastLogin: "2026-08-07 09:40", joinedDate: "2026-02-14" },
-    { id: "usr_edit", name: "Content Editor", email: "editor@utilitytoolshub.io", role: "editor", status: "Active", provider: "Google", lastLogin: "2026-08-06 18:20", joinedDate: "2026-03-01" },
-    { id: "usr_supp", name: "Support Rep", email: "support@utilitytoolshub.io", role: "support", status: "Active", provider: "Email", lastLogin: "2026-08-07 10:05", joinedDate: "2026-03-15" },
-  ]);
-  const [userSearch, setUserSearch] = useState("");
-  const [userRoleFilter, setUserRoleFilter] = useState("all");
-  const [userStatusFilter, setUserStatusFilter] = useState("all");
-  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-  const [selectedUserProfile, setSelectedUserProfile] = useState<any>(null);
-
   // Submissions Store (Contact, Bug Reports, Feature Requests, Tool Health)
   const [submissions, setSubmissions] = useState<any>({
-    contactMessages: [
-      { id: "msg_1", referenceId: "MSG-1002", name: "Elena Rostova", email: "elena@corp.net", subject: "Enterprise Partnership", category: "API Partnership", message: "We would like to discuss embedding your compression suite.", status: "unread", createdAt: "2026-08-06 14:20" },
-      { id: "msg_2", referenceId: "MSG-1001", name: "Michael Chang", email: "mchang@dev.co", subject: "API Rate Limits", category: "General Support", message: "What are the rate limits for the free OCR endpoint?", status: "read", createdAt: "2026-08-05 09:10" },
-    ],
-    bugReports: [
-      { id: "bug_1", referenceId: "REP-9001", toolName: "PDF Compressor", issueType: "Download Failed", description: "Browser throws CORS error when exporting compressed PDF file above 15MB.", pageUrl: "/pdf-compressor", userEmail: "david@test.com", status: "Investigating", priority: "High", assignedAdmin: "Security Officer", createdAt: "2026-08-07 08:30" },
-      { id: "bug_2", referenceId: "REP-9002", toolName: "WebP Converter", issueType: "Wrong Output", description: "Alpha transparency lost on high density PNG conversion.", pageUrl: "/image-converter", userEmail: "sarah@design.io", status: "Pending", priority: "Medium", assignedAdmin: "Unassigned", createdAt: "2026-08-06 16:45" },
-    ],
-    featureRequests: [
-      { id: "req_1", referenceId: "REQ-4001", toolName: "HEIC to PNG Converter", description: "Add batch zip download for 50+ photos.", category: "Image Tools", priority: "High", status: "Planned", upvotes: 42, userEmail: "alex@mobile.app", createdAt: "2026-08-04 11:00" },
-      { id: "req_2", referenceId: "REQ-4002", toolName: "AI Video Script Generator", description: "Export directly to SRT and VTT subtitle formats.", category: "Text & AI", priority: "Medium", status: "In Progress", upvotes: 28, userEmail: "creator@youtube.com", createdAt: "2026-08-03 15:30" },
-    ],
+    contactMessages: [],
+    bugReports: [],
+    featureRequests: [],
     toolHealth: TOOLS_DATA.map((t) => ({
       toolId: t.id,
       toolName: t.name,
       status: "Healthy",
-      successRate: 99.8,
-      avgLatencyMs: 120,
+      successRate: 100,
+      avgLatencyMs: 85,
       lastTested: "Just now",
     })),
   });
@@ -446,13 +424,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   const [blogSearch, setBlogSearch] = useState("");
 
   // Newsletter & Campaign State
-  const [newsletterSubscribers, setNewsletterSubscribers] = useState<any[]>([
-    { email: "hamza.web.dev5324@gmail.com", source: "Footer", joined: "2026-01-01", status: "Active" },
-    { email: "sarah.dev@enterprise.io", source: "Hero Bar", joined: "2026-02-10", status: "Active" },
-    { email: "alex.growth@startup.co", source: "Modal", joined: "2026-03-04", status: "Active" },
-  ]);
+  const [newsletterSubscribers, setNewsletterSubscribers] = useState<any[]>([]);
   const [campaignSubject, setCampaignSubject] = useState("");
-  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Utility Tools Hub!</h2><p>Check out our latest free developer and media conversion upgrades.</p>");
+  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Mehzan Digital!</h2><p>Check out our latest free developer and media conversion upgrades.</p>");
   const [testEmail, setTestEmail] = useState("");
   const [campaignSending, setCampaignSending] = useState(false);
 
@@ -519,7 +493,6 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
         });
 
         if (realUsers.length > 0) {
-          setUsersList(realUsers);
           setMetrics((prev) => ({
             ...prev,
             totalUsers: realUsers.length,
@@ -593,61 +566,6 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       </div>
     );
   }
-
-  // Filter users
-  const filteredUsers = usersList.filter((u) => {
-    const matchSearch =
-      u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
-      u.email.toLowerCase().includes(userSearch.toLowerCase());
-    const matchRole = userRoleFilter === "all" || u.role === userRoleFilter;
-    const matchStatus = userStatusFilter === "all" || u.status === userStatusFilter;
-    return matchSearch && matchRole && matchStatus;
-  });
-
-  const handleRoleChange = async (id: string, newRole: string) => {
-    try {
-      await updateDoc(doc(db, "users", id), { role: newRole });
-      setUsersList(usersList.map((u) => (u.id === id ? { ...u, role: newRole } : u)));
-      showNotification(`User role updated to ${newRole} in Firestore.`);
-    } catch (err: any) {
-      showNotification(`Failed to change role: ${err.message}`);
-    }
-  };
-
-  const handleStatusChange = async (id: string, newStatus: string) => {
-    try {
-      await updateDoc(doc(db, "users", id), { status: newStatus });
-      setUsersList(usersList.map((u) => (u.id === id ? { ...u, status: newStatus } : u)));
-      showNotification(`User status updated to ${newStatus}.`);
-    } catch (err: any) {
-      showNotification(`Failed to change status: ${err.message}`);
-    }
-  };
-
-  const handleDeleteUser = async (id: string) => {
-    if (!confirm("Are you sure you want to permanently delete this user?")) return;
-    try {
-      await deleteDoc(doc(db, "users", id));
-      setUsersList(usersList.filter((u) => u.id !== id));
-      showNotification("User deleted from Firestore.");
-    } catch (err: any) {
-      showNotification(`Failed to delete user: ${err.message}`);
-    }
-  };
-
-  // Bulk operations
-  const handleBulkAction = async (action: "activate" | "suspend" | "delete") => {
-    if (selectedUserIds.length === 0) return;
-    if (action === "delete" && !confirm(`Delete ${selectedUserIds.length} users?`)) return;
-
-    for (const id of selectedUserIds) {
-      if (action === "activate") await handleStatusChange(id, "Active");
-      if (action === "suspend") await handleStatusChange(id, "Suspended");
-      if (action === "delete") await handleDeleteUser(id);
-    }
-    setSelectedUserIds([]);
-    showNotification(`Bulk ${action} completed on selected users.`);
-  };
 
   // Tool Health diagnostic trigger
   const runToolHealthCheck = async () => {
@@ -752,12 +670,12 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
               {activeRoleConfig.permissions.exportBackup && (
                 <button
                   onClick={() => {
-                    const backup = { exportedAt: new Date().toISOString(), metrics, usersList, siteSettings, submissions };
+                    const backup = { exportedAt: new Date().toISOString(), metrics, siteSettings, submissions };
                     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = "utilitytoolshub-enterprise-backup.json";
+                    a.download = "mehzandigital-enterprise-backup.json";
                     a.click();
                     showNotification("Full enterprise system configuration exported successfully.");
                   }}
@@ -939,166 +857,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
         {/* TAB: USERS MANAGEMENT */}
         {activeTab === "users" && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-              <div className="relative flex-1">
-                <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
-                <input
-                  type="text"
-                  value={userSearch}
-                  onChange={(e) => setUserSearch(e.target.value)}
-                  placeholder="Search users by name, email, or ID..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <select
-                  value={userRoleFilter}
-                  onChange={(e) => setUserRoleFilter(e.target.value)}
-                  className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-semibold cursor-pointer"
-                >
-                  <option value="all">All Roles</option>
-                  <option value="super_admin">Super Admin</option>
-                  <option value="admin">Admin</option>
-                  <option value="manager">Manager</option>
-                  <option value="editor">Editor</option>
-                  <option value="support">Support</option>
-                  <option value="user">User</option>
-                </select>
-
-                <select
-                  value={userStatusFilter}
-                  onChange={(e) => setUserStatusFilter(e.target.value)}
-                  className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-semibold cursor-pointer"
-                >
-                  <option value="all">All Statuses</option>
-                  <option value="Active">Active</option>
-                  <option value="Suspended">Suspended</option>
-                  <option value="Banned">Banned</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Bulk Actions Bar */}
-            {selectedUserIds.length > 0 && (
-              <div className="p-3.5 rounded-2xl bg-indigo-600 text-white flex items-center justify-between text-xs animate-fade-in shadow-lg">
-                <span>{selectedUserIds.length} user(s) selected</span>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => handleBulkAction("activate")} className="px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 font-bold cursor-pointer">
-                    Activate All
-                  </button>
-                  <button onClick={() => handleBulkAction("suspend")} className="px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 font-bold cursor-pointer">
-                    Suspend All
-                  </button>
-                  {activeRoleConfig.permissions.deleteUsers && (
-                    <button onClick={() => handleBulkAction("delete")} className="px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-600 font-bold cursor-pointer">
-                      Delete All
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Users Table */}
-            <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
-                  <thead>
-                    <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 text-slate-400 font-bold uppercase tracking-wider">
-                      <th className="p-4 w-10">
-                        <input
-                          type="checkbox"
-                          onChange={(e) => {
-                            if (e.target.checked) setSelectedUserIds(filteredUsers.map((u) => u.id));
-                            else setSelectedUserIds([]);
-                          }}
-                        />
-                      </th>
-                      <th className="p-4">User</th>
-                      <th className="p-4">Role</th>
-                      <th className="p-4">Status</th>
-                      <th className="p-4">Provider</th>
-                      <th className="p-4">Joined</th>
-                      <th className="p-4">Last Login</th>
-                      <th className="p-4 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
-                    {filteredUsers.map((usr) => {
-                      const roleConfig = ROLE_CONFIGS[usr.role as Role] || ROLE_CONFIGS["user"];
-                      return (
-                        <tr key={usr.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
-                          <td className="p-4">
-                            <input
-                              type="checkbox"
-                              checked={selectedUserIds.includes(usr.id)}
-                              onChange={(e) => {
-                                if (e.target.checked) setSelectedUserIds([...selectedUserIds, usr.id]);
-                                else setSelectedUserIds(selectedUserIds.filter((id) => id !== usr.id));
-                              }}
-                            />
-                          </td>
-                          <td className="p-4 font-bold text-slate-900 dark:text-white">
-                            <div>{usr.name}</div>
-                            <div className="text-[11px] text-slate-400 font-normal">{usr.email}</div>
-                          </td>
-                          <td className="p-4">
-                            <select
-                              value={usr.role}
-                              disabled={!activeRoleConfig.permissions.manageRoles && usr.role === "super_admin"}
-                              onChange={(e) => handleRoleChange(usr.id, e.target.value)}
-                              className={`px-2.5 py-1 rounded-lg border font-bold text-[11px] cursor-pointer ${roleConfig.color}`}
-                            >
-                              <option value="super_admin">Super Admin</option>
-                              <option value="admin">Admin</option>
-                              <option value="manager">Manager</option>
-                              <option value="editor">Editor</option>
-                              <option value="moderator">Moderator</option>
-                              <option value="support">Support</option>
-                              <option value="user">User</option>
-                            </select>
-                          </td>
-                          <td className="p-4">
-                            <span
-                              className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                                usr.status === "Active"
-                                  ? "bg-emerald-500/10 text-emerald-500"
-                                  : "bg-rose-500/10 text-rose-500"
-                              }`}
-                            >
-                              {usr.status}
-                            </span>
-                          </td>
-                          <td className="p-4 text-[11px]">{usr.provider}</td>
-                          <td className="p-4 text-[11px]">{usr.joinedDate}</td>
-                          <td className="p-4 text-[11px]">{usr.lastLogin}</td>
-                          <td className="p-4 text-right space-x-2">
-                            <button
-                              onClick={() => setSelectedUserProfile(usr)}
-                              className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-indigo-500 cursor-pointer"
-                              title="Inspect Profile"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            {activeRoleConfig.permissions.deleteUsers && usr.role !== "super_admin" && (
-                              <button
-                                onClick={() => handleDeleteUser(usr.id)}
-                                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-rose-500 cursor-pointer"
-                                title="Delete User"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <UserManagementSection
+            currentAdminRole={simulatedRole}
+            onShowNotification={showNotification}
+            onNavigate={onNavigate}
+          />
         )}
 
         {/* TAB: ROLES & PERMISSIONS MATRIX */}
@@ -1392,29 +1155,6 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                   Send Reply
                 </button>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* User Profile Inspector Modal */}
-        {selectedUserProfile && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
-            <div className="w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">User Profile & Audit</h3>
-                <button onClick={() => setSelectedUserProfile(null)} className="text-slate-400 hover:text-slate-600">✕</button>
-              </div>
-              <div className="space-y-2 text-xs">
-                <p><strong>Name:</strong> {selectedUserProfile.name}</p>
-                <p><strong>Email:</strong> {selectedUserProfile.email}</p>
-                <p><strong>Role:</strong> {selectedUserProfile.role}</p>
-                <p><strong>Status:</strong> {selectedUserProfile.status}</p>
-                <p><strong>Joined:</strong> {selectedUserProfile.joinedDate}</p>
-                <p><strong>Last Login:</strong> {selectedUserProfile.lastLogin}</p>
-              </div>
-              <button onClick={() => setSelectedUserProfile(null)} className="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">
-                Close Inspector
-              </button>
             </div>
           </div>
         )}

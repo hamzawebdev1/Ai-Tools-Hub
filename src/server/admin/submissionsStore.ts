@@ -59,64 +59,10 @@ export interface ToolHealthRecord {
 }
 
 let submissionsStore = {
-  contactMessages: [
-    {
-      id: "msg_1",
-      referenceId: "MSG-94281",
-      name: "Marcus Vance",
-      email: "marcus@enterprise.com",
-      subject: "AdSense Integration Inquiry",
-      category: "AdSense / Legal",
-      message: "Great performance on Core Web Vitals. All ad zones render with zero CLS.",
-      recaptchaVerified: true,
-      status: "Open" as const,
-      assignedAdmin: "Hamza (Super Admin)",
-      notes: "High priority enterprise lead",
-      read: false,
-      createdAt: new Date(Date.now() - 3600000).toISOString(),
-    },
-  ] as ContactMessage[],
-
-  bugReports: [
-    {
-      id: "rep_1",
-      referenceId: "REP-48192",
-      toolName: "AI Text Paraphraser",
-      pageUrl: "/tools/ai-paraphrasing-tool",
-      userEmail: "alex@example.com",
-      issueType: "Wrong Output",
-      description: "Returned summary instead of rephrasing text in certain languages.",
-      status: "In Progress" as const,
-      assignedAdmin: "Security Admin",
-      notes: "Investigating prompt instruction tuning",
-      read: false,
-      createdAt: new Date(Date.now() - 7200000).toISOString(),
-    },
-  ] as ToolBugReport[],
-
-  featureRequests: [
-    {
-      id: "req_1",
-      referenceId: "REQ-10294",
-      toolName: "Batch CSV Converter",
-      description: "Convert multiple CSV files to JSON simultaneously.",
-      category: "Developer Tools",
-      priority: "High" as const,
-      userEmail: "sarah@creator.io",
-      votes: 42,
-      status: "Planned" as const,
-      assignedAdmin: "Hamza (Super Admin)",
-      notes: "Scheduled for sprint release v2.6",
-      read: true,
-      createdAt: new Date(Date.now() - 14400000).toISOString(),
-    },
-  ] as FeatureRequest[],
-
-  toolHealth: [
-    { toolId: "json-formatter", toolName: "JSON Formatter & Validator", status: "Healthy" as const, successRate: 99.8, lastTested: new Date().toISOString(), totalExecutions: 1420, failedExecutions: 2 },
-    { toolId: "pdf-compressor", toolName: "PDF Compressor Pro", status: "Healthy" as const, successRate: 100, lastTested: new Date().toISOString(), totalExecutions: 890, failedExecutions: 0 },
-    { toolId: "image-compressor", toolName: "Smart Image Compressor", status: "Healthy" as const, successRate: 98.7, lastTested: new Date().toISOString(), totalExecutions: 2310, failedExecutions: 30 },
-  ] as ToolHealthRecord[],
+  contactMessages: [] as ContactMessage[],
+  bugReports: [] as ToolBugReport[],
+  featureRequests: [] as FeatureRequest[],
+  toolHealth: [] as ToolHealthRecord[],
 };
 
 export const getSubmissionsStore = () => submissionsStore;
