@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, CheckCircle2, AlertTriangle, Code, ExternalLink, Activity, Layers, FileText, ChevronUp, ChevronDown } from "lucide-react";
+import { Search, CheckCircle2, AlertTriangle, Code, ExternalLink, Activity, Layers, FileText, ChevronUp, ChevronDown, RefreshCw, ShieldCheck } from "lucide-react";
 
 interface SEOAuditWidgetProps {
   activeTab: string;
@@ -7,7 +7,7 @@ interface SEOAuditWidgetProps {
 
 export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSubTab, setActiveSubTab] = useState<"overview" | "schema" | "headings" | "sitemaps">("overview");
+  const [activeSubTab, setActiveSubTab] = useState<"overview" | "schema" | "headings" | "sitemaps" | "audit">("overview");
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -16,6 +16,9 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
   const [headings, setHeadings] = useState<{ tag: string; text: string }[]>([]);
   const [schemasText, setSchemasText] = useState("");
   const [vitals, setVitals] = useState({ lcp: "0.8s", cls: "0.01", fid: "12ms" });
+
+  const [auditLoading, setAuditLoading] = useState(false);
+  const [auditData, setAuditData] = useState<any>(null);
 
   useEffect(() => {
     // Collect DOM SEO elements
@@ -57,6 +60,19 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
     return () => clearTimeout(timer);
   }, [activeTab]);
 
+  const runUrlAudit = async () => {
+    setAuditLoading(true);
+    try {
+      const res = await fetch("/api/seo/audit");
+      const data = await res.json();
+      setAuditData(data);
+    } catch (err) {
+      console.error("Failed to run URL audit:", err);
+    } finally {
+      setAuditLoading(false);
+    }
+  };
+
   const titleLength = title.length;
   const descLength = description.length;
 
@@ -71,19 +87,19 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
           className="flex items-center gap-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2.5 rounded-full shadow-xl hover:bg-indigo-600 dark:hover:bg-indigo-400 dark:hover:text-white transition-all transform hover:scale-105 border border-slate-700 dark:border-slate-300 text-xs font-semibold"
         >
           <Search className="w-4 h-4 text-emerald-400 dark:text-emerald-600" />
-          <span>SEO Engine & Schema Health</span>
+          <span>SEO Engine & Canonical Health</span>
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
         </button>
       ) : (
-        <div className="w-[360px] sm:w-[480px] bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-lg">
+        <div className="w-[360px] sm:w-[500px] bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-lg">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-slate-950 border-b border-slate-800">
             <div className="flex items-center gap-2">
               <Search className="w-4 h-4 text-emerald-400" />
-              <span className="font-bold text-sm tracking-tight">On-Page SEO & Schema Inspector</span>
+              <span className="font-bold text-sm tracking-tight">On-Page SEO & Canonical Inspector</span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -94,51 +110,61 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
           </div>
 
           {/* Sub Navigation */}
-          <div className="flex border-b border-slate-800 bg-slate-900/80 text-xs">
+          <div className="flex border-b border-slate-800 bg-slate-900/80 text-[11px] overflow-x-auto">
             <button
               onClick={() => setActiveSubTab("overview")}
-              className={`flex-1 py-2 px-3 flex items-center justify-center gap-1.5 font-medium transition-colors border-b-2 ${
+              className={`py-2 px-3 flex items-center justify-center gap-1 font-medium whitespace-nowrap transition-colors border-b-2 ${
                 activeSubTab === "overview"
                   ? "border-indigo-500 text-indigo-400 bg-slate-800/50"
                   : "border-transparent text-slate-400 hover:text-slate-200"
               }`}
             >
-              <FileText className="w-3.5 h-3.5" /> Overview
+              <FileText className="w-3 h-3" /> Overview
+            </button>
+            <button
+              onClick={() => setActiveSubTab("audit")}
+              className={`py-2 px-3 flex items-center justify-center gap-1 font-medium whitespace-nowrap transition-colors border-b-2 ${
+                activeSubTab === "audit"
+                  ? "border-indigo-500 text-indigo-400 bg-slate-800/50"
+                  : "border-transparent text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              <ShieldCheck className="w-3 h-3 text-emerald-400" /> GSC & URL Audit
             </button>
             <button
               onClick={() => setActiveSubTab("schema")}
-              className={`flex-1 py-2 px-3 flex items-center justify-center gap-1.5 font-medium transition-colors border-b-2 ${
+              className={`py-2 px-3 flex items-center justify-center gap-1 font-medium whitespace-nowrap transition-colors border-b-2 ${
                 activeSubTab === "schema"
                   ? "border-indigo-500 text-indigo-400 bg-slate-800/50"
                   : "border-transparent text-slate-400 hover:text-slate-200"
               }`}
             >
-              <Code className="w-3.5 h-3.5" /> JSON-LD
+              <Code className="w-3 h-3" /> JSON-LD
             </button>
             <button
               onClick={() => setActiveSubTab("headings")}
-              className={`flex-1 py-2 px-3 flex items-center justify-center gap-1.5 font-medium transition-colors border-b-2 ${
+              className={`py-2 px-3 flex items-center justify-center gap-1 font-medium whitespace-nowrap transition-colors border-b-2 ${
                 activeSubTab === "headings"
                   ? "border-indigo-500 text-indigo-400 bg-slate-800/50"
                   : "border-transparent text-slate-400 hover:text-slate-200"
               }`}
             >
-              <Layers className="w-3.5 h-3.5" /> Headings
+              <Layers className="w-3 h-3" /> Headings
             </button>
             <button
               onClick={() => setActiveSubTab("sitemaps")}
-              className={`flex-1 py-2 px-3 flex items-center justify-center gap-1.5 font-medium transition-colors border-b-2 ${
+              className={`py-2 px-3 flex items-center justify-center gap-1 font-medium whitespace-nowrap transition-colors border-b-2 ${
                 activeSubTab === "sitemaps"
                   ? "border-indigo-500 text-indigo-400 bg-slate-800/50"
                   : "border-transparent text-slate-400 hover:text-slate-200"
               }`}
             >
-              <Activity className="w-3.5 h-3.5" /> XML Feeds
+              <Activity className="w-3 h-3" /> XML Feeds
             </button>
           </div>
 
           {/* Content area */}
-          <div className="p-4 max-h-[360px] overflow-y-auto space-y-4 text-xs">
+          <div className="p-4 max-h-[380px] overflow-y-auto space-y-4 text-xs">
             {activeSubTab === "overview" && (
               <>
                 <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2">
@@ -181,7 +207,7 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
                 </div>
 
                 <div className="p-2.5 bg-slate-950/60 rounded-xl border border-slate-800">
-                  <span className="text-slate-400 block mb-1 font-semibold">Canonical Tag</span>
+                  <span className="text-slate-400 block mb-1 font-semibold">Canonical Tag (Self-Referential)</span>
                   <a
                     href={canonical}
                     target="_blank"
@@ -192,6 +218,69 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
                   </a>
                 </div>
               </>
+            )}
+
+            {activeSubTab === "audit" && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-slate-200">Automated URL & Canonical Audit</span>
+                  <button
+                    onClick={runUrlAudit}
+                    disabled={auditLoading}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-lg font-medium text-[11px] transition-colors"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${auditLoading ? "animate-spin" : ""}`} />
+                    {auditLoading ? "Auditing..." : "Run URL Audit"}
+                  </button>
+                </div>
+
+                {auditData ? (
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-center">
+                        <span className="text-[10px] text-slate-400 block">Health Score</span>
+                        <span className="text-base font-bold text-emerald-400">{auditData.summary.healthScore}%</span>
+                      </div>
+                      <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-center">
+                        <span className="text-[10px] text-slate-400 block">Canonical Pages</span>
+                        <span className="text-base font-bold text-indigo-400">{auditData.summary.canonicalPagesCount}</span>
+                      </div>
+                      <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-center">
+                        <span className="text-[10px] text-slate-400 block">301 Protected</span>
+                        <span className="text-base font-bold text-teal-400">{auditData.summary.redirectsProtectedCount}</span>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1.5">
+                      <span className="font-semibold text-slate-300 block">Resolved GSC Indexing Issues:</span>
+                      <ul className="space-y-1 text-slate-400 text-[11px]">
+                        {auditData.summary.gscIssuesResolved.map((issue: string, idx: number) => (
+                          <li key={idx} className="flex items-center gap-1.5 text-emerald-400">
+                            <CheckCircle2 className="w-3 h-3 shrink-0" />
+                            <span>{issue}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1.5 max-h-[140px] overflow-y-auto">
+                      <span className="font-semibold text-slate-300 block">Sample 301 Protection Tests:</span>
+                      {auditData.duplicateProtection.slice(0, 5).map((dp: any, idx: number) => (
+                        <div key={idx} className="text-[10px] font-mono p-1.5 bg-slate-900/80 rounded border border-slate-800 flex justify-between">
+                          <span className="text-amber-400 truncate max-w-[200px]">{dp.url}</span>
+                          <span className="text-emerald-400 font-semibold">&rarr; 301</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-6 text-center bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+                    <ShieldCheck className="w-8 h-8 text-indigo-400 mx-auto opacity-75" />
+                    <p className="text-slate-300 font-medium">No live audit data loaded</p>
+                    <p className="text-[11px] text-slate-400">Click "Run URL Audit" above to crawl and verify all 500+ URLs and 301 redirect protections.</p>
+                  </div>
+                )}
+              </div>
             )}
 
             {activeSubTab === "schema" && (

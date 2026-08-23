@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { getCanonicalUrl } from "../../services/seoService";
 
 interface SchemaHeadProps {
   title: string;
@@ -11,13 +12,15 @@ interface SchemaHeadProps {
 export const SchemaHead: React.FC<SchemaHeadProps> = ({
   title,
   description,
-  canonicalUrl = typeof window !== "undefined" ? window.location.href : "https://utilitytoolshub.com",
+  canonicalUrl,
   schemaType = "WebSite",
   schemaData,
 }) => {
+  const safeCanonical = getCanonicalUrl(canonicalUrl || (typeof window !== "undefined" ? window.location.pathname : "/"));
+
   useEffect(() => {
     // Update Document Title
-    const fullTitle = `${title} | Utility Tools Hub - Free Production AI Suite`;
+    const fullTitle = `${title} | Mehzan Digital`;
     document.title = fullTitle;
 
     // Update Meta Description
@@ -29,14 +32,20 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
     }
     metaDesc.setAttribute("content", description);
 
-    // Update Canonical Link
-    let canonicalTag = document.querySelector('link[rel="canonical"]');
+    // Update Canonical Link - ensure exactly one
+    const existingCanonicals = document.querySelectorAll('link[rel="canonical"]');
+    if (existingCanonicals.length > 1) {
+      existingCanonicals.forEach((el, idx) => {
+        if (idx > 0) el.remove();
+      });
+    }
+    let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (!canonicalTag) {
       canonicalTag = document.createElement("link");
       canonicalTag.setAttribute("rel", "canonical");
       document.head.appendChild(canonicalTag);
     }
-    canonicalTag.setAttribute("href", canonicalUrl);
+    canonicalTag.setAttribute("href", safeCanonical);
 
     // Update Open Graph and Twitter Meta Tags
     const setMetaTag = (property: string, content: string, isName = false) => {
@@ -50,71 +59,19 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
       el.setAttribute("content", content);
     };
 
-    setMetaTag("og:title", title);
+    setMetaTag("og:title", fullTitle);
     setMetaTag("og:description", description);
-    setMetaTag("og:url", canonicalUrl);
+    setMetaTag("og:url", safeCanonical);
     setMetaTag("og:type", schemaType === "Article" ? "article" : "website");
-    setMetaTag("og:image", "https://utilitytoolshub.com/og-image.png");
+    setMetaTag("og:site_name", "Mehzan Digital");
     setMetaTag("twitter:card", "summary_large_image", true);
-    setMetaTag("twitter:title", title, true);
+    setMetaTag("twitter:title", fullTitle, true);
     setMetaTag("twitter:description", description, true);
-    setMetaTag("twitter:image", "https://utilitytoolshub.com/og-image.png", true);
 
-    // Default WebSite Schema JSON-LD
-    let ldJsonObject: any = {
-      "@context": "https://schema.org",
-      "@type": schemaType,
-      name: title,
-      description: description,
-      url: canonicalUrl,
-    };
-
-    if (schemaType === "WebSite") {
-      ldJsonObject = {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: "Utility Tools Hub",
-        url: canonicalUrl,
-        potentialAction: {
-          "@type": "SearchAction",
-          target: "https://utilitytoolshub.com/search?q={search_term_string}",
-          "query-input": "required name=search_term_string",
-        },
-      };
-    } else if (schemaType === "SoftwareApplication" && schemaData) {
-      ldJsonObject = {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        name: schemaData.name || title,
-        operatingSystem: "Web",
-        applicationCategory: "UtilitiesApplication",
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "USD",
-        },
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: schemaData.rating || "4.9",
-          ratingCount: schemaData.ratingCount || "1200",
-        },
-      };
-    }
-
-    if (schemaData && schemaType !== "SoftwareApplication") {
-      ldJsonObject = { ...ldJsonObject, ...schemaData };
-    }
-
-    // Inject Script Tag
-    let scriptTag = document.getElementById("json-ld-schema") as HTMLScriptElement;
-    if (!scriptTag) {
-      scriptTag = document.createElement("script");
-      scriptTag.id = "json-ld-schema";
-      scriptTag.type = "application/ld+json";
-      document.head.appendChild(scriptTag);
-    }
-    scriptTag.text = JSON.stringify(ldJsonObject);
-  }, [title, description, canonicalUrl, schemaType, schemaData]);
+    // Clean up any legacy or duplicate script tags
+    const legacy = document.getElementById("json-ld-schema");
+    if (legacy) legacy.remove();
+  }, [title, description, safeCanonical, schemaType, schemaData]);
 
   return null;
 };

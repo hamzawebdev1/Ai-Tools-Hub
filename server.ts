@@ -16,6 +16,7 @@ import {
   inputSanitizerMiddleware,
   csrfProtectionMiddleware,
 } from "./src/server/security/securityMiddleware";
+import { CATEGORIES_DATA } from "./src/data/categoriesData";
 
 const currentFile = typeof __filename !== "undefined" ? __filename : (typeof import.meta !== "undefined" && import.meta.url ? fileURLToPath(import.meta.url) : process.cwd());
 const currentDir = typeof __dirname !== "undefined" ? __dirname : path.dirname(currentFile);
@@ -32,6 +33,111 @@ async function startServer() {
 
   // OWASP Security Headers & Middleware
   app.use(configureSecurityHeaders);
+
+  // ==========================================
+  // Canonical URL & Duplicate URL 301 Middleware
+  // ==========================================
+  app.use((req, res, next) => {
+    // Skip static assets, Vite internal files, and API routes
+    if (
+      req.path.startsWith("/api/") ||
+      req.path.startsWith("/@") ||
+      req.path.startsWith("/src/") ||
+      req.path.startsWith("/node_modules/") ||
+      req.path.includes(".") // .js, .css, .png, .ico, .svg, .json, .xml, etc.
+    ) {
+      return next();
+    }
+
+    const host = req.get("host") || "";
+    const proto = req.get("x-forwarded-proto") || req.protocol || "https";
+
+    // 1. Enforce HTTPS in production
+    if (req.get("x-forwarded-proto") === "http" && process.env.NODE_ENV === "production") {
+      return res.redirect(301, `https://${host}${req.originalUrl}`);
+    }
+
+    // 2. Strip WWW prefix to guarantee canonical apex domain
+    if (host.startsWith("www.")) {
+      const apexHost = host.replace(/^www\./i, "");
+      return res.redirect(301, `${proto}://${apexHost}${req.originalUrl}`);
+    }
+
+    // 3. Strip Trailing Slash (except root "/")
+    if (req.path.length > 1 && req.path.endsWith("/")) {
+      const cleanPath = req.path.replace(/\/+$/, "");
+      const queryString = req.url.includes("?") ? `?${req.url.split("?")[1]}` : "";
+      return res.redirect(301, `${cleanPath}${queryString}`);
+    }
+
+    // 4. Enforce Lowercase Path
+    if (req.path !== req.path.toLowerCase()) {
+      const cleanPath = req.path.toLowerCase();
+      const queryString = req.url.includes("?") ? `?${req.url.split("?")[1]}` : "";
+      return res.redirect(301, `${cleanPath}${queryString}`);
+    }
+
+    // 5. Query Parameter Route Redirects on Root & /tool /tools (e.g. /?tool=jpg-to-pdf -> /jpg-to-pdf, /tool?id=jpg-to-pdf -> /jpg-to-pdf)
+    if (req.path === "/" || req.path === "/tool" || req.path === "/tools") {
+      const toolParam = (req.query.tool || req.query.slug || req.query.id) as string;
+      if (toolParam && typeof toolParam === "string") {
+        const cleanSlug = toolParam.toLowerCase().trim();
+        return res.redirect(301, `/${cleanSlug}`);
+      }
+      if (req.path === "/" && req.query.category) {
+        const cat = req.query.category as string;
+        if (cat && typeof cat === "string") {
+          return res.redirect(301, `/category/${cat.toLowerCase().trim()}`);
+        }
+      }
+      if (req.path === "/tool") {
+        return res.redirect(301, `/tools`);
+      }
+    }
+
+    // 6. Duplicate Prefix Aliases 301 Redirection
+    // /tools/:slug or /tool/:slug -> /:slug (or /category/:slug)
+    if (req.path.startsWith("/tools/") || req.path.startsWith("/tool/")) {
+      const rawSlug = req.path.replace(/^\/(tools|tool)\//, "").toLowerCase().trim();
+      if (rawSlug) {
+        const isCat = CATEGORIES_DATA.some((c) => c.slug === rawSlug || c.id === rawSlug);
+        if (isCat) {
+          return res.redirect(301, `/category/${rawSlug}`);
+        }
+        return res.redirect(301, `/${rawSlug}`);
+      }
+    }
+
+    // /categories/:slug -> /category/:slug
+    if (req.path.startsWith("/categories/")) {
+      const rawSlug = req.path.replace(/^\/categories\//, "").toLowerCase().trim();
+      if (rawSlug) {
+        return res.redirect(301, `/category/${rawSlug}`);
+      }
+    }
+
+    // Static route alias redirects
+    const STATIC_REDIRECTS: Record<string, string> = {
+      "/all-tools": "/tools",
+      "/about-us": "/about",
+      "/contact-us": "/contact",
+      "/privacy-policy": "/privacy",
+      "/terms-of-service": "/terms",
+      "/terms-and-conditions": "/terms",
+      "/cookies": "/cookie-policy",
+      "/cookie": "/cookie-policy",
+      "/disclaimers": "/disclaimer",
+      "/signup": "/register",
+      "/signin": "/login",
+    };
+
+    if (STATIC_REDIRECTS[req.path]) {
+      const queryString = req.url.includes("?") ? `?${req.url.split("?")[1]}` : "";
+      return res.redirect(301, `${STATIC_REDIRECTS[req.path]}${queryString}`);
+    }
+
+    next();
+  });
   app.use(cookieParser());
   app.use(express.json({ limit: "10mb" }));
   app.use(globalRateLimiter);

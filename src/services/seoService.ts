@@ -22,19 +22,30 @@ export interface SEOMetadata {
 const SITE_NAME = "Mehzan Digital";
 export function getDomain(): string {
   if (typeof window !== "undefined" && window.location.origin) {
-    return window.location.origin;
+    return window.location.origin.replace(/\/+$/, "");
   }
   return "";
 }
 const DEFAULT_OG_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80";
 
 /**
- * Generate full domain canonical URL
+ * Generate full domain canonical URL.
+ * Automatically strips tracking query params, hashes, and trailing slashes.
  */
-export function getCanonicalUrl(path: string): string {
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+export function getCanonicalUrl(path: string = "/"): string {
+  // Strip query params and hash
+  let clean = (path || "/").split("?")[0].split("#")[0].trim();
+  
+  // Normalize root path
+  if (!clean || clean === "/" || clean === "") {
+    const domain = getDomain();
+    return domain ? `${domain}/` : "/";
+  }
+
+  // Remove leading and trailing slashes for standardization
+  clean = clean.replace(/^\/+|\/+$/g, "");
   const origin = getDomain();
-  return `${origin}${cleanPath}`;
+  return origin ? `${origin}/${clean}` : `/${clean}`;
 }
 
 /**
@@ -648,17 +659,41 @@ export function buildSEOMetadata(
     }
 
     case "search": {
-      const query = data?.searchQuery || "";
-      const canonicalUrl = getCanonicalUrl(`/search${query ? `?q=${encodeURIComponent(query)}` : ""}`);
+      const canonicalUrl = getCanonicalUrl("/search");
       return {
-        title: query ? `Search Results for "${query}" - Mehzan Digital` : "Search Tools Directory | Mehzan Digital",
-        description: `Browse matching free tools, categories, and utilities for "${query}" on Mehzan Digital.`,
-        keywords: ["search tools", query, "Mehzan Digital"],
+        title: data?.searchQuery ? `Search Results for "${data.searchQuery}" | Mehzan Digital` : "Search Tools Directory | Mehzan Digital",
+        description: `Browse matching free tools and utilities on Mehzan Digital.`,
+        keywords: ["search tools", data?.searchQuery || "", "Mehzan Digital"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [orgSchema],
-        noIndex: true // prevent duplicate search result pages indexing in search engines
+        noIndex: true // Search result pages must not be indexed to prevent duplicate/thin content
+      };
+    }
+
+    case "dashboard":
+    case "profile":
+    case "admin":
+    case "login":
+    case "register":
+    case "signup":
+    case "signin":
+    case "forgot-password":
+    case "history":
+    case "favorites":
+    case "suggest-tool":
+    case "feedback": {
+      const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
+      return {
+        title: `${activeTab.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())} | Mehzan Digital`,
+        description: "User dashboard and settings on Mehzan Digital.",
+        keywords: [activeTab, "Mehzan Digital"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema],
+        noIndex: true // Private or authenticated pages must never be indexed
       };
     }
 
@@ -676,6 +711,27 @@ export function buildSEOMetadata(
     }
 
     default: {
+      if (activeTab.startsWith("author-")) {
+        const authorSlug = activeTab.replace("author-", "");
+        const canonicalUrl = getCanonicalUrl(`/author/${authorSlug}`);
+        const authorName = authorSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        const breadcrumbs = [
+          { name: "Home", url: "/" },
+          { name: "Authors", url: "/about" },
+          { name: authorName, url: `/author/${authorSlug}` }
+        ];
+        return {
+          title: `${authorName} - Editorial Board & Author | Mehzan Digital`,
+          description: `Read technical guides, optimization tutorials, and utility reviews by ${authorName} on Mehzan Digital.`,
+          keywords: [authorName, "editorial author", "Mehzan Digital"],
+          canonicalUrl,
+          ogType: "website",
+          ogImage: DEFAULT_OG_IMAGE,
+          schemas: [orgSchema, getBreadcrumbSchema(breadcrumbs)],
+          breadcrumbs
+        };
+      }
+
       const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
       return {
         title: `${activeTab.replace("-", " ").toUpperCase()} | Mehzan Digital`,

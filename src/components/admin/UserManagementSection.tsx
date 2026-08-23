@@ -36,7 +36,7 @@ import {
 } from "lucide-react";
 import { collection, getDocs, doc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 import { db, sendPasswordResetEmail, auth } from "../../services/firebase";
-import { Role, RoleConfig, ROLE_CONFIGS } from "../../pages/AdminDashboardPage";
+import { Role, RoleConfig, ROLE_CONFIGS } from "../../types/roles";
 import { TOOLS_DATA } from "../../data/toolsData";
 
 export interface ManagedUser {
@@ -62,16 +62,19 @@ export interface ManagedUser {
 }
 
 interface UserManagementSectionProps {
-  currentAdminRole: Role;
+  currentAdminRole?: Role;
+  currentUserRole?: Role;
   onShowNotification: (msg: string) => void;
   onNavigate?: (tab: string) => void;
 }
 
 export const UserManagementSection: React.FC<UserManagementSectionProps> = ({
   currentAdminRole,
+  currentUserRole,
   onShowNotification,
   onNavigate,
 }) => {
+  const activeRole: Role = currentUserRole || currentAdminRole || "super_admin";
   const [users, setUsers] = useState<ManagedUser[]>([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -104,7 +107,7 @@ export const UserManagementSection: React.FC<UserManagementSectionProps> = ({
   });
   const [createLoading, setCreateLoading] = useState(false);
 
-  const permissions = ROLE_CONFIGS[currentAdminRole]?.permissions || ROLE_CONFIGS["super_admin"].permissions;
+  const permissions = ROLE_CONFIGS[activeRole]?.permissions || ROLE_CONFIGS["super_admin"].permissions;
 
   // Fetch real users from Firestore
   const fetchUsers = async () => {

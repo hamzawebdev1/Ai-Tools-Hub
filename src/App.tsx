@@ -61,7 +61,7 @@ import { SignupPage } from "./pages/SignupPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 
 // Router Service
-import { parseRoute, getUrlForRoute, navigateTo } from "./services/routerService";
+import { parseRoute, getUrlForRoute, navigateTo, enforceCanonicalRedirect } from "./services/routerService";
 
 function AppContent() {
   const initialRoute = typeof window !== "undefined"
@@ -89,9 +89,11 @@ function AppContent() {
     }
   }, [userDoc]);
 
-  // Sync state with URL location
+  // Sync state with URL location & normalize non-canonical URL in browser history
   const syncRouteFromLocation = () => {
     if (typeof window === "undefined") return;
+    enforceCanonicalRedirect();
+
     const route = parseRoute(window.location.pathname, window.location.search);
     setActiveTab(route.tab);
     if (route.toolSlug) setSelectedToolSlug(route.toolSlug);

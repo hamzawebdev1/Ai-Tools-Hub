@@ -1,0 +1,660 @@
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
+import { BASE_CANONICAL_TOOLS } from "../../services/toolRegistryService.js";
+import { RAW_CATEGORIES } from "../../data/categoriesData.js";
+import { BLOG_POSTS_DATA } from "../../data/blogData.js";
+
+export interface CMSTool {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  description: string;
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string[];
+  iconName: string;
+  rateLimit: number;
+  status: "active" | "disabled";
+  order: number;
+  isPopular?: boolean;
+  isNew?: boolean;
+  views: number;
+  starts: number;
+  completions: number;
+  downloads: number;
+  errors: number;
+  updatedAt: string;
+}
+
+export interface CMSCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  iconName: string;
+  status: "active" | "disabled";
+  order: number;
+  color: string;
+  count: number;
+  updatedAt: string;
+}
+
+export interface CMSBlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: {
+    name: string;
+    avatar: string;
+    role: string;
+    email?: string;
+  };
+  category: string;
+  tags: string[];
+  image: string;
+  status: "published" | "draft";
+  date: string;
+  readTime: string;
+  metaTitle: string;
+  metaDescription: string;
+  canonicalUrl: string;
+  views: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CMSNewsletterSubscriber {
+  id: string;
+  email: string;
+  status: "active" | "unsubscribed";
+  source: string;
+  subscribedAt: string;
+}
+
+export type CMSSubscriber = CMSNewsletterSubscriber;
+
+export interface CMSCampaign {
+  id: string;
+  subject: string;
+  htmlContent: string;
+  recipientsCount: number;
+  testEmail?: string;
+  sentAt: string;
+  status: "sent" | "failed";
+}
+
+export interface CMSAuditLog {
+  id: string;
+  timestamp: string;
+  adminEmail: string;
+  action: string;
+  entityType: "tool" | "category" | "blog" | "user" | "setting" | "newsletter" | "message" | "security";
+  entityId?: string;
+  details: string;
+  ip: string;
+}
+
+export interface CMSSiteSettings {
+  siteName: string;
+  tagline: string;
+  contactEmail: string;
+  logoUrl: string;
+  faviconUrl: string;
+  maintenanceMode: boolean;
+  maintenanceMessage: string;
+  googleAnalyticsId: string;
+  googleAdsenseId: string;
+  adsEnabled: boolean;
+  announcementBarText: string;
+  announcementBarActive: boolean;
+  socialLinks: {
+    twitter: string;
+    github: string;
+    linkedin: string;
+    facebook: string;
+    discord: string;
+    youtube: string;
+  };
+  defaultSeo: {
+    metaTitle: string;
+    metaDescription: string;
+    keywords: string[];
+  };
+  robotsTxt: string;
+}
+
+export interface CMSDatabase {
+  tools: CMSTool[];
+  categories: CMSCategory[];
+  blogPosts: CMSBlogPost[];
+  subscribers: CMSNewsletterSubscriber[];
+  campaigns: CMSCampaign[];
+  settings: CMSSiteSettings;
+  auditLogs: CMSAuditLog[];
+}
+
+const STORAGE_FILE = path.join(process.cwd(), "storage", "cms_database.json");
+
+function ensureDirectoryExists() {
+  const dir = path.dirname(STORAGE_FILE);
+  if (!fs.existsSync(dir)) {
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+    } catch (e) {
+      console.warn("Failed to create storage directory:", e);
+    }
+  }
+}
+
+// Initial state builder
+function buildInitialDatabase(): CMSDatabase {
+  const tools: CMSTool[] = BASE_CANONICAL_TOOLS.map((t, idx) => ({
+    id: t.id,
+    name: t.name,
+    slug: t.slug,
+    category: t.category,
+    description: t.description,
+    metaTitle: `${t.name} - Free Online Tool`,
+    metaDescription: t.description,
+    keywords: [t.category, t.slug, "online tool", "free tool"],
+    iconName: t.iconName || "Tool",
+    rateLimit: 30,
+    status: "active",
+    order: idx + 1,
+    isPopular: !!t.isPopular,
+    isNew: !!t.isNew,
+    views: 0,
+    starts: 0,
+    completions: 0,
+    downloads: 0,
+    errors: 0,
+    updatedAt: new Date().toISOString(),
+  }));
+
+  const categories: CMSCategory[] = RAW_CATEGORIES.map((c, idx) => ({
+    id: c.id,
+    name: c.name,
+    slug: c.slug,
+    description: c.description,
+    iconName: c.iconName,
+    status: "active",
+    order: idx + 1,
+    color: c.color,
+    count: tools.filter((t) => t.category.toLowerCase() === c.id.toLowerCase()).length,
+    updatedAt: new Date().toISOString(),
+  }));
+
+  const blogPosts: CMSBlogPost[] = BLOG_POSTS_DATA.map((b) => ({
+    id: b.id,
+    title: b.title,
+    slug: b.slug,
+    excerpt: b.excerpt,
+    content: b.content,
+    author: {
+      name: b.author?.name || "Editorial Team",
+      avatar: b.author?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+      role: b.author?.role || "Lead Editor",
+    },
+    category: b.category,
+    tags: b.tags || ["Tools", "Productivity"],
+    image: b.image || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    status: "published",
+    date: b.date,
+    readTime: b.readTime || "5 min read",
+    metaTitle: `${b.title} | Utility Tools Hub`,
+    metaDescription: b.excerpt,
+    canonicalUrl: `https://utilitytoolshub.com/blog/${b.slug}`,
+    views: 0,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }));
+
+  const subscribers: CMSNewsletterSubscriber[] = [
+    {
+      id: "sub_1",
+      email: "subscriber.demo@utilitytoolshub.com",
+      status: "active",
+      source: "footer",
+      subscribedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
+    },
+  ];
+
+  const settings: CMSSiteSettings = {
+    siteName: "Utility Tools Hub",
+    tagline: "50+ Free Professional Developer, PDF & Image Utilities",
+    contactEmail: "support@utilitytoolshub.com",
+    logoUrl: "/icon.png",
+    faviconUrl: "/favicon.ico",
+    maintenanceMode: false,
+    maintenanceMessage: "Utility Tools Hub is currently undergoing scheduled maintenance. We will be back online shortly.",
+    googleAnalyticsId: "G-AITOOLSHUB99",
+    googleAdsenseId: "ca-pub-9843219082341234",
+    adsEnabled: true,
+    announcementBarText: "🚀 Fast Browser-Side Processing & OWASP Top 10 Security Active!",
+    announcementBarActive: true,
+    socialLinks: {
+      twitter: "https://twitter.com/utilitytoolshub",
+      github: "https://github.com/utilitytoolshub",
+      linkedin: "https://linkedin.com/company/utilitytoolshub",
+      facebook: "https://facebook.com/utilitytoolshub",
+      discord: "https://discord.gg/utilitytoolshub",
+      youtube: "https://youtube.com/@utilitytoolshub",
+    },
+    defaultSeo: {
+      metaTitle: "Utility Tools Hub - 50+ Free Client-Side Developer & Media Tools",
+      metaDescription: "Fast, privacy-focused online utilities for PDF editing, image conversion, developer formatters, and SEO optimization. 100% free and client-side.",
+      keywords: ["free online tools", "pdf editor", "image converter", "json formatter", "developer tools"],
+    },
+    robotsTxt: `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://utilitytoolshub.com/sitemap.xml`,
+  };
+
+  const auditLogs: CMSAuditLog[] = [
+    {
+      id: "log_init_001",
+      timestamp: new Date().toISOString(),
+      adminEmail: "admin@security.hub",
+      action: "SYSTEM_INITIALIZED",
+      entityType: "setting",
+      details: "CMS database initialized with standard canonical tools, categories, and settings.",
+      ip: "127.0.0.1",
+    },
+  ];
+
+  return {
+    tools,
+    categories,
+    blogPosts,
+    subscribers,
+    campaigns: [],
+    settings,
+    auditLogs,
+  };
+}
+
+let cmsDb: CMSDatabase = (() => {
+  ensureDirectoryExists();
+  if (fs.existsSync(STORAGE_FILE)) {
+    try {
+      const content = fs.readFileSync(STORAGE_FILE, "utf-8");
+      const parsed = JSON.parse(content);
+      if (parsed && Array.isArray(parsed.tools) && Array.isArray(parsed.categories)) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn("Error loading existing CMS database, reinitializing:", e);
+    }
+  }
+  const initial = buildInitialDatabase();
+  try {
+    fs.writeFileSync(STORAGE_FILE, JSON.stringify(initial, null, 2), "utf-8");
+  } catch (e) {}
+  return initial;
+})();
+
+export function saveCMSDatabase() {
+  try {
+    ensureDirectoryExists();
+    fs.writeFileSync(STORAGE_FILE, JSON.stringify(cmsDb, null, 2), "utf-8");
+  } catch (err) {
+    console.error("Failed to write CMS database to disk:", err);
+  }
+}
+
+export function logAuditAction(
+  adminEmail: string,
+  action: string,
+  entityType: CMSAuditLog["entityType"],
+  details: string,
+  ip: string = "127.0.0.1",
+  entityId?: string
+) {
+  const newLog: CMSAuditLog = {
+    id: "log_" + crypto.randomBytes(8).toString("hex"),
+    timestamp: new Date().toISOString(),
+    adminEmail: adminEmail || "admin@security.hub",
+    action,
+    entityType,
+    entityId,
+    details,
+    ip,
+  };
+  cmsDb.auditLogs.unshift(newLog);
+  if (cmsDb.auditLogs.length > 500) {
+    cmsDb.auditLogs.pop();
+  }
+  saveCMSDatabase();
+  return newLog;
+}
+
+// -------------------------------------------------------------
+// TOOLS CRUD
+// -------------------------------------------------------------
+export function getAllTools(includeDisabled: boolean = true): CMSTool[] {
+  if (includeDisabled) return cmsDb.tools;
+  return cmsDb.tools.filter((t) => t.status === "active");
+}
+
+export function getToolByIdOrSlug(idOrSlug: string): CMSTool | undefined {
+  return cmsDb.tools.find((t) => t.id === idOrSlug || t.slug === idOrSlug);
+}
+
+export function createTool(toolData: Partial<CMSTool>, adminEmail: string, ip?: string): CMSTool {
+  const id = toolData.id || "tool_" + crypto.randomBytes(6).toString("hex");
+  const slug = toolData.slug || toolData.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || id;
+  
+  const newTool: CMSTool = {
+    id,
+    name: toolData.name || "Untitled Tool",
+    slug,
+    category: toolData.category || "general",
+    description: toolData.description || "",
+    metaTitle: toolData.metaTitle || `${toolData.name} - Free Online Tool`,
+    metaDescription: toolData.metaDescription || toolData.description || "",
+    keywords: Array.isArray(toolData.keywords) ? toolData.keywords : ["online tool", slug],
+    iconName: toolData.iconName || "Tool",
+    rateLimit: toolData.rateLimit || 30,
+    status: toolData.status || "active",
+    order: toolData.order || cmsDb.tools.length + 1,
+    isPopular: !!toolData.isPopular,
+    isNew: toolData.isNew !== undefined ? toolData.isNew : true,
+    views: 0,
+    starts: 0,
+    completions: 0,
+    downloads: 0,
+    errors: 0,
+    updatedAt: new Date().toISOString(),
+  };
+
+  cmsDb.tools.push(newTool);
+  // recalculate category count
+  recalcCategoryCounts();
+  logAuditAction(adminEmail, "TOOL_CREATED", "tool", `Created new tool "${newTool.name}" (${newTool.slug})`, ip, newTool.id);
+  saveCMSDatabase();
+  return newTool;
+}
+
+export function updateTool(id: string, updates: Partial<CMSTool>, adminEmail: string, ip?: string): CMSTool | null {
+  const tool = cmsDb.tools.find((t) => t.id === id);
+  if (!tool) return null;
+
+  Object.assign(tool, updates, { updatedAt: new Date().toISOString() });
+  recalcCategoryCounts();
+  logAuditAction(adminEmail, "TOOL_UPDATED", "tool", `Updated tool "${tool.name}" (${tool.id})`, ip, tool.id);
+  saveCMSDatabase();
+  return tool;
+}
+
+export function deleteTool(id: string, adminEmail: string, ip?: string): boolean {
+  const idx = cmsDb.tools.findIndex((t) => t.id === id);
+  if (idx === -1) return false;
+
+  const [deleted] = cmsDb.tools.splice(idx, 1);
+  recalcCategoryCounts();
+  logAuditAction(adminEmail, "TOOL_DELETED", "tool", `Deleted tool "${deleted.name}" (${deleted.slug})`, ip, id);
+  saveCMSDatabase();
+  return true;
+}
+
+export function reorderTools(orderedIds: string[], adminEmail: string, ip?: string) {
+  orderedIds.forEach((id, index) => {
+    const t = cmsDb.tools.find((tool) => tool.id === id);
+    if (t) t.order = index + 1;
+  });
+  cmsDb.tools.sort((a, b) => a.order - b.order);
+  logAuditAction(adminEmail, "TOOLS_REORDERED", "tool", `Reordered ${orderedIds.length} tools.`, ip);
+  saveCMSDatabase();
+  return cmsDb.tools;
+}
+
+// -------------------------------------------------------------
+// CATEGORIES CRUD
+// -------------------------------------------------------------
+export function getAllCategories(includeDisabled: boolean = true): CMSCategory[] {
+  recalcCategoryCounts();
+  if (includeDisabled) return cmsDb.categories;
+  return cmsDb.categories.filter((c) => c.status === "active");
+}
+
+export function createCategory(catData: Partial<CMSCategory>, adminEmail: string, ip?: string): CMSCategory {
+  const id = catData.id || catData.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "cat_" + Date.now();
+  const slug = catData.slug || id + "-tools";
+
+  const newCat: CMSCategory = {
+    id,
+    name: catData.name || "Untitled Category",
+    slug,
+    description: catData.description || "",
+    iconName: catData.iconName || "Folder",
+    status: catData.status || "active",
+    order: catData.order || cmsDb.categories.length + 1,
+    color: catData.color || "from-indigo-500 to-purple-600",
+    count: 0,
+    updatedAt: new Date().toISOString(),
+  };
+
+  cmsDb.categories.push(newCat);
+  recalcCategoryCounts();
+  logAuditAction(adminEmail, "CATEGORY_CREATED", "category", `Created category "${newCat.name}"`, ip, newCat.id);
+  saveCMSDatabase();
+  return newCat;
+}
+
+export function updateCategory(id: string, updates: Partial<CMSCategory>, adminEmail: string, ip?: string): CMSCategory | null {
+  const cat = cmsDb.categories.find((c) => c.id === id);
+  if (!cat) return null;
+
+  Object.assign(cat, updates, { updatedAt: new Date().toISOString() });
+  recalcCategoryCounts();
+  logAuditAction(adminEmail, "CATEGORY_UPDATED", "category", `Updated category "${cat.name}"`, ip, cat.id);
+  saveCMSDatabase();
+  return cat;
+}
+
+export function deleteCategory(id: string, adminEmail: string, ip?: string): { success: boolean; error?: string } {
+  const assignedTools = cmsDb.tools.filter((t) => t.category.toLowerCase() === id.toLowerCase());
+  if (assignedTools.length > 0) {
+    return {
+      success: false,
+      error: `Cannot delete category "${id}" because ${assignedTools.length} tools are still assigned to it. Reassign or delete these tools first.`,
+    };
+  }
+
+  const idx = cmsDb.categories.findIndex((c) => c.id === id);
+  if (idx === -1) return { success: false, error: "Category not found." };
+
+  const [deleted] = cmsDb.categories.splice(idx, 1);
+  logAuditAction(adminEmail, "CATEGORY_DELETED", "category", `Deleted category "${deleted.name}"`, ip, id);
+  saveCMSDatabase();
+  return { success: true };
+}
+
+export function reorderCategories(orderedIds: string[], adminEmail: string, ip?: string) {
+  orderedIds.forEach((id, index) => {
+    const c = cmsDb.categories.find((cat) => cat.id === id);
+    if (c) c.order = index + 1;
+  });
+  cmsDb.categories.sort((a, b) => a.order - b.order);
+  logAuditAction(adminEmail, "CATEGORIES_REORDERED", "category", `Reordered ${orderedIds.length} categories.`, ip);
+  saveCMSDatabase();
+  return cmsDb.categories;
+}
+
+function recalcCategoryCounts() {
+  cmsDb.categories.forEach((cat) => {
+    cat.count = cmsDb.tools.filter(
+      (t) => t.category.toLowerCase() === cat.id.toLowerCase() && t.status === "active"
+    ).length;
+  });
+}
+
+// -------------------------------------------------------------
+// BLOG / ARTICLE CMS CRUD
+// -------------------------------------------------------------
+export function getAllBlogPosts(includeDrafts: boolean = true): CMSBlogPost[] {
+  if (includeDrafts) return cmsDb.blogPosts;
+  return cmsDb.blogPosts.filter((b) => b.status === "published");
+}
+
+export function getBlogPostBySlug(slug: string): CMSBlogPost | undefined {
+  return cmsDb.blogPosts.find((b) => b.slug === slug);
+}
+
+export function createBlogPost(postData: Partial<CMSBlogPost>, adminEmail: string, ip?: string): CMSBlogPost {
+  const id = postData.id || "post_" + Date.now();
+  const slug = postData.slug || postData.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || id;
+
+  const newPost: CMSBlogPost = {
+    id,
+    title: postData.title || "Untitled Article",
+    slug,
+    excerpt: postData.excerpt || "",
+    content: postData.content || "",
+    author: {
+      name: postData.author?.name || "Admin",
+      avatar: postData.author?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+      role: postData.author?.role || "Editor",
+      email: postData.author?.email || adminEmail,
+    },
+    category: postData.category || "General",
+    tags: Array.isArray(postData.tags) ? postData.tags : ["Tools"],
+    image: postData.image || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    status: postData.status || "published",
+    date: postData.date || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    readTime: postData.readTime || "5 min read",
+    metaTitle: postData.metaTitle || `${postData.title} | Utility Tools Hub`,
+    metaDescription: postData.metaDescription || postData.excerpt || "",
+    canonicalUrl: postData.canonicalUrl || `https://utilitytoolshub.com/blog/${slug}`,
+    views: 0,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  cmsDb.blogPosts.unshift(newPost);
+  logAuditAction(adminEmail, "BLOG_CREATED", "blog", `Created article "${newPost.title}" (${newPost.slug})`, ip, newPost.id);
+  saveCMSDatabase();
+  return newPost;
+}
+
+export function updateBlogPost(id: string, updates: Partial<CMSBlogPost>, adminEmail: string, ip?: string): CMSBlogPost | null {
+  const post = cmsDb.blogPosts.find((b) => b.id === id);
+  if (!post) return null;
+
+  Object.assign(post, updates, { updatedAt: new Date().toISOString() });
+  logAuditAction(adminEmail, "BLOG_UPDATED", "blog", `Updated article "${post.title}" (${post.id})`, ip, post.id);
+  saveCMSDatabase();
+  return post;
+}
+
+export function deleteBlogPost(id: string, adminEmail: string, ip?: string): boolean {
+  const idx = cmsDb.blogPosts.findIndex((b) => b.id === id);
+  if (idx === -1) return false;
+
+  const [deleted] = cmsDb.blogPosts.splice(idx, 1);
+  logAuditAction(adminEmail, "BLOG_DELETED", "blog", `Deleted article "${deleted.title}"`, ip, id);
+  saveCMSDatabase();
+  return true;
+}
+
+// -------------------------------------------------------------
+// NEWSLETTER SUBSCRIBERS & CAMPAIGNS
+// -------------------------------------------------------------
+export function getAllSubscribers(): CMSNewsletterSubscriber[] {
+  return cmsDb.subscribers;
+}
+
+export function addSubscriber(email: string, source: string = "footer"): { success: boolean; subscriber?: CMSNewsletterSubscriber; error?: string } {
+  const cleanEmail = email.toLowerCase().trim();
+  if (!cleanEmail || !cleanEmail.includes("@")) {
+    return { success: false, error: "Valid email address required." };
+  }
+
+  const existing = cmsDb.subscribers.find((s) => s.email.toLowerCase() === cleanEmail);
+  if (existing) {
+    if (existing.status === "unsubscribed") {
+      existing.status = "active";
+      saveCMSDatabase();
+      return { success: true, subscriber: existing };
+    }
+    return { success: true, subscriber: existing };
+  }
+
+  const newSub: CMSNewsletterSubscriber = {
+    id: "sub_" + crypto.randomBytes(6).toString("hex"),
+    email: cleanEmail,
+    status: "active",
+    source,
+    subscribedAt: new Date().toISOString(),
+  };
+
+  cmsDb.subscribers.unshift(newSub);
+  saveCMSDatabase();
+  return { success: true, subscriber: newSub };
+}
+
+export function deleteSubscriber(email: string, adminEmail: string, ip?: string): boolean {
+  const cleanEmail = email.toLowerCase().trim();
+  const idx = cmsDb.subscribers.findIndex((s) => s.email.toLowerCase() === cleanEmail);
+  if (idx === -1) return false;
+
+  cmsDb.subscribers.splice(idx, 1);
+  logAuditAction(adminEmail, "SUBSCRIBER_DELETED", "newsletter", `Deleted subscriber ${cleanEmail}`, ip);
+  saveCMSDatabase();
+  return true;
+}
+
+export function recordCampaign(campaign: CMSCampaign, adminEmail: string, ip?: string) {
+  cmsDb.campaigns.unshift(campaign);
+  logAuditAction(adminEmail, "CAMPAIGN_DISPATCHED", "newsletter", `Dispatched campaign "${campaign.subject}" to ${campaign.recipientsCount} recipients`, ip, campaign.id);
+  saveCMSDatabase();
+}
+
+export function getAllCampaigns(): CMSCampaign[] {
+  return cmsDb.campaigns;
+}
+
+// -------------------------------------------------------------
+// SITE SETTINGS
+// -------------------------------------------------------------
+export function getSiteSettings(): CMSSiteSettings {
+  return cmsDb.settings;
+}
+
+export function updateSiteSettings(updates: Partial<CMSSiteSettings>, adminEmail: string, ip?: string): CMSSiteSettings {
+  cmsDb.settings = { ...cmsDb.settings, ...updates };
+  logAuditAction(adminEmail, "SETTINGS_UPDATED", "setting", "Updated sitewide configuration settings.", ip);
+  saveCMSDatabase();
+  return cmsDb.settings;
+}
+
+// -------------------------------------------------------------
+// AUDIT LOGS & BACKUP
+// -------------------------------------------------------------
+export function getAuditLogs(filterType?: string, limit: number = 100): CMSAuditLog[] {
+  if (filterType && filterType !== "all") {
+    return cmsDb.auditLogs.filter((l) => l.entityType === filterType).slice(0, limit);
+  }
+  return cmsDb.auditLogs.slice(0, limit);
+}
+
+export function exportFullBackup(): any {
+  return {
+    version: "3.0.0-ProductionCMS",
+    exportedAt: new Date().toISOString(),
+    database: cmsDb,
+  };
+}
+
+export function importFullBackup(backupData: any, adminEmail: string, ip?: string): { success: boolean; error?: string } {
+  if (!backupData || !backupData.database || !Array.isArray(backupData.database.tools)) {
+    return { success: false, error: "Invalid backup JSON structure." };
+  }
+
+  cmsDb = backupData.database;
+  logAuditAction(adminEmail, "DATABASE_RESTORED", "setting", `Restored database backup from ${backupData.exportedAt || "file"}.`, ip);
+  saveCMSDatabase();
+  return { success: true };
+}

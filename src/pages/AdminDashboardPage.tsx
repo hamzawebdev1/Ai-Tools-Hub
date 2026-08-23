@@ -3,7 +3,6 @@ import {
   ShieldAlert,
   Users,
   Server,
-  HardDrive,
   Database,
   FileText,
   Settings,
@@ -14,59 +13,40 @@ import {
   XCircle,
   RefreshCw,
   Download,
-  Upload,
-  Trash2,
   Plus,
   Lock,
   Key,
   Bell,
   MessageSquare,
   Globe,
-  Sliders,
   FileCode,
   Layers,
   Activity,
-  Check,
-  X,
-  TrendingUp,
   Shield,
   Eye,
   Send,
   HelpCircle,
-  ChevronRight,
-  PieChart,
-  Cloud,
-  Mail,
-  UserCheck,
-  UserX,
-  Edit3,
-  Filter,
-  Copy,
-  RotateCcw,
   Tag,
-  AlertCircle,
-  Sparkles,
   Clock,
-  ArrowUpRight,
-  Folder,
-  File,
-  SlidersHorizontal,
-  Terminal,
-  CheckSquare,
-  Square,
-  ShieldCheck,
+  TrendingUp,
   Radio,
+  History,
+  Mail,
   Zap,
 } from "lucide-react";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { SchemaHead } from "../components/layout/SchemaHead";
-import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../services/firebase";
 import { useAuth } from "../context/AuthContext";
-import { TOOLS_DATA } from "../data/toolsData";
-import { CATEGORIES_DATA } from "../data/categoriesData";
-import { BLOG_POSTS_DATA } from "../data/blogData";
 import { UserManagementSection } from "../components/admin/UserManagementSection";
+import { ToolManagementSection } from "../components/admin/ToolManagementSection";
+import { CategoryManagementSection } from "../components/admin/CategoryManagementSection";
+import { BlogManagementSection } from "../components/admin/BlogManagementSection";
+import { InboxManagementSection } from "../components/admin/InboxManagementSection";
+import { NewsletterManagementSection } from "../components/admin/NewsletterManagementSection";
+import { SiteSettingsSection } from "../components/admin/SiteSettingsSection";
+import { AuditLogsSection } from "../components/admin/AuditLogsSection";
+export type { Role, RoleConfig } from "../types/roles";
+export { ROLE_CONFIGS } from "../types/roles";
 
 interface AdminDashboardPageProps {
   theme?: "dark" | "light";
@@ -74,1091 +54,606 @@ interface AdminDashboardPageProps {
   onNavigate: (tab: string) => void;
 }
 
-export type Role =
-  | "super_admin"
-  | "admin"
-  | "manager"
-  | "editor"
-  | "moderator"
-  | "support"
-  | "user"
-  | "guest";
-
-export interface RoleConfig {
-  id: Role;
-  label: string;
-  description: string;
-  color: string;
-  allowedTabs: string[];
-  permissions: {
-    manageAdmins: boolean;
-    manageUsers: boolean;
-    deleteUsers: boolean;
-    manageRoles: boolean;
-    manageTools: boolean;
-    manageCategories: boolean;
-    manageBlog: boolean;
-    manageInbox: boolean;
-    manageReports: boolean;
-    manageFeatures: boolean;
-    manageNewsletter: boolean;
-    manageMedia: boolean;
-    manageSEO: boolean;
-    manageSettings: boolean;
-    manageSecurity: boolean;
-    exportBackup: boolean;
-  };
-}
-
-export const ROLE_CONFIGS: Record<Role, RoleConfig> = {
-  super_admin: {
-    id: "super_admin",
-    label: "Super Admin",
-    description: "Full system authority. Manages Admins, Roles, Security & Settings.",
-    color: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30",
-    allowedTabs: [
-      "overview",
-      "users",
-      "roles",
-      "tools",
-      "categories",
-      "blog",
-      "inbox",
-      "reports",
-      "features",
-      "newsletter",
-      "media",
-      "seo",
-      "settings",
-      "logs",
-      "backup",
-      "ai-settings",
-    ],
-    permissions: {
-      manageAdmins: true,
-      manageUsers: true,
-      deleteUsers: true,
-      manageRoles: true,
-      manageTools: true,
-      manageCategories: true,
-      manageBlog: true,
-      manageInbox: true,
-      manageReports: true,
-      manageFeatures: true,
-      manageNewsletter: true,
-      manageMedia: true,
-      manageSEO: true,
-      manageSettings: true,
-      manageSecurity: true,
-      exportBackup: true,
-    },
-  },
-  admin: {
-    id: "admin",
-    label: "Admin",
-    description: "Manages users, tools, blog, SEO, reports, and newsletter.",
-    color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/30",
-    allowedTabs: [
-      "overview",
-      "users",
-      "tools",
-      "categories",
-      "blog",
-      "inbox",
-      "reports",
-      "features",
-      "newsletter",
-      "media",
-      "seo",
-      "logs",
-    ],
-    permissions: {
-      manageAdmins: false,
-      manageUsers: true,
-      deleteUsers: true,
-      manageRoles: false,
-      manageTools: true,
-      manageCategories: true,
-      manageBlog: true,
-      manageInbox: true,
-      manageReports: true,
-      manageFeatures: true,
-      manageNewsletter: true,
-      manageMedia: true,
-      manageSEO: true,
-      manageSettings: false,
-      manageSecurity: false,
-      exportBackup: false,
-    },
-  },
-  manager: {
-    id: "manager",
-    label: "Manager",
-    description: "Views analytics, manages newsletter, reports, and support tickets.",
-    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30",
-    allowedTabs: ["overview", "users", "inbox", "reports", "features", "newsletter", "logs"],
-    permissions: {
-      manageAdmins: false,
-      manageUsers: true,
-      deleteUsers: false,
-      manageRoles: false,
-      manageTools: false,
-      manageCategories: false,
-      manageBlog: false,
-      manageInbox: true,
-      manageReports: true,
-      manageFeatures: true,
-      manageNewsletter: true,
-      manageMedia: false,
-      manageSEO: false,
-      manageSettings: false,
-      manageSecurity: false,
-      exportBackup: false,
-    },
-  },
-  editor: {
-    id: "editor",
-    label: "Editor",
-    description: "Creates and publishes blog posts, pages, categories, and media.",
-    color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
-    allowedTabs: ["overview", "blog", "categories", "media", "seo"],
-    permissions: {
-      manageAdmins: false,
-      manageUsers: false,
-      deleteUsers: false,
-      manageRoles: false,
-      manageTools: false,
-      manageCategories: true,
-      manageBlog: true,
-      manageInbox: false,
-      manageReports: false,
-      manageFeatures: false,
-      manageNewsletter: false,
-      manageMedia: true,
-      manageSEO: true,
-      manageSettings: false,
-      manageSecurity: false,
-      exportBackup: false,
-    },
-  },
-  moderator: {
-    id: "moderator",
-    label: "Moderator",
-    description: "Moderates blog comments, support tickets, and community posts.",
-    color: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30",
-    allowedTabs: ["overview", "blog", "inbox", "reports", "features"],
-    permissions: {
-      manageAdmins: false,
-      manageUsers: false,
-      deleteUsers: false,
-      manageRoles: false,
-      manageTools: false,
-      manageCategories: false,
-      manageBlog: true,
-      manageInbox: true,
-      manageReports: true,
-      manageFeatures: true,
-      manageNewsletter: false,
-      manageMedia: false,
-      manageSEO: false,
-      manageSettings: false,
-      manageSecurity: false,
-      exportBackup: false,
-    },
-  },
-  support: {
-    id: "support",
-    label: "Support Agent",
-    description: "Handles user contact messages, bug reports, and feature requests.",
-    color: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30",
-    allowedTabs: ["overview", "inbox", "reports", "features"],
-    permissions: {
-      manageAdmins: false,
-      manageUsers: false,
-      deleteUsers: false,
-      manageRoles: false,
-      manageTools: false,
-      manageCategories: false,
-      manageBlog: false,
-      manageInbox: true,
-      manageReports: true,
-      manageFeatures: true,
-      manageNewsletter: false,
-      manageMedia: false,
-      manageSEO: false,
-      manageSettings: false,
-      manageSecurity: false,
-      exportBackup: false,
-    },
-  },
-  user: {
-    id: "user",
-    label: "User",
-    description: "Standard registered user account. No administrative access.",
-    color: "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/30",
-    allowedTabs: [],
-    permissions: {
-      manageAdmins: false,
-      manageUsers: false,
-      deleteUsers: false,
-      manageRoles: false,
-      manageTools: false,
-      manageCategories: false,
-      manageBlog: false,
-      manageInbox: false,
-      manageReports: false,
-      manageFeatures: false,
-      manageNewsletter: false,
-      manageMedia: false,
-      manageSEO: false,
-      manageSettings: false,
-      manageSecurity: false,
-      exportBackup: false,
-    },
-  },
-  guest: {
-    id: "guest",
-    label: "Guest",
-    description: "Anonymous visitor. No administrative access.",
-    color: "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/30",
-    allowedTabs: [],
-    permissions: {
-      manageAdmins: false,
-      manageUsers: false,
-      deleteUsers: false,
-      manageRoles: false,
-      manageTools: false,
-      manageCategories: false,
-      manageBlog: false,
-      manageInbox: false,
-      manageReports: false,
-      manageFeatures: false,
-      manageNewsletter: false,
-      manageMedia: false,
-      manageSEO: false,
-      manageSettings: false,
-      manageSecurity: false,
-      exportBackup: false,
-    },
-  },
-};
+export type AdminTab =
+  | "overview"
+  | "analytics"
+  | "users"
+  | "tools"
+  | "categories"
+  | "blog"
+  | "inbox"
+  | "newsletter"
+  | "settings"
+  | "audit-logs";
 
 export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
-  theme = "dark",
+  theme,
   toggleTheme,
   onNavigate,
 }) => {
-  const { currentUser, userDoc } = useAuth();
-
-  // Role State & Simulation
-  const realRole: Role = (userDoc?.role as Role) || "super_admin"; // fallback to super_admin for admin user
-  const [simulatedRole, setSimulatedRole] = useState<Role>(realRole);
-  const activeRoleConfig = ROLE_CONFIGS[simulatedRole] || ROLE_CONFIGS["super_admin"];
-
-  const [activeTab, setActiveTab] = useState<string>("overview");
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState<AdminTab>("overview");
+  const [metrics, setMetrics] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [notification, setNotification] = useState<string | null>(null);
 
-  // Keep active tab valid for simulated role
-  useEffect(() => {
-    if (activeRoleConfig.allowedTabs.length > 0 && !activeRoleConfig.allowedTabs.includes(activeTab)) {
-      setActiveTab(activeRoleConfig.allowedTabs[0]);
-    }
-  }, [simulatedRole]);
-
-  // General Metrics State
-  const [metrics, setMetrics] = useState({
-    totalUsers: 0,
-    todaysUsers: 0,
-    monthlyUsers: 0,
-    googleSignups: 0,
-    emailSignups: 0,
-    guestUsers: 0,
-    onlineUsers: 1,
-    newsletterSubscribers: 0,
-    totalTools: TOOLS_DATA.length,
-    workingTools: TOOLS_DATA.length,
-    brokenTools: 0,
-    pendingReports: 0,
-    resolvedReports: 0,
-    contactMessages: 0,
-    featureRequests: 0,
-    storageUsageGb: 0.1,
-    googleDriveUsageGb: 0,
-    blogPostsCount: BLOG_POSTS_DATA.length,
-    categoriesCount: CATEGORIES_DATA.length,
-    faqsCount: 16,
-    pagesCount: 8,
-  });
-
-  // Submissions Store (Contact, Bug Reports, Feature Requests, Tool Health)
-  const [submissions, setSubmissions] = useState<any>({
-    contactMessages: [],
-    bugReports: [],
-    featureRequests: [],
-    toolHealth: TOOLS_DATA.map((t) => ({
-      toolId: t.id,
-      toolName: t.name,
-      status: "Healthy",
-      successRate: 100,
-      avgLatencyMs: 85,
-      lastTested: "Just now",
-    })),
-  });
-
-  // Selected Submission Modal State
-  const [activeReplyMessage, setActiveReplyMessage] = useState<any>(null);
-  const [replyText, setReplyText] = useState("");
-  const [activeReport, setActiveReport] = useState<any>(null);
-
-  // Tools & Categories Custom Management State
-  const [toolsList, setToolsList] = useState(TOOLS_DATA);
-  const [toolSearch, setToolSearch] = useState("");
-  const [editingTool, setEditingTool] = useState<any>(null);
-
-  const [categoriesList, setCategoriesList] = useState(CATEGORIES_DATA);
-  const [editingCategory, setEditingCategory] = useState<any>(null);
-
-  // Blog Posts & Pages State
-  const [blogPosts, setBlogPosts] = useState(BLOG_POSTS_DATA);
-  const [blogSearch, setBlogSearch] = useState("");
-
-  // Newsletter & Campaign State
-  const [newsletterSubscribers, setNewsletterSubscribers] = useState<any[]>([]);
-  const [campaignSubject, setCampaignSubject] = useState("");
-  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Mehzan Digital!</h2><p>Check out our latest free developer and media conversion upgrades.</p>");
-  const [testEmail, setTestEmail] = useState("");
-  const [campaignSending, setCampaignSending] = useState(false);
-
-  // SEO & Sitemap State
-  const [robotsTxt, setRobotsTxt] = useState(
-    `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\nSitemap: https://utilitytoolshub.com/sitemap.xml`
-  );
-  const [sitemapXml, setSitemapXml] = useState(
-    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://utilitytoolshub.com/</loc><priority>1.0</priority></url>\n</urlset>`
-  );
-
-  // Settings & Maintenance Mode
-  const [siteSettings, setSiteSettings] = useState({
-    siteName: "Utility Tools Hub",
-    tagline: "50+ Free Professional Developer & Multimedia Tools",
-    maintenanceMode: false,
-    googleAnalyticsId: "G-AITOOLSHUB99",
-    adsenseStatus: "Active & Policy Compliant",
-    announcementBar: "🚀 OWASP Top 10 Security & Fast Browser Processing Active!",
-  });
-
-  // Environment Variables Masked Preview
-  const envVars = [
-    { name: "APP_SESSION_SECRET", maskedValue: "sec_sess_••••••••••••••••••••38f", status: "Configured (Server Secret)" },
-    { name: "FIREBASE_PROJECT_ID", maskedValue: "ai-studio-utilitytoolshub-f93338eb", status: "Active Firestore" },
-    { name: "JWT_SECRET", maskedValue: "super_secret_jwt_••••••••", status: "Configured" },
-    { name: "STORAGE_BUCKET", maskedValue: "utilitytoolshub-production.appspot.com", status: "Active Cloud Storage" },
-    { name: "NODE_ENV", maskedValue: "production", status: "Production Cluster" },
-  ];
-
-  // Logs & Security Logs State
-  const [securityLogs, setSecurityLogs] = useState([
-    { id: "sec_1", time: "2026-08-07 13:10", ip: "192.168.1.45", action: "CSRF Token Verified", status: "SAFE" },
-    { id: "sec_2", time: "2026-08-07 12:45", ip: "10.0.0.12", action: "Heavy Scan Rate-Limited", status: "BLOCKED" },
-    { id: "sec_3", time: "2026-08-07 11:00", ip: "172.16.0.8", action: "Super Admin Login SSO", status: "SUCCESS" },
-  ]);
+  // Analytics Range
+  const [analyticsRange, setAnalyticsRange] = useState("today");
 
   const showNotification = (msg: string) => {
-    setSuccessMessage(msg);
-    setTimeout(() => setSuccessMessage(null), 3500);
+    setNotification(msg);
+    setTimeout(() => {
+      setNotification(null);
+    }, 4000);
   };
 
-  // Sync real Firestore users data
-  useEffect(() => {
-    const fetchRealData = async () => {
-      setLoading(true);
-      try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        const realUsers: any[] = [];
-        querySnapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          realUsers.push({
-            id: docSnap.id,
-            name: data.displayName || data.name || "User",
-            email: data.email || "",
-            role: data.role || "user",
-            status: data.status || "Active",
-            provider: data.provider || "password",
-            lastLogin: data.lastLogin ? data.lastLogin.substring(0, 16).replace("T", " ") : "Recently",
-            joinedDate: data.createdAt ? data.createdAt.substring(0, 10) : "2026-01-01",
-            guestUsageCount: data.guestUsageCount || 0,
-            history: data.history || [],
-          });
-        });
-
-        if (realUsers.length > 0) {
-          setMetrics((prev) => ({
-            ...prev,
-            totalUsers: realUsers.length,
-            googleSignups: realUsers.filter((u) => u.provider?.toLowerCase()?.includes("google")).length,
-            emailSignups: realUsers.filter((u) => u.provider?.toLowerCase()?.includes("password")).length,
-          }));
-        }
-
-        // Fetch Submissions Store
-        const subRes = await fetch("/api/submissions");
-        const subData = await subRes.json();
-        if (subData.success && subData.store) {
-          setSubmissions(subData.store);
-        }
-      } catch (err) {
-        console.error("Firestore sync error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRealData();
-  }, []);
-
-  // Check Unauthorized User Access
-  const isUnauthorized =
-    simulatedRole === "user" || simulatedRole === "guest" || activeRoleConfig.allowedTabs.length === 0;
-
-  if (isUnauthorized) {
-    return (
-      <div className="max-w-2xl mx-auto py-16 px-4 text-center space-y-6 animate-fade-in">
-        <div className="w-20 h-20 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-500 flex items-center justify-center mx-auto shadow-2xl">
-          <ShieldAlert className="w-10 h-10" />
-        </div>
-        <div className="space-y-2">
-          <span className="px-3 py-1 rounded-full bg-rose-500/20 text-rose-600 dark:text-rose-400 font-mono text-xs font-bold uppercase tracking-widest">
-            HTTP 403 Forbidden
-          </span>
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white">Access Denied</h1>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
-            Your current account <strong className="text-slate-800 dark:text-slate-200">({currentUser?.email || "Guest"})</strong> with role{" "}
-            <span className="font-bold text-rose-500 uppercase">{simulatedRole}</span> does not have administrative privileges to access the Control Center.
-          </p>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-2 text-left">
-          <p className="font-bold text-slate-900 dark:text-white">Security Verification Audit:</p>
-          <ul className="list-disc list-inside space-y-1 text-[11px]">
-            <li>Firestore Security Rules enforce role validation on backend endpoints.</li>
-            <li>All unauthorized access attempts are logged with IP & timestamp.</li>
-            <li>If you are an administrator, log in with an authorized account.</li>
-          </ul>
-        </div>
-
-        <div className="flex items-center justify-center gap-3 pt-2">
-          <button
-            onClick={() => onNavigate("home")}
-            className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg transition-colors cursor-pointer"
-          >
-            Return to Homepage
-          </button>
-          {realRole === "super_admin" && (
-            <button
-              onClick={() => setSimulatedRole("super_admin")}
-              className="px-5 py-3 rounded-xl border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold text-xs cursor-pointer"
-            >
-              Reset Role to Super Admin
-            </button>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // Tool Health diagnostic trigger
-  const runToolHealthCheck = async () => {
+  const fetchMetrics = async () => {
+    setLoading(true);
     try {
-      const res = await fetch("/api/tool-health/run", { method: "POST" });
+      const res = await fetch(`/api/admin/metrics?range=${analyticsRange}`);
       const data = await res.json();
       if (data.success) {
-        setSubmissions((prev: any) => ({ ...prev, toolHealth: data.toolHealth }));
-        showNotification("Tool health diagnostics completed. All systems verified.");
+        setMetrics(data.data);
       }
-    } catch {
-      showNotification("Diagnostics check finished with 100% test coverage.");
-    }
-  };
-
-  // Dispatch Email Campaign
-  const handleDispatchCampaign = async () => {
-    if (!campaignSubject || !campaignHtml) return;
-    setCampaignSending(true);
-    try {
-      const res = await fetch("/api/admin/campaigns/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          subject: campaignSubject,
-          htmlContent: campaignHtml,
-          testEmail: testEmail || undefined,
-        }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        showNotification(data.message);
-        setCampaignSubject("");
-      } else {
-        showNotification(`Campaign error: ${data.error}`);
-      }
-    } catch (err: any) {
-      showNotification("Campaign dispatch simulated successfully.");
+    } catch (err) {
+      console.error("Failed to fetch admin metrics:", err);
     } finally {
-      setCampaignSending(false);
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchMetrics();
+  }, [analyticsRange]);
+
+  const navItems: { id: AdminTab; label: string; icon: React.ReactNode; badge?: number | string }[] = [
+    { id: "overview", label: "Dashboard Overview", icon: <BarChart3 className="w-4 h-4" /> },
+    { id: "analytics", label: "Real-Time Analytics", icon: <Activity className="w-4 h-4" /> },
+    {
+      id: "users",
+      label: "User Management",
+      icon: <Users className="w-4 h-4" />,
+      badge: metrics?.users?.total,
+    },
+    {
+      id: "tools",
+      label: "Tool Management",
+      icon: <Layers className="w-4 h-4" />,
+      badge: metrics?.tools?.total,
+    },
+    {
+      id: "categories",
+      label: "Category Management",
+      icon: <Tag className="w-4 h-4" />,
+      badge: metrics?.categories?.total,
+    },
+    {
+      id: "blog",
+      label: "Blog & Articles CMS",
+      icon: <FileText className="w-4 h-4" />,
+      badge: metrics?.blog?.total,
+    },
+    {
+      id: "inbox",
+      label: "Support Inbox",
+      icon: <MessageSquare className="w-4 h-4" />,
+      badge: metrics?.contact?.unread > 0 ? metrics.contact.unread : undefined,
+    },
+    {
+      id: "newsletter",
+      label: "Subscribers & Campaigns",
+      icon: <Mail className="w-4 h-4" />,
+      badge: metrics?.newsletter?.totalSubscribers,
+    },
+    { id: "settings", label: "Site Settings & SEO", icon: <Settings className="w-4 h-4" /> },
+    { id: "audit-logs", label: "Audit Activity Logs", icon: <History className="w-4 h-4" /> },
+  ];
 
   return (
-    <>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors pb-20">
       <SchemaHead
-        title="Enterprise Admin Panel - Utility Tools Hub Control Center"
-        description="Role-based administration center for security, users, tools, SEO, newsletter, and system configuration."
+        title="Admin Control Center | Utility Tools Hub"
+        description="Production Admin Console for managing tools, categories, articles, support messages, users, and real-time business metrics."
+        url="/admin"
       />
 
-      <div className="space-y-8 pb-20">
-        <Breadcrumb items={[{ label: "Admin Panel", active: true }]} />
+      {/* Floating Notification Toast */}
+      {notification && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-2xl animate-fade-in text-xs font-semibold">
+          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+          <span>{notification}</span>
+        </div>
+      )}
 
-        {/* Success Alert Banner */}
-        {successMessage && (
-          <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-2 animate-fade-in shadow-lg">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span>{successMessage}</span>
-          </div>
-        )}
-
-        {/* Global Maintenance Mode Active Notice */}
-        {siteSettings.maintenanceMode && (
-          <div className="p-4 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-800 dark:text-amber-200 text-xs font-bold flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-500 animate-bounce" />
-              <span>MAINTENANCE MODE IS CURRENTLY ENABLED SITEWIDE. Only admins can access tools.</span>
+      {/* Header Container */}
+      <div className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-md">
+              <Shield className="w-5 h-5" />
             </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 dark:text-white">
+                  Utility Tools Hub
+                </h1>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                  LIVE PROD
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400">Enterprise Administration & CMS</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
             <button
-              onClick={() => setSiteSettings({ ...siteSettings, maintenanceMode: false })}
-              className="px-3 py-1 rounded-lg bg-amber-500 text-white font-bold text-[11px] cursor-pointer"
+              onClick={() => onNavigate("home")}
+              className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer text-slate-600 dark:text-slate-300 flex items-center gap-1.5"
             >
-              Disable Mode
+              <Globe className="w-3.5 h-3.5" />
+              <span>Public Site</span>
+            </button>
+
+            <button
+              onClick={fetchMetrics}
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+              title="Refresh Metrics"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-indigo-500" : ""}`} />
             </button>
           </div>
-        )}
+        </div>
 
-        {/* Top Header Banner with Role Simulation */}
-        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 shadow-2xl space-y-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className={`px-3 py-1 rounded-full border text-xs font-extrabold uppercase tracking-widest flex items-center gap-1.5 ${activeRoleConfig.color}`}>
-                  <ShieldCheck className="w-3.5 h-3.5" /> {activeRoleConfig.label} Access
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold">
-                  🔒 OWASP Top 10 Compliant
-                </span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">Enterprise Control Center</h1>
-              <p className="text-xs text-slate-400 max-w-xl">{activeRoleConfig.description}</p>
-            </div>
-
-            <div className="flex items-center gap-3 flex-wrap">
+        {/* Horizontal Navigation Scroll Bar */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-auto no-scrollbar">
+          <div className="flex items-center gap-1 py-1.5 min-w-max">
+            {navItems.map((item) => (
               <button
-                onClick={runToolHealthCheck}
-                className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === item.id
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+                }`}
               >
-                <RefreshCw className="w-4 h-4 text-indigo-400" />
-                <span>Run Diagnostics</span>
+                {item.icon}
+                <span>{item.label}</span>
+                {item.badge !== undefined && (
+                  <span
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
+                      activeTab === item.id
+                        ? "bg-white/20 text-white"
+                        : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
               </button>
-              {activeRoleConfig.permissions.exportBackup && (
-                <button
-                  onClick={() => {
-                    const backup = { exportedAt: new Date().toISOString(), metrics, siteSettings, submissions };
-                    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = "mehzandigital-enterprise-backup.json";
-                    a.click();
-                    showNotification("Full enterprise system configuration exported successfully.");
-                  }}
-                  className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg cursor-pointer"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Export Backup</span>
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Role Simulator Selector for Testing & Inspection */}
-          <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2 text-slate-300 font-semibold">
-              <Key className="w-4 h-4 text-amber-400" />
-              <span>RBAC Role Simulator (Preview Dashboard Perspective):</span>
-            </div>
-            <select
-              value={simulatedRole}
-              onChange={(e) => setSimulatedRole(e.target.value as Role)}
-              className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 font-bold text-indigo-300 cursor-pointer text-xs"
-            >
-              <option value="super_admin">Super Admin (All Capabilities)</option>
-              <option value="admin">Admin (Users, Content, SEO)</option>
-              <option value="manager">Manager (Reports, Support, Analytics)</option>
-              <option value="editor">Editor (Blog, Pages, Media)</option>
-              <option value="moderator">Moderator (Comments, Reports)</option>
-              <option value="support">Support Agent (Inbox, Bug Reports)</option>
-              <option value="user">User (Access Denied View)</option>
-              <option value="guest">Guest (Access Denied View)</option>
-            </select>
+            ))}
           </div>
         </div>
+      </div>
 
-        {/* Navigation Tabs based on Role Permissions */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-slate-200 dark:border-slate-800 scrollbar-none">
-          {[
-            { id: "overview", label: "Overview", icon: BarChart3 },
-            { id: "users", label: "Users", icon: Users },
-            { id: "roles", label: "Roles & Perms", icon: Key },
-            { id: "tools", label: "Tools", icon: Layers },
-            { id: "categories", label: "Categories", icon: Tag },
-            { id: "blog", label: "Blog & Pages", icon: FileText },
-            { id: "inbox", label: "Inbox", icon: Mail },
-            { id: "reports", label: "Bug Reports", icon: AlertTriangle },
-            { id: "features", label: "Feature Requests", icon: Sparkles },
-            { id: "newsletter", label: "Newsletter", icon: Send },
-            { id: "media", label: "Media Library", icon: Folder },
-            { id: "seo", label: "SEO & Sitemap", icon: Globe },
-            { id: "settings", label: "Settings", icon: Settings },
-            { id: "logs", label: "Audit Logs", icon: Activity },
-            { id: "backup", label: "Backup & Restore", icon: Database },
-          ]
-            .filter((tab) => activeRoleConfig.allowedTabs.includes(tab.id))
-            .map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
-                    isActive
-                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/25"
-                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-        </div>
-
-        {/* TAB: OVERVIEW */}
+      {/* Main Content Area */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        {/* OVERVIEW TAB */}
         {activeTab === "overview" && (
           <div className="space-y-8 animate-fade-in">
-            {/* Stat Cards Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-1">
-                <span className="text-xs text-slate-400 font-medium">Total Registered Users</span>
-                <p className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-                  {metrics.totalUsers.toLocaleString()}
-                </p>
-                <span className="text-[10px] text-emerald-500 font-bold flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" /> +18% this month
-                </span>
+            {/* Quick Summary Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Users Metric */}
+              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-400">Total Users</span>
+                  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                    <Users className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                    {metrics?.users?.total ?? 0}
+                  </span>
+                  <span className="text-xs font-semibold text-emerald-500">
+                    +{metrics?.users?.newToday ?? 0} today
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
+                  <span>Active: {metrics?.users?.active ?? 0}</span>
+                  <span>This Week: +{metrics?.users?.newThisWeek ?? 0}</span>
+                </div>
               </div>
 
-              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-1">
-                <span className="text-xs text-slate-400 font-medium">Active Online Users</span>
-                <p className="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400">
-                  {metrics.onlineUsers}
-                </p>
-                <span className="text-[10px] text-slate-500">Live SSE Connections</span>
+              {/* Tools Metric */}
+              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-400">Platform Tools</span>
+                  <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                    <Layers className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                    {metrics?.tools?.total ?? 0}
+                  </span>
+                  <span className="text-xs font-semibold text-purple-500">
+                    {metrics?.tools?.active ?? 0} active
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
+                  <span>Categories: {metrics?.categories?.total ?? 0}</span>
+                  <span>Disabled: {metrics?.tools?.disabled ?? 0}</span>
+                </div>
               </div>
 
-              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-1">
-                <span className="text-xs text-slate-400 font-medium">Tool Health Status</span>
-                <p className="text-2xl sm:text-3xl font-black text-emerald-500">
-                  {metrics.workingTools} / {metrics.totalTools}
-                </p>
-                <span className="text-[10px] text-slate-500">1 Warning Diagnostic</span>
+              {/* Blog & Articles Metric */}
+              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-400">Articles & Guides</span>
+                  <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                    {metrics?.blog?.total ?? 0}
+                  </span>
+                  <span className="text-xs font-semibold text-blue-500">
+                    {metrics?.blog?.published ?? 0} published
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
+                  <span>Drafts: {metrics?.blog?.draft ?? 0}</span>
+                  <span>Subscribers: {metrics?.newsletter?.totalSubscribers ?? 0}</span>
+                </div>
               </div>
 
-              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs space-y-1">
-                <span className="text-xs text-slate-400 font-medium">Pending Support Reports</span>
-                <p className="text-2xl sm:text-3xl font-black text-rose-500">
-                  {submissions.bugReports.filter((b: any) => b.status !== "Resolved").length}
-                </p>
-                <span className="text-[10px] text-slate-500">Require Admin Action</span>
+              {/* Support & Inbox Metric */}
+              <div className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-400">Support Inbox</span>
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
+                    {metrics?.contact?.total ?? 0}
+                  </span>
+                  {metrics?.contact?.unread > 0 ? (
+                    <span className="text-xs font-semibold text-amber-500">
+                      {metrics.contact.unread} unread
+                    </span>
+                  ) : (
+                    <span className="text-xs font-semibold text-emerald-500">All caught up</span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800">
+                  <span>Bug Reports: {metrics?.reports?.openBugReports ?? 0}</span>
+                  <span>Threats Blocked: {metrics?.security?.threatsBlocked ?? 0}</span>
+                </div>
               </div>
             </div>
 
-            {/* Visual Analytics Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4 shadow-xl">
-                <div className="flex items-center justify-between">
+            {/* Quick Action Buttons */}
+            <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Zap className="w-4 h-4 text-amber-500" /> Admin Quick Actions
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+                <button
+                  onClick={() => setActiveTab("tools")}
+                  className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 flex flex-col items-center gap-2 text-center transition-all cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                    <Plus className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Add New Tool
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("categories")}
+                  className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 flex flex-col items-center gap-2 text-center transition-all cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
+                    <Tag className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Add Category
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("blog")}
+                  className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 flex flex-col items-center gap-2 text-center transition-all cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Write Article
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("newsletter")}
+                  className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 flex flex-col items-center gap-2 text-center transition-all cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center">
+                    <Send className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Send Campaign
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("inbox")}
+                  className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 flex flex-col items-center gap-2 text-center transition-all cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    View Inbox
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("settings")}
+                  className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 flex flex-col items-center gap-2 text-center transition-all cursor-pointer"
+                >
+                  <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+                    <Settings className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Site Settings
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Top Performing Tools & Live Recent Activity */}
+            {metrics?.analytics && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Top Tools by Volume */}
+                <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4 text-indigo-500" /> Daily User & Tool Activity
+                    <TrendingUp className="w-4 h-4 text-indigo-500" /> Top Performing Tools
                   </h3>
-                  <span className="text-[11px] text-slate-400">Past 7 Days</span>
-                </div>
-                <div className="space-y-3 pt-2">
-                  {[
-                    { day: "Mon", users: 120, tools: 410 },
-                    { day: "Tue", users: 180, tools: 590 },
-                    { day: "Wed", users: 210, tools: 780 },
-                    { day: "Thu", users: 240, tools: 850 },
-                    { day: "Fri", users: 310, tools: 1120 },
-                    { day: "Sat", users: 190, tools: 640 },
-                    { day: "Sun", users: 160, tools: 520 },
-                  ].map((d) => (
-                    <div key={d.day} className="space-y-1">
-                      <div className="flex justify-between text-xs text-slate-500">
-                        <span>{d.day}</span>
-                        <span>{d.users} Users • {d.tools} Executions</span>
+                  <div className="space-y-3">
+                    {metrics.analytics.topTools?.slice(0, 5).map((tool: any) => (
+                      <div
+                        key={tool.toolId}
+                        className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60 text-xs"
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-bold text-slate-900 dark:text-white">
+                            {tool.toolName}
+                          </span>
+                          <span className="text-[11px] text-slate-400 font-mono">
+                            Views: {tool.views} | Starts: {tool.starts}
+                          </span>
+                        </div>
+                        <div className="text-right">
+                          <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                            {tool.completionRate}%
+                          </span>
+                          <span className="block text-[10px] text-slate-400">Completion</span>
+                        </div>
                       </div>
-                      <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden flex">
-                        <div className="bg-indigo-600 h-full" style={{ width: `${(d.users / 350) * 100}%` }}></div>
-                        <div className="bg-emerald-500 h-full" style={{ width: `${(d.tools / 1200) * 100}%` }}></div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Live Activity Stream */}
+                <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-indigo-500" /> Live Visitor Activity Stream
+                  </h3>
+                  <div className="space-y-2 max-h-72 overflow-y-auto">
+                    {metrics.analytics.liveActivity?.slice(0, 6).map((item: any) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60 text-xs"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                          <div className="truncate">
+                            <span className="font-bold text-slate-800 dark:text-slate-200">
+                              {item.action}
+                            </span>{" "}
+                            <span className="text-slate-400">({item.tool})</span>
+                          </div>
+                        </div>
+                        <span className="text-[10px] text-slate-400 whitespace-nowrap font-mono">
+                          {item.country} • {new Date(item.timestamp).toLocaleTimeString()}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* REAL-TIME ANALYTICS TAB */}
+        {activeTab === "analytics" && metrics?.analytics && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-indigo-500" /> Production Analytics & Traffic Intelligence
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Real visitor telemetry, tool completion rates, device breakdown, and geo distribution.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {(["today", "7days", "30days"] as const).map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => setAnalyticsRange(r)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize cursor-pointer transition-all ${
+                      analyticsRange === r
+                        ? "bg-indigo-600 text-white shadow-sm"
+                        : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                    }`}
+                  >
+                    {r === "7days" ? "7 Days" : r === "30days" ? "30 Days" : "Today"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Metrics Overview Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+                <span className="text-[10px] font-bold text-slate-400 block">UNIQUE VISITORS</span>
+                <span className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  {metrics.analytics.overview.uniqueVisitors}
+                </span>
+              </div>
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+                <span className="text-[10px] font-bold text-slate-400 block">TOTAL PAGEVIEWS</span>
+                <span className="text-xl font-extrabold text-indigo-600 dark:text-indigo-400">
+                  {metrics.analytics.overview.pageViews}
+                </span>
+              </div>
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+                <span className="text-[10px] font-bold text-slate-400 block">TOOL USES</span>
+                <span className="text-xl font-extrabold text-purple-600 dark:text-purple-400">
+                  {metrics.analytics.overview.toolUses}
+                </span>
+              </div>
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+                <span className="text-[10px] font-bold text-slate-400 block">SUCCESSFUL</span>
+                <span className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                  {metrics.analytics.overview.successfulToolUses}
+                </span>
+              </div>
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+                <span className="text-[10px] font-bold text-slate-400 block">DOWNLOADS</span>
+                <span className="text-xl font-extrabold text-blue-600 dark:text-blue-400">
+                  {metrics.analytics.overview.downloads}
+                </span>
+              </div>
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
+                <span className="text-[10px] font-bold text-slate-400 block">AVG DURATION</span>
+                <span className="text-xl font-extrabold text-amber-600 dark:text-amber-400">
+                  {metrics.analytics.overview.avgDurationSec}s
+                </span>
+              </div>
+            </div>
+
+            {/* Countries & Devices Breakdown */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Countries */}
+              <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-indigo-500" /> Geographic Visitor Distribution
+                </h3>
+                <div className="space-y-2">
+                  {metrics.analytics.countryAnalytics?.map((c: any) => (
+                    <div
+                      key={c.country}
+                      className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60 text-xs"
+                    >
+                      <span className="font-bold text-slate-900 dark:text-white">{c.country}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-slate-400 font-mono">{c.visitors} visitors</span>
+                        <span className="font-bold text-indigo-600 dark:text-indigo-400">{c.percentage}%</span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4 shadow-xl">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <PieChart className="w-4 h-4 text-purple-500" /> Category Usage Distribution
-                  </h3>
-                  <span className="text-[11px] text-slate-400">Total Tool Hits</span>
-                </div>
-                <div className="space-y-3 pt-2">
-                  {[
-                    { name: "Image Tools", percentage: 38, color: "bg-indigo-500" },
-                    { name: "PDF Tools", percentage: 28, color: "bg-purple-500" },
-                    { name: "Developer Tools", percentage: 18, color: "bg-emerald-500" },
-                    { name: "Text & AI Tools", percentage: 11, color: "bg-amber-500" },
-                    { name: "Audio Tools", percentage: 5, color: "bg-rose-500" },
-                  ].map((cat) => (
-                    <div key={cat.name} className="space-y-1">
-                      <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-300">
-                        <span>{cat.name}</span>
-                        <span>{cat.percentage}%</span>
+              {/* Devices & Browsers */}
+              <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Server className="w-4 h-4 text-indigo-500" /> Device & Browser Intelligence
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-bold text-slate-400 uppercase">Device Types</p>
+                    {metrics.analytics.deviceAnalytics?.devices?.map((d: any) => (
+                      <div
+                        key={d.device}
+                        className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-xs"
+                      >
+                        <span className="font-medium text-slate-800 dark:text-slate-200">{d.device}</span>
+                        <span className="font-bold text-indigo-500">{d.percentage}%</span>
                       </div>
-                      <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                        <div className={`h-full ${cat.color}`} style={{ width: `${cat.percentage}%` }}></div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-bold text-slate-400 uppercase">Browsers</p>
+                    {metrics.analytics.deviceAnalytics?.browsers?.map((b: any) => (
+                      <div
+                        key={b.browser}
+                        className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-xs"
+                      >
+                        <span className="font-medium text-slate-800 dark:text-slate-200">{b.browser}</span>
+                        <span className="font-bold text-indigo-500">{b.percentage}%</span>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* TAB: USERS MANAGEMENT */}
+        {/* USERS TAB */}
         {activeTab === "users" && (
           <UserManagementSection
-            currentAdminRole={simulatedRole}
             onShowNotification={showNotification}
-            onNavigate={onNavigate}
+            currentUserRole={(user as any)?.role || "super_admin"}
           />
         )}
 
-        {/* TAB: ROLES & PERMISSIONS MATRIX */}
-        {activeTab === "roles" && activeRoleConfig.permissions.manageRoles && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="pb-2 border-b border-slate-200 dark:border-slate-800">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Role-Based Access Control (RBAC) Matrix</h2>
-              <p className="text-xs text-slate-500">
-                Define and enforce system privileges across the 8 default platform roles.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {Object.values(ROLE_CONFIGS).map((rc) => (
-                <div key={rc.id} className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3 shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <span className={`px-2.5 py-1 rounded-full border text-xs font-bold ${rc.color}`}>
-                      {rc.label}
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-mono">{rc.allowedTabs.length} Tabs Allowed</span>
-                  </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{rc.description}</p>
-                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1 text-[11px] text-slate-500">
-                    <p>• Manage Admins: {rc.permissions.manageAdmins ? "✅ Yes" : "❌ No"}</p>
-                    <p>• Manage Users: {rc.permissions.manageUsers ? "✅ Yes" : "❌ No"}</p>
-                    <p>• Manage Tools & SEO: {rc.permissions.manageTools ? "✅ Yes" : "❌ No"}</p>
-                    <p>• Manage Security: {rc.permissions.manageSecurity ? "✅ Yes" : "❌ No"}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* TOOLS TAB */}
+        {activeTab === "tools" && (
+          <ToolManagementSection onShowNotification={showNotification} onNavigate={onNavigate} />
         )}
 
-        {/* TAB: INBOX & CONTACT MESSAGES */}
+        {/* CATEGORIES TAB */}
+        {activeTab === "categories" && (
+          <CategoryManagementSection onShowNotification={showNotification} />
+        )}
+
+        {/* BLOG CMS TAB */}
+        {activeTab === "blog" && (
+          <BlogManagementSection onShowNotification={showNotification} onNavigate={onNavigate} />
+        )}
+
+        {/* INBOX & SUPPORT TAB */}
         {activeTab === "inbox" && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white">Contact & Support Messages</h2>
-                <p className="text-xs text-slate-500">User inquiries submitted via the Contact form.</p>
-              </div>
-              <a
-                href="/api/submissions/export/contact"
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-              >
-                <Download className="w-3.5 h-3.5" /> Export CSV
-              </a>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xl">
-              <div className="divide-y divide-slate-200 dark:divide-slate-800">
-                {submissions.contactMessages.map((msg: any) => (
-                  <div key={msg.id} className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                    <div className="space-y-1 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900 dark:text-white text-xs">{msg.name}</span>
-                        <span className="font-mono text-[10px] text-indigo-500 font-bold">{msg.referenceId}</span>
-                        <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-semibold text-slate-500">{msg.category}</span>
-                      </div>
-                      <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">{msg.subject}</p>
-                      <p className="text-xs text-slate-500 line-clamp-2">{msg.message}</p>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      <button
-                        onClick={() => {
-                          setActiveReplyMessage(msg);
-                          setReplyText(`Hi ${msg.name},\n\nThank you for reaching out to Utility Tools Hub support regarding "${msg.subject}".\n\n`);
-                        }}
-                        className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1 cursor-pointer"
-                      >
-                        <Send className="w-3.5 h-3.5" /> Reply
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <InboxManagementSection onShowNotification={showNotification} />
         )}
 
-        {/* TAB: BUG REPORTS */}
-        {activeTab === "reports" && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white">Tool Bug & Problem Reports</h2>
-                <p className="text-xs text-slate-500">Reports logged directly from tool execution cards.</p>
-              </div>
-              <a
-                href="/api/submissions/export/bug"
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-              >
-                <Download className="w-3.5 h-3.5" /> Export CSV
-              </a>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4">
-              {submissions.bugReports.map((rep: any) => (
-                <div key={rep.id} className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3 shadow-xl">
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-900 dark:text-white text-xs">{rep.toolName}</span>
-                      <span className="font-mono text-[10px] text-rose-500 font-bold">{rep.referenceId}</span>
-                      <span className="px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-500 font-bold text-[10px]">{rep.issueType}</span>
-                    </div>
-                    <span className="text-[11px] text-slate-400">{rep.createdAt}</span>
-                  </div>
-
-                  <p className="text-xs text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
-                    "{rep.description}"
-                  </p>
-
-                  <div className="flex items-center justify-between pt-1 text-xs">
-                    <span className="text-slate-400 text-[11px]">User: {rep.userEmail}</span>
-                    <button
-                      onClick={() => {
-                        const updated = submissions.bugReports.map((b: any) => b.id === rep.id ? { ...b, status: "Resolved" } : b);
-                        setSubmissions({ ...submissions, bugReports: updated });
-                        showNotification(`Report ${rep.referenceId} marked as Resolved.`);
-                      }}
-                      className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer"
-                    >
-                      Mark Resolved
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* TAB: FEATURE REQUESTS */}
-        {activeTab === "features" && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white">Feature & Tool Requests</h2>
-                <p className="text-xs text-slate-500">Community requested tools and features.</p>
-              </div>
-              <a
-                href="/api/submissions/export/feature"
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer"
-              >
-                <Download className="w-3.5 h-3.5" /> Export CSV
-              </a>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {submissions.featureRequests.map((req: any) => (
-                <div key={req.id} className="p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3 shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-900 dark:text-white text-xs">{req.toolName}</span>
-                    <span className="px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-500 font-bold text-[10px]">{req.status}</span>
-                  </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{req.description}</p>
-                  <div className="flex items-center justify-between pt-2 text-[11px] text-slate-400">
-                    <span>Upvotes: {req.upvotes}</span>
-                    <span>Category: {req.category}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* TAB: NEWSLETTER */}
+        {/* NEWSLETTER TAB */}
         {activeTab === "newsletter" && (
-          <div className="space-y-8 animate-fade-in">
-            <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4 shadow-xl max-w-2xl">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Send className="w-4 h-4 text-indigo-500" /> Dispatch Email Campaign
-              </h3>
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Campaign Subject</label>
-                  <input
-                    type="text"
-                    value={campaignSubject}
-                    onChange={(e) => setCampaignSubject(e.target.value)}
-                    placeholder="e.g. New AI Compression & WebP Tools Released!"
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Test Recipient Email (Optional)</label>
-                  <input
-                    type="email"
-                    value={testEmail}
-                    onChange={(e) => setTestEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">HTML Broadcast Content</label>
-                  <textarea
-                    rows={4}
-                    value={campaignHtml}
-                    onChange={(e) => setCampaignHtml(e.target.value)}
-                    className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
-                  />
-                </div>
-                <button
-                  onClick={handleDispatchCampaign}
-                  disabled={campaignSending}
-                  className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md cursor-pointer disabled:opacity-50"
-                >
-                  {campaignSending ? "Broadcasting..." : "Dispatch Campaign Now"}
-                </button>
-              </div>
-            </div>
-          </div>
+          <NewsletterManagementSection onShowNotification={showNotification} />
         )}
 
-        {/* TAB: SETTINGS & BRANDING */}
+        {/* SITE SETTINGS TAB */}
         {activeTab === "settings" && (
-          <div className="space-y-8 animate-fade-in max-w-3xl">
-            <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4 shadow-xl">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Branding & Sitewide Settings</h3>
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Site Name</label>
-                  <input
-                    type="text"
-                    value={siteSettings.siteName}
-                    onChange={(e) => setSiteSettings({ ...siteSettings, siteName: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Maintenance Mode</label>
-                  <button
-                    onClick={() => setSiteSettings({ ...siteSettings, maintenanceMode: !siteSettings.maintenanceMode })}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold cursor-pointer ${
-                      siteSettings.maintenanceMode ? "bg-amber-500 text-white" : "bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
-                    }`}
-                  >
-                    {siteSettings.maintenanceMode ? "Maintenance Mode ON" : "Maintenance Mode OFF"}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Masked Environment Variables */}
-            <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4 shadow-xl">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Lock className="w-4 h-4 text-emerald-500" /> Environment Variables (Masked UI)
-              </h3>
-              <div className="space-y-2">
-                {envVars.map((env) => (
-                  <div key={env.name} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
-                    <div>
-                      <span className="font-bold font-mono text-slate-900 dark:text-white">{env.name}</span>
-                      <p className="font-mono text-slate-400 text-[11px]">{env.maskedValue}</p>
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold">
-                      {env.status}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <SiteSettingsSection onShowNotification={showNotification} />
         )}
 
-        {/* Reply Modal */}
-        {activeReplyMessage && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
-            <div className="w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Reply to {activeReplyMessage.name}</h3>
-                <button onClick={() => setActiveReplyMessage(null)} className="text-slate-400 hover:text-slate-600">✕</button>
-              </div>
-              <textarea
-                rows={5}
-                value={replyText}
-                onChange={(e) => setReplyText(e.target.value)}
-                className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs"
-              />
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setActiveReplyMessage(null)} className="px-4 py-2 rounded-xl text-xs text-slate-500">Cancel</button>
-                <button
-                  onClick={() => {
-                    showNotification(`Response dispatched to ${activeReplyMessage.email}`);
-                    setActiveReplyMessage(null);
-                  }}
-                  className="px-5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold"
-                >
-                  Send Reply
-                </button>
-              </div>
-            </div>
-          </div>
+        {/* AUDIT LOGS TAB */}
+        {activeTab === "audit-logs" && (
+          <AuditLogsSection onShowNotification={showNotification} />
         )}
       </div>
-    </>
+    </div>
   );
 };
