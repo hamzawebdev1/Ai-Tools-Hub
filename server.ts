@@ -51,9 +51,13 @@ async function startServer() {
 
     const host = req.get("host") || "";
     const proto = req.get("x-forwarded-proto") || req.protocol || "https";
+    const isLocalOrContainer =
+      host.includes("localhost") ||
+      host.includes("127.0.0.1") ||
+      host.endsWith(".run.app");
 
-    // 1. Enforce HTTPS in production
-    if (req.get("x-forwarded-proto") === "http" && process.env.NODE_ENV === "production") {
+    // 1. Enforce HTTPS in production (on custom apex domains)
+    if (req.get("x-forwarded-proto") === "http" && process.env.NODE_ENV === "production" && !isLocalOrContainer) {
       return res.redirect(301, `https://${host}${req.originalUrl}`);
     }
 

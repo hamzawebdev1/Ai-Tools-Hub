@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { canGuestExecute, incrementGuestUsage } from "../../services/guestUsageService";
 import { saveHistoryItem } from "../../services/storageService";
+import { trackToolAction } from "../../services/toolTrackingService";
 import {
   validateImageFile,
   loadImageFromFile,
@@ -139,6 +140,17 @@ export const ImageToolsRunner: React.FC<ImageToolsRunnerProps> = ({ toolId, tool
   // UI state
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Track tool view
+  useEffect(() => {
+    trackToolAction({
+      toolId,
+      toolSlug: toolSlug || toolId,
+      toolName,
+      category: "image",
+      action: "VIEW",
+    });
+  }, [toolId, toolSlug, toolName]);
 
   // Clean up Blob URLs on unmount or new run
   useEffect(() => {
@@ -291,6 +303,18 @@ export const ImageToolsRunner: React.FC<ImageToolsRunnerProps> = ({ toolId, tool
 
       const mainFile = selectedFiles[0];
       setProgressPct(40);
+
+      const startTime = Date.now();
+
+      trackToolAction({
+        toolId,
+        toolSlug: toolSlug || toolId,
+        toolName,
+        category: "image",
+        action: "START",
+        fileName: mainFile.name,
+        fileSizeBytes: mainFile.size,
+      });
 
       let outputBlob: Blob | null = null;
       let outputUrl: string | null = null;
@@ -458,6 +482,19 @@ export const ImageToolsRunner: React.FC<ImageToolsRunnerProps> = ({ toolId, tool
       setResultFileName(outName);
 
       incrementGuestUsage(toolId, false);
+      const duration = Date.now() - startTime;
+
+      trackToolAction({
+        toolId,
+        toolSlug: toolSlug || toolId,
+        toolName,
+        category: "image",
+        action: "SUCCESS",
+        durationMs: duration,
+        fileName: outName,
+        fileSizeBytes: outputBlob ? outputBlob.size : undefined,
+      });
+
       saveHistoryItem({
         id: `hist_${Date.now()}`,
         toolId,
@@ -466,11 +503,20 @@ export const ImageToolsRunner: React.FC<ImageToolsRunnerProps> = ({ toolId, tool
         output: `Generated output file ${outName}`,
         timestamp: new Date().toISOString(),
         wordCount: 0,
-        executionTimeMs: 250,
+        executionTimeMs: duration,
       });
       logHealth(true);
     } catch (err: any) {
-      setErrorMsg(err.message || "An unexpected error occurred during image processing.");
+      const errorText = err.message || "An unexpected error occurred during image processing.";
+      setErrorMsg(errorText);
+      trackToolAction({
+        toolId,
+        toolSlug: toolSlug || toolId,
+        toolName,
+        category: "image",
+        action: "ERROR",
+        errorMessage: errorText,
+      });
       logHealth(false, err.message);
     } finally {
       setIsProcessing(false);
@@ -1016,6 +1062,17 @@ export const ImageToolsRunner: React.FC<ImageToolsRunnerProps> = ({ toolId, tool
               <a
                 href={resultBlobUrl}
                 download={resultFileName}
+                onClick={() => {
+                  trackToolAction({
+                    toolId,
+                    toolSlug: toolSlug || toolId,
+                    toolName,
+                    category: "image",
+                    action: "DOWNLOAD",
+                    fileName: resultFileName,
+                    fileSizeBytes: resultSizeBytes,
+                  });
+                }}
                 className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-emerald-600/30 flex items-center gap-2 transition-all"
               >
                 <Download className="w-4 h-4" /> Download Result

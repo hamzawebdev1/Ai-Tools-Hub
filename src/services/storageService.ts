@@ -49,9 +49,9 @@ export const removeHistoryItem = (id: string): HistoryItem[] => {
 export const getStoredFavorites = (): string[] => {
   try {
     const data = localStorage.getItem(FAVORITES_KEY);
-    return data ? JSON.parse(data) : ["pdf-compressor", "image-compressor", "json-formatter"];
+    return data ? JSON.parse(data) : [];
   } catch {
-    return ["pdf-compressor", "image-compressor"];
+    return [];
   }
 };
 
@@ -76,14 +76,14 @@ export const getStoredProfile = (): UserProfile => {
   }
 
   const defaultProfile: UserProfile = {
-    name: "Power User",
-    email: "user@utilitytoolshub.com",
+    name: "Guest User",
+    email: "",
     plan: "Free Tier",
     dailyUsageLimit: 50,
-    usageToday: 4,
-    totalExecutions: 28,
-    favoriteTools: getStoredFavorites(),
-    memberSince: "August 2026",
+    usageToday: 0,
+    totalExecutions: 0,
+    favoriteTools: [],
+    memberSince: new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }),
     theme: "dark",
   };
   return defaultProfile;
@@ -115,46 +115,15 @@ export const setThemeMode = (mode: "dark" | "light"): void => {
   }
 };
 
-// Initial Community Feedback seed
-export const INITIAL_FEEDBACK: FeedbackItem[] = [
-  {
-    id: "f1",
-    title: "Add export to PDF for summarized articles",
-    description: "It would be great if the AI Article Summarizer had a direct PDF download button with formatted typography.",
-    category: "Feature Request",
-    status: "In Progress",
-    votes: 84,
-    author: "DevPro_99",
-    createdAt: "2 days ago",
-  },
-  {
-    id: "f2",
-    title: "Dark mode background contrast improvement",
-    description: "The glass cards look amazing in dark mode, but consider making code blocks even higher contrast.",
-    category: "UI Design",
-    status: "Completed",
-    votes: 112,
-    author: "UI_Guru",
-    createdAt: "5 days ago",
-  },
-  {
-    id: "f3",
-    title: "Support for custom prompt templates in Code Assistant",
-    description: "Allow saving custom prompt presets like 'Generate React 19 Hook with TypeScript'.",
-    category: "Feature Request",
-    status: "Planned",
-    votes: 49,
-    author: "Sarah_Dev",
-    createdAt: "1 week ago",
-  },
-];
+// Initial Community Feedback seed - empty by default (Real data only)
+export const INITIAL_FEEDBACK: FeedbackItem[] = [];
 
 export const getStoredFeedback = (): FeedbackItem[] => {
   try {
     const data = localStorage.getItem(FEEDBACK_KEY);
-    return data ? JSON.parse(data) : INITIAL_FEEDBACK;
+    return data ? JSON.parse(data) : [];
   } catch {
-    return INITIAL_FEEDBACK;
+    return [];
   }
 };
 
@@ -182,36 +151,15 @@ export const voteFeedback = (id: string): FeedbackItem[] => {
   return updated;
 };
 
-// Tool suggestions seed
-export const INITIAL_SUGGESTIONS: ToolSuggestion[] = [
-  {
-    id: "s1",
-    title: "AI YouTube Transcript Summarizer & Chapters",
-    description: "Paste a YouTube video URL to extract transcript, key takeaways, and timestamped chapter markers.",
-    category: "productivity",
-    priority: "High",
-    votes: 142,
-    status: "Building",
-    createdAt: "3 days ago",
-  },
-  {
-    id: "s2",
-    title: "Regex Pattern & Expression Generator",
-    description: "Type plain English requirements (e.g. match valid international phone numbers) and get validated RegEx.",
-    category: "coding",
-    priority: "Medium",
-    votes: 78,
-    status: "Approved",
-    createdAt: "6 days ago",
-  },
-];
+// Tool suggestions seed - empty by default (Real data only)
+export const INITIAL_SUGGESTIONS: ToolSuggestion[] = [];
 
 export const getStoredSuggestions = (): ToolSuggestion[] => {
   try {
     const data = localStorage.getItem(SUGGESTIONS_KEY);
-    return data ? JSON.parse(data) : INITIAL_SUGGESTIONS;
+    return data ? JSON.parse(data) : [];
   } catch {
-    return INITIAL_SUGGESTIONS;
+    return [];
   }
 };
 

@@ -39,6 +39,7 @@ import { StorageStatusDashboard } from "../components/storage/StorageStatusDashb
 import { useAuth } from "../context/AuthContext";
 import { canGuestExecute, incrementGuestUsage } from "../services/guestUsageService";
 import { GuestLimitModal } from "../components/auth/GuestLimitModal";
+import { trackToolAction } from "../services/toolTrackingService";
 
 interface ToolDetailPageProps {
   tool: AITool;
@@ -147,6 +148,17 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 
   const isFavorite = favorites.includes(tool.id);
 
+  // Track tool view
+  React.useEffect(() => {
+    trackToolAction({
+      toolId: tool.id,
+      toolSlug: tool.slug,
+      toolName: tool.name,
+      category: tool.category,
+      action: "VIEW",
+    });
+  }, [tool.id, tool.slug, tool.name, tool.category]);
+
   const handleExecute = async () => {
     if (!promptInput.trim()) {
       setErrorMessage("Please enter text or instructions before generating.");
@@ -161,6 +173,16 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
     setErrorMessage("");
     setIsExecuting(true);
     setOutputResult("");
+
+    const startTime = Date.now();
+
+    trackToolAction({
+      toolId: tool.id,
+      toolSlug: tool.slug,
+      toolName: tool.name,
+      category: tool.category,
+      action: "START",
+    });
 
     const optionsPayload = {
       tone: tool.optionsConfig.hasTone ? selectedTone : undefined,
@@ -190,6 +212,17 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 
         incrementGuestUsage(tool.id, !!currentUser);
 
+        const duration = data.executionTimeMs || Date.now() - startTime;
+
+        trackToolAction({
+          toolId: tool.id,
+          toolSlug: tool.slug,
+          toolName: tool.name,
+          category: tool.category,
+          action: "SUCCESS",
+          durationMs: duration,
+        });
+
         // Save to History Log
         saveHistoryItem({
           id: "h_" + Date.now(),
@@ -199,14 +232,32 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           output: data.output,
           timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           wordCount: data.wordsCount,
-          executionTimeMs: data.executionTimeMs,
+          executionTimeMs: duration,
           options: optionsPayload,
         });
       } else {
-        setErrorMessage(data.error || "Execution failed. Please try again.");
+        const errText = data.error || "Execution failed. Please try again.";
+        setErrorMessage(errText);
+        trackToolAction({
+          toolId: tool.id,
+          toolSlug: tool.slug,
+          toolName: tool.name,
+          category: tool.category,
+          action: "ERROR",
+          errorMessage: errText,
+        });
       }
     } catch (err: any) {
-      setErrorMessage(err.message || "Network request failed.");
+      const errText = err.message || "Network request failed.";
+      setErrorMessage(errText);
+      trackToolAction({
+        toolId: tool.id,
+        toolSlug: tool.slug,
+        toolName: tool.name,
+        category: tool.category,
+        action: "ERROR",
+        errorMessage: errText,
+      });
     } finally {
       setIsExecuting(false);
     }
@@ -228,6 +279,15 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
     a.download = `${tool.slug}-result.txt`;
     a.click();
     URL.revokeObjectURL(url);
+
+    trackToolAction({
+      toolId: tool.id,
+      toolSlug: tool.slug,
+      toolName: tool.name,
+      category: tool.category,
+      action: "DOWNLOAD",
+      fileName: `${tool.slug}-result.txt`,
+    });
   };
 
   return (

@@ -9,8 +9,15 @@ export interface AnalyticsEvent {
   timestamp: string;
   path: string;
   toolId?: string;
+  toolSlug?: string;
   toolName?: string;
   category?: string;
+  userId?: string;
+  userEmail?: string;
+  fileName?: string;
+  fileSizeBytes?: number;
+  status?: "SUCCESS" | "ERROR" | "PENDING" | "DOWNLOAD";
+  action?: string;
   country: string;
   device: "Desktop" | "Mobile" | "Tablet";
   browser: string;
@@ -71,7 +78,8 @@ export function getAdvancedAnalyticsSummary(
   users: any[] = [],
   contactMessages: any[] = [],
   subscribers: any[] = [],
-  blogPosts: any[] = []
+  blogPosts: any[] = [],
+  campaigns: any[] = []
 ) {
   const now = new Date();
   let startTime = new Date();
@@ -258,11 +266,11 @@ export function getAdvancedAnalyticsSummary(
     if (deviceCounts[d] !== undefined) deviceCounts[d]++;
     else deviceCounts[d] = 1;
   });
-  const totalFilteredCount = filtered.length || 1;
+  const totalFilteredCount = filtered.length;
   const deviceAnalytics = Object.entries(deviceCounts).map(([device, count]) => ({
     device,
     count,
-    percentage: Math.round((count / totalFilteredCount) * 100)
+    percentage: totalFilteredCount > 0 ? Math.round((count / totalFilteredCount) * 100) : 0
   }));
 
   // Top Tools by period (Today, Last 7 Days, Last 30 Days)
@@ -296,11 +304,11 @@ export function getAdvancedAnalyticsSummary(
   // Newsletter Analytics
   const newsletterAnalytics = {
     totalSubscribers: subscribers.length,
-    newSubscribers: subscribers.filter((s) => new Date(s.createdAt || 0).getTime() >= todayStart.getTime()).length,
+    newSubscribers: subscribers.filter((s) => new Date(s.subscribedAt || s.createdAt || 0).getTime() >= todayStart.getTime()).length,
     unsubscribed: subscribers.filter((s) => s.status === "unsubscribed" || s.status === "inactive").length,
-    campaignsSent: 3, // Real tracked broadcasts
-    successfulSends: subscribers.filter((s) => s.status === "active" || !s.status).length * 3,
-    failedSends: 0
+    campaignsSent: campaigns.length,
+    successfulSends: campaigns.reduce((acc, c) => acc + (c.recipientsCount || 0), 0),
+    failedSends: campaigns.filter((c) => c.status === "failed").length
   };
 
   // Blog Analytics
@@ -313,7 +321,7 @@ export function getAdvancedAnalyticsSummary(
 
   const topArticles = blogPosts.map((post) => ({
     title: post.title,
-    views: blogViewsMap[post.slug] || Math.floor(Math.random() * 50) + 10 // real or tracked fallback
+    views: blogViewsMap[post.slug] || 0
   })).sort((a, b) => b.views - a.views).slice(0, 5);
 
   const viewsByDateMap: Record<string, number> = {};
@@ -358,3 +366,78 @@ export function getAdvancedAnalyticsSummary(
     }
   };
 }
+
+export function getUserAnalytics(userId: string) {
+  if (!userId) {
+    return {
+      totalExecutions: 0,
+      successfulConversions: 0,
+      failedOperations: 0,
+      downloadsCount: 0,
+      estimatedTimeSavedMinutes: 0,
+      recentActivity: [],
+      toolBreakdown: []
+    };
+  }
+
+  const userEvents = eventsCache.filter(
+    (e) => e.userId === userId || (e.visitorId && e.visitorId === userId)
+  );
+
+  const completions = userEvents.filter((e) => e.type === "tool_complete");
+  const errors = userEvents.filter((e) => e.type === "error");
+  const downloads = userEvents.filter((e) => e.type === "download");
+  const starts = userEvents.filter((e) => e.type === "tool_start" || e.type === "tool_complete");
+
+  const totalExecutions = Math.max(starts.length, completions.length);
+  const successfulConversions = completions.length;
+  const failedOperations = errors.length;
+  const downloadsCount = downloads.length;
+  const estimatedTimeSavedMinutes = successfulConversions * 5;
+
+  const recentActivity = userEvents.slice(0, 30).map((e) => {
+    let actionText = "Executed Tool";
+    if (e.type === "tool_complete") actionText = "Completed";
+    else if (e.type === "download") actionText = "Downloaded";
+    else if (e.type === "error") actionText = "Failed";
+    else if (e.type === "tool_start") actionText = "Started";
+    else if (e.type === "tool_view") actionText = "Viewed";
+
+    return {
+      id: e.id,
+      toolId: e.toolId || "tool",
+      toolSlug: e.toolSlug || e.path.replace(/^\//, "") || "tool",
+      toolName: e.toolName || e.path || "Utility Tool",
+      action: actionText,
+      status: e.type === "error" ? "Failed" : e.type === "download" ? "Downloaded" : "Completed",
+      time: new Date(e.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      timestamp: e.timestamp,
+      durationMs: e.durationMs,
+      fileName: e.fileName,
+      errorMessage: e.errorMessage,
+    };
+  });
+
+  const toolCountMap: Record<string, { toolId: string; toolName: string; count: number }> = {};
+  completions.forEach((e) => {
+    if (e.toolId && e.toolName) {
+      if (!toolCountMap[e.toolId]) {
+        toolCountMap[e.toolId] = { toolId: e.toolId, toolName: e.toolName, count: 0 };
+      }
+      toolCountMap[e.toolId].count++;
+    }
+  });
+
+  const toolBreakdown = Object.values(toolCountMap).sort((a, b) => b.count - a.count);
+
+  return {
+    totalExecutions,
+    successfulConversions,
+    failedOperations,
+    downloadsCount,
+    estimatedTimeSavedMinutes,
+    recentActivity,
+    toolBreakdown,
+  };
+}
+

@@ -11,6 +11,7 @@ import {
   createSecurityAlert,
 } from "./authService.js";
 import { authRateLimiter } from "./securityMiddleware.js";
+import { getUserAnalytics } from "../admin/analyticsStore.js";
 
 const router = Router();
 
@@ -169,6 +170,27 @@ router.get("/me", (req, res) => {
 
   const { passwordHash: _, ...safeUser } = user;
   return res.json({ authenticated: true, user: safeUser });
+});
+
+/**
+ * Get live user analytics and activity history
+ */
+router.get("/user-analytics", (req, res) => {
+  const token = req.cookies?.auth_token || req.headers.authorization?.replace("Bearer ", "");
+  let userId = (req.headers["x-user-id"] as string) || (req.query.userId as string);
+
+  if (token) {
+    const decoded = verifyAccessToken(token);
+    if (decoded && decoded.sub) {
+      userId = decoded.sub;
+    }
+  }
+
+  const visitorId = (req.headers["x-visitor-id"] as string) || (req as any).cookies?._ut_vid;
+  const targetId = userId || visitorId || "";
+
+  const stats = getUserAnalytics(targetId);
+  return res.json({ success: true, stats });
 });
 
 /**

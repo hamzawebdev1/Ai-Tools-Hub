@@ -37,6 +37,7 @@ import { useAuth } from "../../context/AuthContext";
 import { canGuestExecute, incrementGuestUsage } from "../../services/guestUsageService";
 import { GuestLimitModal } from "../auth/GuestLimitModal";
 import { validatePdfFile } from "../../config/pdfConfig";
+import { trackToolAction } from "../../services/toolTrackingService";
 import {
   mergePdfs,
   splitPdf,
@@ -163,6 +164,17 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
+
+  // Track initial tool view
+  useEffect(() => {
+    trackToolAction({
+      toolId,
+      toolSlug,
+      toolName,
+      category: "pdf",
+      action: "VIEW",
+    });
+  }, [toolId, toolSlug, toolName]);
 
   // Auto-cleanup blob URLs
   useEffect(() => {
@@ -298,6 +310,16 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
     setStatusMessage("Validating and parsing file structure...");
 
     const startTime = Date.now();
+
+    trackToolAction({
+      toolId,
+      toolSlug,
+      toolName,
+      category: "pdf",
+      action: "START",
+      fileName: files[0]?.name,
+      fileSizeBytes: files[0]?.size,
+    });
 
     try {
       const primaryFile = files[0];
@@ -617,6 +639,18 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
 
       if (!currentUser) incrementGuestUsage(toolId, !!currentUser);
 
+      const duration = Date.now() - startTime;
+
+      trackToolAction({
+        toolId,
+        toolSlug,
+        toolName,
+        category: "pdf",
+        action: "SUCCESS",
+        durationMs: duration,
+        fileName: outFileName || primaryFile.name,
+      });
+
       saveHistoryItem({
         id: "hist_" + Date.now(),
         toolId,
@@ -625,7 +659,7 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
         output: outFileName || "PDF processing completed",
         timestamp: new Date().toISOString(),
         wordCount: 0,
-        executionTimeMs: Date.now() - startTime,
+        executionTimeMs: duration,
       });
 
       await logToolHealth(true);
@@ -633,6 +667,14 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
       console.error("PDF Processing Error:", err);
       const errMsg = err.message || "An error occurred while processing the PDF file.";
       setErrorMessage(errMsg);
+      trackToolAction({
+        toolId,
+        toolSlug,
+        toolName,
+        category: "pdf",
+        action: "ERROR",
+        errorMessage: errMsg,
+      });
       await logToolHealth(false, errMsg);
     } finally {
       setIsProcessing(false);
@@ -1265,6 +1307,16 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
             <a
               href={resultBlobUrl}
               download={resultFileName}
+              onClick={() => {
+                trackToolAction({
+                  toolId,
+                  toolSlug,
+                  toolName,
+                  category: "pdf",
+                  action: "DOWNLOAD",
+                  fileName: resultFileName,
+                });
+              }}
               className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all shadow-lg shadow-emerald-600/25 flex items-center gap-2"
             >
               <Download className="w-4 h-4" /> Download Result File

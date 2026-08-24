@@ -1,5 +1,6 @@
 import { Router } from "express";
 import crypto from "crypto";
+import multer from "multer";
 import { getSecurityAlerts } from "../security/authService.js";
 import { emailProvider } from "../../services/emailProvider.js";
 import {
@@ -36,6 +37,9 @@ import {
   deleteSubscriber,
   recordCampaign,
   getAllCampaigns,
+  getAllMedia,
+  addMediaItem,
+  deleteMediaItem,
   getSiteSettings,
   updateSiteSettings,
   getAuditLogs,
@@ -44,6 +48,11 @@ import {
   importFullBackup,
   CMSTool,
 } from "./cmsStore.js";
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+});
 
 const router = Router();
 
@@ -59,41 +68,7 @@ const getBaseHost = (req: any): string => {
 };
 
 // In-memory Users Store with sync
-let usersDatabase: any[] = [
-  {
-    uid: "usr_super_admin",
-    name: "Super Admin",
-    email: "admin@security.hub",
-    role: "super_admin",
-    status: "active",
-    verified: true,
-    provider: "password",
-    createdAt: "2026-01-01T00:00:00.000Z",
-    lastLogin: new Date().toISOString(),
-  },
-  {
-    uid: "usr_editor_1",
-    name: "Alex Rivera",
-    email: "alex@mehzandigital.com",
-    role: "editor",
-    status: "active",
-    verified: true,
-    provider: "password",
-    createdAt: "2026-02-10T12:00:00.000Z",
-    lastLogin: new Date(Date.now() - 86400000 * 2).toISOString(),
-  },
-  {
-    uid: "usr_support_1",
-    name: "Sophia Chen",
-    email: "sophia@mehzandigital.com",
-    role: "support",
-    status: "active",
-    verified: true,
-    provider: "password",
-    createdAt: "2026-03-01T08:30:00.000Z",
-    lastLogin: new Date(Date.now() - 86400000 * 4).toISOString(),
-  },
-];
+let usersDatabase: any[] = [];
 
 // Helper to extract actor email
 const getActor = (req: any): { email: string; ip: string } => {
@@ -140,7 +115,8 @@ router.get("/metrics", (req, res) => {
     usersDatabase,
     subStore.contactMessages,
     subscribers,
-    blogPosts
+    blogPosts,
+    getAllCampaigns()
   );
 
   return res.json({
@@ -954,13 +930,14 @@ router.get("/analytics", (req, res) => {
     usersDatabase,
     subStore.contactMessages,
     getAllSubscribers(),
-    getAllBlogPosts(true)
+    getAllBlogPosts(true),
+    getAllCampaigns()
   );
   return res.json({ success: true, summary });
 });
 
 router.post("/analytics/track", (req, res) => {
-  const { type, path: eventPath, toolId, toolName, category, durationMs, errorMessage, searchQuery } = req.body;
+  const { type, path: eventPath, toolId, toolName, category, durationMs, errorMessage, searchQuery, country: clientCountry } = req.body;
 
   const ua = req.headers["user-agent"] || "";
   let device: "Desktop" | "Mobile" | "Tablet" = "Desktop";
@@ -981,8 +958,7 @@ router.post("/analytics/track", (req, res) => {
   const visitorId = (req.headers["x-visitor-id"] as string) || (req as any).cookies?._ut_vid || `vis_${Math.random().toString(36).substring(2, 9)}`;
   const sessionId = (req.headers["x-session-id"] as string) || `ses_${Math.random().toString(36).substring(2, 9)}`;
 
-  const countries = ["United States", "Pakistan", "United Kingdom", "Germany", "Canada", "France", "India", "Australia"];
-  const country = (req.headers["cf-ipcountry"] as string) || countries[Math.floor(Math.random() * countries.length)];
+  const country = (req.headers["cf-ipcountry"] as string) || (req.headers["x-country"] as string) || clientCountry || "Unknown";
   const referrer = req.headers["referer"] || "Direct";
 
   const event = recordAnalyticsEvent({
@@ -1004,6 +980,312 @@ router.post("/analytics/track", (req, res) => {
   });
 
   return res.json({ success: true, event });
+});
+
+// =============================================================
+// 10. MEDIA LIBRARY CRUD & UPLOAD
+// =============================================================
+router.get("/media", (req, res) => {
+  const { search, category } = req.query;
+  let mediaList = getAllMedia();
+
+  if (category && category !== "all") {
+    mediaList = mediaList.filter((m) => m.category === category);
+  }
+  if (search) {
+    const q = String(search).toLowerCase();
+    mediaList = mediaList.filter((m) => m.name.toLowerCase().includes(q) || m.originalName.toLowerCase().includes(q));
+  }
+
+  return res.json({ success: true, count: mediaList.length, media: mediaList });
+});
+
+router.post("/media/upload", upload.single("file"), async (req, res) => {
+  try {
+    const { email: adminEmail, ip } = getActor(req);
+    const { customName, category } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: "No file uploaded." });
+    }
+
+    const file = req.file;
+    const dangerousExtensions = [".exe", ".bat", ".sh", ".cmd", ".msi", ".php", ".js", ".py", ".vbs", ".bin", ".elf", ".dll", ".com", ".scr", ".jar", ".ps1"];
+    const ext = "." + (file.originalname.split(".").pop() || "").toLowerCase();
+
+    if (dangerousExtensions.includes(ext)) {
+      return res.status(400).json({
+        success: false,
+        error: `Security violation: File extension '${ext}' is strictly prohibited.`,
+      });
+    }
+
+    const allowedMimeTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "image/svg+xml",
+      "image/x-icon",
+      "image/vnd.microsoft.icon",
+      "image/avif",
+      "application/pdf",
+      "text/plain",
+    ];
+
+    if (!allowedMimeTypes.includes(file.mimetype) && !file.mimetype.startsWith("image/")) {
+      return res.status(400).json({
+        success: false,
+        error: `Unsupported file type '${file.mimetype}'. Only images and documents are allowed in the Media Library.`,
+      });
+    }
+
+    // Convert to high-performance data URI URL or static path
+    const base64Data = file.buffer.toString("base64");
+    const dataUrl = `data:${file.mimetype};base64,${base64Data}`;
+
+    let resolvedCategory: "image" | "document" | "logo" | "favicon" | "icon" | "other" = "image";
+    if (category === "logo" || category === "favicon" || category === "icon" || category === "document") {
+      resolvedCategory = category;
+    } else if (file.mimetype === "application/pdf" || file.mimetype === "text/plain") {
+      resolvedCategory = "document";
+    }
+
+    const newMedia = addMediaItem(
+      {
+        name: customName || file.originalname.replace(/\.[^/.]+$/, ""),
+        originalName: file.originalname,
+        url: dataUrl,
+        sizeBytes: file.size,
+        mimeType: file.mimetype,
+        category: resolvedCategory,
+        uploadedBy: adminEmail,
+      },
+      adminEmail,
+      ip
+    );
+
+    return res.json({
+      success: true,
+      message: `Media file "${newMedia.name}" uploaded successfully.`,
+      media: newMedia,
+    });
+  } catch (err: any) {
+    console.error("Media upload error:", err);
+    return res.status(500).json({ success: false, error: err.message || "Failed to upload media." });
+  }
+});
+
+router.delete("/media/:id", (req, res) => {
+  const { email: adminEmail, ip } = getActor(req);
+  const { id } = req.params;
+
+  const success = deleteMediaItem(id, adminEmail, ip);
+  if (!success) {
+    return res.status(404).json({ success: false, error: "Media item not found." });
+  }
+
+  return res.json({ success: true, message: "Media file deleted successfully." });
+});
+
+// =============================================================
+// GLOBAL ADMIN SEARCH
+// =============================================================
+router.get("/global-search", (req, res) => {
+  const query = String(req.query.q || "").trim().toLowerCase();
+  if (!query || query.length < 2) {
+    return res.json({ success: true, results: [] });
+  }
+
+  const results: any[] = [];
+  const tools = getAllTools(true);
+  const categories = getAllCategories(true);
+  const blogPosts = getAllBlogPosts(true);
+  const subscribers = getAllSubscribers();
+  const subStore = getSubmissionsStore();
+  const mediaList = getAllMedia();
+
+  // Search Users
+  usersDatabase.forEach((u) => {
+    if (u.name?.toLowerCase().includes(query) || u.email?.toLowerCase().includes(query) || u.role?.toLowerCase().includes(query)) {
+      results.push({
+        type: "user",
+        category: "Users",
+        title: u.name || u.email,
+        subtitle: `${u.email} • Role: ${u.role} (${u.status})`,
+        id: u.uid,
+        targetTab: "users",
+        targetSubTab: "all",
+      });
+    }
+  });
+
+  // Search Tools
+  tools.forEach((t) => {
+    if (t.name.toLowerCase().includes(query) || t.slug.toLowerCase().includes(query) || t.description?.toLowerCase().includes(query)) {
+      results.push({
+        type: "tool",
+        category: "Tools",
+        title: t.name,
+        subtitle: `/${t.slug} • ${t.category} (${t.status})`,
+        id: t.id,
+        targetTab: "tools",
+        targetSubTab: "all",
+      });
+    }
+  });
+
+  // Search Categories
+  categories.forEach((c) => {
+    if (c.name.toLowerCase().includes(query) || c.slug.toLowerCase().includes(query) || c.description?.toLowerCase().includes(query)) {
+      results.push({
+        type: "category",
+        category: "Categories",
+        title: c.name,
+        subtitle: `${c.count} tools • Status: ${c.status}`,
+        id: c.id,
+        targetTab: "categories",
+        targetSubTab: "all",
+      });
+    }
+  });
+
+  // Search Articles
+  blogPosts.forEach((b) => {
+    if (b.title.toLowerCase().includes(query) || b.slug.toLowerCase().includes(query) || b.content?.toLowerCase().includes(query)) {
+      results.push({
+        type: "article",
+        category: "Articles",
+        title: b.title,
+        subtitle: `/${b.slug} • ${b.category} (${b.status})`,
+        id: b.id,
+        targetTab: "content",
+        targetSubTab: "articles",
+      });
+    }
+  });
+
+  // Search Contact Messages
+  subStore.contactMessages.forEach((m) => {
+    if (m.name.toLowerCase().includes(query) || m.email.toLowerCase().includes(query) || m.subject.toLowerCase().includes(query) || m.message.toLowerCase().includes(query)) {
+      results.push({
+        type: "message",
+        category: "Contact Messages",
+        title: m.subject || m.name,
+        subtitle: `From: ${m.name} (${m.email}) • Status: ${m.status}`,
+        id: m.id,
+        targetTab: "inbox",
+        targetSubTab: "all",
+      });
+    }
+  });
+
+  // Search Subscribers
+  subscribers.forEach((s) => {
+    if (s.email.toLowerCase().includes(query)) {
+      results.push({
+        type: "subscriber",
+        category: "Newsletter Subscribers",
+        title: s.email,
+        subtitle: `Source: ${s.source} • Status: ${s.status}`,
+        id: s.id,
+        targetTab: "newsletter",
+        targetSubTab: "subscribers",
+      });
+    }
+  });
+
+  // Search Media
+  mediaList.forEach((m) => {
+    if (m.name.toLowerCase().includes(query) || m.originalName.toLowerCase().includes(query)) {
+      results.push({
+        type: "media",
+        category: "Media Library",
+        title: m.name,
+        subtitle: `${m.originalName} • ${Math.round(m.sizeBytes / 1024)} KB (${m.mimeType})`,
+        id: m.id,
+        targetTab: "media",
+        targetSubTab: "all",
+      });
+    }
+  });
+
+  return res.json({ success: true, count: results.length, results: results.slice(0, 30) });
+});
+
+// =============================================================
+// REAL ADMIN NOTIFICATIONS
+// =============================================================
+router.get("/notifications", (req, res) => {
+  const subStore = getSubmissionsStore();
+  const subscribers = getAllSubscribers();
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  const unreadMessages = subStore.contactMessages.filter((m) => !m.read);
+  const newSubscribersToday = subscribers.filter((s) => new Date(s.subscribedAt || 0).getTime() >= todayStart.getTime());
+  const newUsersToday = usersDatabase.filter((u) => new Date(u.createdAt || 0).getTime() >= todayStart.getTime());
+  const brokenTools = subStore.toolHealth.filter((h) => h.status === "Broken");
+
+  const notifications: any[] = [];
+
+  unreadMessages.forEach((m) => {
+    notifications.push({
+      id: `notif_msg_${m.id}`,
+      type: "message",
+      title: "New Contact Message",
+      message: `${m.name}: "${m.subject}"`,
+      timestamp: m.createdAt,
+      read: m.read,
+      targetTab: "inbox",
+      targetId: m.id,
+    });
+  });
+
+  newSubscribersToday.forEach((s) => {
+    notifications.push({
+      id: `notif_sub_${s.id}`,
+      type: "subscriber",
+      title: "New Newsletter Subscriber",
+      message: `${s.email} joined via ${s.source}`,
+      timestamp: s.subscribedAt,
+      read: false,
+      targetTab: "newsletter",
+      targetId: s.id,
+    });
+  });
+
+  newUsersToday.forEach((u) => {
+    notifications.push({
+      id: `notif_usr_${u.uid}`,
+      type: "user",
+      title: "New User Registered",
+      message: `${u.name || u.email} created an account`,
+      timestamp: u.createdAt,
+      read: false,
+      targetTab: "users",
+      targetId: u.uid,
+    });
+  });
+
+  brokenTools.forEach((h) => {
+    notifications.push({
+      id: `notif_tool_${h.toolId}`,
+      type: "warning",
+      title: "Tool Alert",
+      message: `${h.toolName} reported errors (${h.lastError || "Check health"})`,
+      timestamp: h.lastTested,
+      read: false,
+      targetTab: "tools",
+      targetId: h.toolId,
+    });
+  });
+
+  return res.json({
+    success: true,
+    totalUnread: unreadMessages.length + newSubscribersToday.length + newUsersToday.length,
+    notifications: notifications.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 20),
+  });
 });
 
 // Tool Health Log & Check

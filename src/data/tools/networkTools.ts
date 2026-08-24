@@ -277,61 +277,6 @@ export const NETWORK_TOOLS: AITool[] = [
     }
   },
   {
-    "id": "ip-range-calculator",
-    "slug": "ip-range-calculator",
-    "name": "IP Range Calculator",
-    "tagline": "Calculate total IP addresses and CIDR notation from IP range.",
-    "description": "IP Range Calculator - Calculate total IP addresses and CIDR notation from IP range. Fast, high-precision processing running 100% locally or via secure SSRF-safe endpoints.",
-    "category": "network",
-    "iconName": "Network",
-    "tags": [
-      "network",
-      "ip-range-calculator",
-      "online tool",
-      "free utility"
-    ],
-    "isTrending": true,
-    "isPopular": true,
-    "rating": 4.8,
-    "ratingCount": 1974,
-    "usageCount": 74168,
-    "inputLabel": "Input for IP Range Calculator:",
-    "inputPlaceholder": "Enter input for IP Range Calculator...",
-    "optionsConfig": {},
-    "seoContent": {
-      "metaTitle": "IP Range Calculator - Free Online Utility | AI Tools Hub",
-      "metaDescription": "IP Range Calculator. Calculate total IP addresses and CIDR notation from IP range. 100% free tool with instant processing and secure SSRF protection.",
-      "overview": "IP Range Calculator delivers high-precision processing directly in your browser.",
-      "useCases": [
-        "Execute IP Range Calculator operations instantly",
-        "End-to-end data privacy without server storage",
-        "Cross-platform support for mobile and desktop",
-        "One-click copy and export results"
-      ],
-      "keyFeatures": [
-        "Instant real-time execution",
-        "Zero registration or payment required",
-        "SSRF-protected backend verification",
-        "Dark and light theme support"
-      ],
-      "howToUseSteps": [
-        "Enter or paste your input into the workspace.",
-        "Adjust optional parameters if needed.",
-        "View live results and copy or download the output."
-      ],
-      "faqs": [
-        {
-          "question": "Is IP Range Calculator free?",
-          "answer": "Yes, 100% free with zero registration or limits."
-        },
-        {
-          "question": "Is my data secure?",
-          "answer": "Yes, calculations are done locally or via secure SSRF-sanitized endpoints."
-        }
-      ]
-    }
-  },
-  {
     "id": "binary-ip-converter",
     "slug": "binary-ip-converter",
     "name": "Binary IP Converter",

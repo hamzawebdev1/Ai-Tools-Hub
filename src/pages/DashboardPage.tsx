@@ -152,34 +152,37 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     newToolsDigest: false,
   });
 
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
-    {
-      id: "n1",
-      title: "Welcome to AI Tools Hub Dashboard",
-      message: "Your cloud sync account is active. Explore 50+ free tools with unlimited processing.",
-      time: "Just now",
-      type: "success",
-      read: false,
-    },
-    {
-      id: "n2",
-      title: "New PDF & Image Tools Added",
-      message: "Check out the upgraded WebP to JPG converter and OCR PDF text extractor.",
-      time: "2 hours ago",
-      type: "info",
-      read: false,
-    },
-    {
-      id: "n3",
-      title: "Security Synchronization Complete",
-      message: "Your Firestore authentication token is securely protected.",
-      time: "1 day ago",
-      type: "info",
-      read: true,
-    },
-  ]);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
 
   const [copiedHistoryId, setCopiedHistoryId] = useState<string | null>(null);
+
+  // Live analytics fetched from backend database
+  const [liveStats, setLiveStats] = useState<{
+    totalExecutions: number;
+    successfulConversions: number;
+    failedOperations: number;
+    downloadsCount: number;
+    estimatedTimeSavedMinutes: number;
+    recentActivity: any[];
+    toolBreakdown: any[];
+  } | null>(null);
+
+  useEffect(() => {
+    const fetchUserStats = async () => {
+      try {
+        const res = await fetch("/api/auth/user-analytics", {
+          headers: currentUser?.uid ? { "x-user-id": currentUser.uid } : {},
+        });
+        const data = await res.json();
+        if (data.success && data.stats) {
+          setLiveStats(data.stats);
+        }
+      } catch (err) {
+        console.warn("Failed to load user analytics:", err);
+      }
+    };
+    fetchUserStats();
+  }, [currentUser]);
 
   useEffect(() => {
     if (userDoc?.name) {
@@ -515,10 +518,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <Zap className="w-5 h-5" />
                 </div>
                 <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-                  {history.length + (userDoc?.history?.length || profile.totalExecutions)}
+                  {Math.max(currentUser && userDoc?.history ? userDoc.history.length : history.length, liveStats?.totalExecutions || 0)}
                 </div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  Total Executions
+                  Total Tool Uses
                 </div>
               </div>
 
@@ -527,7 +530,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <Clock className="w-5 h-5" />
                 </div>
                 <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-                  ~{Math.round((history.length + 12) * 6)} Mins
+                  {Math.max(Math.round((currentUser && userDoc?.history ? userDoc.history.length : history.length) * 5), liveStats?.estimatedTimeSavedMinutes || 0)} Mins
                 </div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                   Estimated Time Saved
@@ -548,13 +551,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 p-5 space-y-2 shadow-xs hover:border-amber-500/40 transition-colors">
                 <div className="p-2.5 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 w-fit">
-                  <TrendingUp className="w-5 h-5" />
+                  <Download className="w-5 h-5" />
                 </div>
                 <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-                  {currentUser ? "Unlimited" : `${profile.usageToday} / ${profile.dailyUsageLimit}`}
+                  {liveStats?.downloadsCount || 0}
                 </div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  {currentUser ? "Registered Member Usage" : "Guest Daily Quota"}
+                  Files Downloaded
                 </div>
               </div>
             </div>
@@ -1223,27 +1226,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Notification Feed */}
             <div className="space-y-3">
-              {notifications.map((n) => (
-                <div
-                  key={n.id}
-                  className={`p-4 rounded-2xl border transition-colors flex items-start gap-3 ${
-                    n.read
-                      ? "bg-white/60 dark:bg-slate-900/60 border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400"
-                      : "bg-indigo-500/5 border-indigo-500/30 text-slate-900 dark:text-slate-100"
-                  }`}
-                >
-                  <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-500 shrink-0">
-                    <Bell className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-bold text-slate-900 dark:text-white">{n.title}</h4>
-                      <span className="text-[10px] text-slate-400">{n.time}</span>
-                    </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">{n.message}</p>
-                  </div>
+              {notifications.length === 0 ? (
+                <div className="p-8 text-center text-xs text-slate-500 rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 space-y-1">
+                  <Bell className="w-6 h-6 mx-auto text-slate-400 opacity-60 mb-2" />
+                  <p className="font-bold text-slate-700 dark:text-slate-300">No notifications right now.</p>
+                  <p>System announcements and account security alerts will appear here in real-time.</p>
                 </div>
-              ))}
+              ) : (
+                notifications.map((n) => (
+                  <div
+                    key={n.id}
+                    className={`p-4 rounded-2xl border transition-colors flex items-start gap-3 ${
+                      n.read
+                        ? "bg-white/60 dark:bg-slate-900/60 border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+                        : "bg-indigo-500/5 border-indigo-500/30 text-slate-900 dark:text-slate-100"
+                    }`}
+                  >
+                    <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-500 shrink-0">
+                      <Bell className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-xs font-bold text-slate-900 dark:text-white">{n.title}</h4>
+                        <span className="text-[10px] text-slate-400">{n.time}</span>
+                      </div>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">{n.message}</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
 
             {/* Preferences Toggles */}

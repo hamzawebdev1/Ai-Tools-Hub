@@ -99,22 +99,7 @@ let submissionsStore: SubmissionsData = (() => {
     } catch (e) {}
   }
   return {
-    contactMessages: [
-      {
-        id: "msg_init_1",
-        referenceId: "MSG-82910",
-        name: "Dev Team",
-        email: "user@example.com",
-        subject: "Feature Inquiry: Batch PDF OCR",
-        category: "Feature Inquiry",
-        message: "Can we add multi-language support for the client-side OCR tool? It works wonderfully for English.",
-        recaptchaVerified: true,
-        status: "Open",
-        read: false,
-        replies: [],
-        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-      },
-    ],
+    contactMessages: [],
     bugReports: [],
     featureRequests: [],
     toolHealth: [],

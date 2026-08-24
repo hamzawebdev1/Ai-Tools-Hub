@@ -320,59 +320,6 @@ export const TEXTTOOLS: AITool[] = [
     }
   },
   {
-    "id": "reading-time-calculator",
-    "slug": "reading-time-calculator",
-    "name": "Reading Time Calculator",
-    "tagline": "Estimate reading and speaking duration.",
-    "description": "Reading Time Calculator - Estimate reading and speaking duration. Fast, high-precision client-side browser processing.",
-    "category": "text",
-    "iconName": "Type",
-    "tags": [
-      "text",
-      "text",
-      "free utility",
-      "online tool"
-    ],
-    "isTrending": true,
-    "rating": 4.8,
-    "ratingCount": 1250,
-    "usageCount": 45000,
-    "inputLabel": "Input for Reading Time Calculator:",
-    "inputPlaceholder": "Enter or paste content for Reading Time Calculator...",
-    "optionsConfig": {},
-    "seoContent": {
-      "metaTitle": "Reading Time Calculator - Free Online Utility",
-      "metaDescription": "Reading Time Calculator. Estimate reading and speaking duration. 100% free tool with instant client processing.",
-      "overview": "Reading Time Calculator delivers instant, high-precision browser-based text processing.",
-      "useCases": [
-        "Local browser processing for maximum privacy",
-        "One-click copy and download results",
-        "Cross-platform mobile and desktop support"
-      ],
-      "keyFeatures": [
-        "Client-side execution",
-        "Zero registration",
-        "High speed output",
-        "Dark and light theme support"
-      ],
-      "howToUseSteps": [
-        "Input text into workspace.",
-        "Configure parameters if needed.",
-        "Copy or download processed output."
-      ],
-      "faqs": [
-        {
-          "question": "Is this tool free?",
-          "answer": "Yes, 100% free with no limits."
-        },
-        {
-          "question": "Is my data private?",
-          "answer": "Yes, processing happens locally in your browser."
-        }
-      ]
-    }
-  },
-  {
     "id": "case-converter",
     "slug": "case-converter",
     "name": "Text Case Converter",
@@ -2387,59 +2334,6 @@ export const TEXTTOOLS: AITool[] = [
     }
   },
   {
-    "id": "slug-generator",
-    "slug": "slug-generator",
-    "name": "Slug Generator",
-    "tagline": "Convert text to URL-friendly slugs.",
-    "description": "Slug Generator - Convert text to URL-friendly slugs. Fast, high-precision client-side browser processing.",
-    "category": "text",
-    "iconName": "Type",
-    "tags": [
-      "text",
-      "text",
-      "free utility",
-      "online tool"
-    ],
-    "isTrending": true,
-    "rating": 4.8,
-    "ratingCount": 1250,
-    "usageCount": 45000,
-    "inputLabel": "Input for Slug Generator:",
-    "inputPlaceholder": "Enter or paste content for Slug Generator...",
-    "optionsConfig": {},
-    "seoContent": {
-      "metaTitle": "Slug Generator - Free Online Utility",
-      "metaDescription": "Slug Generator. Convert text to URL-friendly slugs. 100% free tool with instant client processing.",
-      "overview": "Slug Generator delivers instant, high-precision browser-based text processing.",
-      "useCases": [
-        "Local browser processing for maximum privacy",
-        "One-click copy and download results",
-        "Cross-platform mobile and desktop support"
-      ],
-      "keyFeatures": [
-        "Client-side execution",
-        "Zero registration",
-        "High speed output",
-        "Dark and light theme support"
-      ],
-      "howToUseSteps": [
-        "Input text into workspace.",
-        "Configure parameters if needed.",
-        "Copy or download processed output."
-      ],
-      "faqs": [
-        {
-          "question": "Is this tool free?",
-          "answer": "Yes, 100% free with no limits."
-        },
-        {
-          "question": "Is my data private?",
-          "answer": "Yes, processing happens locally in your browser."
-        }
-      ]
-    }
-  },
-  {
     "id": "html-escape",
     "slug": "html-escape",
     "name": "HTML Escape",
@@ -3471,59 +3365,6 @@ export const TEXTTOOLS: AITool[] = [
       "metaTitle": "Sentence Extractor - Free Online Utility",
       "metaDescription": "Sentence Extractor. Extract clean sentence lists from text. 100% free tool with instant client processing.",
       "overview": "Sentence Extractor delivers instant, high-precision browser-based text processing.",
-      "useCases": [
-        "Local browser processing for maximum privacy",
-        "One-click copy and download results",
-        "Cross-platform mobile and desktop support"
-      ],
-      "keyFeatures": [
-        "Client-side execution",
-        "Zero registration",
-        "High speed output",
-        "Dark and light theme support"
-      ],
-      "howToUseSteps": [
-        "Input text into workspace.",
-        "Configure parameters if needed.",
-        "Copy or download processed output."
-      ],
-      "faqs": [
-        {
-          "question": "Is this tool free?",
-          "answer": "Yes, 100% free with no limits."
-        },
-        {
-          "question": "Is my data private?",
-          "answer": "Yes, processing happens locally in your browser."
-        }
-      ]
-    }
-  },
-  {
-    "id": "word-frequency-counter",
-    "slug": "word-frequency-counter",
-    "name": "Word Frequency Counter",
-    "tagline": "Calculate top word frequency distribution.",
-    "description": "Word Frequency Counter - Calculate top word frequency distribution. Fast, high-precision client-side browser processing.",
-    "category": "text",
-    "iconName": "Type",
-    "tags": [
-      "text",
-      "text",
-      "free utility",
-      "online tool"
-    ],
-    "isTrending": true,
-    "rating": 4.8,
-    "ratingCount": 1250,
-    "usageCount": 45000,
-    "inputLabel": "Input for Word Frequency Counter:",
-    "inputPlaceholder": "Enter or paste content for Word Frequency Counter...",
-    "optionsConfig": {},
-    "seoContent": {
-      "metaTitle": "Word Frequency Counter - Free Online Utility",
-      "metaDescription": "Word Frequency Counter. Calculate top word frequency distribution. 100% free tool with instant client processing.",
-      "overview": "Word Frequency Counter delivers instant, high-precision browser-based text processing.",
       "useCases": [
         "Local browser processing for maximum privacy",
         "One-click copy and download results",

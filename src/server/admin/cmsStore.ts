@@ -92,10 +92,24 @@ export interface CMSAuditLog {
   timestamp: string;
   adminEmail: string;
   action: string;
-  entityType: "tool" | "category" | "blog" | "user" | "setting" | "newsletter" | "message" | "security";
+  entityType: "tool" | "category" | "blog" | "user" | "setting" | "newsletter" | "message" | "security" | "media";
   entityId?: string;
   details: string;
   ip: string;
+}
+
+export interface CMSMediaItem {
+  id: string;
+  name: string;
+  originalName: string;
+  url: string;
+  sizeBytes: number;
+  mimeType: string;
+  category: "image" | "document" | "logo" | "favicon" | "icon" | "other";
+  width?: number;
+  height?: number;
+  uploadedBy: string;
+  createdAt: string;
 }
 
 export interface CMSSiteSettings {
@@ -133,6 +147,7 @@ export interface CMSDatabase {
   blogPosts: CMSBlogPost[];
   subscribers: CMSNewsletterSubscriber[];
   campaigns: CMSCampaign[];
+  media: CMSMediaItem[];
   settings: CMSSiteSettings;
   auditLogs: CMSAuditLog[];
 }
@@ -213,15 +228,7 @@ function buildInitialDatabase(): CMSDatabase {
     updatedAt: new Date().toISOString(),
   }));
 
-  const subscribers: CMSNewsletterSubscriber[] = [
-    {
-      id: "sub_1",
-      email: "subscriber.demo@utilitytoolshub.com",
-      status: "active",
-      source: "footer",
-      subscribedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    },
-  ];
+  const subscribers: CMSNewsletterSubscriber[] = [];
 
   const settings: CMSSiteSettings = {
     siteName: "Utility Tools Hub",
@@ -264,12 +271,38 @@ function buildInitialDatabase(): CMSDatabase {
     },
   ];
 
+  const media: CMSMediaItem[] = [
+    {
+      id: "med_logo_01",
+      name: "Site Logo",
+      originalName: "icon.png",
+      url: "/icon.png",
+      sizeBytes: 14200,
+      mimeType: "image/png",
+      category: "logo",
+      uploadedBy: "system",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "med_favicon_01",
+      name: "Site Favicon",
+      originalName: "favicon.ico",
+      url: "/favicon.ico",
+      sizeBytes: 4280,
+      mimeType: "image/x-icon",
+      category: "favicon",
+      uploadedBy: "system",
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
   return {
     tools,
     categories,
     blogPosts,
     subscribers,
     campaigns: [],
+    media,
     settings,
     auditLogs,
   };
@@ -614,6 +647,38 @@ export function recordCampaign(campaign: CMSCampaign, adminEmail: string, ip?: s
 
 export function getAllCampaigns(): CMSCampaign[] {
   return cmsDb.campaigns;
+}
+
+export function getAllMedia(): CMSMediaItem[] {
+  if (!cmsDb.media) {
+    cmsDb.media = [];
+  }
+  return cmsDb.media;
+}
+
+export function addMediaItem(item: Omit<CMSMediaItem, "id" | "createdAt">, adminEmail: string, ip?: string): CMSMediaItem {
+  if (!cmsDb.media) {
+    cmsDb.media = [];
+  }
+  const newMedia: CMSMediaItem = {
+    ...item,
+    id: "med_" + crypto.randomBytes(6).toString("hex"),
+    createdAt: new Date().toISOString(),
+  };
+  cmsDb.media.unshift(newMedia);
+  logAuditAction(adminEmail, "MEDIA_UPLOADED", "media", `Uploaded media file "${newMedia.name}" (${newMedia.mimeType}, ${Math.round(newMedia.sizeBytes / 1024)} KB)`, ip, newMedia.id);
+  saveCMSDatabase();
+  return newMedia;
+}
+
+export function deleteMediaItem(id: string, adminEmail: string, ip?: string): boolean {
+  if (!cmsDb.media) return false;
+  const idx = cmsDb.media.findIndex((m) => m.id === id);
+  if (idx === -1) return false;
+  const [deleted] = cmsDb.media.splice(idx, 1);
+  logAuditAction(adminEmail, "MEDIA_DELETED", "media", `Deleted media file "${deleted.name}"`, ip, id);
+  saveCMSDatabase();
+  return true;
 }
 
 // -------------------------------------------------------------

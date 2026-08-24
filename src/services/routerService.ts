@@ -414,71 +414,54 @@ export function resolveCanonicalUrl(rawUrl?: string): string {
 }
 
 /**
- * Enforces canonical URL redirect on client-side (enforcing HTTPS, non-WWW apex domain,
- * removing trailing slashes, and stripping all query parameters)
- * using window.location.replace to redirect every request to its normalized canonical URL.
+ * Enforces canonical URL normalization on client-side (normalizing path, removing trailing slashes,
+ * converting legacy alias routes to canonical format, and preserving valid search/pagination params).
+ * Uses window.history.replaceState to update the browser address bar seamlessly without triggering full page reloads.
  */
-export function enforceCanonicalRedirect(): boolean {
-  if (typeof window === "undefined") return false;
+export function enforceCanonicalRedirect(): void {
+  if (typeof window === "undefined") return;
 
-  const loc = window.location;
-  const isLocalhost =
-    loc.hostname === "localhost" ||
-    loc.hostname === "127.0.0.1" ||
-    loc.hostname.endsWith(".run.app");
+  try {
+    const loc = window.location;
+    const route = parseRoute(loc.pathname, loc.search);
 
-  // 1. Check if protocol needs upgrade to HTTPS (in non-local environment)
-  const needsHttps = !isLocalhost && loc.protocol === "http:";
-
-  // 2. Check if www prefix exists
-  const hasWww = loc.hostname.startsWith("www.");
-
-  // 3. Check if pathname has trailing slash (except root "/")
-  const hasTrailingSlash = loc.pathname.length > 1 && loc.pathname.endsWith("/");
-
-  // 4. Check uppercase letters in pathname
-  const hasUppercase = /[A-Z]/.test(loc.pathname);
-
-  // 5. Check if query parameters exist (must be stripped for canonical URL)
-  const hasQueryParams = Boolean(loc.search && loc.search.length > 1);
-
-  // 6. Check if hash exists
-  const hasHash = Boolean(loc.hash && loc.hash.length > 1);
-
-  // 7. Resolve canonical path
-  const route = parseRoute(loc.pathname, loc.search);
-  let canonicalPath = loc.pathname;
-  if (!route.isNotFound && route.tab !== "search") {
-    canonicalPath = getUrlForRoute(route.tab, {
-      toolSlug: route.toolSlug,
-      categorySlug: route.categorySlug,
-      postSlug: route.postSlug,
-      authorSlug: route.authorSlug,
-    });
-  } else if (hasTrailingSlash) {
-    canonicalPath = loc.pathname.replace(/\/+$/, "");
-  }
-
-  const isPathNonCanonical = loc.pathname !== canonicalPath;
-
-  if (
-    needsHttps ||
-    hasWww ||
-    hasTrailingSlash ||
-    hasUppercase ||
-    hasQueryParams ||
-    hasHash ||
-    isPathNonCanonical
-  ) {
-    const targetUrl = resolveCanonicalUrl();
-    const currentUrl = `${loc.protocol}//${loc.host}${loc.pathname}${loc.search}${loc.hash}`;
-    if (targetUrl && targetUrl !== currentUrl) {
-      window.location.replace(targetUrl);
-      return true;
+    // 1. Determine canonical route path
+    let canonicalPath = "/";
+    if (!route.isNotFound && route.tab !== "search") {
+      canonicalPath = getUrlForRoute(route.tab, {
+        toolSlug: route.toolSlug,
+        categorySlug: route.categorySlug,
+        postSlug: route.postSlug,
+        authorSlug: route.authorSlug,
+      });
+    } else if (route.tab === "search") {
+      canonicalPath = "/search";
+    } else {
+      canonicalPath = normalizePath(loc.pathname);
     }
-  }
 
-  return false;
+    // 2. Preserve valid functional query parameters (e.g., search query 'q' or pagination 'page')
+    const searchParams = new URLSearchParams(loc.search);
+    const cleanParams = new URLSearchParams();
+    searchParams.forEach((val, key) => {
+      const k = key.toLowerCase();
+      if (k === "q" || k === "query" || k === "page") {
+        cleanParams.append(key, val);
+      }
+    });
+
+    const queryString = cleanParams.toString() ? `?${cleanParams.toString()}` : "";
+    const canonicalFull = `${canonicalPath}${queryString}`;
+    const currentFull = `${loc.pathname}${loc.search}`;
+
+    // 3. Silently update address bar if non-canonical, without reloading the page
+    if (currentFull !== canonicalFull) {
+      window.history.replaceState(window.history.state || {}, "", canonicalFull);
+    }
+  } catch (err) {
+    // Fail-safe: log silently to prevent breaking runtime execution
+    console.debug("Canonical URL normalization error handled safely:", err);
+  }
 }
 
 /**
