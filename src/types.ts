@@ -107,18 +107,28 @@ export interface BlogPost {
   id: string;
   slug: string;
   title: string;
+  seoTitle?: string;
+  metaDescription?: string;
   excerpt: string;
   content: string;
   category: string;
+  primaryKeyword?: string;
+  secondaryKeywords?: string[];
+  searchIntent?: "Informational" | "Commercial Investigation" | "Transactional / How-to";
   author: {
     name: string;
     avatar: string;
     role: string;
+    bio?: string;
   };
   date: string;
+  updatedDate?: string;
   readTime: string;
   tags: string[];
   image: string;
+  faqs?: FAQItem[];
+  relatedToolIds?: string[];
+  relatedArticleSlugs?: string[];
 }
 
 export interface FeedbackItem {

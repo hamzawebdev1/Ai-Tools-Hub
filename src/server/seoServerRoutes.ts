@@ -87,9 +87,18 @@ router.get("/sitemap.xml", (req, res) => {
 
   // 4. Blog posts (/blog/:slug)
   for (const post of BLOG_POSTS_DATA) {
+    let postMod = now;
+    try {
+      const parsed = new Date(post.updatedDate || post.date);
+      if (!isNaN(parsed.getTime())) {
+        postMod = parsed.toISOString();
+      }
+    } catch {
+      postMod = now;
+    }
     xml += `  <url>\n`;
     xml += `    <loc>${host}/blog/${post.slug}</loc>\n`;
-    xml += `    <lastmod>${new Date(post.date).toISOString()}</lastmod>\n`;
+    xml += `    <lastmod>${postMod}</lastmod>\n`;
     xml += `    <changefreq>monthly</changefreq>\n`;
     xml += `    <priority>0.8</priority>\n`;
     xml += `  </url>\n`;
@@ -154,19 +163,29 @@ router.get("/image-sitemap.xml", (req, res) => {
  */
 router.get("/news-sitemap.xml", (req, res) => {
   const host = getBaseHost(req);
+  const now = new Date().toISOString();
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`;
 
   for (const post of BLOG_POSTS_DATA) {
+    let pubDate = now;
+    try {
+      const parsed = new Date(post.date);
+      if (!isNaN(parsed.getTime())) {
+        pubDate = parsed.toISOString();
+      }
+    } catch {
+      pubDate = now;
+    }
     xml += `  <url>\n`;
     xml += `    <loc>${host}/blog/${post.slug}</loc>\n`;
     xml += `    <news:news>\n`;
     xml += `      <news:publication>\n`;
-    xml += `        <news:name>Mehzan Tools Hub Tech News</news:name>\n`;
+    xml += `        <news:name>Multi-Tools Hub Tech News</news:name>\n`;
     xml += `        <news:language>en</news:language>\n`;
     xml += `      </news:publication>\n`;
-    xml += `      <news:publication_date>${new Date(post.date).toISOString()}</news:publication_date>\n`;
+    xml += `      <news:publication_date>${pubDate}</news:publication_date>\n`;
     xml += `      <news:title>${escapeXml(post.title)}</news:title>\n`;
     xml += `    </news:news>\n`;
     xml += `  </url>\n`;

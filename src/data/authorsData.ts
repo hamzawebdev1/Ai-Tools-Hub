@@ -58,4 +58,18 @@ export const AUTHORS_DATA: Author[] = [
     },
     articlesCount: 15,
   },
+  {
+    id: "4",
+    slug: "priya-sharma",
+    name: "Dr. Priya Sharma",
+    role: "Senior Quantitative Analyst & Financial Researcher",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+    bio: "Dr. Priya Sharma holds a Ph.D. in Applied Mathematics and has over 12 years of experience developing financial calculation models, loan amortization engines, and biometric health estimators. She audits our mathematical algorithms for 100% precision.",
+    expertise: ["Loan Amortization", "Compound Interest Models", "Biometric Formulas", "Tax & GST Algorithms"],
+    socials: {
+      twitter: "https://twitter.com/example",
+      linkedin: "https://linkedin.com/example",
+    },
+    articlesCount: 14,
+  },
 ];

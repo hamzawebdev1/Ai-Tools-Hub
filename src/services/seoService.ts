@@ -293,15 +293,26 @@ export function getFAQSchema(faqs: { question: string; answer: string }[]) {
  */
 export function getArticleSchema(post: BlogPost) {
   const postUrl = getCanonicalUrl(`/blog/${post.slug}`);
+  let publishedDate = new Date().toISOString();
+  let modifiedDate = new Date().toISOString();
+  try {
+    const pParsed = new Date(post.date);
+    if (!isNaN(pParsed.getTime())) publishedDate = pParsed.toISOString();
+  } catch {}
+  try {
+    const mParsed = new Date(post.updatedDate || post.date);
+    if (!isNaN(mParsed.getTime())) modifiedDate = mParsed.toISOString();
+  } catch {}
+
   return {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": ["BlogPosting", "Article"],
     "@id": `${postUrl}/#article`,
     "headline": post.title,
     "description": post.excerpt,
     "image": [post.image],
-    "datePublished": new Date(post.date).toISOString(),
-    "dateModified": new Date(post.date).toISOString(),
+    "datePublished": publishedDate,
+    "dateModified": modifiedDate,
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": postUrl
@@ -310,11 +321,13 @@ export function getArticleSchema(post: BlogPost) {
       "@type": "Person",
       "name": post.author.name,
       "jobTitle": post.author.role,
-      "image": post.author.avatar
+      "image": post.author.avatar,
+      "description": post.author.bio
     },
     "publisher": {
       "@id": `${getDomain()}/#organization`
     },
+    "articleSection": post.category,
     "keywords": post.tags.join(", ")
   };
 }
@@ -492,20 +505,29 @@ export function buildSEOMetadata(
         { name: post.title, url: `/blog/${post.slug}` }
       ];
 
+      const schemas: Record<string, any>[] = [
+        orgSchema,
+        getBreadcrumbSchema(breadcrumbs),
+        getArticleSchema(post)
+      ];
+
+      if (post.faqs && post.faqs.length > 0) {
+        const faqSchema = getFAQSchema(post.faqs);
+        if (faqSchema) {
+          schemas.push(faqSchema);
+        }
+      }
+
       return {
-        title: `${post.title} | Mehzan Tools Hub`,
-        description: post.excerpt,
+        title: post.seoTitle || `${post.title} | Mehzan Tools Hub`,
+        description: post.metaDescription || post.excerpt,
         keywords: post.tags,
         canonicalUrl,
         ogType: "article",
         ogImage: post.image,
         author: post.author.name,
         publishedDate: post.date,
-        schemas: [
-          orgSchema,
-          getBreadcrumbSchema(breadcrumbs),
-          getArticleSchema(post)
-        ],
+        schemas,
         breadcrumbs
       };
     }
