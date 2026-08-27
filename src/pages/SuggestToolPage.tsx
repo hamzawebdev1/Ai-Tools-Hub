@@ -33,7 +33,7 @@ export const SuggestToolPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Suggest a New AI Tool - AI Tools Hub"
+        title="Suggest a New AI Tool - Mehzan Digital Tools Hub"
         description="Request a custom AI utility or suggest a feature for our development team to build."
       />
 

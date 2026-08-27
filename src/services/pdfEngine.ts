@@ -213,7 +213,7 @@ export async function compressPdf(file: File): Promise<Uint8Array> {
   pdf.setTitle("");
   pdf.setAuthor("");
   pdf.setSubject("");
-  pdf.setProducer("AI Tools Hub PDF Optimizer");
+  pdf.setProducer("Mehzan Digital Tools Hub PDF Optimizer");
 
   return await pdf.save({ useObjectStreams: true });
 }
@@ -645,7 +645,7 @@ export async function removePdfMetadataInfo(file: File): Promise<Uint8Array> {
   pdf.setAuthor("");
   pdf.setSubject("");
   pdf.setKeywords([]);
-  pdf.setProducer("AI Tools Hub Sanitizer");
+  pdf.setProducer("Mehzan Digital Tools Hub Sanitizer");
   pdf.setCreator("");
 
   return await pdf.save();

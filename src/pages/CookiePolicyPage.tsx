@@ -7,7 +7,7 @@ export const CookiePolicyPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Cookie Policy - AI Tools Hub Preference Center"
+        title="Cookie Policy - Mehzan Digital Tools Hub Preference Center"
         description="Detailed information regarding necessary session cookies, performance measurement, and Google AdSense publisher cookies."
       />
 

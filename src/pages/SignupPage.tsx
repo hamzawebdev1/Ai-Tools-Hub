@@ -111,8 +111,8 @@ export const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
   return (
     <>
       <SchemaHead
-        title="Create Account - AI Tools Hub"
-        description="Join AI Tools Hub to save favorites, sync history across devices, and unlock higher rate limits."
+        title="Create Account - Mehzan Digital Tools Hub"
+        description="Join Mehzan Digital Tools Hub to save favorites, sync history across devices, and unlock higher rate limits."
       />
 
       <div className="max-w-md mx-auto space-y-8 pb-16 pt-4">

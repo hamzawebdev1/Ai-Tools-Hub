@@ -95,7 +95,7 @@ export async function syncUserDocument(user: FirebaseUser, extraName?: string): 
     
     const determinedRole = user.email === "hamza.web.dev5324@gmail.com" 
       ? "super_admin" 
-      : (existing.role || (user.email === "admin@security.hub" || user.email?.endsWith("@aitoolshub.com") ? "admin" : "user"));
+      : (existing.role || (user.email === "admin@security.hub" || user.email?.endsWith("@mehzandigital.com") ? "admin" : "user"));
 
     const updatedData = {
       lastLogin: now,
@@ -117,7 +117,7 @@ export async function syncUserDocument(user: FirebaseUser, extraName?: string): 
 
     const determinedRole = user.email === "hamza.web.dev5324@gmail.com"
       ? "super_admin"
-      : (user.email === "admin@security.hub" || user.email?.endsWith("@aitoolshub.com") ? "admin" : "user");
+      : (user.email === "admin@security.hub" || user.email?.endsWith("@mehzandigital.com") ? "admin" : "user");
 
     const newUserDoc: UserDocument = {
       uid: user.uid,

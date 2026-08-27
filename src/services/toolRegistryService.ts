@@ -28,7 +28,7 @@ export interface ToolAdminOverride {
   iconName?: string;
 }
 
-const STORAGE_KEY_OVERRIDES = "aitoolshub_admin_tool_overrides";
+const STORAGE_KEY_OVERRIDES = "mehzandigital_admin_tool_overrides";
 
 // Build canonical list from raw tools
 function buildCanonicalTools(): AITool[] {
@@ -109,7 +109,7 @@ export function saveToolAdminOverride(toolId: string, override: ToolAdminOverrid
     existing[toolId] = { ...(existing[toolId] || {}), ...override };
     localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(existing));
     // Dispatch custom event for real-time reactive UI updates
-    window.dispatchEvent(new CustomEvent("aitoolshub_tools_updated"));
+    window.dispatchEvent(new CustomEvent("mehzandigital_tools_updated"));
   } catch (err) {
     console.error("Failed to save admin override:", err);
   }
@@ -120,7 +120,7 @@ export function resetAdminOverrides(): void {
   if (typeof window === "undefined") return;
   try {
     localStorage.removeItem(STORAGE_KEY_OVERRIDES);
-    window.dispatchEvent(new CustomEvent("aitoolshub_tools_updated"));
+    window.dispatchEvent(new CustomEvent("mehzandigital_tools_updated"));
   } catch (err) {
     console.error("Failed to reset admin overrides:", err);
   }

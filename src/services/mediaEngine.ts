@@ -1,5 +1,5 @@
 /**
- * AI Tools Hub - Media Processing Engine
+ * Mehzan Digital Tools Hub - Media Processing Engine
  * High-performance, 100% browser-side processing for Audio, Video, GIF and Media Tools.
  * Uses Web Audio API, OfflineAudioContext, HTML5 Canvas, MediaRecorder & Blob utilities.
  */

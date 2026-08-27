@@ -11,8 +11,8 @@ export const PricingPage: React.FC<PricingPageProps> = ({ setActiveTab }) => {
   return (
     <>
       <SchemaHead
-        title="Simple, Transparent Pricing - Utility Tools Hub"
-        description="Utility Tools Hub is 100% free with unlimited daily usage supported by Google AdSense."
+        title="Simple, Transparent Pricing - Mehzan Digital Tools Hub"
+        description="Mehzan Digital Tools Hub is 100% free with unlimited daily usage supported by Google AdSense."
       />
 
       <div className="max-w-4xl mx-auto space-y-10 pb-16">

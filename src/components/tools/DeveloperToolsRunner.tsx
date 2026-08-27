@@ -68,7 +68,7 @@ export const DeveloperToolsRunner: React.FC<DeveloperToolsRunnerProps> = ({
     if (id.includes("json")) {
       return JSON.stringify(
         {
-          appName: "Utility Tools Hub",
+          appName: "Mehzan Digital Tools Hub",
           version: "2.0.0",
           features: ["SEO Tools", "Developer Tools", "Security Tools"],
           active: true,
@@ -81,10 +81,10 @@ export const DeveloperToolsRunner: React.FC<DeveloperToolsRunnerProps> = ({
       return "id,name,role,email\n1,Alice,Engineer,alice@example.com\n2,Bob,Designer,bob@example.com";
     }
     if (id.includes("xml")) {
-      return '<?xml version="1.0" encoding="UTF-8"?><root><app>Utility Tools Hub</app><version>2.0</version></root>';
+      return '<?xml version="1.0" encoding="UTF-8"?><root><app>Mehzan Digital Tools Hub</app><version>2.0</version></root>';
     }
     if (id.includes("yaml")) {
-      return "name: Utility Tools Hub\nversion: 2.0.0\nenvironment: production";
+      return "name: Mehzan Digital Tools Hub\nversion: 2.0.0\nenvironment: production";
     }
     if (id.includes("sql")) {
       return "SELECT id, name, email FROM users WHERE status = 'active' ORDER BY created_at DESC;";

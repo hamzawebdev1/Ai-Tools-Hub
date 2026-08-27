@@ -24,7 +24,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for IPv4 Validator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "IPv4 Validator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "IPv4 Validator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "IPv4 Validator. Validate IPv4 address, detect class, private/public status. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "IPv4 Validator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -79,7 +79,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for IPv6 Validator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "IPv6 Validator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "IPv6 Validator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "IPv6 Validator. Validate IPv6 address format, compression, and link-local scope. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "IPv6 Validator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -134,7 +134,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for IP Address Parser...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "IP Address Parser - Free Online Utility | AI Tools Hub",
+      "metaTitle": "IP Address Parser - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "IP Address Parser. Parse IP address into binary, integer, and class details. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "IP Address Parser delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -189,7 +189,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for CIDR Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "CIDR Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "CIDR Calculator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "CIDR Calculator. Calculate network address, broadcast, netmask, and host range. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "CIDR Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -244,7 +244,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Subnet Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Subnet Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Subnet Calculator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Subnet Calculator. Calculate IPv4 subnets, netmasks, and usable IP range. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Subnet Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -299,7 +299,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Binary IP Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Binary IP Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Binary IP Converter - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Binary IP Converter. Convert IPv4 to binary notation and binary back to IPv4. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Binary IP Converter delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -354,7 +354,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Decimal IP Converter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Decimal IP Converter - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Decimal IP Converter - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Decimal IP Converter. Convert dotted decimal IPv4 to 32-bit integer and vice-versa. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Decimal IP Converter delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -409,7 +409,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for IPv4 to Integer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "IPv4 to Integer - Free Online Utility | AI Tools Hub",
+      "metaTitle": "IPv4 to Integer - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "IPv4 to Integer. Convert IPv4 address to 32-bit unsigned integer. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "IPv4 to Integer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -464,7 +464,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Integer to IPv4...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Integer to IPv4 - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Integer to IPv4 - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Integer to IPv4. Convert 32-bit unsigned integer back to IPv4 address. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Integer to IPv4 delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -519,7 +519,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for MAC Address Validator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "MAC Address Validator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "MAC Address Validator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "MAC Address Validator. Validate EUI-48 MAC address format and format variations. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "MAC Address Validator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -574,7 +574,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Port Number Validator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Port Number Validator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Port Number Validator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Port Number Validator. Validate port numbers (1-65535) and look up standard services. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Port Number Validator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -629,7 +629,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for DNS Record Format Helper...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "DNS Record Format Helper - Free Online Utility | AI Tools Hub",
+      "metaTitle": "DNS Record Format Helper - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "DNS Record Format Helper. Format A, AAAA, CNAME, MX, TXT, SRV, and CAA records. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "DNS Record Format Helper delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -684,7 +684,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for DNS Record Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "DNS Record Generator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "DNS Record Generator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "DNS Record Generator. Generate zone file DNS record configurations. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "DNS Record Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -739,7 +739,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Network Mask Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Network Mask Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Network Mask Calculator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Network Mask Calculator. Convert CIDR prefix length to netmask and wildcard mask. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Network Mask Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -794,7 +794,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Wildcard Mask Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Wildcard Mask Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Wildcard Mask Calculator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Wildcard Mask Calculator. Calculate Cisco wildcard mask from subnet mask. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Wildcard Mask Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -849,7 +849,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Host Range Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Host Range Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Host Range Calculator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Host Range Calculator. Calculate first and last usable host IPs for a subnet. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Host Range Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -904,7 +904,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Broadcast Address Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Broadcast Address Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Broadcast Address Calculator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Broadcast Address Calculator. Calculate broadcast address from IP address and netmask. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Broadcast Address Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -959,7 +959,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Network Address Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Network Address Calculator - Free Online Utility | AI Tools Hub",
+      "metaTitle": "Network Address Calculator - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "Network Address Calculator. Calculate network address from IP address and netmask. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Network Address Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1014,7 +1014,7 @@ export const NETWORK_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for IP Inspector...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "IP Inspector - Free Online Utility | AI Tools Hub",
+      "metaTitle": "IP Inspector - Free Online Utility | Mehzan Digital Tools Hub",
       "metaDescription": "IP Inspector. Comprehensive IPv4/IPv6 packet and address inspector. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "IP Inspector delivers high-precision processing directly in your browser.",
       "useCases": [

@@ -36,7 +36,7 @@ export class EmailProviderService {
   constructor(providerType?: EmailProviderType) {
     this.providerType = providerType || (process.env.EMAIL_PROVIDER as EmailProviderType) || "mock";
     this.apiKey = process.env.EMAIL_PROVIDER_API_KEY || process.env.RESEND_API_KEY || process.env.SENDGRID_API_KEY || "";
-    this.defaultSender = process.env.EMAIL_FROM_ADDRESS || "AI Tools Hub <noreply@aitoolshub.com>";
+    this.defaultSender = process.env.EMAIL_FROM_ADDRESS || "Mehzan Digital Tools Hub <noreply@mehzandigital.com>";
   }
 
   public setProvider(type: EmailProviderType) {
@@ -48,7 +48,7 @@ export class EmailProviderService {
       from: options.from || this.defaultSender,
       to: options.to,
       subject: options.subject,
-      html: options.html + `<p style="font-size: 11px; color: #71717a; margin-top: 30px; text-align: center;">You received this email because you subscribed to AI Tools Hub. <a href="https://aitoolshub.com/unsubscribe" style="color: #6366f1;">Unsubscribe</a></p>`,
+      html: options.html + `<p style="font-size: 11px; color: #71717a; margin-top: 30px; text-align: center;">You received this email because you subscribed to Mehzan Digital Tools Hub. <a href="https://mehzandigital.com/unsubscribe" style="color: #6366f1;">Unsubscribe</a></p>`,
       text: options.text,
     };
 

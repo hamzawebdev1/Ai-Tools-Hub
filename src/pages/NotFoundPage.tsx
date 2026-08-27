@@ -10,7 +10,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ setActiveTab }) => {
   return (
     <>
       <SchemaHead
-        title="404 Page Not Found - AI Tools Hub"
+        title="404 Page Not Found - Mehzan Digital Tools Hub"
         description="The page or tool you requested could not be found. Search our catalog of 30+ free AI utilities."
       />
 

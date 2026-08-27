@@ -50,8 +50,8 @@ export const ContactPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Contact Us - AI Tools Hub Support"
-        description="Get in touch with the AI Tools Hub engineering and support team for questions, API partnerships, or bug reports."
+        title="Contact Us - Mehzan Digital Tools Hub Support"
+        description="Get in touch with the Mehzan Digital Tools Hub engineering and support team for questions, API partnerships, or bug reports."
       />
 
       <div className="max-w-3xl mx-auto space-y-8 pb-16">

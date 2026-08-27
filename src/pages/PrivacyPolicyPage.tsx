@@ -7,7 +7,7 @@ export const PrivacyPolicyPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Privacy Policy - Utility Tools Hub Data Protection & AdSense Compliance"
+        title="Privacy Policy - Mehzan Digital Tools Hub Data Protection & AdSense Compliance"
         description="Read our GDPR and CCPA compliant Privacy Policy. Learn how we handle transient AI prompt data, local memory storage, and AdSense cookies."
       />
 
@@ -28,7 +28,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">1. Overview & Data Philosophy</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              Utility Tools Hub ("we", "our", or "us") is committed to protecting your privacy while delivering lightning-fast, web-native online utilities. This Privacy Policy details how information is collected, used, processed, and safeguarded when you visit or interact with our suite of free online tools.
+              Mehzan Digital Tools Hub ("we", "our", or "us") is committed to protecting your privacy while delivering lightning-fast, web-native online utilities. This Privacy Policy details how information is collected, used, processed, and safeguarded when you visit or interact with our suite of free online tools.
             </p>
           </section>
 
@@ -75,7 +75,7 @@ export const PrivacyPolicyPage: React.FC = () => {
               Under the California Consumer Privacy Act (CCPA), California residents have specific rights regarding personal information:
             </p>
             <ul className="list-disc pl-5 text-slate-600 dark:text-slate-300 space-y-1">
-              <li><strong>Do Not Sell My Personal Information:</strong> Utility Tools Hub NEVER sells, rents, or trades user personal data to third parties.</li>
+              <li><strong>Do Not Sell My Personal Information:</strong> Mehzan Digital Tools Hub NEVER sells, rents, or trades user personal data to third parties.</li>
               <li><strong>Right to Know & Delete:</strong> You can request disclosure or deletion of any stored metadata by contacting our privacy compliance desk.</li>
             </ul>
           </section>

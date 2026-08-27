@@ -112,7 +112,7 @@ export const BlogManagementSection: React.FC<BlogManagementSectionProps> = ({
         ...prev,
         title,
         slug,
-        metaTitle: `${title} | Utility Tools Hub`,
+        metaTitle: `${title} | Mehzan Digital Tools Hub`,
         metaDescription: prev.excerpt || `In-depth analysis and guide on ${title}.`,
         canonicalUrl: `https://utilitytoolshub.com/blog/${slug}`,
       }));

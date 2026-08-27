@@ -519,7 +519,7 @@ router.post("/inbox/:id/reply", async (req, res) => {
       await emailProvider.sendEmail({
         to: [updated.email],
         subject: `Re: ${updated.subject} [${updated.referenceId}]`,
-        html: `<p>Hi ${updated.name},</p><p>${replyText.replace(/\n/g, "<br/>")}</p><p>Best regards,<br/>Utility Tools Hub Support</p>`,
+        html: `<p>Hi ${updated.name},</p><p>${replyText.replace(/\n/g, "<br/>")}</p><p>Best regards,<br/>Mehzan Digital Tools Hub Support</p>`,
       });
     } catch (e) {
       console.warn("Could not dispatch live email for reply:", e);

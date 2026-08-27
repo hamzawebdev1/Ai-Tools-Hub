@@ -322,7 +322,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white" id="wordpress-admin-app">
       <SchemaHead
         title="Admin Control Center | WordPress-Style CMS"
-        description="Production WordPress-style Content & Tool Management System for Utility Tools Hub."
+        description="Production WordPress-style Content & Tool Management System for Mehzan Digital Tools Hub."
         url="/admin"
       />
 
@@ -360,7 +360,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
             <div className="w-5 h-5 rounded bg-indigo-600 flex items-center justify-center text-white text-[11px] font-black">
               W
             </div>
-            <span className="hidden sm:inline">Utility Tools Hub</span>
+            <span className="hidden sm:inline">Mehzan Digital Tools Hub</span>
           </div>
 
           <button

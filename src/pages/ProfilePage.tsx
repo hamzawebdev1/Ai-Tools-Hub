@@ -64,7 +64,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   return (
     <>
       <SchemaHead
-        title="Account Profile & Firestore Settings - AI Tools Hub"
+        title="Account Profile & Firestore Settings - Mehzan Digital Tools Hub"
         description="Manage your Firebase account, Firestore favorites, theme preferences, and authentication security."
       />
 

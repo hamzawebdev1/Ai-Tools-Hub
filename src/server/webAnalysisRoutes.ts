@@ -125,7 +125,7 @@ function performSingleRequest(
       path: `${parsed.pathname}${parsed.search}`,
       method: "GET",
       headers: {
-        "User-Agent": "AIToolsHub-UrlChecker/2.0 (+https://aitoolshub.com)",
+        "User-Agent": "MehzanDigital-UrlChecker/2.0 (+https://mehzandigital.com)",
         Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.5",
       },

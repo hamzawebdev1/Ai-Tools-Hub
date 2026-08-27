@@ -35,14 +35,14 @@ export const SeoToolsRunner: React.FC<SeoToolsRunnerProps> = ({
   toolName,
   toolSlug,
 }) => {
-  const [metaTitle, setMetaTitle] = useState("Free AI Tools & Online Converters - Utility Tools Hub");
+  const [metaTitle, setMetaTitle] = useState("Free AI Tools & Online Converters - Mehzan Digital Tools Hub");
   const [metaDescription, setMetaDescription] = useState(
     "Access over 100+ free online developer, SEO, and security tools. Fast, high-precision processing running 100% in browser or SSRF-protected server."
   );
   const [targetUrl, setTargetUrl] = useState("https://utilitytoolshub.com/tools");
   const [targetKeyword, setTargetKeyword] = useState("free ai tools");
   const [bodyText, setBodyText] = useState(
-    "Welcome to Utility Tools Hub. We offer free online tools for developers, content creators, SEO specialists, and businesses. Our tools run instantly with zero limits."
+    "Welcome to Mehzan Digital Tools Hub. We offer free online tools for developers, content creators, SEO specialists, and businesses. Our tools run instantly with zero limits."
   );
 
   const [schemaType, setSchemaType] = useState("SoftwareApplication");
@@ -55,7 +55,7 @@ export const SeoToolsRunner: React.FC<SeoToolsRunnerProps> = ({
   const [htmlInput, setHtmlInput] = useState(`<!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Sample SEO Web Page Title - Utility Tools Hub</title>
+  <title>Sample SEO Web Page Title - Mehzan Digital Tools Hub</title>
   <meta name="description" content="This is a sample meta description tag for testing on-page SEO analyzer tools." />
   <link rel="canonical" href="https://utilitytoolshub.com/sample" />
 </head>

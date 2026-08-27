@@ -126,8 +126,8 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     // 2. Standard Meta Tags
     updateMetaTag("name", "description", baseMetadata.description);
     updateMetaTag("name", "keywords", baseMetadata.keywords.join(", "));
-    updateMetaTag("name", "generator", "Utility Tools Hub & Productivity Suite");
-    updateMetaTag("name", "author", baseMetadata.author || "Utility Tools Hub Team");
+    updateMetaTag("name", "generator", "Mehzan Digital Tools Hub & Productivity Suite");
+    updateMetaTag("name", "author", baseMetadata.author || "Mehzan Digital Tools Hub Team");
     updateMetaTag(
       "name",
       "robots",
@@ -167,7 +167,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     updateMetaTag("property", "og:type", baseMetadata.ogType);
     updateMetaTag("property", "og:url", dynamicCanonicalUrl);
     updateMetaTag("property", "og:image", dynamicOgImage);
-    updateMetaTag("property", "og:site_name", "Utility Tools Hub");
+    updateMetaTag("property", "og:site_name", "Mehzan Digital Tools Hub");
 
     if (baseMetadata.publishedDate) {
       updateMetaTag("property", "article:published_time", new Date(baseMetadata.publishedDate).toISOString());

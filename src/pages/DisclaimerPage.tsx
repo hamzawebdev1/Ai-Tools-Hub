@@ -7,7 +7,7 @@ export const DisclaimerPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Utility Content & Advertising Disclaimer - Utility Tools Hub"
+        title="Utility Content & Advertising Disclaimer - Mehzan Digital Tools Hub"
         description="Important notice regarding online utility tools output accuracy, AdSense advertising, and user verification requirements."
       />
 
@@ -28,7 +28,7 @@ export const DisclaimerPage: React.FC = () => {
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">1. Nature of Utility Tool Output</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              Outputs generated across Utility Tools Hub are produced by deterministic algorithms, local browser parsers, and secure client-side calculation engines. While our tools are optimized for high precision and adherence to standard data protocols, users should always verify critical generated code, conversions, and files prior to production use.
+              Outputs generated across Mehzan Digital Tools Hub are produced by deterministic algorithms, local browser parsers, and secure client-side calculation engines. While our tools are optimized for high precision and adherence to standard data protocols, users should always verify critical generated code, conversions, and files prior to production use.
             </p>
           </section>
 
@@ -42,11 +42,11 @@ export const DisclaimerPage: React.FC = () => {
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">3. Third-Party Advertising & Google AdSense Disclosure</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              Utility Tools Hub participates in Google AdSense and third-party advertising networks to support website maintenance and infrastructure costs. Advertisements served on this platform are distinctly marked with "Advertisement" or "AdSense Placement Zone" labels.
+              Mehzan Digital Tools Hub participates in Google AdSense and third-party advertising networks to support website maintenance and infrastructure costs. Advertisements served on this platform are distinctly marked with "Advertisement" or "AdSense Placement Zone" labels.
             </p>
             <ul className="list-disc pl-5 text-slate-600 dark:text-slate-300 space-y-1">
               <li>Ad placements are designed to never interfere with user navigation, tool operation, or content readability.</li>
-              <li>Inclusion of an advertisement on Utility Tools Hub does not constitute an endorsement or warranty of the advertised product or service.</li>
+              <li>Inclusion of an advertisement on Mehzan Digital Tools Hub does not constitute an endorsement or warranty of the advertised product or service.</li>
             </ul>
           </section>
 

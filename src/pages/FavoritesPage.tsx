@@ -26,7 +26,7 @@ export const FavoritesPage: React.FC<FavoritesPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="Bookmarked Favorites - AI Tools Hub"
+        title="Bookmarked Favorites - Mehzan Digital Tools Hub"
         description="Access your saved favorite AI utilities instantly in one clean dashboard layout."
       />
 

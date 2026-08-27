@@ -83,7 +83,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Campaign State
   const [campaignSubject, setCampaignSubject] = useState("");
-  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Utility Tools Hub!</h2><p>Discover our latest enterprise AI tools and performance upgrades.</p>");
+  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Mehzan Digital Tools Hub!</h2><p>Discover our latest enterprise AI tools and performance upgrades.</p>");
   const [testEmail, setTestEmail] = useState("");
   const [campaignSending, setCampaignSending] = useState(false);
   const [campaignResult, setCampaignResult] = useState<any>(null);

@@ -176,7 +176,7 @@ async function startServer() {
     }
     return res.json({
       success: true,
-      message: "Thank you for subscribing to Utility Tools Hub newsletter!",
+      message: "Thank you for subscribing to Mehzan Digital Tools Hub newsletter!",
     });
   });
 

@@ -326,7 +326,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="User Dashboard - AI Tools Hub Analytics & Settings"
+        title="User Dashboard - Mehzan Digital Tools Hub Analytics & Settings"
         description="Manage your account profile, execution analytics, favorite tools, execution history, downloads, and workspace preferences."
       />
 
@@ -1055,7 +1055,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 Community Feedback & Tool Requests
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Help us improve AI Tools Hub by reporting issues or requesting new tools
+                Help us improve Mehzan Digital Tools Hub by reporting issues or requesting new tools
               </p>
             </div>
 

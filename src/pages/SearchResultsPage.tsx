@@ -52,7 +52,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   return (
     <>
       <SchemaHead
-        title={`Search Results for "${query}" - AI Tools Hub`}
+        title={`Search Results for "${query}" - Mehzan Digital Tools Hub`}
         description={`Find matching AI tools, articles, and categories for query: ${query}`}
       />
 

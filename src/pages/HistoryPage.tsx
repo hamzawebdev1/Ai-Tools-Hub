@@ -35,7 +35,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="Execution History Log - AI Tools Hub"
+        title="Execution History Log - Mehzan Digital Tools Hub"
         description="Review, search, and copy past AI outputs generated during your session. Auto-purges after 24 hours."
       />
 

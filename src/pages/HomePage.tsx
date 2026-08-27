@@ -60,7 +60,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   return (
     <>
       <SchemaHead
-        title="UtilityTools Hub - Free Online Utility Tools for Text, PDF, Images & Developers"
+        title="Mehzan Digital Tools Hub - Free Online Utility Tools for Text, PDF, Images & Developers"
         description="Access 150+ free online utility tools including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% browser-based."
       />
 
@@ -325,7 +325,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               Frequently Asked Questions
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Everything you need to know about Utility Tools Hub
+              Everything you need to know about Mehzan Digital Tools Hub
             </p>
           </div>
 
@@ -333,7 +333,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             {[
               {
                 q: "Are all utility tools on this website free?",
-                a: "Yes! Utility Tools Hub provides 100% free online browser utility tools with instant execution and zero paywalls.",
+                a: "Yes! Mehzan Digital Tools Hub provides 100% free online browser utility tools with instant execution and zero paywalls.",
               },
               {
                 q: "Do I need to sign up or enter a credit card?",

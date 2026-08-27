@@ -42,7 +42,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({ onNaviga
   return (
     <>
       <SchemaHead
-        title="Reset Password - AI Tools Hub"
+        title="Reset Password - Mehzan Digital Tools Hub"
         description="Reset your account password securely via Firebase email verification."
       />
 
