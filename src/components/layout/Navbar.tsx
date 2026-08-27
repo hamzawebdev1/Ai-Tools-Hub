@@ -94,10 +94,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                Mehzan <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Digital</span>
+                Mehzan <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Tools Hub</span>
               </span>
               <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 tracking-wider uppercase -mt-1">
-                500+ Online Tools
+                50+ Free Utilities
               </span>
             </div>
           </a>

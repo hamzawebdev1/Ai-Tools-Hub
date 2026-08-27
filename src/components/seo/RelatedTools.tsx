@@ -29,7 +29,7 @@ export const RelatedTools: React.FC<RelatedToolsProps> = ({
             <span>SEO Internal Graph</span>
           </div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-            Related AI Tools & Alternatives
+            Related Utilities & Tools
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             Explore similar high-speed AI tools in <span className="font-semibold text-indigo-600 dark:text-indigo-400">{currentTool.category}</span>

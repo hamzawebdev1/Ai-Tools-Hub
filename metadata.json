@@ -1,6 +1,6 @@
 {
-  "name": "Mehzan Digital",
-  "description": "500+ free online utility tools for PDF, image, text, developer, SEO, and calculation processing on Mehzan Digital.",
+  "name": "Mehzan Tools Hub",
+  "description": "50+ free online utility tools for PDF, image, text, developer, SEO, and calculation processing on Mehzan Tools Hub.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

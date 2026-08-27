@@ -34,7 +34,7 @@ export const NewsletterManagementSection: React.FC<NewsletterManagementSectionPr
   // Campaign State
   const [subject, setSubject] = useState("");
   const [htmlContent, setHtmlContent] = useState(
-    `<h2>New Updates from Mehzan Digital Tools Hub</h2>\n<p>We've added new fast, privacy-focused online developer tools to our directory.</p>\n<p><a href="https://utilitytoolshub.com">Explore the new tools now &rarr;</a></p>`
+    `<h2>New Updates from Mehzan Tools Hub</h2>\n<p>We've added new fast, privacy-focused online developer tools to our directory.</p>\n<p><a href="https://mehzandigital.com">Explore the new tools now &rarr;</a></p>`
   );
   const [testEmail, setTestEmail] = useState("");
   const [sendingCampaign, setSendingCampaign] = useState(false);

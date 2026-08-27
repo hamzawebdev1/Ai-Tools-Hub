@@ -448,7 +448,7 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
                   type="url"
                   value={pingUrl}
                   onChange={(e) => setPingUrl(e.target.value)}
-                  placeholder="https://utilitytoolshub.com/sitemap.xml"
+                  placeholder="https://mehzandigital.com/sitemap.xml"
                   className="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
                 />
                 <button

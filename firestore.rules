@@ -44,6 +44,27 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    match /contact_submissions/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /bug_reports/{reportId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /feature_requests/{requestId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    match /tool_events/{eventId} {
+      allow create: if true;
+      allow read, write: if isAdmin();
+    }
+
     match /audit_logs/{logId} {
       allow read, write: if isAdmin();
     }
@@ -55,7 +76,7 @@ service cloud.firestore {
 
     match /analytics/{eventId} {
       allow create: if true;
-      allow read: if isAdmin();
+      allow read, write: if isAdmin();
     }
   }
 }

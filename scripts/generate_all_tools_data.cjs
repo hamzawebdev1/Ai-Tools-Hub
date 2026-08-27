@@ -148,7 +148,7 @@ function buildToolObject(item) {
     inputPlaceholder: `Enter input for ${item.name}...`,
     optionsConfig: {},
     seoContent: {
-      metaTitle: `${item.name} - Free Online Utility | AI Tools Hub`,
+      metaTitle: `${item.name} - Free Online Utility | Mehzan Tools Hub`,
       metaDescription: `${item.name}. ${item.tagline} 100% free tool with instant processing and secure SSRF protection.`,
       overview: `${item.name} delivers high-precision processing directly in your browser.`,
       useCases: [

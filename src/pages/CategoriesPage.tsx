@@ -13,7 +13,7 @@ export const CategoriesPage: React.FC<CategoriesPageProps> = ({ onSelectCategory
   return (
     <>
       <SchemaHead
-        title="AI Tool Categories - Browse by Specialty"
+        title="Tool Categories - Browse by Specialty"
         description="Explore AI tools organized by category: Writing, Software Engineering, SEO Marketing, Social Media, Productive Summaries, and Business."
       />
 
@@ -23,7 +23,7 @@ export const CategoriesPage: React.FC<CategoriesPageProps> = ({ onSelectCategory
         <div className="pb-4 border-b border-slate-200/80 dark:border-slate-800">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
             <Grid className="w-7 h-7 text-indigo-500" />
-            AI Tool Categories
+            Tool Categories
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             Discover specialized artificial intelligence utilities curated for your exact use case

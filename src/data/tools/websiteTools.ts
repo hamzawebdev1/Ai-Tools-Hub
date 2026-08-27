@@ -24,7 +24,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HTTP Status Code Lookup...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HTTP Status Code Lookup - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HTTP Status Code Lookup - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HTTP Status Code Lookup. Look up RFC standard definitions for 1xx-5xx HTTP status codes. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HTTP Status Code Lookup delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -79,7 +79,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HTTP Header Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HTTP Header Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HTTP Header Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HTTP Header Analyzer. Inspect HTTP response headers and security headers server-side. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HTTP Header Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -134,7 +134,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Redirect Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Redirect Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Redirect Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Redirect Checker. Test single and multi-step URL redirects safely. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Redirect Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -189,7 +189,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Redirect Chain Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Redirect Chain Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Redirect Chain Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Redirect Chain Analyzer. Trace full redirect chains with status codes and timing. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Redirect Chain Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -244,7 +244,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Content-Type Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Content-Type Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Content-Type Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Content-Type Checker. Inspect server Content-Type headers and MIME responses. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Content-Type Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -299,7 +299,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HTML Validator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HTML Validator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HTML Validator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HTML Validator. Validate HTML tag syntax and document structure. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HTML Validator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -354,7 +354,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for JavaScript Syntax Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "JavaScript Syntax Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "JavaScript Syntax Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "JavaScript Syntax Checker. Check JavaScript code for syntax errors and valid parsing. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "JavaScript Syntax Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -409,7 +409,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Web Manifest Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Web Manifest Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Web Manifest Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Web Manifest Generator. Generate PWA manifest.json configuration files. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Web Manifest Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -464,7 +464,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Favicon HTML Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Favicon HTML Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Favicon HTML Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Favicon HTML Generator. Generate complete favicon and touch icon HTML markup. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Favicon HTML Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -519,7 +519,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HTML Sitemap Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HTML Sitemap Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HTML Sitemap Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HTML Sitemap Generator. Generate human-readable HTML sitemap link lists. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HTML Sitemap Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -574,7 +574,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Robots Meta Tag Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Robots Meta Tag Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Robots Meta Tag Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Robots Meta Tag Generator. Generate HTML <meta name='robots'> tags. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Robots Meta Tag Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -629,7 +629,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for .htaccess Redirect Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": ".htaccess Redirect Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": ".htaccess Redirect Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": ".htaccess Redirect Generator. Generate Apache .htaccess 301/302 redirect rules. 100% free tool with instant processing and secure SSRF protection.",
       "overview": ".htaccess Redirect Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -684,7 +684,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Nginx Redirect Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Nginx Redirect Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Nginx Redirect Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Nginx Redirect Generator. Generate Nginx location and rewrite redirect directives. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Nginx Redirect Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -739,7 +739,7 @@ export const WEBSITE_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Apache Redirect Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Apache Redirect Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Apache Redirect Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Apache Redirect Generator. Generate Apache RewriteEngine redirect directives. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Apache Redirect Generator delivers high-precision processing directly in your browser.",
       "useCases": [

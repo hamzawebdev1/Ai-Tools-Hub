@@ -24,7 +24,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Password Strength Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Password Strength Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Password Strength Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Password Strength Checker. Check entropy bits, crack time, and password complexity. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Password Strength Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -79,7 +79,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Secure Password Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Secure Password Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Secure Password Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Secure Password Generator. Generate cryptographically secure random passwords. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Secure Password Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -134,7 +134,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Random Token Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Random Token Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Random Token Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Random Token Generator. Generate secure random tokens, API keys, and hex strings. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Random Token Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -189,7 +189,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for UUID Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "UUID Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "UUID Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "UUID Generator. Generate RFC 4122 compliant version 4 UUIDs. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "UUID Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -244,7 +244,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for SHA-256 Hash Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "SHA-256 Hash Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "SHA-256 Hash Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "SHA-256 Hash Generator. Compute SHA-256 cryptographic hashes. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "SHA-256 Hash Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -299,7 +299,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for SHA-384 Hash Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "SHA-384 Hash Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "SHA-384 Hash Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "SHA-384 Hash Generator. Compute SHA-384 cryptographic hashes. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "SHA-384 Hash Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -354,7 +354,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for SHA-512 Hash Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "SHA-512 Hash Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "SHA-512 Hash Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "SHA-512 Hash Generator. Compute SHA-512 cryptographic hashes. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "SHA-512 Hash Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -409,7 +409,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HMAC Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HMAC Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HMAC Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HMAC Generator. Compute secret-key HMAC-SHA256 signatures. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HMAC Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -464,7 +464,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Base64 Encoder...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Base64 Encoder - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Base64 Encoder - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Base64 Encoder. Encode text and binary data into Base64. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Base64 Encoder delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -519,7 +519,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Base64 Decoder...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Base64 Decoder - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Base64 Decoder - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Base64 Decoder. Decode Base64 strings into UTF-8 text. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Base64 Decoder delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -574,7 +574,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HTML Entity Encoder...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HTML Entity Encoder - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HTML Entity Encoder - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HTML Entity Encoder. Escape HTML characters to prevent XSS vulnerability. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HTML Entity Encoder delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -629,7 +629,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HTML Entity Decoder...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HTML Entity Decoder - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HTML Entity Decoder - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HTML Entity Decoder. Decode HTML entities back to raw characters. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HTML Entity Decoder delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -684,7 +684,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for JWT Decoder...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "JWT Decoder - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "JWT Decoder - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "JWT Decoder. Decode JWT header, payload, and signature components. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "JWT Decoder delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -739,7 +739,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for JWT Payload Inspector...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "JWT Payload Inspector - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "JWT Payload Inspector - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "JWT Payload Inspector. Inspect JWT claims, issuer, subject, and exp timestamps. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "JWT Payload Inspector delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -794,7 +794,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for JWT Expiration Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "JWT Expiration Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "JWT Expiration Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "JWT Expiration Checker. Check JWT exp claim and expiration status. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "JWT Expiration Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -849,7 +849,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Regex Security Helper...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Regex Security Helper - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Regex Security Helper - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Regex Security Helper. Test regular expressions for safety and catastrophic backtracking. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Regex Security Helper delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -904,7 +904,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for CSP Header Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "CSP Header Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "CSP Header Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "CSP Header Generator. Generate Content-Security-Policy HTTP header directives. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "CSP Header Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -959,7 +959,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Permissions-Policy Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Permissions-Policy Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Permissions-Policy Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Permissions-Policy Generator. Generate Permissions-Policy HTTP headers. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Permissions-Policy Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1014,7 +1014,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Referrer-Policy Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Referrer-Policy Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Referrer-Policy Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Referrer-Policy Generator. Configure Referrer-Policy HTTP headers. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Referrer-Policy Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1069,7 +1069,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Cookie Attribute Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Cookie Attribute Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Cookie Attribute Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Cookie Attribute Generator. Generate Set-Cookie headers with Secure, HttpOnly, and SameSite. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Cookie Attribute Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1124,7 +1124,7 @@ export const SECURITY_TOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for SRI Hash Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "SRI Hash Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "SRI Hash Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "SRI Hash Generator. Generate Subresource Integrity sha384 hashes for JS/CSS. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "SRI Hash Generator delivers high-precision processing directly in your browser.",
       "useCases": [

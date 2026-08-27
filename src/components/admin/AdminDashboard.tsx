@@ -66,9 +66,6 @@ export const AdminDashboard: React.FC = () => {
   const [analyticsSummary, setAnalyticsSummary] = useState<any>(null);
   const [selectedToolDetail, setSelectedToolDetail] = useState<any>(null);
 
-  // AI Settings Admin State
-  const [aiSettingsAdmin, setAiSettingsAdmin] = useState<any>(null);
-
   // Users State
   const [users, setUsers] = useState<any[]>([]);
   const [userSearch, setUserSearch] = useState("");
@@ -83,7 +80,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Campaign State
   const [campaignSubject, setCampaignSubject] = useState("");
-  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Mehzan Digital Tools Hub!</h2><p>Discover our latest enterprise AI tools and performance upgrades.</p>");
+  const [campaignHtml, setCampaignHtml] = useState("<h2>Hello from Mehzan Tools Hub!</h2><p>Discover our latest web utilities, developer tools, and performance upgrades.</p>");
   const [testEmail, setTestEmail] = useState("");
   const [campaignSending, setCampaignSending] = useState(false);
   const [campaignResult, setCampaignResult] = useState<any>(null);
@@ -91,7 +88,7 @@ export const AdminDashboard: React.FC = () => {
   // Robots & Sitemap State
   const [robotsTxt, setRobotsTxt] = useState("");
   const [sitemapXml, setSitemapXml] = useState("");
-  const [indexPingUrl, setIndexPingUrl] = useState("https://utilitytoolshub.com/sitemap.xml");
+  const [indexPingUrl, setIndexPingUrl] = useState("https://mehzandigital.com/sitemap.xml");
 
   // Announcements State
   const [annTitle, setAnnTitle] = useState("");
@@ -168,16 +165,6 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  const fetchAISettingsAdmin = async () => {
-    try {
-      const res = await fetch("/api/admin/ai-settings");
-      const data = await res.json();
-      if (data.success) setAiSettingsAdmin(data.settings);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const fetchAnalytics = async () => {
     try {
       const res = await fetch(`/api/admin/analytics?range=${analyticsRange}`);
@@ -195,27 +182,8 @@ export const AdminDashboard: React.FC = () => {
     fetchRobots();
     fetchSitemap();
     fetchSecurityAndInbox();
-    fetchAISettingsAdmin();
     fetchAnalytics();
   }, [analyticsRange]);
-
-  const handleSaveAISettings = async (updatedSettings: any) => {
-    try {
-      const res = await fetch("/api/admin/ai-settings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedSettings),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setAiSettingsAdmin(data.settings);
-        setActionMsg("AI settings updated successfully!");
-        setTimeout(() => setActionMsg(null), 3000);
-      }
-    } catch (e) {
-      setActionMsg("Failed to update AI settings.");
-    }
-  };
 
   const handleSaveRobots = async () => {
     try {
@@ -1167,7 +1135,7 @@ export const AdminDashboard: React.FC = () => {
                 required
                 value={campaignSubject}
                 onChange={(e) => setCampaignSubject(e.target.value)}
-                placeholder="e.g. Announcing New Enterprise AI Tools & Performance Upgrades"
+                placeholder="e.g. Announcing New Developer & Media Tools & Performance Upgrades"
                 className="w-full text-xs p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
               />
             </div>
@@ -1409,7 +1377,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
             <a
               href="/api/admin/backup-export"
-              download="utilitytoolshub-backup.json"
+              download="mehzandigital-backup.json"
               className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5"
             >
               <Download className="w-4 h-4" /> Download Backup JSON

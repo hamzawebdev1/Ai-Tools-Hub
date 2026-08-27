@@ -75,8 +75,8 @@ function buildCanonicalTools(): AITool[] {
       isNew: raw.isNew !== undefined ? raw.isNew : false,
       subcategory: raw.subcategory || raw.category,
       searchKeywords: raw.searchKeywords || raw.tags || [],
-      seoTitle: raw.seoContent?.metaTitle || `${raw.name} Online - Free Tool | Mehzan Digital`,
-      seoDescription: raw.seoContent?.metaDescription || `${raw.description} 100% free, private in-browser utility on Mehzan Digital.`,
+      seoTitle: raw.seoContent?.metaTitle || `${raw.name} Online - Free Tool | Mehzan Tools Hub`,
+      seoDescription: raw.seoContent?.metaDescription || `${raw.description} 100% free, private in-browser utility on Mehzan Tools Hub.`,
       createdAt: raw.createdAt || "2025-01-01",
     };
 

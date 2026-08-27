@@ -165,7 +165,7 @@ function buildToolObject(item) {
     inputPlaceholder: `Enter input values for ${item.name}...`,
     optionsConfig: {},
     seoContent: {
-      metaTitle: `${item.name} - Free Online Utility | AI Tools Hub`,
+      metaTitle: `${item.name} - Free Online Utility | Mehzan Tools Hub`,
       metaDescription: `${item.name}. ${item.tagline} 100% free online calculator running 100% locally with zero server lag.`,
       overview: `${item.name} offers instant, high-precision mathematical and analytical processing directly in your browser.`,
       useCases: [

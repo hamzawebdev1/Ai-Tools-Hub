@@ -7,7 +7,7 @@ export const TermsPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Terms of Service - Mehzan Digital Tools Hub Acceptable Use Policy"
+        title="Terms of Service - Mehzan Tools Hub Acceptable Use Policy"
         description="Review our Terms of Service regarding acceptable use of AI generated content, intellectual property, DMCA compliance, and rate limits."
       />
 
@@ -28,14 +28,14 @@ export const TermsPage: React.FC = () => {
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">1. Agreement to Terms</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              By accessing or using Mehzan Digital Tools Hub, you agree to be bound by these Terms of Service and all applicable federal and international laws. If you do not agree with any of these terms, you are prohibited from using or accessing our tools.
+              By accessing or using Mehzan Tools Hub, you agree to be bound by these Terms of Service and all applicable federal and international laws. If you do not agree with any of these terms, you are prohibited from using or accessing our tools.
             </p>
           </section>
 
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">2. Acceptable Use & Prohibited Activities</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              You agree to utilize Mehzan Digital Tools Hub for ethical and lawful purposes only. You are strictly prohibited from using our services to:
+              You agree to utilize Mehzan Tools Hub for ethical and lawful purposes only. You are strictly prohibited from using our services to:
             </p>
             <ul className="list-disc pl-5 text-slate-600 dark:text-slate-300 space-y-1">
               <li>Submit malicious code, SQL injection payloads, or DDoS bot traffic.</li>
@@ -48,14 +48,14 @@ export const TermsPage: React.FC = () => {
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">3. Intellectual Property & Commercial License</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              To the fullest extent permitted by applicable law, you retain full ownership and commercial publication rights to all outputs generated during your session. Mehzan Digital Tools Hub claims no ownership over text, code, or image prompt assets created by users.
+              To the fullest extent permitted by applicable law, you retain full ownership and commercial publication rights to all outputs generated during your session. Mehzan Tools Hub claims no ownership over text, code, or image prompt assets created by users.
             </p>
           </section>
 
           <section className="space-y-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">4. DMCA Copyright Policy & Takedown Notices</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              Mehzan Digital Tools Hub respects intellectual property rights. If you believe any tool content or article infringes upon your copyright, please submit a formal DMCA Takedown Notice to our designated copyright desk at <span className="font-mono text-indigo-500">dmca@mehzandigital.com</span> including the copyrighted work URL and proof of ownership. Valid requests are acted upon within 24 business hours.
+              Mehzan Tools Hub respects intellectual property rights. If you believe any tool content or article infringes upon your copyright, please submit a formal DMCA Takedown Notice to our designated copyright desk at <span className="font-mono text-indigo-500">dmca@mehzandigital.com</span> including the copyrighted work URL and proof of ownership. Valid requests are acted upon within 24 business hours.
             </p>
           </section>
 

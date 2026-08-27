@@ -39,7 +39,7 @@ export const RelatedTools: React.FC<RelatedToolsProps> = ({
               <Sparkles className="w-4 h-4" />
             </div>
             <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-              Related AI Tools
+              Related Utilities & Tools
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

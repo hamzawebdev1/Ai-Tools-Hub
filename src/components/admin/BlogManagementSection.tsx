@@ -112,9 +112,9 @@ export const BlogManagementSection: React.FC<BlogManagementSectionProps> = ({
         ...prev,
         title,
         slug,
-        metaTitle: `${title} | Mehzan Digital Tools Hub`,
+        metaTitle: `${title} | Mehzan Tools Hub`,
         metaDescription: prev.excerpt || `In-depth analysis and guide on ${title}.`,
-        canonicalUrl: `https://utilitytoolshub.com/blog/${slug}`,
+        canonicalUrl: `https://mehzandigital.com/blog/${slug}`,
       }));
     } else {
       setFormData((prev) => ({ ...prev, title }));

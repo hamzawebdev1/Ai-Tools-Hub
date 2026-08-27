@@ -326,7 +326,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="User Dashboard - Mehzan Digital Tools Hub Analytics & Settings"
+        title="User Dashboard - Mehzan Tools Hub Analytics & Settings"
         description="Manage your account profile, execution analytics, favorite tools, execution history, downloads, and workspace preferences."
       />
 
@@ -693,7 +693,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 Productivity & Category Usage Analytics
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Visual breakdown of your AI tool executions, words generated, and latency performance.
+                Visual breakdown of your tool executions, words generated, and latency performance.
               </p>
             </div>
 
@@ -1055,7 +1055,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 Community Feedback & Tool Requests
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Help us improve Mehzan Digital Tools Hub by reporting issues or requesting new tools
+                Help us improve Mehzan Tools Hub by reporting issues or requesting new tools
               </p>
             </div>
 
@@ -1140,7 +1140,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             >
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <PlusCircle className="w-4 h-4 text-emerald-500" />
-                Request a New AI Tool
+                Request a New Tool
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

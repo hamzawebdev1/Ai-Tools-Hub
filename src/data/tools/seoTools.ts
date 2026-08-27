@@ -24,7 +24,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Twitter Card Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Twitter Card Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Twitter Card Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Twitter Card Generator. Generate twitter:card, twitter:title, and twitter:image tags. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Twitter Card Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -79,7 +79,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Robots.txt Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Robots.txt Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Robots.txt Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Robots.txt Generator. Create customizable robots.txt directives for web crawlers. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Robots.txt Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -134,7 +134,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for XML Sitemap Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "XML Sitemap Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "XML Sitemap Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "XML Sitemap Generator. Generate XML sitemaps with priority, changefreq, and lastmod tags. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "XML Sitemap Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -189,7 +189,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for FAQ Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "FAQ Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "FAQ Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "FAQ Schema Generator. Generate JSON-LD FAQPage structured data markup. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "FAQ Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -244,7 +244,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Article Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Article Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Article Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Article Schema Generator. Generate Article/BlogPosting JSON-LD structured data. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Article Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -299,7 +299,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Organization Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Organization Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Organization Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Organization Schema Generator. Generate Organization JSON-LD markup with logo and social links. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Organization Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -354,7 +354,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Website Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Website Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Website Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Website Schema Generator. Generate WebSite JSON-LD markup with Sitelinks Searchbox. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Website Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -409,7 +409,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Breadcrumb Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Breadcrumb Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Breadcrumb Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Breadcrumb Schema Generator. Generate BreadcrumbList JSON-LD structured data. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Breadcrumb Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -464,7 +464,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Local Business Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Local Business Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Local Business Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Local Business Schema Generator. Generate LocalBusiness JSON-LD markup with NAP data. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Local Business Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -519,7 +519,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Product Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Product Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Product Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Product Schema Generator. Generate Product JSON-LD markup with price, currency, and stock. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Product Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -574,7 +574,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for WebPage Schema Generator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "WebPage Schema Generator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "WebPage Schema Generator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "WebPage Schema Generator. Generate WebPage JSON-LD schema markup. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "WebPage Schema Generator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -629,7 +629,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for SERP Preview...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "SERP Preview - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "SERP Preview - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "SERP Preview. Preview Google Desktop & Mobile search snippet appearance. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "SERP Preview delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -684,7 +684,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Meta Tag Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Meta Tag Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Meta Tag Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Meta Tag Analyzer. Analyze meta tags, length compliance, and SEO best practices. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Meta Tag Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -739,7 +739,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Heading Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Heading Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Heading Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Heading Analyzer. Analyze H1-H6 heading structure, count, and hierarchy. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Heading Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -794,7 +794,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Keyword Density Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Keyword Density Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Keyword Density Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Keyword Density Checker. Analyze word frequency, repeated phrases, and keyword density. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Keyword Density Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -849,7 +849,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Word Count SEO Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Word Count SEO Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Word Count SEO Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Word Count SEO Checker. Count words, sentences, and compute SEO word depth metrics. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Word Count SEO Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -904,7 +904,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Image ALT Text Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Image ALT Text Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Image ALT Text Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Image ALT Text Checker. Audit HTML images for missing or brief ALT attributes. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Image ALT Text Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -959,7 +959,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for URL Slug Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "URL Slug Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "URL Slug Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "URL Slug Analyzer. Analyze URL slug length, stop words, and readability. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "URL Slug Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1014,7 +1014,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Internal Link Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Internal Link Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Internal Link Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Internal Link Analyzer. Count and inspect internal site hyperlinks in HTML markup. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Internal Link Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1069,7 +1069,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for External Link Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "External Link Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "External Link Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "External Link Analyzer. Inspect outbound hyperlinks, domain destinations, and rel attributes. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "External Link Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1124,7 +1124,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Canonical Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Canonical Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Canonical Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Canonical Checker. Verify rel='canonical' tag validity and target matching. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Canonical Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1179,7 +1179,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Robots.txt Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Robots.txt Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Robots.txt Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Robots.txt Analyzer. Parse and test robots.txt User-Agent and Disallow rules. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Robots.txt Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1234,7 +1234,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Sitemap Validator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Sitemap Validator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Sitemap Validator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Sitemap Validator. Validate XML sitemap syntax, structure, and schema compliance. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Sitemap Validator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1289,7 +1289,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Sitemap URL Counter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Sitemap URL Counter - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Sitemap URL Counter - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Sitemap URL Counter. Count loc entries and extract URL lists from XML sitemaps. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Sitemap URL Counter delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1344,7 +1344,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Schema Validator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Schema Validator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Schema Validator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Schema Validator. Validate JSON-LD structured data syntax and required fields. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Schema Validator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1399,7 +1399,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for H1-H6 Heading Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "H1-H6 Heading Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "H1-H6 Heading Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "H1-H6 Heading Checker. Audit heading tag hierarchy and check for missing/multiple H1s. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "H1-H6 Heading Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1454,7 +1454,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Title Length Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Title Length Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Title Length Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Title Length Checker. Check title character and pixel length against Google SERP limits. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Title Length Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1509,7 +1509,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Meta Description Length Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Meta Description Length Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Meta Description Length Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Meta Description Length Checker. Validate meta description character length (120-160 chars). 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Meta Description Length Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1564,7 +1564,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for SEO Readability Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "SEO Readability Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "SEO Readability Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "SEO Readability Checker. Calculate Flesch-Kincaid & Coleman-Liau readability metrics. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "SEO Readability Checker delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1619,7 +1619,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Text-to-HTML SEO Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Text-to-HTML SEO Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Text-to-HTML SEO Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Text-to-HTML SEO Analyzer. Calculate text-to-HTML code ratio for lightweight SEO markup. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Text-to-HTML SEO Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1674,7 +1674,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for HTML SEO Analyzer...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "HTML SEO Analyzer - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "HTML SEO Analyzer - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "HTML SEO Analyzer. Comprehensive on-page HTML SEO audit and grade report. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "HTML SEO Analyzer delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1729,7 +1729,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Open Graph Preview...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Open Graph Preview - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Open Graph Preview - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Open Graph Preview. Preview Open Graph Facebook/LinkedIn social cards. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Open Graph Preview delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1784,7 +1784,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Twitter Card Preview...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Twitter Card Preview - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Twitter Card Preview - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Twitter Card Preview. Preview X / Twitter Card summary_large_image snippets. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Twitter Card Preview delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1839,7 +1839,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Social Share Preview...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Social Share Preview - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Social Share Preview - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Social Share Preview. Multi-platform social share card visual preview generator. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Social Share Preview delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1894,7 +1894,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Keyword Position Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Keyword Position Calculator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Keyword Position Calculator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Keyword Position Calculator. Track target keyword positions in text content. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Keyword Position Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -1949,7 +1949,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Keyword Density Calculator...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Keyword Density Calculator - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Keyword Density Calculator - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Keyword Density Calculator. Calculate single and multi-word keyword density percentages. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Keyword Density Calculator delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -2004,7 +2004,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for Page Word Counter...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "Page Word Counter - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "Page Word Counter - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "Page Word Counter. Count total words, unique words, and reading duration. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "Page Word Counter delivers high-precision processing directly in your browser.",
       "useCases": [
@@ -2059,7 +2059,7 @@ export const SEOTOOLS: AITool[] = [
     "inputPlaceholder": "Enter input for SEO URL Checker...",
     "optionsConfig": {},
     "seoContent": {
-      "metaTitle": "SEO URL Checker - Free Online Utility | Mehzan Digital Tools Hub",
+      "metaTitle": "SEO URL Checker - Free Online Utility | Mehzan Tools Hub",
       "metaDescription": "SEO URL Checker. Analyze URL length, structure, subdomains, and clean formatting. 100% free tool with instant processing and secure SSRF protection.",
       "overview": "SEO URL Checker delivers high-precision processing directly in your browser.",
       "useCases": [

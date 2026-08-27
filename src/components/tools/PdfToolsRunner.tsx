@@ -9,6 +9,7 @@ import {
   Unlock,
   RotateCw,
   Eye,
+  EyeOff,
   Download,
   Copy,
   Share2,
@@ -31,6 +32,14 @@ import {
   ZoomOut,
   ChevronLeft,
   ChevronRight,
+  ShieldCheck,
+  Shield,
+  Key,
+  CheckCircle2,
+  XCircle,
+  Info,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { saveHistoryItem } from "../../services/storageService";
 import { useAuth } from "../../context/AuthContext";
@@ -48,6 +57,7 @@ import {
   compressPdf,
   protectPdf,
   unlockPdf,
+  evaluatePasswordStrength,
   addTextWatermarkToPdf,
   addImageWatermarkToPdf,
   addPageNumbersToPdf,
@@ -126,6 +136,16 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
 
   // Editable Form Inputs
   const [passwordInput, setPasswordInput] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [ownerPasswordInput, setOwnerPasswordInput] = useState("");
+  const [showOwnerPassword, setShowOwnerPassword] = useState(false);
+  const [allowPrinting, setAllowPrinting] = useState(true);
+  const [allowCopying, setAllowCopying] = useState(false);
+  const [allowModifying, setAllowModifying] = useState(false);
+  const [showAdvancedProtection, setShowAdvancedProtection] = useState(false);
+  const [passwordCopied, setPasswordCopied] = useState(false);
   const [pageRangeInput, setPageRangeInput] = useState("1");
   const [rotationAngle, setRotationAngle] = useState(90);
   const [rotateTarget, setRotateTarget] = useState<"all" | "odd" | "even">("all");
@@ -134,8 +154,8 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
   const [watermarkColor, setWatermarkColor] = useState("#6366f1");
   const [watermarkOpacity, setWatermarkOpacity] = useState(0.3);
   const [watermarkPos, setWatermarkPos] = useState<"center" | "top-left" | "top-right" | "bottom-left" | "bottom-right">("center");
-  const [headerText, setHeaderText] = useState("Mehzan Digital Tools Hub Header");
-  const [footerText, setFooterText] = useState("Page Copyright Mehzan Digital Tools Hub");
+  const [headerText, setHeaderText] = useState("Mehzan Tools Hub Header");
+  const [footerText, setFooterText] = useState("Page Copyright Mehzan Tools Hub");
   const [searchQuery, setSearchQuery] = useState("");
   const [ocrLanguage, setOcrLanguage] = useState("eng");
   const [targetPaperSize, setTargetPaperSize] = useState<"A4" | "LETTER" | "LEGAL" | "A3" | "A5">("A4");
@@ -371,11 +391,38 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
           break;
 
         case "pdf-protect":
-          outBytes = await protectPdf(primaryFile, passwordInput);
+        case "protect-pdf":
+        case "pdf-encrypt":
+        case "pdf-password-protector":
+        case "encrypt-pdf":
+        case "password-protect-pdf":
+          if (!passwordInput || !passwordInput.trim()) {
+            throw new Error("Password is required. Please enter a valid password to encrypt this PDF document.");
+          }
+          if (passwordInput.trim().length < 4) {
+            throw new Error("Password must be at least 4 characters long.");
+          }
+          if (confirmPasswordInput && passwordInput !== confirmPasswordInput) {
+            throw new Error("Passwords do not match. Please verify your confirmation password.");
+          }
+          outBytes = await protectPdf(primaryFile, passwordInput, {
+            ownerPassword: (ownerPasswordInput || passwordInput).trim(),
+            algorithm: "AES-256",
+            allowPrinting,
+            allowCopying,
+            allowModifying,
+          });
           outFileName = `protected_${primaryFile.name}`;
           break;
 
         case "pdf-unlock":
+        case "unlock-pdf":
+        case "pdf-decrypt":
+        case "decrypt-pdf":
+        case "pdf-password-remover":
+          if (!passwordInput || !passwordInput.trim()) {
+            throw new Error("Password is required to decrypt and unlock this PDF document.");
+          }
           outBytes = await unlockPdf(primaryFile, passwordInput);
           outFileName = `unlocked_${primaryFile.name}`;
           break;
@@ -868,18 +915,243 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
           )}
 
           {/* PROTECT / UNLOCK PASSWORD INPUT */}
-          {["pdf-protect", "pdf-unlock"].includes(toolId) && (
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Encryption Password
-              </label>
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Enter document password..."
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-red-500"
-              />
+          {["pdf-protect", "protect-pdf", "pdf-encrypt", "pdf-password-protector", "encrypt-pdf", "password-protect-pdf"].includes(toolId) && (
+            <div className="space-y-4 p-4 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800/80">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span className="text-xs font-bold text-white uppercase tracking-wider">
+                    AES-256 PDF Encryption Standard
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%&*";
+                    let generated = "";
+                    for (let i = 0; i < 16; i++) {
+                      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    setPasswordInput(generated);
+                    setConfirmPasswordInput(generated);
+                    navigator.clipboard.writeText(generated);
+                    setPasswordCopied(true);
+                    setTimeout(() => setPasswordCopied(false), 3000);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Key className="w-3.5 h-3.5" />
+                  {passwordCopied ? "Copied to Clipboard!" : "Generate Strong Password"}
+                </button>
+              </div>
+
+              {/* Primary Password Input */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-semibold text-slate-300">
+                    Document Password <span className="text-rose-400">*</span>
+                  </label>
+                  {passwordInput && (
+                    <span className={`text-[11px] font-semibold ${evaluatePasswordStrength(passwordInput).color}`}>
+                      {evaluatePasswordStrength(passwordInput).label}
+                    </span>
+                  )}
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    placeholder="Enter a strong password (minimum 4 characters)..."
+                    className="w-full pl-4 pr-11 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-indigo-500 font-mono tracking-wide"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer transition-colors"
+                    title={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+
+                {/* Password Strength Meter Bar */}
+                {passwordInput && (
+                  <div className="space-y-1 pt-1">
+                    <div className="grid grid-cols-4 gap-1.5 h-1.5">
+                      {[1, 2, 3, 4].map((step) => {
+                        const currentScore = evaluatePasswordStrength(passwordInput).score;
+                        const active = currentScore >= step;
+                        let bg = "bg-slate-800";
+                        if (active) {
+                          if (currentScore === 1) bg = "bg-rose-500";
+                          else if (currentScore === 2) bg = "bg-yellow-400";
+                          else if (currentScore === 3) bg = "bg-blue-400";
+                          else bg = "bg-emerald-400";
+                        }
+                        return <div key={step} className={`rounded-full transition-all duration-300 ${bg}`} />;
+                      })}
+                    </div>
+                    <p className="text-[11px] text-slate-400 flex items-center gap-1">
+                      <Info className="w-3 h-3 shrink-0 text-slate-400" />
+                      {evaluatePasswordStrength(passwordInput).feedback}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Confirm Password Input */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-slate-300">
+                  Confirm Password <span className="text-rose-400">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPasswordInput}
+                    onChange={(e) => setConfirmPasswordInput(e.target.value)}
+                    placeholder="Re-enter your password to confirm..."
+                    className={`w-full pl-4 pr-11 py-2.5 rounded-xl bg-slate-900 border ${
+                      confirmPasswordInput && passwordInput !== confirmPasswordInput
+                        ? "border-rose-500/80 focus:border-rose-500"
+                        : confirmPasswordInput && passwordInput === confirmPasswordInput
+                        ? "border-emerald-500/80 focus:border-emerald-500"
+                        : "border-slate-700 focus:border-indigo-500"
+                    } text-white text-sm focus:outline-none font-mono tracking-wide`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer transition-colors"
+                    title={showConfirmPassword ? "Hide password" : "Show password"}
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {confirmPasswordInput && passwordInput !== confirmPasswordInput && (
+                  <p className="text-[11px] text-rose-400 flex items-center gap-1">
+                    <XCircle className="w-3 h-3 shrink-0" />
+                    Passwords do not match. Please verify your password.
+                  </p>
+                )}
+                {confirmPasswordInput && passwordInput === confirmPasswordInput && passwordInput.length >= 4 && (
+                  <p className="text-[11px] text-emerald-400 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 shrink-0" />
+                    Passwords match perfectly.
+                  </p>
+                )}
+              </div>
+
+              {/* Advanced Protection Options Accordion */}
+              <div className="pt-2 border-t border-slate-800/80">
+                <button
+                  type="button"
+                  onClick={() => setShowAdvancedProtection(!showAdvancedProtection)}
+                  className="flex items-center justify-between w-full text-xs font-semibold text-slate-400 hover:text-slate-200 py-1 transition-colors cursor-pointer"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Settings className="w-3.5 h-3.5 text-indigo-400" />
+                    Advanced Permissions & Owner Password (Optional)
+                  </span>
+                  {showAdvancedProtection ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                </button>
+
+                {showAdvancedProtection && (
+                  <div className="mt-3 space-y-3 p-3 rounded-lg bg-slate-900/60 border border-slate-800 animate-fade-in">
+                    {/* Owner Master Password */}
+                    <div>
+                      <label className="block text-[11px] font-semibold text-slate-300 mb-1">
+                        Owner / Master Password (Optional)
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showOwnerPassword ? "text" : "password"}
+                          value={ownerPasswordInput}
+                          onChange={(e) => setOwnerPasswordInput(e.target.value)}
+                          placeholder="Separate master password to override permissions (optional)..."
+                          className="w-full pl-3 pr-10 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-mono"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowOwnerPassword(!showOwnerPassword)}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer"
+                        >
+                          {showOwnerPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Granular Permission Toggles */}
+                    <div className="space-y-2 pt-1">
+                      <span className="block text-[11px] font-semibold text-slate-400">User Document Permissions:</span>
+                      <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={allowPrinting}
+                          onChange={(e) => setAllowPrinting(e.target.checked)}
+                          className="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500 bg-slate-950"
+                        />
+                        <span>Allow high-resolution printing</span>
+                      </label>
+                      <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={allowCopying}
+                          onChange={(e) => setAllowCopying(e.target.checked)}
+                          className="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500 bg-slate-950"
+                        />
+                        <span>Allow copying text and graphic content</span>
+                      </label>
+                      <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={allowModifying}
+                          onChange={(e) => setAllowModifying(e.target.checked)}
+                          className="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500 bg-slate-950"
+                        />
+                        <span>Allow modifying annotations and filling forms</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {["pdf-unlock", "unlock-pdf", "pdf-decrypt", "decrypt-pdf", "pdf-password-remover"].includes(toolId) && (
+            <div className="space-y-3 p-4 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div className="flex items-center gap-2 pb-2 border-b border-slate-800/80">
+                <Unlock className="w-4 h-4 text-amber-400" />
+                <span className="text-xs font-bold text-white uppercase tracking-wider">
+                  Remove PDF Encryption & Password Lock
+                </span>
+              </div>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-slate-300">
+                  Current PDF Password <span className="text-rose-400">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    placeholder="Enter current password to decrypt..."
+                    className="w-full pl-4 pr-11 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-500 font-mono tracking-wide"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer transition-colors"
+                    title={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-[11px] text-slate-400 flex items-center gap-1">
+                  <Info className="w-3 h-3 shrink-0 text-slate-400" />
+                  Decrypts and strips the password from this document so it can be opened instantly in any reader.
+                </p>
+              </div>
             </div>
           )}
 

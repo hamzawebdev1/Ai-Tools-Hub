@@ -65,7 +65,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
   return (
     <>
       <SchemaHead
-        title="Sign In - Mehzan Digital Tools Hub"
+        title="Sign In - Mehzan Tools Hub"
         description="Access your saved favorite tools, activity history, and custom settings with Firebase Authentication."
       />
 

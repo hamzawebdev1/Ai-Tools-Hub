@@ -35,7 +35,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="Execution History Log - Mehzan Digital Tools Hub"
+        title="Execution History Log - Mehzan Tools Hub"
         description="Review, search, and copy past AI outputs generated during your session. Auto-purges after 24 hours."
       />
 
@@ -49,7 +49,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({
               AI Output History Log
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-              Transient history of your recent AI tool generations ({history.length} items)
+              Transient history of your recent tool executions ({history.length} items)
             </p>
           </div>
 
@@ -79,7 +79,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({
               onClick={() => setActiveTab("all-tools")}
               className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs cursor-pointer shadow-md"
             >
-              Try An AI Tool Now
+              Try A Tool Now
             </button>
           </div>
         ) : (

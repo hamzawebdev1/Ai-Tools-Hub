@@ -44,15 +44,15 @@ export const Newsletter: React.FC = () => {
       <div className="relative z-10 max-w-3xl mx-auto text-center space-y-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-semibold tracking-wide">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Weekly AI Tool Updates & Insights</span>
+          <span>Weekly Developer & Utility Updates</span>
         </div>
 
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
-          Get the Latest AI Tools & Prompt Engineering Hacks
+          Get the Latest Web Utilities & Developer Guides
         </h3>
 
         <p className="text-slate-300 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-          Join 45,000+ developers, writers, and marketers. Receive weekly breakdowns of new AI tools, SEO workflows, and prompt engineering cheat sheets.
+          Join 45,000+ developers, writers, and marketers. Receive weekly breakdowns of new web utilities, developer tools, and workflow shortcuts.
         </p>
 
         {submitted ? (

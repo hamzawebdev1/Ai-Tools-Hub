@@ -26,7 +26,7 @@ export const FavoritesPage: React.FC<FavoritesPageProps> = ({
   return (
     <>
       <SchemaHead
-        title="Bookmarked Favorites - Mehzan Digital Tools Hub"
+        title="Bookmarked Favorites - Mehzan Tools Hub"
         description="Access your saved favorite AI utilities instantly in one clean dashboard layout."
       />
 
@@ -36,7 +36,7 @@ export const FavoritesPage: React.FC<FavoritesPageProps> = ({
         <div className="pb-4 border-b border-slate-200 dark:border-slate-800">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Bookmark className="w-6 h-6 text-pink-500 fill-pink-500" />
-            Bookmarked AI Tools
+            Bookmarked Tools
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Quick launcher for your saved tools ({favoriteTools.length} bookmarked)
@@ -58,7 +58,7 @@ export const FavoritesPage: React.FC<FavoritesPageProps> = ({
               onClick={() => setActiveTab("all-tools")}
               className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs cursor-pointer shadow-md"
             >
-              Browse All AI Tools
+              Browse All Tools
             </button>
           </div>
         ) : (

@@ -33,7 +33,7 @@ export const SuggestToolPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Suggest a New AI Tool - Mehzan Digital Tools Hub"
+        title="Suggest a New Tool - Mehzan Tools Hub"
         description="Request a custom AI utility or suggest a feature for our development team to build."
       />
 
@@ -41,7 +41,7 @@ export const SuggestToolPage: React.FC = () => {
         <Breadcrumb items={[{ label: "Suggest a Tool", active: true }]} />
 
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Suggest a New AI Tool</h1>
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Suggest a New Tool</h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Need an AI utility that isn't in our directory yet? Describe it below and our team will build it!
           </p>

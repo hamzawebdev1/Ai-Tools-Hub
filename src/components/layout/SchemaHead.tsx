@@ -20,7 +20,7 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
 
   useEffect(() => {
     // Update Document Title
-    const fullTitle = `${title} | Mehzan Digital`;
+    const fullTitle = `${title} | Mehzan Tools Hub`;
     document.title = fullTitle;
 
     // Update Meta Description
@@ -63,7 +63,7 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
     setMetaTag("og:description", description);
     setMetaTag("og:url", safeCanonical);
     setMetaTag("og:type", schemaType === "Article" ? "article" : "website");
-    setMetaTag("og:site_name", "Mehzan Digital");
+    setMetaTag("og:site_name", "Mehzan Tools Hub");
     setMetaTag("twitter:card", "summary_large_image", true);
     setMetaTag("twitter:title", fullTitle, true);
     setMetaTag("twitter:description", description, true);

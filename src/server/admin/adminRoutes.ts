@@ -64,7 +64,7 @@ const getBaseHost = (req: any): string => {
   if (req.get("host")) {
     return `${req.protocol}://${req.get("host")}`;
   }
-  return process.env.APP_URL || "https://utilitytoolshub.com";
+  return process.env.APP_URL || "https://mehzandigital.com";
 };
 
 // In-memory Users Store with sync
@@ -482,21 +482,21 @@ router.get("/inbox", (req, res) => {
   });
 });
 
-router.patch("/inbox/:id/status", (req, res) => {
+router.patch("/inbox/:id/status", async (req, res) => {
   const { id } = req.params;
   const { status, notes, assignedAdmin } = req.body;
 
-  const updated = updateContactMessage(id, { status, notes, assignedAdmin });
+  const updated = await updateContactMessage(id, { status, notes, assignedAdmin });
   if (!updated) return res.status(404).json({ success: false, error: "Message not found." });
 
   return res.json({ success: true, message: `Status updated to ${status}.`, messageDoc: updated });
 });
 
-router.patch("/inbox/:id/read", (req, res) => {
+router.patch("/inbox/:id/read", async (req, res) => {
   const { id } = req.params;
   const { read } = req.body;
 
-  const updated = updateContactMessage(id, { read: read !== undefined ? !!read : true });
+  const updated = await updateContactMessage(id, { read: read !== undefined ? !!read : true });
   if (!updated) return res.status(404).json({ success: false, error: "Message not found." });
 
   return res.json({ success: true, message: "Message marked.", messageDoc: updated });
@@ -511,7 +511,7 @@ router.post("/inbox/:id/reply", async (req, res) => {
     return res.status(400).json({ success: false, error: "Reply text is required." });
   }
 
-  const updated = replyContactMessage(id, adminEmail, replyText);
+  const updated = await replyContactMessage(id, adminEmail, replyText);
   if (!updated) return res.status(404).json({ success: false, error: "Message not found." });
 
   if (sendEmail !== false) {
@@ -519,7 +519,7 @@ router.post("/inbox/:id/reply", async (req, res) => {
       await emailProvider.sendEmail({
         to: [updated.email],
         subject: `Re: ${updated.subject} [${updated.referenceId}]`,
-        html: `<p>Hi ${updated.name},</p><p>${replyText.replace(/\n/g, "<br/>")}</p><p>Best regards,<br/>Mehzan Digital Tools Hub Support</p>`,
+        html: `<p>Hi ${updated.name},</p><p>${replyText.replace(/\n/g, "<br/>")}</p><p>Best regards,<br/>Mehzan Tools Hub Support</p>`,
       });
     } catch (e) {
       console.warn("Could not dispatch live email for reply:", e);
@@ -529,12 +529,42 @@ router.post("/inbox/:id/reply", async (req, res) => {
   return res.json({ success: true, message: `Reply dispatched to ${updated.email}.`, messageDoc: updated });
 });
 
-router.delete("/inbox/:id", (req, res) => {
+router.delete("/inbox/:id", async (req, res) => {
   const { id } = req.params;
-  const success = deleteContactMessage(id);
+  const success = await deleteContactMessage(id);
   if (!success) return res.status(404).json({ success: false, error: "Message not found." });
 
   return res.json({ success: true, message: "Contact message deleted." });
+});
+
+router.patch("/reports/:id", async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+  const updated = await updateBugReport(id, updates);
+  if (!updated) return res.status(404).json({ success: false, error: "Bug report not found." });
+  return res.json({ success: true, report: updated });
+});
+
+router.delete("/reports/:id", async (req, res) => {
+  const { id } = req.params;
+  const success = await deleteBugReport(id);
+  if (!success) return res.status(404).json({ success: false, error: "Bug report not found." });
+  return res.json({ success: true, message: "Report deleted." });
+});
+
+router.patch("/feature-requests/:id", async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+  const updated = await updateFeatureRequest(id, updates);
+  if (!updated) return res.status(404).json({ success: false, error: "Feature request not found." });
+  return res.json({ success: true, featureRequest: updated });
+});
+
+router.delete("/feature-requests/:id", async (req, res) => {
+  const { id } = req.params;
+  const success = await deleteFeatureRequest(id);
+  if (!success) return res.status(404).json({ success: false, error: "Feature request not found." });
+  return res.json({ success: true, message: "Feature request deleted." });
 });
 
 router.get("/inbox/export", (req, res) => {
@@ -734,7 +764,7 @@ router.post("/google-index-ping", (req, res) => {
 router.get("/backup-export", (req, res) => {
   const backup = exportFullBackup();
   res.setHeader("Content-Type", "application/json");
-  res.setHeader("Content-Disposition", 'attachment; filename="utilitytoolshub-cms-backup.json"');
+  res.setHeader("Content-Disposition", 'attachment; filename="mehzandigital-cms-backup.json"');
   return res.json(backup);
 });
 

@@ -32,7 +32,7 @@ export const FeedbackPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Community Feedback - Mehzan Digital Tools Hub"
+        title="Community Feedback - Mehzan Tools Hub"
         description="Share your feedback, report execution quality, or request feature enhancements for our AI utilities."
       />
 
@@ -51,7 +51,7 @@ export const FeedbackPage: React.FC = () => {
             <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto" />
             <h3 className="text-lg font-bold text-slate-900 dark:text-white">Feedback Received!</h3>
             <p className="text-xs text-slate-600 dark:text-slate-300">
-              Thank you for helping us refine Mehzan Digital Tools Hub. Your suggestions directly shape upcoming features.
+              Thank you for helping us refine Mehzan Tools Hub. Your suggestions directly shape upcoming features.
             </p>
             <button
               onClick={() => {

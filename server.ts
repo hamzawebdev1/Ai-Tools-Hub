@@ -10,6 +10,7 @@ import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
 import { addContactMessage, addBugReport, addFeatureRequest } from "./src/server/admin/submissionsStore.js";
+import { executeTool } from "./src/server/toolsExecutor.js";
 import {
   configureSecurityHeaders,
   globalRateLimiter,
@@ -176,90 +177,151 @@ async function startServer() {
     }
     return res.json({
       success: true,
-      message: "Thank you for subscribing to Mehzan Digital Tools Hub newsletter!",
+      message: "Thank you for subscribing to Mehzan Tools Hub newsletter!",
     });
   });
 
   // Contact message endpoint
-  app.post("/api/contact", (req, res) => {
-    const { name, email, subject, category, message, attachmentName, recaptchaVerified } = req.body;
-    if (!name || !email || !message) {
-      return res.status(400).json({ success: false, error: "Name, email, and message are required." });
+  app.post("/api/contact", async (req, res) => {
+    try {
+      const { name, email, subject, category, message, attachmentName, recaptchaVerified } = req.body;
+      if (!name || !email || !message) {
+        return res.status(400).json({ success: false, error: "Name, email, and message are required." });
+      }
+      const clientIp = (req.headers["x-forwarded-for"] as string) || req.ip || "127.0.0.1";
+      const userAgent = req.headers["user-agent"] || "";
+
+      console.log(`[CONTACT INCOMING] From: ${email} (${name}) | Subject: ${subject} | IP: ${clientIp}`);
+
+      const item = await addContactMessage({
+        name,
+        email,
+        subject: subject || "General Support",
+        category: category || "General Support",
+        message,
+        attachmentName,
+        recaptchaVerified: !!recaptchaVerified,
+        ip: clientIp,
+        userAgent,
+      });
+
+      return res.json({ success: true, referenceId: item.referenceId, message: "Contact message stored successfully." });
+    } catch (err: any) {
+      console.error("⚠️ Error processing /api/contact:", err);
+      return res.status(500).json({ success: false, error: "Failed to store contact message. Please try again." });
     }
-    const item = addContactMessage({
-      name,
-      email,
-      subject: subject || "General Support",
-      category: category || "General Support",
-      message,
-      attachmentName,
-      recaptchaVerified: !!recaptchaVerified,
-    });
-    return res.json({ success: true, referenceId: item.referenceId, message: "Contact message stored successfully." });
   });
 
   // Tool problem report endpoint
-  app.post("/api/reports", (req, res) => {
-    const { toolName, pageUrl, userEmail, issueType, description, screenshotName } = req.body;
-    if (!toolName || !description) {
-      return res.status(400).json({ success: false, error: "Tool name and description are required." });
+  app.post("/api/reports", async (req, res) => {
+    try {
+      const { toolName, pageUrl, userEmail, issueType, description, screenshotName } = req.body;
+      if (!toolName || !description) {
+        return res.status(400).json({ success: false, error: "Tool name and description are required." });
+      }
+      const clientIp = (req.headers["x-forwarded-for"] as string) || req.ip || "127.0.0.1";
+      console.log(`[REPORT INCOMING] Tool: ${toolName} | Issue: ${issueType} | From: ${userEmail}`);
+
+      const item = await addBugReport({
+        toolName,
+        pageUrl: pageUrl || "/",
+        userEmail: userEmail || "anonymous@mehzandigital.com",
+        issueType: issueType || "Bug",
+        description,
+        screenshotName,
+        ip: clientIp,
+      });
+      return res.json({ success: true, referenceId: item.referenceId, message: "Problem report logged successfully." });
+    } catch (err: any) {
+      console.error("⚠️ Error processing /api/reports:", err);
+      return res.status(500).json({ success: false, error: "Failed to log problem report." });
     }
-    const item = addBugReport({
-      toolName,
-      pageUrl: pageUrl || "/",
-      userEmail: userEmail || "anonymous@utilitytoolshub.com",
-      issueType: issueType || "Bug",
-      description,
-      screenshotName,
-    });
-    return res.json({ success: true, referenceId: item.referenceId, message: "Problem report logged successfully." });
   });
 
   // Feature request endpoint
-  app.post("/api/feature-requests", (req, res) => {
-    const { toolName, description, category, priority, userEmail } = req.body;
-    if (!toolName || !description) {
-      return res.status(400).json({ success: false, error: "Tool name and description are required." });
+  app.post("/api/feature-requests", async (req, res) => {
+    try {
+      const { toolName, description, category, priority, userEmail } = req.body;
+      if (!toolName || !description) {
+        return res.status(400).json({ success: false, error: "Tool name and description are required." });
+      }
+      console.log(`[FEATURE REQUEST INCOMING] Tool: ${toolName} | Priority: ${priority} | From: ${userEmail}`);
+
+      const item = await addFeatureRequest({
+        toolName,
+        description,
+        category: category || "General",
+        priority: priority || "Medium",
+        userEmail: userEmail || "anonymous@mehzandigital.com",
+      });
+      return res.json({ success: true, referenceId: item.referenceId, message: "Feature request submitted successfully." });
+    } catch (err: any) {
+      console.error("⚠️ Error processing /api/feature-requests:", err);
+      return res.status(500).json({ success: false, error: "Failed to submit feature request." });
     }
-    const item = addFeatureRequest({
-      toolName,
-      description,
-      category: category || "General",
-      priority: priority || "Medium",
-      userEmail: userEmail || "anonymous@utilitytoolshub.com",
-    });
-    return res.json({ success: true, referenceId: item.referenceId, message: "Feature request submitted successfully." });
+  });
+
+  // Unified Tool Execution Endpoint (Sub-300ms Deterministic Local Code Engine)
+  app.post("/api/tools/execute", async (req, res) => {
+    try {
+      const { toolId, toolName, prompt, options } = req.body;
+      if (!toolId || !prompt) {
+        return res.status(400).json({ success: false, error: "Tool ID and prompt are required." });
+      }
+
+      const result = await executeTool({
+        toolId,
+        toolName: toolName || toolId,
+        prompt,
+        options,
+      });
+
+      return res.json(result);
+    } catch (err: any) {
+      console.error("⚠️ Error in /api/tools/execute:", err);
+      return res.status(500).json({
+        success: false,
+        output: "",
+        wordsCount: 0,
+        executionTimeMs: 0,
+        error: err.message || "Failed to execute tool.",
+      });
+    }
   });
 
   // Feedback / Suggestion endpoint
-  app.post("/api/feedback", (req, res) => {
-    const { type, message, email, toolTitle, category, description } = req.body;
-    if (type === "suggest-tool" && toolTitle) {
-      const item = addFeatureRequest({
-        toolName: toolTitle,
-        description: description || toolTitle,
-        category: category || "General",
-        priority: "Medium",
-        userEmail: email || "anonymous@utilitytoolshub.com",
+  app.post("/api/feedback", async (req, res) => {
+    try {
+      const { type, message, email, toolTitle, category, description } = req.body;
+      if (type === "suggest-tool" && toolTitle) {
+        const item = await addFeatureRequest({
+          toolName: toolTitle,
+          description: description || toolTitle,
+          category: category || "General",
+          priority: "Medium",
+          userEmail: email || "anonymous@mehzandigital.com",
+        });
+        return res.json({ success: true, referenceId: item.referenceId, message: "Tool suggestion stored successfully." });
+      }
+      if (!message) {
+        return res.status(400).json({ error: "Message content required" });
+      }
+      const item = await addContactMessage({
+        name: email ? email.split("@")[0] : "Anonymous User",
+        email: email || "anonymous@mehzandigital.com",
+        subject: "User Feedback",
+        category: "Feedback",
+        message,
+        recaptchaVerified: true,
       });
-      return res.json({ success: true, referenceId: item.referenceId, message: "Tool suggestion stored successfully." });
+      return res.json({
+        success: true,
+        referenceId: item.referenceId,
+        message: "Your submission has been received. Thank you!",
+      });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: "Failed to record feedback." });
     }
-    if (!message) {
-      return res.status(400).json({ error: "Message content required" });
-    }
-    const item = addContactMessage({
-      name: email ? email.split("@")[0] : "Anonymous User",
-      email: email || "anonymous@utilitytoolshub.com",
-      subject: "User Feedback",
-      category: "Feedback",
-      message,
-      recaptchaVerified: true,
-    });
-    return res.json({
-      success: true,
-      referenceId: item.referenceId,
-      message: "Your submission has been received. Thank you!",
-    });
   });
 
   // Vite middleware for dev or static server for production

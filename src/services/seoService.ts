@@ -19,7 +19,7 @@ export interface SEOMetadata {
   breadcrumbs?: { name: string; url: string }[];
 }
 
-const SITE_NAME = "Mehzan Digital";
+const SITE_NAME = "Mehzan Tools Hub";
 export function getDomain(): string {
   if (typeof window !== "undefined" && window.location.origin) {
     return window.location.origin.replace(/\/+$/, "");
@@ -75,7 +75,7 @@ export function generateAutoDescription(text: string, fallbackSubject: string): 
  */
 export function generateSeoAltText(item: { name?: string; title?: string; category?: string; tagline?: string }): string {
   const label = item.name || item.title || "Utility Tool";
-  const desc = item.tagline || item.category || "Mehzan Digital";
+  const desc = item.tagline || item.category || "Mehzan Tools Hub";
   return `${label} - ${desc} Preview Graphic`;
 }
 
@@ -138,7 +138,7 @@ export function getOrganizationSchema() {
       "width": 512,
       "height": 512
     },
-    "description": "Free web-native directory & execution suite of 500+ cutting-edge utility tools for PDF, images, text, and developers on Mehzan Digital.",
+    "description": "Free web-native directory & execution suite of 500+ cutting-edge utility tools for PDF, images, text, and developers on Mehzan Tools Hub.",
     "sameAs": [
       "https://twitter.com/mehzandigital",
       "https://github.com/mehzandigital",
@@ -164,7 +164,7 @@ export function getWebsiteSchema() {
     "@id": `${domain}/#website`,
     "url": domain || "/",
     "name": SITE_NAME,
-    "description": "Discover and execute 500+ free online utility tools for PDF, image, text, and developer tasks on Mehzan Digital.",
+    "description": "Discover and execute 500+ free online utility tools for PDF, image, text, and developer tasks on Mehzan Tools Hub.",
     "publisher": {
       "@id": `${domain}/#organization`
     },
@@ -338,9 +338,9 @@ export function buildSEOMetadata(
     case "home": {
       const canonicalUrl = getCanonicalUrl("/");
       return {
-        title: "Mehzan Digital - 500+ Free Online Web Utilities, PDF & Image Tools",
-        description: "Access 500+ free online utility tools on Mehzan Digital including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% in-browser.",
-        keywords: ["Mehzan Digital", "free online tools", "PDF tools", "image compressor", "JSON formatter", "text tools", "web utilities"],
+        title: "Mehzan Tools Hub - 50+ Free Online Web Utilities, PDF & Image Tools",
+        description: "Access 50+ free online utility tools on Mehzan Tools Hub including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% in-browser.",
+        keywords: ["Mehzan Tools Hub", "free online tools", "PDF tools", "image compressor", "JSON formatter", "text tools", "web utilities"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -349,7 +349,7 @@ export function buildSEOMetadata(
           websiteSchema,
           getFAQSchema([
             {
-              question: "Are all online tools on Mehzan Digital free?",
+              question: "Are all online tools on Mehzan Tools Hub free?",
               answer: "Yes, all 500+ online utilities and converters are 100% free with no registration or hidden fees."
             },
             {
@@ -369,9 +369,9 @@ export function buildSEOMetadata(
         { name: "All Tools", url: "/tools" }
       ];
       return {
-        title: "All Free Online Tools Directory | Mehzan Digital",
-        description: "Explore the comprehensive directory of 500+ free online tools categorized by PDF, Image, Text, Developer, SEO, Security, and Calculators on Mehzan Digital.",
-        keywords: ["tools directory", "free online utilities list", "web tools catalog", "Mehzan Digital tools"],
+        title: "All Free Online Tools Directory | Mehzan Tools Hub",
+        description: "Explore the comprehensive directory of 500+ free online tools categorized by PDF, Image, Text, Developer, SEO, Security, and Calculators on Mehzan Tools Hub.",
+        keywords: ["tools directory", "free online utilities list", "web tools catalog", "Mehzan Tools Hub tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -390,8 +390,8 @@ export function buildSEOMetadata(
         { name: "Categories", url: "/categories" }
       ];
       return {
-        title: "Browse Tool Categories | Mehzan Digital",
-        description: "Filter tools by specialized categories including PDF Tools, Image Processing, Text Utilities, Developer Code, SEO & SERP, and Calculators on Mehzan Digital.",
+        title: "Browse Tool Categories | Mehzan Tools Hub",
+        description: "Filter tools by specialized categories including PDF Tools, Image Processing, Text Utilities, Developer Code, SEO & SERP, and Calculators on Mehzan Tools Hub.",
         keywords: ["tool categories", "PDF utilities", "image tools category", "developer tools"],
         canonicalUrl,
         ogType: "website",
@@ -415,8 +415,8 @@ export function buildSEOMetadata(
         { name: catName, url: `/category/${catSlug}` }
       ];
       return {
-        title: `${catName} - Free Online Utilities | Mehzan Digital`,
-        description: catObj?.description || `Explore top-rated free ${catName} on Mehzan Digital. Fast, secure, browser-native processing.`,
+        title: `${catName} - Free Online Utilities | Mehzan Tools Hub`,
+        description: catObj?.description || `Explore top-rated free ${catName} on Mehzan Tools Hub. Fast, secure, browser-native processing.`,
         keywords: [catName, `${catName} tools`, `free ${catName} online`],
         canonicalUrl,
         ogType: "website",
@@ -451,9 +451,9 @@ export function buildSEOMetadata(
       if (faqSchema) schemas.push(faqSchema);
 
       return {
-        title: tool.seoContent?.metaTitle || `${tool.name} Online - Free Tool | Mehzan Digital`,
-        description: tool.seoContent?.metaDescription || `${tool.description} 100% free, private in-browser utility on Mehzan Digital.`,
-        keywords: [tool.name, ...tool.tags, tool.category, "free online tool", "Mehzan Digital"],
+        title: tool.seoContent?.metaTitle || `${tool.name} Online - Free Tool | Mehzan Tools Hub`,
+        description: tool.seoContent?.metaDescription || `${tool.description} 100% free, private in-browser utility on Mehzan Tools Hub.`,
+        keywords: [tool.name, ...tool.tags, tool.category, "free online tool", "Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "product",
         ogImage: DEFAULT_OG_IMAGE,
@@ -469,9 +469,9 @@ export function buildSEOMetadata(
         { name: "Blog & Guides", url: "/blog" }
       ];
       return {
-        title: "Tech Insights, Tutorials & Utility Guides | Mehzan Digital Blog",
-        description: "Read expert guides on client-side security, file processing, PDF workflows, image optimization, and web developer utilities on Mehzan Digital.",
-        keywords: ["web utilities blog", "PDF guides", "image compression tips", "developer tutorials", "Mehzan Digital"],
+        title: "Tech Insights, Tutorials & Utility Guides | Mehzan Tools Hub Blog",
+        description: "Read expert guides on client-side security, file processing, PDF workflows, image optimization, and web developer utilities on Mehzan Tools Hub.",
+        keywords: ["web utilities blog", "PDF guides", "image compression tips", "developer tutorials", "Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -493,7 +493,7 @@ export function buildSEOMetadata(
       ];
 
       return {
-        title: `${post.title} | Mehzan Digital`,
+        title: `${post.title} | Mehzan Tools Hub`,
         description: post.excerpt,
         keywords: post.tags,
         canonicalUrl,
@@ -517,9 +517,9 @@ export function buildSEOMetadata(
         { name: "About Us", url: "/about" }
       ];
       return {
-        title: "About Mehzan Digital - Free Web-Native Online Utilities Suite",
-        description: "Learn about Mehzan Digital, our mission for high-speed, private, client-side online tools for PDF, images, text, code, and calculation utilities.",
-        keywords: ["About Mehzan Digital", "free online utilities", "client-side privacy"],
+        title: "About Mehzan Tools Hub - Free Web-Native Online Utilities Suite",
+        description: "Learn about Mehzan Tools Hub, our mission for high-speed, private, client-side online tools for PDF, images, text, code, and calculation utilities.",
+        keywords: ["About Mehzan Tools Hub", "free online utilities", "client-side privacy"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -529,7 +529,7 @@ export function buildSEOMetadata(
           {
             "@context": "https://schema.org",
             "@type": "AboutPage",
-            "name": "About Mehzan Digital",
+            "name": "About Mehzan Tools Hub",
             "url": canonicalUrl
           }
         ],
@@ -544,9 +544,9 @@ export function buildSEOMetadata(
         { name: "Pricing", url: "/pricing" }
       ];
       return {
-        title: "100% Free Access | Mehzan Digital",
+        title: "100% Free Access | Mehzan Tools Hub",
         description: "Explore our 100% free online utility tools platform with zero paywalls, no subscriptions, and instant client-side execution.",
-        keywords: ["Mehzan Digital pricing", "free web utilities", "free developer tools"],
+        keywords: ["Mehzan Tools Hub pricing", "free web utilities", "free developer tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -555,8 +555,8 @@ export function buildSEOMetadata(
           getBreadcrumbSchema(breadcrumbs),
           getFAQSchema([
             {
-              question: "Can I use Mehzan Digital tools for free?",
-              answer: "Yes, all tools on Mehzan Digital are 100% free to use online with zero registration or payment needed."
+              question: "Can I use Mehzan Tools Hub tools for free?",
+              answer: "Yes, all tools on Mehzan Tools Hub are 100% free to use online with zero registration or payment needed."
             },
             {
               question: "Are there any usage limits or paywalls?",
@@ -575,9 +575,9 @@ export function buildSEOMetadata(
         { name: "Contact", url: "/contact" }
       ];
       return {
-        title: "Contact Support | Mehzan Digital",
-        description: "Get in touch with the Mehzan Digital team for assistance, tool suggestions, bug reports, and feedback.",
-        keywords: ["contact Mehzan Digital", "support", "help"],
+        title: "Contact Support | Mehzan Tools Hub",
+        description: "Get in touch with the Mehzan Tools Hub team for assistance, tool suggestions, bug reports, and feedback.",
+        keywords: ["contact Mehzan Tools Hub", "support", "help"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -593,9 +593,9 @@ export function buildSEOMetadata(
         { name: "Privacy Policy", url: "/privacy" }
       ];
       return {
-        title: "Privacy Policy | Mehzan Digital",
-        description: "Review Mehzan Digital's privacy policy, detailing zero server-side file retention and client-side processing practices.",
-        keywords: ["privacy policy", "data protection", "Mehzan Digital privacy"],
+        title: "Privacy Policy | Mehzan Tools Hub",
+        description: "Review Mehzan Tools Hub's privacy policy, detailing zero server-side file retention and client-side processing practices.",
+        keywords: ["privacy policy", "data protection", "Mehzan Tools Hub privacy"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -611,9 +611,9 @@ export function buildSEOMetadata(
         { name: "Terms of Service", url: "/terms" }
       ];
       return {
-        title: "Terms of Service | Mehzan Digital",
-        description: "Read the terms of service governing the usage of Mehzan Digital's free web utility tools.",
-        keywords: ["terms of service", "user agreement", "Mehzan Digital terms"],
+        title: "Terms of Service | Mehzan Tools Hub",
+        description: "Read the terms of service governing the usage of Mehzan Tools Hub's free web utility tools.",
+        keywords: ["terms of service", "user agreement", "Mehzan Tools Hub terms"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -629,9 +629,9 @@ export function buildSEOMetadata(
         { name: "Disclaimer", url: "/disclaimer" }
       ];
       return {
-        title: "Disclaimer & Advertising Disclosure | Mehzan Digital",
-        description: "Advertising disclosure and general disclaimer for Mehzan Digital online utilities.",
-        keywords: ["disclaimer", "advertising disclosure", "Mehzan Digital"],
+        title: "Disclaimer & Advertising Disclosure | Mehzan Tools Hub",
+        description: "Advertising disclosure and general disclaimer for Mehzan Tools Hub online utilities.",
+        keywords: ["disclaimer", "advertising disclosure", "Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -647,9 +647,9 @@ export function buildSEOMetadata(
         { name: "Cookie Policy", url: "/cookie-policy" }
       ];
       return {
-        title: "Cookie Policy | Mehzan Digital",
-        description: "Learn how cookies and local storage are utilized on Mehzan Digital for preferences and performance.",
-        keywords: ["cookie policy", "cookies", "Mehzan Digital"],
+        title: "Cookie Policy | Mehzan Tools Hub",
+        description: "Learn how cookies and local storage are utilized on Mehzan Tools Hub for preferences and performance.",
+        keywords: ["cookie policy", "cookies", "Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -661,9 +661,9 @@ export function buildSEOMetadata(
     case "search": {
       const canonicalUrl = getCanonicalUrl("/search");
       return {
-        title: data?.searchQuery ? `Search Results for "${data.searchQuery}" | Mehzan Digital` : "Search Tools Directory | Mehzan Digital",
-        description: `Browse matching free tools and utilities on Mehzan Digital.`,
-        keywords: ["search tools", data?.searchQuery || "", "Mehzan Digital"],
+        title: data?.searchQuery ? `Search Results for "${data.searchQuery}" | Mehzan Tools Hub` : "Search Tools Directory | Mehzan Tools Hub",
+        description: `Browse matching free tools and utilities on Mehzan Tools Hub.`,
+        keywords: ["search tools", data?.searchQuery || "", "Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -686,9 +686,9 @@ export function buildSEOMetadata(
     case "feedback": {
       const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
       return {
-        title: `${activeTab.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())} | Mehzan Digital`,
-        description: "User dashboard and settings on Mehzan Digital.",
-        keywords: [activeTab, "Mehzan Digital"],
+        title: `${activeTab.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())} | Mehzan Tools Hub`,
+        description: "User dashboard and settings on Mehzan Tools Hub.",
+        keywords: [activeTab, "Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -699,9 +699,9 @@ export function buildSEOMetadata(
 
     case "404": {
       return {
-        title: "404 - Page Not Found | Mehzan Digital",
-        description: "The page or tool you are looking for does not exist or has been moved on Mehzan Digital.",
-        keywords: ["404", "not found", "Mehzan Digital"],
+        title: "404 - Page Not Found | Mehzan Tools Hub",
+        description: "The page or tool you are looking for does not exist or has been moved on Mehzan Tools Hub.",
+        keywords: ["404", "not found", "Mehzan Tools Hub"],
         canonicalUrl: getCanonicalUrl("/404"),
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
@@ -721,9 +721,9 @@ export function buildSEOMetadata(
           { name: authorName, url: `/author/${authorSlug}` }
         ];
         return {
-          title: `${authorName} - Editorial Board & Author | Mehzan Digital`,
-          description: `Read technical guides, optimization tutorials, and utility reviews by ${authorName} on Mehzan Digital.`,
-          keywords: [authorName, "editorial author", "Mehzan Digital"],
+          title: `${authorName} - Editorial Board & Author | Mehzan Tools Hub`,
+          description: `Read technical guides, optimization tutorials, and utility reviews by ${authorName} on Mehzan Tools Hub.`,
+          keywords: [authorName, "editorial author", "Mehzan Tools Hub"],
           canonicalUrl,
           ogType: "website",
           ogImage: DEFAULT_OG_IMAGE,
@@ -734,9 +734,9 @@ export function buildSEOMetadata(
 
       const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
       return {
-        title: `${activeTab.replace("-", " ").toUpperCase()} | Mehzan Digital`,
-        description: "Mehzan Digital - Discover 500+ free web-native online utilities.",
-        keywords: ["Mehzan Digital"],
+        title: `${activeTab.replace("-", " ").toUpperCase()} | Mehzan Tools Hub`,
+        description: "Mehzan Tools Hub - Discover 50+ free web-native online utilities.",
+        keywords: ["Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,

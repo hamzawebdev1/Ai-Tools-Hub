@@ -1,5 +1,7 @@
 import * as pdfjs from "pdfjs-dist";
 import { PDFDocument, degrees, rgb, StandardFonts } from "pdf-lib";
+import { encryptPDF, AlreadyEncryptedError } from "@pdfsmaller/pdf-encrypt";
+import { decryptPDF } from "@pdfsmaller/pdf-decrypt";
 import JSZip from "jszip";
 import Tesseract from "tesseract.js";
 
@@ -213,37 +215,169 @@ export async function compressPdf(file: File): Promise<Uint8Array> {
   pdf.setTitle("");
   pdf.setAuthor("");
   pdf.setSubject("");
-  pdf.setProducer("Mehzan Digital Tools Hub PDF Optimizer");
+  pdf.setProducer("Mehzan Tools Hub PDF Optimizer");
 
   return await pdf.save({ useObjectStreams: true });
 }
 
 // ==========================================
-// 8. PROTECT PDF
+// 8. PASSWORD VALIDATION & STRENGTH HELPERS
 // ==========================================
-export async function protectPdf(file: File, userPass: string, ownerPass?: string): Promise<Uint8Array> {
-  if (!userPass) throw new Error("Encryption password is required.");
-  const buffer = await file.arrayBuffer();
-  const pdf = await PDFDocument.load(buffer, { ignoreEncryption: true });
+const COMMON_WEAK_PASSWORDS = new Set([
+  "1234",
+  "12345",
+  "123456",
+  "12345678",
+  "password",
+  "pass",
+  "admin",
+  "qwerty",
+  "1111",
+  "0000",
+  "abc123",
+]);
 
-  return await pdf.save({
-    userPassword: userPass,
-    ownerPassword: ownerPass || userPass,
-  } as any);
+export interface PasswordStrengthResult {
+  score: number; // 0 (Too weak) to 4 (Very strong)
+  label: "Too Weak" | "Weak" | "Fair" | "Good" | "Strong";
+  color: string;
+  feedback: string;
+}
+
+export function evaluatePasswordStrength(pass: string): PasswordStrengthResult {
+  const clean = (pass || "").trim();
+  if (!clean) {
+    return { score: 0, label: "Too Weak", color: "text-slate-500", feedback: "Please enter a password." };
+  }
+  if (COMMON_WEAK_PASSWORDS.has(clean.toLowerCase())) {
+    return { score: 1, label: "Too Weak", color: "text-rose-500", feedback: "Password is too common and easily guessed." };
+  }
+  if (clean.length < 4) {
+    return { score: 1, label: "Too Weak", color: "text-rose-500", feedback: "Minimum 4 characters required." };
+  }
+
+  let points = 0;
+  if (clean.length >= 6) points += 1;
+  if (clean.length >= 10) points += 1;
+  if (/[a-z]/.test(clean) && /[A-Z]/.test(clean)) points += 1;
+  if (/\d/.test(clean)) points += 1;
+  if (/[^a-zA-Z0-9]/.test(clean)) points += 1;
+
+  if (points <= 1) {
+    return { score: 1, label: "Weak", color: "text-amber-500", feedback: "Add uppercase letters, numbers, or symbols." };
+  }
+  if (points === 2) {
+    return { score: 2, label: "Fair", color: "text-yellow-400", feedback: "Fair strength. Consider making it longer." };
+  }
+  if (points === 3 || points === 4) {
+    return { score: 3, label: "Good", color: "text-blue-400", feedback: "Good password with balanced complexity." };
+  }
+  return { score: 4, label: "Strong", color: "text-emerald-400", feedback: "Strong password! High cryptographic resistance." };
+}
+
+export interface ProtectPdfOptions {
+  ownerPassword?: string;
+  algorithm?: "AES-256" | "RC4";
+  allowPrinting?: boolean;
+  allowModifying?: boolean;
+  allowCopying?: boolean;
+  allowAnnotating?: boolean;
 }
 
 // ==========================================
-// 9. UNLOCK PDF
+// 8. PROTECT PDF (Genuine AES-256 PDF Encryption)
+// ==========================================
+export async function protectPdf(
+  file: File,
+  userPass: string,
+  options?: string | ProtectPdfOptions
+): Promise<Uint8Array> {
+  const trimmedUserPass = (userPass || "").trim();
+  if (!trimmedUserPass) {
+    throw new Error("Password cannot be empty. Please enter a valid password to protect the document.");
+  }
+  if (trimmedUserPass.length < 4) {
+    throw new Error("Password must be at least 4 characters long for standard PDF encryption.");
+  }
+  if (COMMON_WEAK_PASSWORDS.has(trimmedUserPass.toLowerCase())) {
+    throw new Error(`The password "${trimmedUserPass}" is too common and weak. Please choose a safer password.`);
+  }
+  if (file.size > 50 * 1024 * 1024) {
+    throw new Error("PDF file is too large (maximum 50MB for secure browser-side encryption).");
+  }
+
+  // Parse options if passed as legacy string (ownerPass) or ProtectPdfOptions object
+  let ownerPassword = trimmedUserPass;
+  let algorithm: "AES-256" | "RC4" = "AES-256";
+  let allowPrinting = true;
+  let allowModifying = false;
+  let allowCopying = false;
+  let allowAnnotating = false;
+
+  if (typeof options === "string") {
+    if (options.trim()) ownerPassword = options.trim();
+  } else if (options && typeof options === "object") {
+    if (options.ownerPassword && options.ownerPassword.trim()) {
+      ownerPassword = options.ownerPassword.trim();
+    }
+    if (options.algorithm) algorithm = options.algorithm;
+    if (typeof options.allowPrinting === "boolean") allowPrinting = options.allowPrinting;
+    if (typeof options.allowModifying === "boolean") allowModifying = options.allowModifying;
+    if (typeof options.allowCopying === "boolean") allowCopying = options.allowCopying;
+    if (typeof options.allowAnnotating === "boolean") allowAnnotating = options.allowAnnotating;
+  }
+
+  const buffer = await file.arrayBuffer();
+  try {
+    // 1. Verify standard PDF structure and serialize cleanly
+    const pdfDoc = await PDFDocument.load(buffer, { ignoreEncryption: true });
+    const cleanBytes = await pdfDoc.save({ useObjectStreams: false });
+
+    // 2. Apply genuine AES-256 PDF encryption (Standard PDF Security Handler Rev 5/6)
+    const encryptedBytes = await encryptPDF(cleanBytes, trimmedUserPass, {
+      ownerPassword,
+      algorithm,
+      allowPrinting,
+      allowModifying,
+      allowCopying,
+      allowAnnotating,
+    });
+
+    return encryptedBytes;
+  } catch (err: any) {
+    if (err instanceof AlreadyEncryptedError || (err.message && err.message.toLowerCase().includes("already encrypted"))) {
+      throw new Error("This PDF document is already encrypted/password-protected. Unlock it first before applying new encryption.");
+    }
+    throw new Error("Failed to encrypt PDF: " + (err?.message || "File may be corrupted."));
+  }
+}
+
+// ==========================================
+// 9. UNLOCK PDF (Genuine Decryption)
 // ==========================================
 export async function unlockPdf(file: File, password?: string): Promise<Uint8Array> {
-  const buffer = await file.arrayBuffer();
-  let pdf: PDFDocument;
-  try {
-    pdf = await PDFDocument.load(buffer, { password, ignoreEncryption: true } as any);
-  } catch (err) {
-    throw new Error("Failed to unlock PDF. Please verify password.");
+  const trimmedPass = (password || "").trim();
+  if (!trimmedPass) {
+    throw new Error("Password is required to decrypt and unlock this PDF document.");
   }
-  return await pdf.save();
+  if (file.size > 50 * 1024 * 1024) {
+    throw new Error("PDF file is too large (maximum 50MB for decryption).");
+  }
+
+  const buffer = await file.arrayBuffer();
+  try {
+    const decryptedBytes = await decryptPDF(new Uint8Array(buffer), trimmedPass);
+    return decryptedBytes;
+  } catch (err: any) {
+    const msg = err?.message || "";
+    if (msg.toLowerCase().includes("not encrypted")) {
+      throw new Error("This PDF document is not encrypted with a password.");
+    }
+    if (msg.toLowerCase().includes("incorrect password")) {
+      throw new Error("Incorrect password. Please verify the document password and try again.");
+    }
+    throw new Error("Failed to unlock PDF: " + (msg || "Invalid password or corrupted structure."));
+  }
 }
 
 // ==========================================
@@ -645,7 +779,7 @@ export async function removePdfMetadataInfo(file: File): Promise<Uint8Array> {
   pdf.setAuthor("");
   pdf.setSubject("");
   pdf.setKeywords([]);
-  pdf.setProducer("Mehzan Digital Tools Hub Sanitizer");
+  pdf.setProducer("Mehzan Tools Hub Sanitizer");
   pdf.setCreator("");
 
   return await pdf.save();

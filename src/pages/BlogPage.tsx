@@ -23,7 +23,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onSelectPost }) => {
   return (
     <>
       <SchemaHead
-        title="AI Tools Blog & Insights - Guides, Prompts, & SEO Hacks"
+        title="Tech Blog & Insights - Developer Guides, PDF & SEO Tools"
         description="Read expert articles on AI workflow automation, prompt engineering, content strategy, and SEO optimization."
       />
 

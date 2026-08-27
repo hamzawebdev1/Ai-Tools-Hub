@@ -55,12 +55,12 @@ export const Footer: React.FC<FooterProps> = ({
                 <Sparkles className="w-5 h-5" />
               </div>
               <span className="font-extrabold text-lg text-slate-900 dark:text-white">
-                Mehzan <span className="text-indigo-600 dark:text-indigo-400">Digital</span>
+                Mehzan <span className="text-indigo-600 dark:text-indigo-400">Tools Hub</span>
               </span>
             </a>
 
             <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed max-w-sm">
-              The premier free suite of web-native utility tools for PDF manipulation, image processing, text formatting, and developer tasks. Built for speed, security, and privacy on Mehzan Digital.
+              The premier free suite of web-native utility tools for PDF manipulation, image processing, text formatting, and developer tasks. Built for speed, security, and privacy on Mehzan Tools Hub.
             </p>
 
             <div className="flex items-center gap-3 pt-2 text-[11px] font-medium text-slate-500 dark:text-slate-400">
@@ -227,7 +227,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 dark:text-slate-500 text-[11px]">
-          <p>© 2026 Mehzan Digital. All rights reserved. High-performance browser-native utility processing.</p>
+          <p>© 2026 Mehzan Tools Hub. All rights reserved. High-performance browser-native utility processing.</p>
           <div className="flex items-center gap-4">
             <a
               href="/privacy"

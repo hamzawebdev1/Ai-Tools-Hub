@@ -11,7 +11,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
   return (
     <>
       <SchemaHead
-        title="About Mehzan Digital Tools Hub - Free Web-Native AI Suite"
+        title="About Mehzan Tools Hub - Free Web-Native Developer Suite"
         description="Learn about our mission to provide lightning-fast, privacy-respecting, free AI tools for developers, creators, and marketers."
       />
 
@@ -27,7 +27,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
             Built for Speed, Privacy, and Organic Excellence
           </h1>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Mehzan Digital Tools Hub was founded with a singular purpose: to deliver production-ready, zero-friction online browser utility tools accessible to everyone without paywalls or invasive tracking.
+            Mehzan Tools Hub was founded with a singular purpose: to deliver production-ready, zero-friction online browser utility tools accessible to everyone without paywalls or invasive tracking.
           </p>
         </div>
 

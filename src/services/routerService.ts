@@ -18,7 +18,7 @@ export interface RouteState {
 export const CANONICAL_DOMAIN = (
   (typeof process !== "undefined" && process.env?.APP_URL) ||
   (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_APP_URL) ||
-  "https://utilitytoolshub.com"
+  "https://mehzandigital.com"
 ).replace(/\/+$/, "");
 
 /**

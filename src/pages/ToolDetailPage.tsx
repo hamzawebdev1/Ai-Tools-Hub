@@ -89,7 +89,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
         body: JSON.stringify({
           toolName: tool.name,
           pageUrl: window.location.pathname,
-          userEmail: reportEmail || currentUser?.email || "guest@utilitytoolshub.com",
+          userEmail: reportEmail || currentUser?.email || "guest@mehzandigital.com",
           issueType: reportIssueType,
           description: reportDescription,
         }),
@@ -118,7 +118,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           description: featureDesc,
           category: tool.category,
           priority: featurePriority,
-          userEmail: featureEmail || currentUser?.email || "guest@utilitytoolshub.com",
+          userEmail: featureEmail || currentUser?.email || "guest@mehzandigital.com",
         }),
       });
       const data = await res.json();

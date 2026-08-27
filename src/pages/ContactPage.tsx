@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Send, CheckCircle, Clock, MessageSquare, Paperclip, ShieldCheck } from "lucide-react";
+import { Mail, Send, CheckCircle, AlertCircle, Clock, MessageSquare, Paperclip, ShieldCheck, RefreshCw } from "lucide-react";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { SchemaHead } from "../components/layout/SchemaHead";
 
@@ -10,14 +10,28 @@ export const ContactPage: React.FC = () => {
   const [category, setCategory] = useState("General Support");
   const [message, setMessage] = useState("");
   const [attachmentName, setAttachmentName] = useState<string | undefined>();
-  const [recaptchaVerified, setRecaptchaVerified] = useState(true);
   const [referenceId, setReferenceId] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message || !email || !name) return;
+    setErrorMessage(null);
+
+    // Client validation
+    if (!name.trim()) {
+      setErrorMessage("Please provide your full name.");
+      return;
+    }
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+    if (!message.trim() || message.trim().length < 10) {
+      setErrorMessage("Message must be at least 10 characters long.");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -25,23 +39,28 @@ export const ContactPage: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          subject,
+          name: name.trim(),
+          email: email.trim(),
+          subject: subject.trim(),
           category,
-          message,
+          message: message.trim(),
           attachmentName,
-          recaptchaVerified,
+          recaptchaVerified: true,
         }),
       });
+
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && data.success) {
         setReferenceId(data.referenceId || "MSG-" + Math.floor(10000 + Math.random() * 90000));
         setSubmitted(true);
+      } else {
+        setErrorMessage(data.error || "Failed to send message. Please verify your details and try again.");
       }
-    } catch {
-      setReferenceId("MSG-" + Math.floor(10000 + Math.random() * 90000));
-      setSubmitted(true);
+    } catch (err: any) {
+      console.error("Contact form error:", err);
+      setErrorMessage(
+        "Network connection error. Could not reach server. Please check your network and try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -50,8 +69,8 @@ export const ContactPage: React.FC = () => {
   return (
     <>
       <SchemaHead
-        title="Contact Us - Mehzan Digital Tools Hub Support"
-        description="Get in touch with the Mehzan Digital Tools Hub engineering and support team for questions, API partnerships, or bug reports."
+        title="Contact Us - Mehzan Tools Hub Support"
+        description="Get in touch with the Mehzan Tools Hub engineering and support team for questions, API partnerships, or bug reports."
       />
 
       <div className="max-w-3xl mx-auto space-y-8 pb-16">
@@ -66,7 +85,7 @@ export const ContactPage: React.FC = () => {
 
         {submitted ? (
           <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-8 text-center space-y-4 animate-fade-in">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto text-emerald-500 animate-bounce">
+            <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto text-emerald-500">
               <CheckCircle className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white">Message Sent Successfully</h3>
@@ -75,67 +94,88 @@ export const ContactPage: React.FC = () => {
                 Reference ID: {referenceId}
               </div>
             )}
-            <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-              Thank you for contacting us. Our engineering team will review your message and reach back out to {email}. You can use your reference ID to track status.
+            <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
+              Thank you for contacting us. Your message has been safely recorded in our support desk database. Our engineering team will review your inquiry and follow up at <span className="font-semibold text-slate-900 dark:text-white">{email}</span>.
             </p>
-            <button
-              onClick={() => {
-                setSubmitted(false);
-                setMessage("");
-                setReferenceId(null);
-              }}
-              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer transition-colors"
-            >
-              Send Another Message
-            </button>
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setSubmitted(false);
+                  setMessage("");
+                  setReferenceId(null);
+                  setErrorMessage(null);
+                }}
+                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer transition-colors"
+              >
+                Send Another Message
+              </button>
+            </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 p-6 sm:p-8 space-y-5 shadow-xl">
+          <form
+            onSubmit={handleSubmit}
+            className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 p-6 sm:p-8 space-y-5 shadow-xl"
+          >
+            {errorMessage && (
+              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-xs text-rose-600 dark:text-rose-400 flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Full Name</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Full Name <span className="text-rose-500">*</span>
+                </label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Alex Smith"
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Email Address</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Email Address <span className="text-rose-500">*</span>
+                </label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex@example.com"
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Subject</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Subject <span className="text-rose-500">*</span>
+                </label>
                 <input
                   type="text"
                   required
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="e.g. Enterprise API Partnership"
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Category</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Category <span className="text-rose-500">*</span>
+                </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 cursor-pointer"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 cursor-pointer focus:ring-2 focus:ring-indigo-500 outline-none"
                 >
                   <option value="General Support">General Support</option>
                   <option value="Bug Report">Bug Report</option>
@@ -147,44 +187,42 @@ export const ContactPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Message</label>
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                Message <span className="text-rose-500">*</span>
+              </label>
               <textarea
                 required
                 rows={5}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Describe your inquiry in detail..."
-                className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100"
+                placeholder="Describe your question, request, or issue in detail..."
+                className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
             </div>
 
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-              <div className="flex items-center gap-2">
-                <Paperclip className="w-4 h-4 text-slate-400" />
-                <span className="text-xs text-slate-600 dark:text-slate-300">
-                  {attachmentName ? attachmentName : "Attach file or screenshot (optional)"}
-                </span>
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-400">
+              <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
+                <ShieldCheck className="w-4 h-4" /> SSL Encrypted & Verified
               </div>
-              <input
-                type="file"
-                onChange={(e) => e.target.files?.[0] && setAttachmentName(e.target.files[0].name)}
-                className="text-xs text-slate-500 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-600 dark:file:bg-indigo-950 dark:file:text-indigo-400 cursor-pointer"
-              />
-            </div>
 
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-600 dark:text-emerald-400">
-              <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>Google reCAPTCHA v3 verified: Secured against automated spam bots.</span>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-semibold flex items-center gap-2 cursor-pointer transition-colors shadow-lg shadow-indigo-500/20"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Send Message</span>
+                  </>
+                )}
+              </button>
             </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition-colors cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
-            >
-              <Send className="w-4 h-4" />
-              <span>{loading ? "Sending Message..." : "Submit Secure Message"}</span>
-            </button>
           </form>
         )}
       </div>

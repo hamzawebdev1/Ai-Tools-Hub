@@ -23,7 +23,7 @@ export const AuthorPage: React.FC<AuthorPageProps> = ({
     <>
       <SchemaHead
         title={`${author.name} - Author Profile & Editorial Standards`}
-        description={`Learn more about ${author.name}, ${author.role} at Mehzan Digital Tools Hub. Read expert articles, technical guides, and security research.`}
+        description={`Learn more about ${author.name}, ${author.role} at Mehzan Tools Hub. Read expert articles, technical guides, and security research.`}
         schemaType="Article"
         schemaData={{
           "@type": "Person",

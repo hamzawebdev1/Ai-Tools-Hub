@@ -21,7 +21,7 @@ export const AUTHORS_DATA: Author[] = [
     name: "Alex Rivera",
     role: "Lead Systems Engineer & Security Researcher",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-    bio: "Alex has over 10 years of software engineering experience specializing in high-performance browser utility engines, OWASP security architectures, and edge runtime optimization. At Mehzan Digital Tools Hub, Alex oversees performance and sub-100ms execution latency.",
+    bio: "Alex has over 10 years of software engineering experience specializing in high-performance browser utility engines, OWASP security architectures, and edge runtime optimization. At Mehzan Tools Hub, Alex oversees performance and sub-100ms execution latency.",
     expertise: ["Browser Utility Engines", "OWASP Top 10 Security", "Cloud Run Container Optimization", "TypeScript"],
     socials: {
       twitter: "https://twitter.com/example",

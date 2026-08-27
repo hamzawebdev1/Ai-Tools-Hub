@@ -52,7 +52,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   return (
     <>
       <SchemaHead
-        title={`Search Results for "${query}" - Mehzan Digital Tools Hub`}
+        title={`Search Results for "${query}" - Mehzan Tools Hub`}
         description={`Find matching AI tools, articles, and categories for query: ${query}`}
       />
 
@@ -107,7 +107,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         {/* Matching Tools */}
         <section className="space-y-3">
           <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-            Matching AI Tools ({matchingTools.length})
+            Matching Tools ({matchingTools.length})
           </h3>
           {matchingTools.length === 0 ? (
             <p className="text-xs text-slate-500 py-4">No direct tool matches found.</p>

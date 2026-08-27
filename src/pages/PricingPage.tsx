@@ -11,8 +11,8 @@ export const PricingPage: React.FC<PricingPageProps> = ({ setActiveTab }) => {
   return (
     <>
       <SchemaHead
-        title="Simple, Transparent Pricing - Mehzan Digital Tools Hub"
-        description="Mehzan Digital Tools Hub is 100% free with unlimited daily usage supported by Google AdSense."
+        title="Simple, Transparent Pricing - Mehzan Tools Hub"
+        description="Mehzan Tools Hub is 100% free with unlimited daily usage supported by Google AdSense."
       />
 
       <div className="max-w-4xl mx-auto space-y-10 pb-16">
@@ -24,7 +24,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ setActiveTab }) => {
             <span>100% Free Forever</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
-            Zero Cost AI Tools for Everyone
+            Zero Cost Web & Developer Tools for Everyone
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
             All 30+ tools in our catalog are provided at zero cost with no credit card requirement.
@@ -40,7 +40,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ setActiveTab }) => {
 
             <div>
               <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">Community Free</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Full access to all 30+ AI tools</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Full access to 50+ developer & media tools</p>
             </div>
 
             <div className="flex items-baseline gap-1">
