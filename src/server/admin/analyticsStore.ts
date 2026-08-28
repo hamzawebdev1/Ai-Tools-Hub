@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { persistDocument, fetchCollectionDocs } from "../firebaseServer.js";
 
 export interface AnalyticsEvent {
   id: string;
@@ -52,6 +53,27 @@ let eventsCache: AnalyticsEvent[] = (() => {
   return [];
 })();
 
+export async function syncAnalyticsFromFirestore() {
+  try {
+    const docs = await fetchCollectionDocs("analytics", 1000);
+    if (docs.length > 0) {
+      const mergedMap = new Map<string, AnalyticsEvent>();
+      eventsCache.forEach((e) => mergedMap.set(e.id, e));
+      docs.forEach((d: any) => mergedMap.set(d.id, d as AnalyticsEvent));
+      eventsCache = Array.from(mergedMap.values()).sort(
+        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+      saveEvents();
+      console.log(`✅ Loaded ${eventsCache.length} analytics events from Firestore.`);
+    }
+  } catch (err) {
+    console.error("⚠️ Error syncing analytics from Firestore:", err);
+  }
+}
+
+// Background sync on module load
+syncAnalyticsFromFirestore();
+
 function saveEvents() {
   try {
     ensureStorageDir();
@@ -69,6 +91,7 @@ export function recordAnalyticsEvent(eventData: Omit<AnalyticsEvent, "id" | "tim
   if (eventsCache.length > 10000) {
     eventsCache = eventsCache.slice(0, 10000);
   }
+  persistDocument("analytics", newEvent.id, newEvent);
   saveEvents();
   return newEvent;
 }

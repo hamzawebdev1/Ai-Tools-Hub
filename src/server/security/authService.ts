@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import crypto from "crypto";
+import { persistDocument } from "../firebaseServer.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "enterprise-super-secure-jwt-secret-key-512bit";
 const SALT_ROUNDS = 12;
@@ -123,6 +124,7 @@ export async function registerUser(
   userStore.set(cleanEmail, newUser);
 
   const { passwordHash: _, ...safeUser } = newUser;
+  persistDocument("users", userId, { ...safeUser, uid: userId, registeredStatus: true });
   return { success: true, user: safeUser };
 }
 
@@ -231,6 +233,7 @@ export async function authenticateGoogleUser(
 
   const token = generateAccessToken(user);
   const { passwordHash: _, ...safeUser } = user;
+  persistDocument("users", user.id, { ...safeUser, uid: user.id, registeredStatus: true });
   return { success: true, user: safeUser, token };
 }
 

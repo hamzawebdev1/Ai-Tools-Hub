@@ -54,12 +54,15 @@ export interface FeatureRequest {
   category: string;
   priority: "Low" | "Medium" | "High" | "Critical";
   userEmail: string;
+  userName?: string;
+  userId?: string;
   votes: number;
-  status: "Open" | "In Progress" | "Resolved" | "Closed" | "Planned";
+  status: "NEW" | "IN REVIEW" | "PLANNED" | "COMPLETED" | "REJECTED" | "Open" | "In Progress" | "Resolved" | "Closed";
   assignedAdmin?: string;
   notes?: string;
   read: boolean;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface ToolHealthRecord {
@@ -311,7 +314,7 @@ export const deleteBugReport = async (id: string) => {
 };
 
 export const addFeatureRequest = async (
-  data: Omit<FeatureRequest, "id" | "referenceId" | "createdAt" | "read" | "status" | "votes">
+  data: Omit<FeatureRequest, "id" | "referenceId" | "createdAt" | "read" | "status" | "votes"> & { status?: FeatureRequest["status"] }
 ): Promise<FeatureRequest> => {
   const refCode = "REQ-" + Math.floor(10000 + Math.random() * 90000);
   const docId = "req_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7);
@@ -321,9 +324,10 @@ export const addFeatureRequest = async (
     referenceId: refCode,
     ...data,
     votes: 1,
-    status: "Open",
+    status: data.status || "NEW",
     read: false,
     createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
 
   submissionsStore.featureRequests.unshift(newReq);
@@ -342,7 +346,7 @@ export const addFeatureRequest = async (
 export const updateFeatureRequest = async (id: string, updates: Partial<FeatureRequest>) => {
   const req = submissionsStore.featureRequests.find((r) => r.id === id || r.referenceId === id);
   if (!req) return null;
-  Object.assign(req, updates);
+  Object.assign(req, updates, { updatedAt: new Date().toISOString() });
   saveSubmissions();
 
   try {

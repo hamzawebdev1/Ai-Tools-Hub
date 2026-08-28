@@ -26,11 +26,21 @@ export const CANONICAL_DOMAIN = (
  */
 export const TOOL_SLUG_ALIASES: Record<string, string> = {
   "pdf-split": "split-pdf-pages",
+  "split-pdf": "split-pdf-pages",
   "pdf-to-docx": "pdf-to-word",
   "image-compress": "image-compressor",
   "image-resize": "image-resizer",
   "image-crop": "image-cropper",
   "image-rotate": "image-rotator",
+  "pdf-password-protector": "pdf-protect",
+  "pdf-password-remover": "pdf-unlock",
+  "merge-pdf": "pdf-merge",
+  "pdf-compressor": "pdf-compress",
+  "jpg2pdf": "jpg-to-pdf",
+  "pdf2jpg": "pdf-to-jpg",
+  "pdf2word": "pdf-to-word",
+  "wifi-qr-code": "wifi-qr-code-generator",
+  "wifi-qr-code-maker": "wifi-qr-code-generator",
 };
 
 /**

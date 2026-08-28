@@ -10,6 +10,7 @@ import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
 import { addContactMessage, addBugReport, addFeatureRequest } from "./src/server/admin/submissionsStore.js";
+import { addSubscriber } from "./src/server/admin/cmsStore.js";
 import { executeTool } from "./src/server/toolsExecutor.js";
 import {
   configureSecurityHeaders,
@@ -171,14 +172,27 @@ async function startServer() {
 
   // Newsletter endpoint
   app.post("/api/newsletter/subscribe", (req, res) => {
-    const { email } = req.body;
-    if (!email || !email.includes("@")) {
-      return res.status(400).json({ error: "Valid email address required" });
+    try {
+      const { email, name, source } = req.body;
+      if (!email || !email.includes("@")) {
+        return res.status(400).json({ success: false, error: "Valid email address required" });
+      }
+      const result = addSubscriber(email, source || "site_footer", name);
+      if (!result.success) {
+        return res.status(400).json({ success: false, error: result.error });
+      }
+      return res.json({
+        success: true,
+        alreadySubscribed: !!result.alreadySubscribed,
+        message: result.alreadySubscribed
+          ? "You are already subscribed to the newsletter!"
+          : "Thank you for subscribing to Mehzan Tools Hub newsletter!",
+        subscriber: result.subscriber,
+      });
+    } catch (err: any) {
+      console.error("⚠️ Error processing /api/newsletter/subscribe:", err);
+      return res.status(500).json({ success: false, error: "Failed to process newsletter subscription." });
     }
-    return res.json({
-      success: true,
-      message: "Thank you for subscribing to Mehzan Tools Hub newsletter!",
-    });
   });
 
   // Contact message endpoint
@@ -241,11 +255,11 @@ async function startServer() {
   // Feature request endpoint
   app.post("/api/feature-requests", async (req, res) => {
     try {
-      const { toolName, description, category, priority, userEmail } = req.body;
+      const { toolName, description, category, priority, userEmail, userName, userId } = req.body;
       if (!toolName || !description) {
         return res.status(400).json({ success: false, error: "Tool name and description are required." });
       }
-      console.log(`[FEATURE REQUEST INCOMING] Tool: ${toolName} | Priority: ${priority} | From: ${userEmail}`);
+      console.log(`[FEATURE REQUEST INCOMING] Tool: ${toolName} | Priority: ${priority} | From: ${userEmail || userName}`);
 
       const item = await addFeatureRequest({
         toolName,
@@ -253,8 +267,10 @@ async function startServer() {
         category: category || "General",
         priority: priority || "Medium",
         userEmail: userEmail || "anonymous@mehzandigital.com",
+        userName: userName || undefined,
+        userId: userId || undefined,
       });
-      return res.json({ success: true, referenceId: item.referenceId, message: "Feature request submitted successfully." });
+      return res.json({ success: true, referenceId: item.referenceId, message: "Feature request submitted successfully.", featureRequest: item });
     } catch (err: any) {
       console.error("⚠️ Error processing /api/feature-requests:", err);
       return res.status(500).json({ success: false, error: "Failed to submit feature request." });

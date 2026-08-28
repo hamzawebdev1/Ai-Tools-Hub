@@ -1,6 +1,7 @@
 import { Router } from "express";
 import crypto from "crypto";
 import multer from "multer";
+import { persistDocument, removeDocument, fetchCollectionDocs } from "../firebaseServer.js";
 import { getSecurityAlerts } from "../security/authService.js";
 import { emailProvider } from "../../services/emailProvider.js";
 import {
@@ -34,6 +35,8 @@ import {
   deleteBlogPost,
   getAllSubscribers,
   addSubscriber,
+  updateSubscriber,
+  toggleSubscriberStatus,
   deleteSubscriber,
   recordCampaign,
   getAllCampaigns,
@@ -69,6 +72,27 @@ const getBaseHost = (req: any): string => {
 
 // In-memory Users Store with sync
 let usersDatabase: any[] = [];
+
+export async function syncUsersFromFirestore() {
+  try {
+    const userDocs = await fetchCollectionDocs("users", 1000);
+    if (userDocs.length > 0) {
+      const mergedMap = new Map<string, any>();
+      usersDatabase.forEach((u) => mergedMap.set(u.uid || u.id || u.email, u));
+      userDocs.forEach((d: any) => {
+        const key = d.uid || d.id || d.email;
+        mergedMap.set(key, { ...mergedMap.get(key), ...d, uid: key });
+      });
+      usersDatabase = Array.from(mergedMap.values());
+      console.log(`✅ Loaded ${usersDatabase.length} users from Firestore.`);
+    }
+  } catch (err) {
+    console.error("⚠️ Failed to sync users from Firestore:", err);
+  }
+}
+
+// Background sync users on boot
+syncUsersFromFirestore();
 
 // Helper to extract actor email
 const getActor = (req: any): { email: string; ip: string } => {
@@ -591,23 +615,68 @@ router.get("/newsletter/subscribers", (req, res) => {
 });
 
 router.post("/newsletter/subscribers", (req, res) => {
-  const { email } = req.body;
-  const result = addSubscriber(email, "admin_manual");
+  const { email, name, source } = req.body;
+  const result = addSubscriber(email, source || "admin_manual", name);
   if (!result.success) {
     return res.status(400).json({ success: false, error: result.error });
   }
-  return res.json({ success: true, message: `Subscriber ${email} added successfully.`, subscriber: result.subscriber });
+  return res.json({
+    success: true,
+    message: `Subscriber ${email} saved successfully.`,
+    subscriber: result.subscriber,
+  });
+});
+
+router.patch("/newsletter/subscribers/:id/status", (req, res) => {
+  const { email: adminEmail, ip } = getActor(req);
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (status) {
+    const updated = updateSubscriber(id, { status }, adminEmail, ip);
+    if (!updated) return res.status(404).json({ success: false, error: "Subscriber not found." });
+    return res.json({ success: true, message: `Subscriber status set to ${status}.`, subscriber: updated });
+  }
+
+  const toggled = toggleSubscriberStatus(id, adminEmail, ip);
+  if (!toggled) return res.status(404).json({ success: false, error: "Subscriber not found." });
+  return res.json({ success: true, message: `Subscriber status toggled to ${toggled.status}.`, subscriber: toggled });
+});
+
+router.patch("/newsletter/subscribers/:id", (req, res) => {
+  const { email: adminEmail, ip } = getActor(req);
+  const { id } = req.params;
+  const { name, email, status, source } = req.body;
+
+  try {
+    const updated = updateSubscriber(id, { name, email, status, source }, adminEmail, ip);
+    if (!updated) return res.status(404).json({ success: false, error: "Subscriber not found." });
+    return res.json({ success: true, message: "Subscriber updated successfully.", subscriber: updated });
+  } catch (err: any) {
+    return res.status(400).json({ success: false, error: err.message || "Failed to update subscriber." });
+  }
+});
+
+router.delete("/newsletter/subscribers/:id", (req, res) => {
+  const { email: adminEmail, ip } = getActor(req);
+  const { id } = req.params;
+
+  const success = deleteSubscriber(id, adminEmail, ip);
+  if (!success) return res.status(404).json({ success: false, error: "Subscriber not found." });
+
+  return res.json({ success: true, message: "Subscriber deleted successfully." });
 });
 
 router.delete("/newsletter/subscribers", (req, res) => {
   const { email: adminEmail, ip } = getActor(req);
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ success: false, error: "Email is required." });
+  const { email, id } = req.body;
+  const query = id || email;
+  if (!query) return res.status(400).json({ success: false, error: "Email or ID is required." });
 
-  const success = deleteSubscriber(email, adminEmail, ip);
+  const success = deleteSubscriber(query, adminEmail, ip);
   if (!success) return res.status(404).json({ success: false, error: "Subscriber not found." });
 
-  return res.json({ success: true, message: `Subscriber ${email} deleted.` });
+  return res.json({ success: true, message: `Subscriber ${query} deleted.` });
 });
 
 router.get("/newsletter/export", (req, res) => {
@@ -615,9 +684,9 @@ router.get("/newsletter/export", (req, res) => {
   res.setHeader("Content-Type", "text/csv");
   res.setHeader("Content-Disposition", 'attachment; filename="newsletter-subscribers.csv"');
 
-  let csv = "ID,Email,Status,Source,SubscribedAt\n";
+  let csv = "ID,Name,Email,Status,Source,SubscribedAt\n";
   subscribers.forEach((s) => {
-    csv += `"${s.id}","${s.email}","${s.status}","${s.source}","${s.subscribedAt}"\n`;
+    csv += `"${s.id}","${(s.name || "").replace(/"/g, '""')}","${s.email}","${s.status}","${s.source}","${s.subscribedAt}"\n`;
   });
 
   return res.send(csv);
@@ -837,6 +906,7 @@ router.post("/users/create", (req, res) => {
   };
 
   usersDatabase.unshift(newUser);
+  persistDocument("users", newUser.uid, newUser);
   logAuditAction(adminEmail, "USER_CREATED", "user", `Created user ${newUser.email} with role ${newUser.role}`, ip, newUser.uid);
 
   return res.json({ success: true, message: "User account created.", user: newUser });
@@ -855,6 +925,7 @@ router.put("/users/:uid", (req, res) => {
   if (role !== undefined) user.role = role;
   if (status !== undefined) user.status = status;
 
+  persistDocument("users", user.uid || user.id, user);
   logAuditAction(adminEmail, "USER_UPDATED", "user", `Updated user ${user.email}`, ip, uid);
   return res.json({ success: true, message: "User updated successfully.", user });
 });
@@ -872,6 +943,7 @@ router.post("/users/:uid/password", (req, res) => {
   if (!user) return res.status(404).json({ success: false, error: "User not found." });
 
   user.passwordHash = crypto.createHash("sha256").update(newPassword).digest("hex");
+  persistDocument("users", user.uid || user.id, user);
   logAuditAction(adminEmail, "USER_PASSWORD_RESET", "user", `Reset password for ${user.email}`, ip, uid);
 
   return res.json({ success: true, message: `Password updated securely for ${user.email}.` });
@@ -885,7 +957,9 @@ router.post("/users/sync", (req, res) => {
     users.forEach((u) => {
       const key = u.uid || u.id || u.email;
       const prev = map.get(key) || {};
-      map.set(key, { ...prev, ...u, uid: key });
+      const merged = { ...prev, ...u, uid: key };
+      map.set(key, merged);
+      persistDocument("users", key, merged);
     });
     usersDatabase = Array.from(map.values());
   }
@@ -900,6 +974,7 @@ router.delete("/users/:uid", (req, res) => {
   if (idx === -1) return res.status(404).json({ success: false, error: "User not found." });
 
   const [deleted] = usersDatabase.splice(idx, 1);
+  removeDocument("users", deleted.uid || deleted.id || uid);
   logAuditAction(adminEmail, "USER_DELETED", "user", `Deleted user account ${deleted.email}`, ip, uid);
 
   return res.json({ success: true, message: "User account deleted." });
@@ -912,16 +987,23 @@ router.post("/users/bulk-action", (req, res) => {
   if (!Array.isArray(uids)) return res.status(400).json({ success: false, error: "uids array required." });
 
   if (action === "delete") {
+    uids.forEach((id) => removeDocument("users", id));
     usersDatabase = usersDatabase.filter((u) => !uids.includes(u.uid) && !uids.includes(u.id));
     logAuditAction(adminEmail, "USERS_BULK_DELETE", "user", `Bulk deleted ${uids.length} users.`, ip);
   } else if (action === "status") {
     usersDatabase.forEach((u) => {
-      if (uids.includes(u.uid) || uids.includes(u.id)) u.status = value;
+      if (uids.includes(u.uid) || uids.includes(u.id)) {
+        u.status = value;
+        persistDocument("users", u.uid || u.id, u);
+      }
     });
     logAuditAction(adminEmail, "USERS_BULK_STATUS", "user", `Set status=${value} on ${uids.length} users.`, ip);
   } else if (action === "role") {
     usersDatabase.forEach((u) => {
-      if (uids.includes(u.uid) || uids.includes(u.id)) u.role = value;
+      if (uids.includes(u.uid) || uids.includes(u.id)) {
+        u.role = value;
+        persistDocument("users", u.uid || u.id, u);
+      }
     });
     logAuditAction(adminEmail, "USERS_BULK_ROLE", "user", `Set role=${value} on ${uids.length} users.`, ip);
   }

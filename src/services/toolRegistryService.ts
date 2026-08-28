@@ -21,6 +21,7 @@ export interface ToolAdminOverride {
   category?: ToolCategory;
   subcategory?: string;
   name?: string;
+  slug?: string;
   description?: string;
   searchKeywords?: string[];
   seoTitle?: string;

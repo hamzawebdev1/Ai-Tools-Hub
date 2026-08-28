@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { BASE_CANONICAL_TOOLS } from "../../services/toolRegistryService.js";
 import { RAW_CATEGORIES } from "../../data/categoriesData.js";
 import { BLOG_POSTS_DATA } from "../../data/blogData.js";
+import { persistDocument, removeDocument, fetchCollectionDocs } from "../firebaseServer.js";
 
 export interface CMSTool {
   id: string;
@@ -70,6 +71,7 @@ export interface CMSBlogPost {
 export interface CMSNewsletterSubscriber {
   id: string;
   email: string;
+  name?: string;
   status: "active" | "unsubscribed";
   source: string;
   subscribedAt: string;
@@ -328,6 +330,84 @@ let cmsDb: CMSDatabase = (() => {
   return initial;
 })();
 
+export async function syncCMSFromFirestore() {
+  try {
+    const toolsDocs = await fetchCollectionDocs("tools", 1000);
+    const catDocs = await fetchCollectionDocs("categories", 500);
+    const blogDocs = await fetchCollectionDocs("blog", 500);
+    const subDocs = await fetchCollectionDocs("newsletter", 1000);
+    const campaignDocs = await fetchCollectionDocs("campaigns", 500);
+    const mediaDocs = await fetchCollectionDocs("media", 500);
+    const settingsDocs = await fetchCollectionDocs("settings", 50);
+    const auditDocs = await fetchCollectionDocs("audit_logs", 500);
+
+    if (toolsDocs.length > 0) {
+      cmsDb.tools = toolsDocs.map((t) => ({ ...t, id: t.id })) as CMSTool[];
+    } else {
+      const initialDb = buildInitialDatabase();
+      for (const t of initialDb.tools) {
+        await persistDocument("tools", t.id, t);
+      }
+      cmsDb.tools = initialDb.tools;
+    }
+
+    if (catDocs.length > 0) {
+      cmsDb.categories = catDocs.map((c) => ({ ...c, id: c.id })) as CMSCategory[];
+    } else {
+      const initialDb = buildInitialDatabase();
+      for (const c of initialDb.categories) {
+        await persistDocument("categories", c.id, c);
+      }
+      cmsDb.categories = initialDb.categories;
+    }
+
+    if (blogDocs.length > 0) {
+      cmsDb.blogPosts = blogDocs.map((b) => ({ ...b, id: b.id })) as CMSBlogPost[];
+    } else {
+      const initialDb = buildInitialDatabase();
+      for (const b of initialDb.blogPosts) {
+        await persistDocument("blog", b.id, b);
+      }
+      cmsDb.blogPosts = initialDb.blogPosts;
+    }
+
+    if (subDocs.length > 0) {
+      cmsDb.subscribers = subDocs.map((s) => ({ ...s, id: s.id })) as CMSNewsletterSubscriber[];
+    }
+
+    if (campaignDocs.length > 0) {
+      cmsDb.campaigns = campaignDocs.map((c) => ({ ...c, id: c.id })) as CMSCampaign[];
+    }
+
+    if (mediaDocs.length > 0) {
+      cmsDb.media = mediaDocs.map((m) => ({ ...m, id: m.id })) as CMSMediaItem[];
+    }
+
+    if (settingsDocs.length > 0) {
+      const siteSettingDoc = settingsDocs.find((s) => s.id === "site_settings") || settingsDocs[0];
+      if (siteSettingDoc) {
+        const { id, ...data } = siteSettingDoc;
+        cmsDb.settings = { ...cmsDb.settings, ...data };
+      }
+    } else {
+      await persistDocument("settings", "site_settings", cmsDb.settings);
+    }
+
+    if (auditDocs.length > 0) {
+      cmsDb.auditLogs = auditDocs.map((a) => ({ ...a, id: a.id })) as CMSAuditLog[];
+    }
+
+    recalcCategoryCounts();
+    saveCMSDatabase();
+    console.log(`✅ CMS database successfully loaded from Firestore (${cmsDb.tools.length} tools, ${cmsDb.categories.length} categories, ${cmsDb.blogPosts.length} articles).`);
+  } catch (err) {
+    console.error("⚠️ Failed to sync CMS database from Firestore:", err);
+  }
+}
+
+// Kick off initial background sync
+syncCMSFromFirestore();
+
 export function saveCMSDatabase() {
   try {
     ensureDirectoryExists();
@@ -359,6 +439,7 @@ export function logAuditAction(
   if (cmsDb.auditLogs.length > 500) {
     cmsDb.auditLogs.pop();
   }
+  persistDocument("audit_logs", newLog.id, newLog);
   saveCMSDatabase();
   return newLog;
 }
@@ -403,7 +484,7 @@ export function createTool(toolData: Partial<CMSTool>, adminEmail: string, ip?: 
   };
 
   cmsDb.tools.push(newTool);
-  // recalculate category count
+  persistDocument("tools", newTool.id, newTool);
   recalcCategoryCounts();
   logAuditAction(adminEmail, "TOOL_CREATED", "tool", `Created new tool "${newTool.name}" (${newTool.slug})`, ip, newTool.id);
   saveCMSDatabase();
@@ -415,6 +496,7 @@ export function updateTool(id: string, updates: Partial<CMSTool>, adminEmail: st
   if (!tool) return null;
 
   Object.assign(tool, updates, { updatedAt: new Date().toISOString() });
+  persistDocument("tools", tool.id, tool);
   recalcCategoryCounts();
   logAuditAction(adminEmail, "TOOL_UPDATED", "tool", `Updated tool "${tool.name}" (${tool.id})`, ip, tool.id);
   saveCMSDatabase();
@@ -426,6 +508,7 @@ export function deleteTool(id: string, adminEmail: string, ip?: string): boolean
   if (idx === -1) return false;
 
   const [deleted] = cmsDb.tools.splice(idx, 1);
+  removeDocument("tools", id);
   recalcCategoryCounts();
   logAuditAction(adminEmail, "TOOL_DELETED", "tool", `Deleted tool "${deleted.name}" (${deleted.slug})`, ip, id);
   saveCMSDatabase();
@@ -435,7 +518,10 @@ export function deleteTool(id: string, adminEmail: string, ip?: string): boolean
 export function reorderTools(orderedIds: string[], adminEmail: string, ip?: string) {
   orderedIds.forEach((id, index) => {
     const t = cmsDb.tools.find((tool) => tool.id === id);
-    if (t) t.order = index + 1;
+    if (t) {
+      t.order = index + 1;
+      persistDocument("tools", t.id, t);
+    }
   });
   cmsDb.tools.sort((a, b) => a.order - b.order);
   logAuditAction(adminEmail, "TOOLS_REORDERED", "tool", `Reordered ${orderedIds.length} tools.`, ip);
@@ -470,6 +556,7 @@ export function createCategory(catData: Partial<CMSCategory>, adminEmail: string
   };
 
   cmsDb.categories.push(newCat);
+  persistDocument("categories", newCat.id, newCat);
   recalcCategoryCounts();
   logAuditAction(adminEmail, "CATEGORY_CREATED", "category", `Created category "${newCat.name}"`, ip, newCat.id);
   saveCMSDatabase();
@@ -481,6 +568,7 @@ export function updateCategory(id: string, updates: Partial<CMSCategory>, adminE
   if (!cat) return null;
 
   Object.assign(cat, updates, { updatedAt: new Date().toISOString() });
+  persistDocument("categories", cat.id, cat);
   recalcCategoryCounts();
   logAuditAction(adminEmail, "CATEGORY_UPDATED", "category", `Updated category "${cat.name}"`, ip, cat.id);
   saveCMSDatabase();
@@ -500,6 +588,7 @@ export function deleteCategory(id: string, adminEmail: string, ip?: string): { s
   if (idx === -1) return { success: false, error: "Category not found." };
 
   const [deleted] = cmsDb.categories.splice(idx, 1);
+  removeDocument("categories", id);
   logAuditAction(adminEmail, "CATEGORY_DELETED", "category", `Deleted category "${deleted.name}"`, ip, id);
   saveCMSDatabase();
   return { success: true };
@@ -508,7 +597,10 @@ export function deleteCategory(id: string, adminEmail: string, ip?: string): { s
 export function reorderCategories(orderedIds: string[], adminEmail: string, ip?: string) {
   orderedIds.forEach((id, index) => {
     const c = cmsDb.categories.find((cat) => cat.id === id);
-    if (c) c.order = index + 1;
+    if (c) {
+      c.order = index + 1;
+      persistDocument("categories", c.id, c);
+    }
   });
   cmsDb.categories.sort((a, b) => a.order - b.order);
   logAuditAction(adminEmail, "CATEGORIES_REORDERED", "category", `Reordered ${orderedIds.length} categories.`, ip);
@@ -521,6 +613,7 @@ function recalcCategoryCounts() {
     cat.count = cmsDb.tools.filter(
       (t) => t.category.toLowerCase() === cat.id.toLowerCase() && t.status === "active"
     ).length;
+    persistDocument("categories", cat.id, cat);
   });
 }
 
@@ -567,6 +660,7 @@ export function createBlogPost(postData: Partial<CMSBlogPost>, adminEmail: strin
   };
 
   cmsDb.blogPosts.unshift(newPost);
+  persistDocument("blog", newPost.id, newPost);
   logAuditAction(adminEmail, "BLOG_CREATED", "blog", `Created article "${newPost.title}" (${newPost.slug})`, ip, newPost.id);
   saveCMSDatabase();
   return newPost;
@@ -577,6 +671,7 @@ export function updateBlogPost(id: string, updates: Partial<CMSBlogPost>, adminE
   if (!post) return null;
 
   Object.assign(post, updates, { updatedAt: new Date().toISOString() });
+  persistDocument("blog", post.id, post);
   logAuditAction(adminEmail, "BLOG_UPDATED", "blog", `Updated article "${post.title}" (${post.id})`, ip, post.id);
   saveCMSDatabase();
   return post;
@@ -587,6 +682,7 @@ export function deleteBlogPost(id: string, adminEmail: string, ip?: string): boo
   if (idx === -1) return false;
 
   const [deleted] = cmsDb.blogPosts.splice(idx, 1);
+  removeDocument("blog", id);
   logAuditAction(adminEmail, "BLOG_DELETED", "blog", `Deleted article "${deleted.title}"`, ip, id);
   saveCMSDatabase();
   return true;
@@ -599,48 +695,120 @@ export function getAllSubscribers(): CMSNewsletterSubscriber[] {
   return cmsDb.subscribers;
 }
 
-export function addSubscriber(email: string, source: string = "footer"): { success: boolean; subscriber?: CMSNewsletterSubscriber; error?: string } {
+export function addSubscriber(
+  email: string,
+  source: string = "site_footer",
+  name?: string
+): { success: boolean; subscriber?: CMSNewsletterSubscriber; error?: string; alreadySubscribed?: boolean } {
   const cleanEmail = email.toLowerCase().trim();
-  if (!cleanEmail || !cleanEmail.includes("@")) {
-    return { success: false, error: "Valid email address required." };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+    return { success: false, error: "Please enter a valid email address." };
   }
 
+  const cleanName = name ? name.trim() : undefined;
   const existing = cmsDb.subscribers.find((s) => s.email.toLowerCase() === cleanEmail);
+
   if (existing) {
     if (existing.status === "unsubscribed") {
       existing.status = "active";
+      if (cleanName) existing.name = cleanName;
+      persistDocument("newsletter", existing.id, existing);
       saveCMSDatabase();
       return { success: true, subscriber: existing };
     }
-    return { success: true, subscriber: existing };
+    if (cleanName && !existing.name) {
+      existing.name = cleanName;
+      persistDocument("newsletter", existing.id, existing);
+      saveCMSDatabase();
+    }
+    return { success: true, subscriber: existing, alreadySubscribed: true };
   }
 
   const newSub: CMSNewsletterSubscriber = {
     id: "sub_" + crypto.randomBytes(6).toString("hex"),
     email: cleanEmail,
+    name: cleanName,
     status: "active",
     source,
     subscribedAt: new Date().toISOString(),
   };
 
   cmsDb.subscribers.unshift(newSub);
+  persistDocument("newsletter", newSub.id, newSub);
   saveCMSDatabase();
   return { success: true, subscriber: newSub };
 }
 
-export function deleteSubscriber(email: string, adminEmail: string, ip?: string): boolean {
-  const cleanEmail = email.toLowerCase().trim();
-  const idx = cmsDb.subscribers.findIndex((s) => s.email.toLowerCase() === cleanEmail);
+export function updateSubscriber(
+  idOrEmail: string,
+  updates: Partial<Pick<CMSNewsletterSubscriber, "name" | "email" | "status" | "source">>,
+  adminEmail: string,
+  ip?: string
+): CMSNewsletterSubscriber | null {
+  const target = cmsDb.subscribers.find(
+    (s) => s.id === idOrEmail || s.email.toLowerCase() === idOrEmail.toLowerCase()
+  );
+  if (!target) return null;
+
+  if (updates.email && updates.email !== target.email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(updates.email.trim())) {
+      throw new Error("Invalid email format.");
+    }
+    target.email = updates.email.toLowerCase().trim();
+  }
+  if (updates.name !== undefined) target.name = updates.name.trim();
+  if (updates.status) target.status = updates.status;
+  if (updates.source) target.source = updates.source;
+
+  persistDocument("newsletter", target.id, target);
+  logAuditAction(adminEmail, "SUBSCRIBER_UPDATED", "newsletter", `Updated subscriber ${target.email}`, ip, target.id);
+  saveCMSDatabase();
+  return target;
+}
+
+export function toggleSubscriberStatus(
+  idOrEmail: string,
+  adminEmail: string,
+  ip?: string
+): CMSNewsletterSubscriber | null {
+  const target = cmsDb.subscribers.find(
+    (s) => s.id === idOrEmail || s.email.toLowerCase() === idOrEmail.toLowerCase()
+  );
+  if (!target) return null;
+
+  target.status = target.status === "active" ? "unsubscribed" : "active";
+  persistDocument("newsletter", target.id, target);
+  logAuditAction(
+    adminEmail,
+    "SUBSCRIBER_STATUS_TOGGLED",
+    "newsletter",
+    `Toggled subscriber ${target.email} to ${target.status}`,
+    ip,
+    target.id
+  );
+  saveCMSDatabase();
+  return target;
+}
+
+export function deleteSubscriber(emailOrId: string, adminEmail: string, ip?: string): boolean {
+  const query = emailOrId.toLowerCase().trim();
+  const idx = cmsDb.subscribers.findIndex(
+    (s) => s.id === query || s.email.toLowerCase() === query
+  );
   if (idx === -1) return false;
 
-  cmsDb.subscribers.splice(idx, 1);
-  logAuditAction(adminEmail, "SUBSCRIBER_DELETED", "newsletter", `Deleted subscriber ${cleanEmail}`, ip);
+  const [sub] = cmsDb.subscribers.splice(idx, 1);
+  removeDocument("newsletter", sub.id);
+  logAuditAction(adminEmail, "SUBSCRIBER_DELETED", "newsletter", `Deleted subscriber ${sub.email}`, ip, sub.id);
   saveCMSDatabase();
   return true;
 }
 
 export function recordCampaign(campaign: CMSCampaign, adminEmail: string, ip?: string) {
   cmsDb.campaigns.unshift(campaign);
+  persistDocument("campaigns", campaign.id, campaign);
   logAuditAction(adminEmail, "CAMPAIGN_DISPATCHED", "newsletter", `Dispatched campaign "${campaign.subject}" to ${campaign.recipientsCount} recipients`, ip, campaign.id);
   saveCMSDatabase();
 }
@@ -666,6 +834,7 @@ export function addMediaItem(item: Omit<CMSMediaItem, "id" | "createdAt">, admin
     createdAt: new Date().toISOString(),
   };
   cmsDb.media.unshift(newMedia);
+  persistDocument("media", newMedia.id, newMedia);
   logAuditAction(adminEmail, "MEDIA_UPLOADED", "media", `Uploaded media file "${newMedia.name}" (${newMedia.mimeType}, ${Math.round(newMedia.sizeBytes / 1024)} KB)`, ip, newMedia.id);
   saveCMSDatabase();
   return newMedia;
@@ -676,6 +845,7 @@ export function deleteMediaItem(id: string, adminEmail: string, ip?: string): bo
   const idx = cmsDb.media.findIndex((m) => m.id === id);
   if (idx === -1) return false;
   const [deleted] = cmsDb.media.splice(idx, 1);
+  removeDocument("media", id);
   logAuditAction(adminEmail, "MEDIA_DELETED", "media", `Deleted media file "${deleted.name}"`, ip, id);
   saveCMSDatabase();
   return true;
@@ -690,6 +860,7 @@ export function getSiteSettings(): CMSSiteSettings {
 
 export function updateSiteSettings(updates: Partial<CMSSiteSettings>, adminEmail: string, ip?: string): CMSSiteSettings {
   cmsDb.settings = { ...cmsDb.settings, ...updates };
+  persistDocument("settings", "site_settings", cmsDb.settings);
   logAuditAction(adminEmail, "SETTINGS_UPDATED", "setting", "Updated sitewide configuration settings.", ip);
   saveCMSDatabase();
   return cmsDb.settings;

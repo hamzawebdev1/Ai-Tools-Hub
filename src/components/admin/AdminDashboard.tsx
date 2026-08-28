@@ -39,6 +39,8 @@ import {
 import { TOOLS_DATA } from "../../data/toolsData";
 import { BLOG_POSTS_DATA } from "../../data/blogData";
 import { UserManagementSection } from "./UserManagementSection";
+import { getAllRegisteredTools, saveToolAdminOverride } from "../../services/toolRegistryService";
+import { SEO_KEYWORDS_DATA, KeywordItem } from "../../data/keywordsData";
 
 type AdminTab =
   | "overview"
@@ -97,6 +99,27 @@ export const AdminDashboard: React.FC = () => {
   // Inbox & Security logs state
   const [inboxData, setInboxData] = useState<any>(null);
   const [securityLogs, setSecurityLogs] = useState<any>(null);
+
+  // Tool Catalog & SEO Management State
+  const [adminTools, setAdminTools] = useState<any[]>(() => getAllRegisteredTools());
+  const [toolSearch, setToolSearch] = useState("");
+  const [toolCatFilter, setToolCatFilter] = useState("all");
+  const [editingTool, setEditingTool] = useState<any | null>(null);
+  const [editForm, setEditForm] = useState<any>({});
+
+  // Keyword Matrix Search State
+  const [kwSearch, setKwSearch] = useState("");
+  const [kwIntentFilter, setKwIntentFilter] = useState("all");
+
+  useEffect(() => {
+    const handleToolsUpdated = () => {
+      setAdminTools(getAllRegisteredTools());
+    };
+    window.addEventListener("mehzandigital_tools_updated", handleToolsUpdated);
+    return () => {
+      window.removeEventListener("mehzandigital_tools_updated", handleToolsUpdated);
+    };
+  }, []);
 
   const fetchMetrics = async () => {
     setLoading(true);
@@ -1218,72 +1241,418 @@ export const AdminDashboard: React.FC = () => {
 
       {/* 6. Tools Management */}
       {activeTab === "tools" && (
-        <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Tool Catalog Management</h3>
-            <span className="text-xs text-slate-500">{TOOLS_DATA.length} Tools Cataloged</span>
+        <div className="space-y-6 animate-fade-in">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Layers className="w-4 h-4 text-indigo-500" /> Super Admin Tool Catalog & SEO Manager
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Manage, publish/unpublish, edit metadata, update slugs, and control all {adminTools.length} online tools.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="relative flex-1 sm:w-64">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search tools, slugs, keywords..."
+                  value={toolSearch}
+                  onChange={(e) => setToolSearch(e.target.value)}
+                  className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                />
+              </div>
+
+              <select
+                value={toolCatFilter}
+                onChange={(e) => setToolCatFilter(e.target.value)}
+                className="px-3 py-1.5 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium"
+              >
+                <option value="all">All Categories</option>
+                <option value="pdf">PDF Tools</option>
+                <option value="image">Image Tools</option>
+                <option value="text">Text Tools</option>
+                <option value="coding">Developer Tools</option>
+                <option value="seo">SEO Tools</option>
+                <option value="security">Security Tools</option>
+                <option value="calculators">Calculators</option>
+                <option value="qr">QR & Barcodes</option>
+                <option value="file">File Utilities</option>
+                <option value="media">Media & Audio</option>
+              </select>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {TOOLS_DATA.slice(0, 6).map((tool) => (
-              <div
-                key={tool.id}
-                className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-between"
-              >
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white">{tool.name}</h4>
-                  <p className="text-[10px] text-slate-400">{tool.category.toUpperCase()} • Rate Limit: 15 req/min</p>
-                </div>
-                <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold">
-                  Active
-                </span>
-              </div>
-            ))}
+          {/* Tools Table */}
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-100 dark:bg-slate-950 font-bold uppercase text-[10px] text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                <tr>
+                  <th className="p-3">Tool Name</th>
+                  <th className="p-3">Slug / Route</th>
+                  <th className="p-3">Category</th>
+                  <th className="p-3">Status</th>
+                  <th className="p-3">SEO Title Preview</th>
+                  <th className="p-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
+                {adminTools
+                  .filter((t) => {
+                    const matchSearch =
+                      !toolSearch ||
+                      t.name.toLowerCase().includes(toolSearch.toLowerCase()) ||
+                      t.slug.toLowerCase().includes(toolSearch.toLowerCase()) ||
+                      t.tags?.some((tag: string) => tag.toLowerCase().includes(toolSearch.toLowerCase()));
+                    const matchCat = toolCatFilter === "all" || t.category === toolCatFilter;
+                    return matchSearch && matchCat;
+                  })
+                  .slice(0, 50)
+                  .map((t) => (
+                    <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <td className="p-3 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        {t.name}
+                      </td>
+                      <td className="p-3 font-mono text-[11px] text-indigo-500 hover:underline">
+                        <a href={`/${t.slug}`} target="_blank" rel="noopener noreferrer">
+                          /{t.slug}
+                        </a>
+                      </td>
+                      <td className="p-3 uppercase text-[10px] font-mono text-slate-500">{t.category}</td>
+                      <td className="p-3">
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                            t.isActive !== false && t.status !== "DISABLED"
+                              ? "bg-emerald-500/10 text-emerald-500"
+                              : "bg-rose-500/10 text-rose-500"
+                          }`}
+                        >
+                          {t.isActive !== false && t.status !== "DISABLED" ? "Published" : "Disabled"}
+                        </span>
+                      </td>
+                      <td className="p-3 text-slate-500 dark:text-slate-400 truncate max-w-xs text-[11px]">
+                        {t.seoTitle || `${t.name} Online - Free Tool`}
+                      </td>
+                      <td className="p-3 text-right space-x-1 whitespace-nowrap">
+                        <button
+                          onClick={() => {
+                            setEditingTool(t);
+                            setEditForm({
+                              name: t.name,
+                              slug: t.slug,
+                              category: t.category,
+                              description: t.description,
+                              seoTitle: t.seoTitle || t.seoContent?.metaTitle || `${t.name} Online - Free Tool`,
+                              seoDescription: t.seoDescription || t.seoContent?.metaDescription || t.description,
+                              searchKeywords: (t.searchKeywords || t.tags || []).join(", "),
+                              isActive: t.isActive !== false && t.status !== "DISABLED",
+                            });
+                          }}
+                          className="px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-500 hover:bg-indigo-500/20 text-[10px] font-bold"
+                        >
+                          Edit & SEO
+                        </button>
+                        <button
+                          onClick={() => {
+                            const newActive = t.isActive === false || t.status === "DISABLED";
+                            saveToolAdminOverride(t.id, {
+                              isActive: newActive,
+                              status: newActive ? "ACTIVE" : "DISABLED",
+                            });
+                            setActionMsg(`Updated status for "${t.name}"`);
+                            setTimeout(() => setActionMsg(null), 3000);
+                          }}
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${
+                            t.isActive !== false && t.status !== "DISABLED"
+                              ? "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20"
+                              : "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                          }`}
+                        >
+                          {t.isActive !== false && t.status !== "DISABLED" ? "Unpublish" : "Publish"}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
+
+          {/* EDIT TOOL MODAL */}
+          {editingTool && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                  <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">
+                    Edit Tool & SEO Metadata — {editingTool.name}
+                  </h3>
+                  <button
+                    onClick={() => setEditingTool(null)}
+                    className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white text-xs font-bold"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                        Tool Name
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.name}
+                        onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                        className="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-semibold"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                        URL Slug
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.slug}
+                        onChange={(e) => setEditForm({ ...editForm, slug: e.target.value })}
+                        className="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-indigo-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                      Category
+                    </label>
+                    <input
+                      type="text"
+                      value={editForm.category}
+                      onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                      className="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                      Tool Description
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={editForm.description}
+                      onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                      className="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                      SEO Meta Title
+                    </label>
+                    <input
+                      type="text"
+                      value={editForm.seoTitle}
+                      onChange={(e) => setEditForm({ ...editForm, seoTitle: e.target.value })}
+                      className="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                      SEO Meta Description
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={editForm.seoDescription}
+                      onChange={(e) => setEditForm({ ...editForm, seoDescription: e.target.value })}
+                      className="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                      Keywords (comma separated)
+                    </label>
+                    <input
+                      type="text"
+                      value={editForm.searchKeywords}
+                      onChange={(e) => setEditForm({ ...editForm, searchKeywords: e.target.value })}
+                      className="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-[11px]"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2">
+                    <input
+                      type="checkbox"
+                      id="editIsActive"
+                      checked={editForm.isActive}
+                      onChange={(e) => setEditForm({ ...editForm, isActive: e.target.checked })}
+                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label htmlFor="editIsActive" className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                      Tool Published & Visible to Public
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                  <button
+                    onClick={() => setEditingTool(null)}
+                    className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-xs"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      saveToolAdminOverride(editingTool.id, {
+                        name: editForm.name,
+                        slug: editForm.slug,
+                        category: editForm.category,
+                        description: editForm.description,
+                        seoTitle: editForm.seoTitle,
+                        seoDescription: editForm.seoDescription,
+                        searchKeywords: editForm.searchKeywords
+                          .split(",")
+                          .map((s: string) => s.trim())
+                          .filter(Boolean),
+                        isActive: editForm.isActive,
+                        status: editForm.isActive ? "ACTIVE" : "DISABLED",
+                      });
+                      setEditingTool(null);
+                      setActionMsg(`Successfully saved updates for "${editForm.name}"`);
+                      setTimeout(() => setActionMsg(null), 3500);
+                    }}
+                    className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20"
+                  >
+                    Save Changes & Update SEO
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {/* 7. SEO & Google Indexing */}
+      {/* 7. SEO & Google Indexing & Keyword Strategy Matrix */}
       {activeTab === "seo" && (
         <div className="space-y-6 animate-fade-in">
-          <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <FileCode className="w-4 h-4 text-indigo-500" /> Live robots.txt Manager
-            </h4>
-            <textarea
-              rows={4}
-              value={robotsTxt}
-              onChange={(e) => setRobotsTxt(e.target.value)}
-              className="w-full font-mono text-xs p-3 rounded-xl bg-slate-950 text-slate-200 border border-slate-800"
-            />
-            <button
-              onClick={handleSaveRobots}
-              className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all"
-            >
-              Save robots.txt Configuration
-            </button>
-          </div>
-
-          <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Globe className="w-4 h-4 text-indigo-500" /> Google Indexing API Push Trigger
-            </h4>
-            <p className="text-[11px] text-slate-500">
-              Notify Googlebot immediately when new tools or articles are published.
-            </p>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={indexPingUrl}
-                onChange={(e) => setIndexPingUrl(e.target.value)}
-                className="flex-1 font-mono text-xs p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+          {/* SEO Robots & Google Indexing */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <FileCode className="w-4 h-4 text-indigo-500" /> Live robots.txt Manager
+              </h4>
+              <textarea
+                rows={4}
+                value={robotsTxt}
+                onChange={(e) => setRobotsTxt(e.target.value)}
+                className="w-full font-mono text-xs p-3 rounded-xl bg-slate-950 text-slate-200 border border-slate-800"
               />
               <button
-                onClick={handlePingGoogleIndex}
-                className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs"
+                onClick={handleSaveRobots}
+                className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all"
               >
-                Ping Googlebot
+                Save robots.txt Configuration
               </button>
+            </div>
+
+            <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <Globe className="w-4 h-4 text-indigo-500" /> Google Indexing API Push Trigger
+              </h4>
+              <p className="text-[11px] text-slate-500">
+                Notify Googlebot immediately when new tools or articles are published.
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={indexPingUrl}
+                  onChange={(e) => setIndexPingUrl(e.target.value)}
+                  className="flex-1 font-mono text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800"
+                />
+                <button
+                  onClick={handlePingGoogleIndex}
+                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs"
+                >
+                  Ping Googlebot
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* SEO Keyword Research Matrix */}
+          <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Search className="w-4 h-4 text-indigo-500" /> SEO Keyword Research & Content Opportunity Matrix ({SEO_KEYWORDS_DATA.length} Tracked Keywords)
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Search intent mapping, suggested target routes, and content priorities.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <input
+                  type="text"
+                  placeholder="Filter keywords..."
+                  value={kwSearch}
+                  onChange={(e) => setKwSearch(e.target.value)}
+                  className="px-3 py-1.5 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-48"
+                />
+                <select
+                  value={kwIntentFilter}
+                  onChange={(e) => setKwIntentFilter(e.target.value)}
+                  className="px-3 py-1.5 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  <option value="all">All Search Intents</option>
+                  <option value="Transactional">Transactional</option>
+                  <option value="Informational">Informational</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-100 dark:bg-slate-950 font-bold uppercase text-[10px] text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                  <tr>
+                    <th className="p-3">Target Keyword</th>
+                    <th className="p-3">Search Intent</th>
+                    <th className="p-3">Category</th>
+                    <th className="p-3">Suggested Target Page</th>
+                    <th className="p-3">Content Opportunity Strategy</th>
+                    <th className="p-3 text-right">Priority</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                  {SEO_KEYWORDS_DATA.filter((kw) => {
+                    const matchSearch = !kwSearch || kw.keyword.toLowerCase().includes(kwSearch.toLowerCase()) || kw.suggestedPage.toLowerCase().includes(kwSearch.toLowerCase());
+                    const matchIntent = kwIntentFilter === "all" || kw.searchIntent === kwIntentFilter;
+                    return matchSearch && matchIntent;
+                  }).map((kw) => (
+                    <tr key={kw.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <td className="p-3 font-bold text-slate-900 dark:text-white font-mono">{kw.keyword}</td>
+                      <td className="p-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${kw.searchIntent === "Transactional" ? "bg-indigo-500/10 text-indigo-500" : "bg-emerald-500/10 text-emerald-500"}`}>
+                          {kw.searchIntent}
+                        </span>
+                      </td>
+                      <td className="p-3 text-slate-500">{kw.relatedCategory}</td>
+                      <td className="p-3 font-mono text-[11px] text-indigo-500 hover:underline">
+                        <a href={kw.suggestedPage} target="_blank" rel="noopener noreferrer">
+                          {kw.suggestedPage}
+                        </a>
+                      </td>
+                      <td className="p-3 text-slate-600 dark:text-slate-400 text-[11px]">{kw.contentOpportunity}</td>
+                      <td className="p-3 text-right">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${kw.priority === "High" ? "bg-rose-500/10 text-rose-500" : "bg-amber-500/10 text-amber-500"}`}>
+                          {kw.priority} Priority
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
