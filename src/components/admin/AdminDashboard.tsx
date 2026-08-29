@@ -1637,7 +1637,7 @@ export const AdminDashboard: React.FC = () => {
                           {kw.searchIntent}
                         </span>
                       </td>
-                      <td className="p-3 text-slate-500">{kw.relatedCategory}</td>
+                      <td className="p-3 text-slate-500">{kw.category || (kw as any).relatedCategory || "General"}</td>
                       <td className="p-3 font-mono text-[11px] text-indigo-500 hover:underline">
                         <a href={kw.suggestedPage} target="_blank" rel="noopener noreferrer">
                           {kw.suggestedPage}

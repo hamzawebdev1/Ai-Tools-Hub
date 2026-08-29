@@ -221,20 +221,40 @@ export const Footer: React.FC<FooterProps> = ({
                   Cookie Policy
                 </a>
               </li>
+              <li>
+                <a
+                  href="/copyright"
+                  onClick={(e) => handlePageClick("copyright", "/copyright", e)}
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block"
+                >
+                  Copyright Policy
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 dark:text-slate-500 text-[11px]">
-          <p>© 2026 Mehzan Tools Hub. All rights reserved. High-performance browser-native utility processing.</p>
-          <div className="flex items-center gap-4">
+          <div>
+            <p className="font-medium text-slate-600 dark:text-slate-400">© {new Date().getFullYear()} Mehzan Digital. All Rights Reserved.</p>
+            <p className="text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Powered by Mehzan Digital Team</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href="/privacy"
               onClick={(e) => handlePageClick("privacy", "/privacy", e)}
               className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
             >
-              GDPR Compliant
+              Privacy Policy
+            </a>
+            <span>•</span>
+            <a
+              href="/terms"
+              onClick={(e) => handlePageClick("terms", "/terms", e)}
+              className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
+            >
+              Terms of Service
             </a>
             <span>•</span>
             <a
@@ -242,7 +262,15 @@ export const Footer: React.FC<FooterProps> = ({
               onClick={(e) => handlePageClick("disclaimer", "/disclaimer", e)}
               className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
             >
-              AdSense Certified
+              Disclaimer
+            </a>
+            <span>•</span>
+            <a
+              href="/copyright"
+              onClick={(e) => handlePageClick("copyright", "/copyright", e)}
+              className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
+            >
+              Copyright Policy
             </a>
           </div>
         </div>

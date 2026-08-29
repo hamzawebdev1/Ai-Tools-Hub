@@ -55,6 +55,7 @@ import { NewsletterManagementSection } from "../components/admin/NewsletterManag
 import { MediaManagementSection } from "../components/admin/MediaManagementSection";
 import { SiteSettingsSection } from "../components/admin/SiteSettingsSection";
 import { AuditLogsSection } from "../components/admin/AuditLogsSection";
+import { KeywordManagementSection } from "../components/admin/KeywordManagementSection";
 export type { Role, RoleConfig } from "../types/roles";
 export { ROLE_CONFIGS } from "../types/roles";
 
@@ -62,6 +63,7 @@ interface AdminDashboardPageProps {
   theme?: "dark" | "light";
   toggleTheme?: () => void;
   onNavigate: (tab: string, params?: any) => void;
+  initialSubMenu?: string;
 }
 
 export type AdminMenuKey =
@@ -69,6 +71,7 @@ export type AdminMenuKey =
   | "users"
   | "tools"
   | "categories"
+  | "keywords"
   | "analytics"
   | "content"
   | "inbox"
@@ -89,10 +92,19 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   theme = "dark",
   toggleTheme,
   onNavigate,
+  initialSubMenu = "dashboard",
 }) => {
   const { user, logout } = useAuth();
-  const [activeMenu, setActiveMenu] = useState<AdminMenuKey>("dashboard");
+  const [activeMenu, setActiveMenu] = useState<AdminMenuKey>(
+    (initialSubMenu as AdminMenuKey) || "dashboard"
+  );
   const [activeSubItem, setActiveSubItem] = useState<string>("all");
+
+  useEffect(() => {
+    if (initialSubMenu && initialSubMenu !== activeMenu) {
+      setActiveMenu((initialSubMenu as AdminMenuKey) || "dashboard");
+    }
+  }, [initialSubMenu]);
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
     users: true,
     tools: true,
@@ -198,6 +210,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     setActiveMenu(menuKey);
     setActiveSubItem(subItem);
     setMobileSidebarOpen(false);
+    if (onNavigate) {
+      onNavigate("admin", { adminSubMenu: menuKey });
+    }
   };
 
   const handleSearchResultClick = (result: any) => {
@@ -260,6 +275,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       label: "Categories",
       icon: <Tag className="w-4 h-4" />,
       badge: metrics?.categories?.total > 0 ? metrics.categories.total : undefined,
+    },
+    {
+      key: "keywords",
+      label: "SEO Keywords",
+      icon: <TrendingUp className="w-4 h-4 text-indigo-400" />,
     },
     {
       key: "analytics",
@@ -811,6 +831,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                   {activeMenu === "users" && <Users className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
                   {activeMenu === "tools" && <Layers className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
                   {activeMenu === "categories" && <Tag className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
+                  {activeMenu === "keywords" && <TrendingUp className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
                   {activeMenu === "analytics" && <BarChart3 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
                   {activeMenu === "content" && <FileText className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
                   {activeMenu === "inbox" && <MessageSquare className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />}
@@ -1233,6 +1254,15 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                 <CategoryManagementSection
                   onShowNotification={showNotification}
                 />
+              </div>
+            )}
+
+            {/* ========================================================= */}
+            {/* VIEW 4B: SEO KEYWORDS SECTION                             */}
+            {/* ========================================================= */}
+            {activeMenu === "keywords" && (
+              <div className="animate-fade-in">
+                <KeywordManagementSection />
               </div>
             )}
 

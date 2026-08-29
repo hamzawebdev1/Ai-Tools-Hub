@@ -286,6 +286,32 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
 
               <div>
                 <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                  Copyright Text (Footer)
+                </label>
+                <input
+                  type="text"
+                  value={settings.copyrightText || `© ${new Date().getFullYear()} Mehzan Digital. All Rights Reserved.`}
+                  onChange={(e) => setSettings({ ...settings, copyrightText: e.target.value })}
+                  placeholder={`© ${new Date().getFullYear()} Mehzan Digital. All Rights Reserved.`}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                  Footer Powered By Text
+                </label>
+                <input
+                  type="text"
+                  value={settings.poweredByText || "Powered by Mehzan Digital Team"}
+                  onChange={(e) => setSettings({ ...settings, poweredByText: e.target.value })}
+                  placeholder="Powered by Mehzan Digital Team"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">
                   Primary Contact / Support Email
                 </label>
                 <input

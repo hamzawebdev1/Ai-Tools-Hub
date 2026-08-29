@@ -88,5 +88,5 @@ function generateLocalTransformation(toolId: string, toolName: string, prompt: s
     return trimmed.split("").reverse().join("");
   }
 
-  return `[${toolName} - ${tone}]\n\n` + trimmed;
+  return trimmed;
 }

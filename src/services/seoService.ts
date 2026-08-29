@@ -680,6 +680,24 @@ export function buildSEOMetadata(
       };
     }
 
+    case "copyright": {
+      const canonicalUrl = getCanonicalUrl("/copyright");
+      const breadcrumbs = [
+        { name: "Home", url: "/" },
+        { name: "Copyright Policy", url: "/copyright" }
+      ];
+      return {
+        title: "Copyright Policy & DMCA Notice | Mehzan Digital",
+        description: "Read our Copyright Policy, IP protection statement, open-source distinctions, and DMCA takedown procedures.",
+        keywords: ["copyright policy", "DMCA notice", "intellectual property", "Mehzan Digital"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema, getBreadcrumbSchema(breadcrumbs)],
+        breadcrumbs
+      };
+    }
+
     case "search": {
       const canonicalUrl = getCanonicalUrl("/search");
       return {

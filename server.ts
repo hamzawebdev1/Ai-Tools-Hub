@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import cookieParser from "cookie-parser";
@@ -9,6 +10,7 @@ import webAnalysisRoutes from "./src/server/webAnalysisRoutes";
 import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
+import { injectSEOMetadataIntoHTML } from "./src/server/seoHtmlRenderer";
 import { addContactMessage, addBugReport, addFeatureRequest } from "./src/server/admin/submissionsStore.js";
 import { addSubscriber } from "./src/server/admin/cmsStore.js";
 import { executeTool } from "./src/server/toolsExecutor.js";
@@ -340,18 +342,57 @@ async function startServer() {
     }
   });
 
-  // Vite middleware for dev or static server for production
+  // Dynamic HTML Pre-Rendering Engine for Search Crawlers & Previews
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
+
+    app.use(async (req, res, next) => {
+      if (
+        req.method === "GET" &&
+        !req.path.startsWith("/api/") &&
+        !req.path.startsWith("/@") &&
+        !req.path.startsWith("/src/") &&
+        !req.path.startsWith("/node_modules/") &&
+        !req.path.includes(".")
+      ) {
+        try {
+          const rawHtml = fs.readFileSync(path.join(process.cwd(), "index.html"), "utf-8");
+          const template = await vite.transformIndexHtml(req.originalUrl, rawHtml);
+          const host = req.get("host") || "";
+          const proto = req.get("x-forwarded-proto") || req.protocol || "https";
+          const queryStr = req.url.includes("?") ? req.url.split("?")[1] : "";
+          const injectedHtml = injectSEOMetadataIntoHTML(template, req.path, queryStr, host, proto);
+          res.setHeader("Content-Type", "text/html; charset=utf-8");
+          return res.send(injectedHtml);
+        } catch (e) {
+          return next(e);
+        }
+      }
+      next();
+    });
+
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
+    const indexPath = path.join(distPath, "index.html");
+
+    app.use(express.static(distPath, { index: false }));
+
     app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+      try {
+        const rawHtml = fs.readFileSync(indexPath, "utf-8");
+        const host = req.get("host") || "";
+        const proto = req.get("x-forwarded-proto") || req.protocol || "https";
+        const queryStr = req.url.includes("?") ? req.url.split("?")[1] : "";
+        const injectedHtml = injectSEOMetadataIntoHTML(rawHtml, req.path, queryStr, host, proto);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        return res.send(injectedHtml);
+      } catch (err) {
+        return res.sendFile(indexPath);
+      }
     });
   }
 

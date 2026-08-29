@@ -8,6 +8,7 @@ export interface RouteState {
   categorySlug?: string;
   postSlug?: string;
   authorSlug?: string;
+  adminSubMenu?: string;
   searchQuery?: string;
   isNotFound?: boolean;
 }
@@ -56,6 +57,8 @@ export const STATIC_ROUTE_ALIASES: Record<string, string> = {
   "cookies": "cookie-policy",
   "cookie": "cookie-policy",
   "disclaimers": "disclaimer",
+  "copyright-policy": "copyright",
+  "dmca": "copyright",
   "signup": "register",
   "signin": "login",
   "profile": "dashboard",
@@ -183,6 +186,8 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
       return { tab: "disclaimer" };
     case "cookie-policy":
       return { tab: "cookie-policy" };
+    case "copyright":
+      return { tab: "copyright" };
     case "pricing":
       return { tab: "pricing" };
     case "search":
@@ -207,7 +212,13 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
     case "dashboard":
       return { tab: "dashboard" };
     case "admin":
-      return { tab: "admin" };
+      return { tab: "admin", adminSubMenu: "dashboard" };
+  }
+
+  // Handle /admin and /admin/:subMenu
+  if (cleanPath === "admin" || cleanPath.startsWith("admin/")) {
+    const subMenu = cleanPath.split("/")[1]?.toLowerCase() || "dashboard";
+    return { tab: "admin", adminSubMenu: subMenu };
   }
 
   // Handle /category/:slug or /categories/:slug
@@ -285,6 +296,7 @@ export function getUrlForRoute(
     categorySlug?: string;
     postSlug?: string;
     authorSlug?: string;
+    adminSubMenu?: string;
     search?: string;
   }
 ): string {
@@ -315,6 +327,8 @@ export function getUrlForRoute(
       return "/disclaimer";
     case "cookie-policy":
       return "/cookie-policy";
+    case "copyright":
+      return "/copyright";
     case "pricing":
       return "/pricing";
     case "search":
@@ -337,7 +351,9 @@ export function getUrlForRoute(
     case "profile":
       return "/dashboard";
     case "admin":
-      return "/admin";
+      return params?.adminSubMenu && params.adminSubMenu !== "dashboard"
+        ? `/admin/${params.adminSubMenu}`
+        : "/admin";
     default:
       if (tab.startsWith("author-")) {
         const slug = params?.authorSlug || tab.replace("author-", "");
@@ -414,6 +430,7 @@ export function resolveCanonicalUrl(rawUrl?: string): string {
       categorySlug: route.categorySlug,
       postSlug: route.postSlug,
       authorSlug: route.authorSlug,
+      adminSubMenu: route.adminSubMenu,
     });
   } else {
     canonicalPath = normalizePath(urlObj.pathname);
@@ -443,6 +460,7 @@ export function enforceCanonicalRedirect(): void {
         categorySlug: route.categorySlug,
         postSlug: route.postSlug,
         authorSlug: route.authorSlug,
+        adminSubMenu: route.adminSubMenu,
       });
     } else if (route.tab === "search") {
       canonicalPath = "/search";

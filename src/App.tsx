@@ -14,6 +14,7 @@ import { UserProfile, HistoryItem } from "./types";
 // Auth & Firebase Context
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { AdminProtectedRoute } from "./components/auth/AdminProtectedRoute";
 
 // SEO & Meta components
 import { SEOHead } from "./components/seo/SEOHead";
@@ -43,6 +44,7 @@ import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { TermsPage } from "./pages/TermsPage";
 import { DisclaimerPage } from "./pages/DisclaimerPage";
 import { CookiePolicyPage } from "./pages/CookiePolicyPage";
+import { CopyrightPolicyPage } from "./pages/CopyrightPolicyPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { SearchResultsPage } from "./pages/SearchResultsPage";
 import { ProfilePage } from "./pages/ProfilePage";
@@ -70,6 +72,7 @@ function AppContent() {
 
   const [theme, setTheme] = useState<"dark" | "light">(getStoredTheme());
   const [activeTab, setActiveTab] = useState<string>(initialRoute.tab || "home");
+  const [adminSubMenu, setAdminSubMenu] = useState<string>(initialRoute.adminSubMenu || "dashboard");
   const [selectedToolSlug, setSelectedToolSlug] = useState<string>(initialRoute.toolSlug || TOOLS_DATA[0].slug);
   const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>(initialRoute.categorySlug || CATEGORIES_DATA[0].slug);
   const [selectedPostSlug, setSelectedPostSlug] = useState<string>(initialRoute.postSlug || "");
@@ -96,6 +99,7 @@ function AppContent() {
 
     const route = parseRoute(window.location.pathname, window.location.search);
     setActiveTab(route.tab);
+    if (route.adminSubMenu) setAdminSubMenu(route.adminSubMenu);
     if (route.toolSlug) setSelectedToolSlug(route.toolSlug);
     if (route.categorySlug) setSelectedCategorySlug(route.categorySlug);
     if (route.postSlug) setSelectedPostSlug(route.postSlug);
@@ -141,11 +145,12 @@ function AppContent() {
     await firebaseToggleFavorite(toolId);
   };
 
-  const handleNavigate = (tab: string, params?: { toolSlug?: string; categorySlug?: string; postSlug?: string; search?: string }) => {
+  const handleNavigate = (tab: string, params?: { toolSlug?: string; categorySlug?: string; postSlug?: string; search?: string; adminSubMenu?: string }) => {
     setActiveTab(tab);
     if (params?.toolSlug) setSelectedToolSlug(params.toolSlug);
     if (params?.categorySlug) setSelectedCategorySlug(params.categorySlug);
     if (params?.postSlug) setSelectedPostSlug(params.postSlug);
+    if (params?.adminSubMenu) setAdminSubMenu(params.adminSubMenu);
     if (params?.search !== undefined) setSearchQuery(params.search);
 
     const url = getUrlForRoute(tab, params);
@@ -173,6 +178,36 @@ function AppContent() {
   const currentTool = TOOLS_DATA.find((t) => t.slug === selectedToolSlug) || TOOLS_DATA[0];
   const currentCategory = CATEGORIES_DATA.find((c) => c.slug === selectedCategorySlug) || CATEGORIES_DATA[0];
   const currentPost = BLOG_POSTS_DATA.find((p) => p.slug === selectedPostSlug) || BLOG_POSTS_DATA[0];
+
+  // Dedicated Full-Screen Admin Route Layout (Bypasses public Navbar, Footer, and container bounds)
+  if (activeTab === "admin" || activeTab.startsWith("admin")) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-200">
+        <SEOHead
+          activeTab="admin"
+          tool={currentTool}
+          category={currentCategory}
+          post={currentPost}
+          searchQuery={searchQuery}
+        />
+        <AdminProtectedRoute
+          onOpenAuthModal={() => setAuthModalOpen(true)}
+          onNavigateHome={() => handleNavigate("home")}
+        >
+          <AdminDashboardPage
+            theme={theme}
+            toggleTheme={toggleTheme}
+            onNavigate={handleNavigate}
+            initialSubMenu={adminSubMenu}
+          />
+        </AdminProtectedRoute>
+        <AuthModal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-200">
@@ -274,6 +309,8 @@ function AppContent() {
 
         {activeTab === "cookie-policy" && <CookiePolicyPage />}
 
+        {activeTab === "copyright" && <CopyrightPolicyPage />}
+
         {activeTab === "search" && (
           <SearchResultsPage
             query={searchQuery}
@@ -291,17 +328,6 @@ function AppContent() {
         {activeTab === "login" && <LoginPage onNavigate={handleNavigate} />}
         {activeTab === "register" && <SignupPage onNavigate={handleNavigate} />}
         {activeTab === "forgot-password" && <ForgotPasswordPage onNavigate={handleNavigate} />}
-
-        {/* Admin Dashboard */}
-        {activeTab === "admin" && (
-          <ProtectedRoute onOpenAuthModal={() => setAuthModalOpen(true)}>
-            <AdminDashboardPage
-              theme={theme}
-              toggleTheme={toggleTheme}
-              onNavigate={handleNavigate}
-            />
-          </ProtectedRoute>
-        )}
 
         {/* Profile / Dashboard Page */}
         {(activeTab === "profile" || activeTab === "dashboard") && (

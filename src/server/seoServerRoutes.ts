@@ -49,6 +49,7 @@ router.get("/sitemap.xml", (req, res) => {
     { url: "/terms", priority: "0.3", changefreq: "yearly" },
     { url: "/disclaimer", priority: "0.3", changefreq: "yearly" },
     { url: "/cookie-policy", priority: "0.3", changefreq: "yearly" },
+    { url: "/copyright", priority: "0.3", changefreq: "yearly" },
   ];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;

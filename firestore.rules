@@ -56,6 +56,10 @@ service cloud.firestore {
     match /analytics/{eventId} {
       allow read, write: if true;
     }
+
+    match /keywords/{keywordId} {
+      allow read, write: if true;
+    }
   }
 }
 

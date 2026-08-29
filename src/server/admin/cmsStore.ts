@@ -117,6 +117,8 @@ export interface CMSMediaItem {
 export interface CMSSiteSettings {
   siteName: string;
   tagline: string;
+  copyrightText?: string;
+  poweredByText?: string;
   contactEmail: string;
   logoUrl: string;
   faviconUrl: string;
@@ -235,6 +237,8 @@ function buildInitialDatabase(): CMSDatabase {
   const settings: CMSSiteSettings = {
     siteName: "Mehzan Tools Hub",
     tagline: "50+ Free Professional Developer, PDF & Image Utilities",
+    copyrightText: `© ${new Date().getFullYear()} Mehzan Digital. All Rights Reserved.`,
+    poweredByText: "Powered by Mehzan Digital Team",
     contactEmail: "support@mehzandigital.com",
     logoUrl: "/icon.png",
     faviconUrl: "/favicon.ico",

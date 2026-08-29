@@ -41,6 +41,34 @@
         "registeredStatus": { "type": "boolean" }
       },
       "required": ["uid", "email", "registeredStatus"]
+    },
+    "keywords": {
+      "title": "SEO Keyword",
+      "description": "SEO keywords, target intent, tool/article mappings, and trend metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "keyword": { "type": "string" },
+        "category": { "type": "string" },
+        "searchIntent": { "type": "string" },
+        "keywordType": { "type": "string" },
+        "trendStatus": { "type": "string" },
+        "searchVolumeNote": { "type": "string" },
+        "contentOpportunity": { "type": "string" },
+        "priority": { "type": "string" },
+        "status": { "type": "string" },
+        "mappedToolSlug": { "type": "string" },
+        "mappedArticleSlug": { "type": "string" },
+        "suggestedPage": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "keyword", "category", "searchIntent", "trendStatus", "priority"]
+    }
+  },
+  "firestore": {
+    "/keywords/{keywordId}": {
+      "schema": { "$ref": "#/entities/keywords" },
+      "description": "Collection of SEO keywords and trend opportunities"
     }
   }
 }
