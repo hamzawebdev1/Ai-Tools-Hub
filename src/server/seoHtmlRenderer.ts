@@ -263,7 +263,285 @@ function renderPrerenderedBodyContent(
       </main>
     `;
   }
-  // 4. Default / Homepage & Other Pages
+  // 4. Privacy Policy Page
+  else if (routeState.tab === "privacy" || routeState.tab === "cookie-policy") {
+    mainHtml = `
+      <main style="max-width: 56rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; color: #334155;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">Privacy Policy</span>
+        </nav>
+
+        <article>
+          <header style="margin-bottom: 2.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1.5rem;">
+            <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Privacy Policy &amp; Data Protection Notice</h1>
+            <p style="font-size: 0.875rem; color: #64748b;">Effective Date: August 2026 | Compliant with GDPR, CCPA/CPRA, and Google Publishing Guidelines</p>
+          </header>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">1. Overview &amp; Privacy Commitment</h2>
+            <p>Mehzan Digital ("we", "our", or "us") operates <strong>Mehzan Tools Hub</strong> (https://mehzandigital.com). We respect your privacy and are committed to protecting any information collected through your interaction with our online utility tools, web applications, and editorial guides. This Privacy Policy details our data collection practices, security standards, and your privacy rights.</p>
+          </section>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">2. Information We Collect</h2>
+            <p>We collect information only as necessary to deliver fast, functional, and secure web services:</p>
+            <ul style="padding-left: 1.5rem;">
+              <li><strong>Account Credentials:</strong> Optional account registration uses secure Firebase Authentication for saved favorites and settings.</li>
+              <li><strong>Contact &amp; Support Messages:</strong> Inquiries sent via our contact forms or support email are logged to assist you.</li>
+              <li><strong>Technical Telemetry:</strong> Standard web server logs collect IP addresses, user agents, and endpoint timestamps for security auditing and rate limiting.</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">3. Uploaded Files &amp; Client-Side Processing</h2>
+            <p>Our utility tools (PDF compressors, image converters, formatters, calculators) execute <strong>100% locally inside your browser sandbox</strong> using WebAssembly and HTML5 Canvas APIs.</p>
+            <ul style="padding-left: 1.5rem;">
+              <li><strong>Zero Permanent Server Storage:</strong> Uploaded documents, PDF files, images, and text inputs are never stored on remote servers.</li>
+              <li><strong>Transient Memory Buffer:</strong> Data is held temporarily in RAM and cleared automatically when you close your browser tab.</li>
+              <li><strong>Confidentiality Guarantee:</strong> We never inspect, index, sell, or share your document contents.</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">4. Cookies &amp; Third-Party Advertising</h2>
+            <p>We use essential functional cookies and optional Google AdSense advertising cookies:</p>
+            <ul style="padding-left: 1.5rem;">
+              <li><strong>Google AdSense Advertising:</strong> Google and third-party vendors use cookies (such as DoubleClick) to serve personalized ads based on previous web visits.</li>
+              <li><strong>Opt-Out Options:</strong> Users can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color: #4f46e5;">Google Ad Settings</a> or <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" style="color: #4f46e5;">AboutAds.info</a>.</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">5. Contact Our Privacy Officer</h2>
+            <p>For any questions or privacy rights inquiries under GDPR or CCPA, please contact our compliance officer:</p>
+            <p style="background-color: #f8fafc; padding: 1rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; font-family: monospace;">
+              <strong>Entity:</strong> Mehzan Digital - Privacy Office<br/>
+              <strong>Email:</strong> <a href="mailto:privacy@mehzandigital.com" style="color: #4f46e5;">privacy@mehzandigital.com</a><br/>
+              <strong>Contact Form:</strong> <a href="/contact" style="color: #4f46e5;">https://mehzandigital.com/contact</a>
+            </p>
+          </section>
+        </article>
+      </main>
+    `;
+  }
+  // 5. About Us Page
+  else if (routeState.tab === "about") {
+    mainHtml = `
+      <main style="max-width: 56rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; color: #334155;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">About Us</span>
+        </nav>
+
+        <article>
+          <header style="margin-bottom: 2.5rem; text-align: center;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">About Mehzan Digital &amp; Tools Hub</h1>
+            <p style="font-size: 1.125rem; color: #475569; max-width: 38rem; margin: 0 auto;">Building free, privacy-first, web-native utility software for developers, digital marketers, students, and creators worldwide.</p>
+          </header>
+
+          <section style="margin-bottom: 2.5rem; background-color: #f8fafc; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">Our Mission &amp; Core Values</h2>
+            <p>Mehzan Tools Hub was established to eliminate paywalls, aggressive popups, and invasive data tracking in everyday digital tools. We believe that converting a PDF, compressing an image, formatting JSON, or calculating math formulas should be fast, private, and 100% free.</p>
+          </section>
+
+          <section style="margin-bottom: 2.5rem;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Editorial Team &amp; Engineering Leadership</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+              <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">Alex Rivera</h3>
+                <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">Lead Systems Engineer</p>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Specializes in client-side WebAssembly compilation, document sandbox security, and high-performance algorithms.</p>
+              </div>
+              <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">Sophia Chen</h3>
+                <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">UX Architect &amp; Media Codecs Lead</p>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Expert in browser image optimization codecs, responsive canvas rendering, and visual accessibility.</p>
+              </div>
+              <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">Dr. Priya Sharma</h3>
+                <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">Senior Quantitative Researcher</p>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Ph.D. in Applied Mathematics focusing on algorithmic precision and financial calculator models.</p>
+              </div>
+            </div>
+          </section>
+
+          <section style="text-align: center; margin-top: 3rem;">
+            <a href="/contact" style="display: inline-block; padding: 0.75rem 1.75rem; background-color: #4f46e5; color: #ffffff; text-decoration: none; border-radius: 0.5rem; font-weight: 600;">Contact Our Team &rarr;</a>
+          </section>
+        </article>
+      </main>
+    `;
+  }
+  // 6. Contact Us Page
+  else if (routeState.tab === "contact") {
+    mainHtml = `
+      <main style="max-width: 52rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; color: #334155;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">Contact Us</span>
+        </nav>
+
+        <article>
+          <header style="margin-bottom: 2rem;">
+            <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">Contact Mehzan Tools Hub Support</h1>
+            <p style="font-size: 1rem; color: #64748b;">Have a question, feedback, API partnership request, or bug report? Get in touch with our engineering team directly.</p>
+          </header>
+
+          <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+            <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; background-color: #f8fafc;">
+              <h3 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0;">Direct Email Support</h3>
+              <p style="font-size: 0.875rem; margin: 0;"><a href="mailto:contact@mehzandigital.com" style="color: #4f46e5; font-weight: 600;">contact@mehzandigital.com</a></p>
+              <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">Response commitment: Within 24 hours</p>
+            </div>
+            <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; background-color: #f8fafc;">
+              <h3 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0;">Entity Location &amp; Headquarters</h3>
+              <p style="font-size: 0.875rem; margin: 0; color: #334155;">Mehzan Digital HQ<br/>Tech Hub Plaza, Silicon Sector<br/>United States</p>
+            </div>
+          </section>
+
+          <section style="padding: 1.75rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; background-color: #ffffff;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Send Us a Message</h2>
+            <form action="/api/contact" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div>
+                <label style="font-size: 0.85rem; font-weight: 600; color: #334155; display: block; margin-bottom: 0.25rem;">Full Name *</label>
+                <input type="text" name="name" required style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 0.375rem; box-sizing: border-box;" placeholder="Your Name" />
+              </div>
+              <div>
+                <label style="font-size: 0.85rem; font-weight: 600; color: #334155; display: block; margin-bottom: 0.25rem;">Email Address *</label>
+                <input type="email" name="email" required style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 0.375rem; box-sizing: border-box;" placeholder="your.email@example.com" />
+              </div>
+              <div>
+                <label style="font-size: 0.85rem; font-weight: 600; color: #334155; display: block; margin-bottom: 0.25rem;">Subject *</label>
+                <input type="text" name="subject" required style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 0.375rem; box-sizing: border-box;" placeholder="Inquiry subject" />
+              </div>
+              <div>
+                <label style="font-size: 0.85rem; font-weight: 600; color: #334155; display: block; margin-bottom: 0.25rem;">Message *</label>
+                <textarea name="message" required rows="4" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 0.375rem; box-sizing: border-box;" placeholder="Write your message here..."></textarea>
+              </div>
+              <button type="submit" style="padding: 0.75rem 1.5rem; background-color: #4f46e5; color: #ffffff; border: none; border-radius: 0.375rem; font-weight: 600; cursor: pointer; width: fit-content;">Submit Inquiry</button>
+            </form>
+          </section>
+        </article>
+      </main>
+    `;
+  }
+  // 7. Blog Listing Page
+  else if (routeState.tab === "blog") {
+    mainHtml = `
+      <main style="max-width: 64rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">Blog &amp; Tech Guides</span>
+        </nav>
+
+        <header style="margin-bottom: 3rem; text-align: center;">
+          <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Guides, Tutorials &amp; Technical Articles</h1>
+          <p style="font-size: 1.125rem; color: #475569; max-width: 38rem; margin: 0 auto;">In-depth technical guides, document optimization tips, developer tools benchmarks, and privacy tutorials authored by our engineering team.</p>
+        </header>
+
+        <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+          ${BLOG_POSTS_DATA.map((p) => `
+            <article style="border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden; background-color: #ffffff; display: flex; flex-direction: column;">
+              <div style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: #4f46e5; text-transform: uppercase; margin-bottom: 0.5rem;">${escapeHtml(p.category)}</div>
+                <h2 style="font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0; line-height: 1.3;">
+                  <a href="/blog/${p.slug}" style="color: inherit; text-decoration: none;">${escapeHtml(p.title)}</a>
+                </h2>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0 0 1rem 0; line-height: 1.5; flex: 1;">${escapeHtml(p.excerpt)}</p>
+                <div style="font-size: 0.75rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; justify-content: space-between;">
+                  <span>By ${escapeHtml(p.author.name)}</span>
+                  <span>${p.readTime}</span>
+                </div>
+              </div>
+            </article>
+          `).join("")}
+        </section>
+      </main>
+    `;
+  }
+  // 8. Terms, Disclaimer, Copyright
+  else if (routeState.tab === "terms") {
+    mainHtml = `
+      <main style="max-width: 56rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; color: #334155;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">Terms of Service</span>
+        </nav>
+        <article>
+          <header style="margin-bottom: 2rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+            <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a;">Terms of Service &amp; User Agreement</h1>
+            <p style="font-size: 0.875rem; color: #64748b;">Effective Date: August 2026</p>
+          </header>
+          <section style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: #0f172a;">1. Acceptance of Terms</h2>
+            <p>By accessing Mehzan Tools Hub (https://mehzandigital.com), you agree to comply with these Terms of Service. If you disagree with any part, please discontinue using our web applications.</p>
+          </section>
+          <section style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: #0f172a;">2. Permitted Use</h2>
+            <p>All online utilities, PDF converters, image tools, formatters, and calculators are provided for lawful personal and commercial use. You may not attempt to reverse engineer backend infrastructure or launch DDoS attacks against our servers.</p>
+          </section>
+        </article>
+      </main>
+    `;
+  }
+  else if (routeState.tab === "disclaimer") {
+    mainHtml = `
+      <main style="max-width: 56rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; color: #334155;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">Disclaimer</span>
+        </nav>
+        <article>
+          <header style="margin-bottom: 2rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+            <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a;">Website Disclaimer &amp; Tool Limitations</h1>
+          </header>
+          <section style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: #0f172a;">1. Technical Accuracy</h2>
+            <p>While our algorithms and client-side conversion engines undergo rigorous testing, Mehzan Digital provides tools "as is" without implied warranties regarding uninterrupted operation or error-free outputs.</p>
+          </section>
+        </article>
+      </main>
+    `;
+  }
+  // 9. Categories & Tools & Default
+  else if (routeState.tab === "categories") {
+    mainHtml = `
+      <main style="max-width: 64rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif;">
+        <header style="text-align: center; margin-bottom: 3rem;">
+          <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a;">Browse All Tool Categories</h1>
+          <p style="font-size: 1.125rem; color: #475569;">Explore 50+ web-native utilities organized by function.</p>
+        </header>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
+          ${CATEGORIES_DATA.map((c) => `
+            <a href="/category/${c.slug}" style="display: block; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
+              <h2 style="font-size: 1.125rem; font-weight: 700; color: #4f46e5; margin: 0 0 0.5rem 0;">${escapeHtml(c.name)}</h2>
+              <p style="font-size: 0.875rem; color: #64748b; margin: 0; line-height: 1.5;">${escapeHtml(c.description)}</p>
+            </a>
+          `).join("")}
+        </div>
+      </main>
+    `;
+  }
+  else if (routeState.tab === "tools") {
+    mainHtml = `
+      <main style="max-width: 64rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif;">
+        <header style="text-align: center; margin-bottom: 3rem;">
+          <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a;">All 50+ Online Web Utilities &amp; Converters</h1>
+          <p style="font-size: 1.125rem; color: #475569;">Instant browser execution without software downloads or fees.</p>
+        </header>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
+          ${TOOLS_DATA.map((t) => `
+            <a href="/${t.slug}" style="display: block; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
+              <h2 style="font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0;">${escapeHtml(t.name)}</h2>
+              <p style="font-size: 0.875rem; color: #64748b; margin: 0; line-height: 1.5;">${escapeHtml(t.description)}</p>
+            </a>
+          `).join("")}
+        </div>
+      </main>
+    `;
+  }
+  // 10. Default / Homepage
   else {
     const featuredList = TOOLS_DATA.filter((t) => t.isFeatured || t.isPopular).slice(0, 12);
 
@@ -392,8 +670,9 @@ export function injectSEOMetadataIntoHTML(
       : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
     headInjects += `    <meta name="robots" content="${robotsContent}" />\n`;
 
-    // 4. Canonical Tag
+    // 4. Canonical Tag & CSP Meta
     headInjects += `    <link rel="canonical" href="${canonicalUrl}" />\n`;
+    headInjects += `    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors *;" />\n`;
 
     // 5. Open Graph Meta Tags
     headInjects += `    <meta property="og:title" content="${escapeHtml(metadata.title)}" />\n`;

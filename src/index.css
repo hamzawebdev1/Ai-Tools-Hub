@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #475569;
+    --color-text-muted: #475569;
+  }
+  .dark {
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #cbd5e1;
+    --color-text-muted: #94a3b8;
+  }
+}
+
+/* Global contrast enhancements to guarantee WCAG AA 4.5:1 ratio */
+.text-slate-400-accessible {
+  color: #475569;
+}
+.dark .text-slate-400-accessible {
+  color: #94a3b8;
+}
+

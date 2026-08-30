@@ -383,7 +383,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 Frequently Asked Questions
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Everything you need to know about Mehzan Tools Hub
               </p>
             </div>

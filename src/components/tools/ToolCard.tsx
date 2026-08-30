@@ -97,10 +97,10 @@ export const ToolCard: React.FC<ToolCardProps> = ({
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">
+            <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
               {tool.description}
             </p>
-            <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-400">
+            <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-600 dark:text-slate-400">
               <span className="flex items-center gap-1 text-amber-500 font-semibold">
                 <Star className="w-3.5 h-3.5 fill-amber-500" /> {tool.rating} ({tool.ratingCount})
               </span>
@@ -184,7 +184,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
               {tool.name}
             </a>
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
             {tool.tagline}
           </p>
         </div>
@@ -207,7 +207,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         <div className="flex items-center gap-1.5 text-amber-500 font-semibold">
           <Star className="w-3.5 h-3.5 fill-amber-500" />
           <span>{tool.rating}</span>
-          <span className="text-[10px] text-slate-400">({tool.ratingCount})</span>
+          <span className="text-[10px] text-slate-600 dark:text-slate-400">({tool.ratingCount})</span>
         </div>
 
         <a
