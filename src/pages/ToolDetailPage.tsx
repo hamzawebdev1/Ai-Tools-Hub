@@ -19,6 +19,8 @@ import {
   Upload,
 } from "lucide-react";
 import { AITool } from "../types";
+import { CATEGORIES_DATA } from "../data/categoriesData";
+import { getUrlForRoute } from "../services/routerService";
 import { getToolIcon } from "../components/tools/ToolCard";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
@@ -291,6 +293,10 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
     });
   };
 
+  const categoryInfo = CATEGORIES_DATA.find(
+    (c) => c.slug === tool.category || c.id === tool.category || c.name === tool.category
+  );
+
   return (
     <>
       <SchemaHead
@@ -307,8 +313,17 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
       <div className="space-y-6 pb-16">
         <Breadcrumb
           items={[
-            { label: "All Tools", href: "/tools", onClick: () => setActiveTab("all-tools") },
-            { label: tool.name, href: `/${tool.slug}`, active: true },
+            { label: "All Tools", href: getUrlForRoute("all-tools"), onClick: () => setActiveTab("all-tools") },
+            ...(categoryInfo
+              ? [
+                  {
+                    label: categoryInfo.name,
+                    href: getUrlForRoute("category-detail", { categorySlug: categoryInfo.slug }),
+                    onClick: () => setActiveTab("category-detail", { categorySlug: categoryInfo.slug }),
+                  },
+                ]
+              : []),
+            { label: tool.name, href: getUrlForRoute("tool-detail", { toolSlug: tool.slug }), active: true },
           ]}
         />
 

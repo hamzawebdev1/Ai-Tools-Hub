@@ -1,5 +1,6 @@
 import React from "react";
 import { ChevronRight, Home } from "lucide-react";
+import { navigateTo } from "../../services/routerService";
 
 export interface BreadcrumbItem {
   name: string;
@@ -14,6 +15,22 @@ interface BreadcrumbsProps {
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigateHome }) => {
   if (!items || items.length === 0) return null;
+
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey) return;
+    if (onNavigateHome) onNavigateHome();
+    e.preventDefault();
+    navigateTo("/");
+  };
+
+  const handleItemClick = (item: BreadcrumbItem, e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey) return;
+    if (item.onClick) item.onClick();
+    if (item.url && item.url !== "#") {
+      e.preventDefault();
+      navigateTo(item.url);
+    }
+  };
 
   return (
     <nav
@@ -31,14 +48,15 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigateHome 
           itemType="https://schema.org/ListItem"
           className="flex items-center"
         >
-          <button
-            onClick={onNavigateHome}
-            className="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-1"
+          <a
+            href="/"
+            onClick={handleHomeClick}
+            className="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-1 cursor-pointer"
             itemProp="item"
           >
             <Home className="w-3.5 h-3.5 text-indigo-500" />
             <span itemProp="name">Home</span>
-          </button>
+          </a>
           <meta itemProp="position" content="1" />
         </li>
 
@@ -64,13 +82,14 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigateHome 
                   {item.name}
                 </span>
               ) : (
-                <button
-                  onClick={item.onClick}
-                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-1 truncate max-w-[180px]"
+                <a
+                  href={item.url || "/"}
+                  onClick={(e) => handleItemClick(item, e)}
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-1 truncate max-w-[180px] cursor-pointer"
                   itemProp="item"
                 >
                   <span itemProp="name">{item.name}</span>
-                </button>
+                </a>
               )}
               <meta itemProp="position" content={position.toString()} />
             </li>

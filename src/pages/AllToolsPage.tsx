@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Search, LayoutGrid, List, Filter, Flame, Star, Sparkles } from "lucide-react";
 import { AITool, ToolCategory } from "../types";
 import { CATEGORIES_DATA } from "../data/categoriesData";
+import { getUrlForRoute } from "../services/routerService";
 import { ToolCard } from "../components/tools/ToolCard";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
@@ -52,7 +53,7 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({
       <div className="space-y-6 pb-12">
         <Breadcrumb
           items={[
-            { label: "All Tools", active: true },
+            { label: "All Tools", href: getUrlForRoute("all-tools"), active: true },
           ]}
         />
 

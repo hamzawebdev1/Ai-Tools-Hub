@@ -523,7 +523,7 @@ function renderPrerenderedBodyContent(
       </main>
     `;
   }
-  else if (routeState.tab === "tools") {
+  else if (routeState.tab === "tools" || routeState.tab === "all-tools") {
     mainHtml = `
       <main style="max-width: 64rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif;">
         <header style="text-align: center; margin-bottom: 3rem;">
@@ -541,7 +541,27 @@ function renderPrerenderedBodyContent(
       </main>
     `;
   }
-  // 10. Default / Homepage
+  // 10. 404 Not Found Page
+  else if (routeState.tab === "404" || routeState.isNotFound) {
+    mainHtml = `
+      <main style="max-width: 48rem; margin: 0 auto; padding: 4rem 1.5rem; text-align: center; font-family: system-ui, -apple-system, sans-serif;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 2rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">404 Not Found</span>
+        </nav>
+        <div style="font-size: 4rem; font-weight: 900; color: #4f46e5; line-height: 1; margin-bottom: 1rem;">404</div>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 1rem;">Page Not Found</h1>
+        <p style="font-size: 1.125rem; color: #475569; margin-bottom: 2.5rem; line-height: 1.6;">
+          The requested tool or page could not be found. It may have been moved, renamed, or is temporarily unavailable.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+          <a href="/tools" style="display: inline-block; padding: 0.875rem 1.75rem; background-color: #4f46e5; color: #ffffff; font-weight: 700; border-radius: 0.5rem; text-decoration: none;">Browse All 50+ Tools</a>
+          <a href="/" style="display: inline-block; padding: 0.875rem 1.75rem; background-color: #f1f5f9; color: #0f172a; font-weight: 700; border-radius: 0.5rem; text-decoration: none;">Back to Homepage</a>
+        </div>
+      </main>
+    `;
+  }
+  // 11. Default / Homepage
   else {
     const featuredList = TOOLS_DATA.filter((t) => t.isFeatured || t.isPopular).slice(0, 12);
 
@@ -707,10 +727,14 @@ export function injectSEOMetadataIntoHTML(
     // Replace existing title or inject into <head>
     let result = htmlTemplate;
 
-    // Remove existing <title> if present in index.html
-    result = result.replace(/<title>[\s\S]*?<\/title>/i, "");
-    // Remove existing canonical if present
+    // Remove existing title, meta description, robots, canonical, OG, and Twitter tags from index.html template
+    result = result.replace(/<title>[\s\S]*?<\/title>/gi, "");
+    result = result.replace(/<meta\s+name="description"[\s\S]*?>/gi, "");
+    result = result.replace(/<meta\s+name="robots"[\s\S]*?>/gi, "");
     result = result.replace(/<link\s+rel="canonical"[\s\S]*?>/gi, "");
+    result = result.replace(/<meta\s+property="og:[\s\S]*?>/gi, "");
+    result = result.replace(/<meta\s+name="twitter:[\s\S]*?>/gi, "");
+    result = result.replace(/<script\s+id="seo-jsonld-schemas"[\s\S]*?<\/script>/gi, "");
 
     // Inject head tags
     if (result.includes("</head>")) {
@@ -719,8 +743,17 @@ export function injectSEOMetadataIntoHTML(
       result = headInjects + result;
     }
 
-    // Pre-rendered visible HTML body content for crawlers
-    if (!isPrivate) {
+    // Pre-rendered visible HTML body content for crawlers and users
+    const isInternalAuthTab =
+      routeState.tab === "admin" ||
+      routeState.tab === "dashboard" ||
+      routeState.tab === "login" ||
+      routeState.tab === "register" ||
+      routeState.tab === "forgot-password" ||
+      routeState.tab === "history" ||
+      routeState.tab === "favorites";
+
+    if (!isInternalAuthTab) {
       const bodyHtml = renderPrerenderedBodyContent(routeState, tool, category, post, domain);
       if (result.includes('<div id="root"></div>')) {
         result = result.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);

@@ -14,6 +14,7 @@ import {
   BookOpen
 } from "lucide-react";
 import { BLOG_POSTS_DATA, getRelatedBlogPosts } from "../data/blogData";
+import { getUrlForRoute } from "../services/routerService";
 import { TOOLS_DATA } from "../data/toolsData";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
@@ -92,9 +93,9 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
       <div className="max-w-4xl mx-auto space-y-8 pb-16 px-4 sm:px-6">
         <Breadcrumb
           items={[
-            { label: "Guides & Blog", onClick: () => setActiveTab("blog") },
-            { label: post.category, onClick: () => setActiveTab("blog") },
-            { label: post.title, active: true },
+            { label: "Blog & Guides", href: getUrlForRoute("blog"), onClick: () => setActiveTab("blog") },
+            { label: post.category, href: getUrlForRoute("blog"), onClick: () => setActiveTab("blog") },
+            { label: post.title, href: getUrlForRoute("blog-post", { postSlug: post.slug }), active: true },
           ]}
         />
 

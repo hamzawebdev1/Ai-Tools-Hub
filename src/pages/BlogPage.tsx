@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { BookOpen, Clock, ArrowRight, Search, Sparkles, Tag } from "lucide-react";
 import { BLOG_POSTS_DATA } from "../data/blogData";
+import { getUrlForRoute } from "../services/routerService";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
 import { Newsletter } from "../components/layout/Newsletter";

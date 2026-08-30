@@ -2,6 +2,7 @@ import React from "react";
 import { UserCheck, Award, BookOpen, ShieldCheck, Mail, ArrowLeft } from "lucide-react";
 import { AUTHORS_DATA } from "../data/authorsData";
 import { BLOG_POSTS_DATA } from "../data/blogData";
+import { getUrlForRoute } from "../services/routerService";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { SchemaHead } from "../components/layout/SchemaHead";
 
@@ -36,8 +37,8 @@ export const AuthorPage: React.FC<AuthorPageProps> = ({
       <div className="max-w-4xl mx-auto space-y-8 pb-16">
         <Breadcrumb
           items={[
-            { label: "Authors & Editorial Team", onClick: () => setActiveTab("about") },
-            { label: author.name, active: true },
+            { label: "About Us", href: getUrlForRoute("about"), onClick: () => setActiveTab("about") },
+            { label: author.name, href: getUrlForRoute(`author-${author.slug}`), active: true },
           ]}
         />
 

@@ -11,6 +11,7 @@ import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
 import { injectSEOMetadataIntoHTML } from "./src/server/seoHtmlRenderer";
+import { parseRoute } from "./src/services/routerService";
 import { addContactMessage, addBugReport, addFeatureRequest } from "./src/server/admin/submissionsStore.js";
 import { addSubscriber } from "./src/server/admin/cmsStore.js";
 import { executeTool } from "./src/server/toolsExecutor.js";
@@ -364,9 +365,12 @@ async function startServer() {
           const host = req.get("host") || "";
           const proto = req.get("x-forwarded-proto") || req.protocol || "https";
           const queryStr = req.url.includes("?") ? req.url.split("?")[1] : "";
+          const routeState = parseRoute(req.path, queryStr);
+          const statusCode = (routeState.isNotFound || routeState.tab === "404") ? 404 : 200;
+
           const injectedHtml = injectSEOMetadataIntoHTML(template, req.path, queryStr, host, proto);
           res.setHeader("Content-Type", "text/html; charset=utf-8");
-          return res.send(injectedHtml);
+          return res.status(statusCode).send(injectedHtml);
         } catch (e) {
           return next(e);
         }
@@ -401,11 +405,14 @@ async function startServer() {
         const host = req.get("host") || "";
         const proto = req.get("x-forwarded-proto") || req.protocol || "https";
         const queryStr = req.url.includes("?") ? req.url.split("?")[1] : "";
+        const routeState = parseRoute(req.path, queryStr);
+        const statusCode = (routeState.isNotFound || routeState.tab === "404") ? 404 : 200;
+
         const injectedHtml = injectSEOMetadataIntoHTML(rawHtml, req.path, queryStr, host, proto);
         res.setHeader("Content-Type", "text/html; charset=utf-8");
-        return res.send(injectedHtml);
+        return res.status(statusCode).send(injectedHtml);
       } catch (err) {
-        return res.sendFile(indexPath);
+        return res.status(404).sendFile(indexPath);
       }
     });
   }

@@ -1,6 +1,7 @@
 import React from "react";
 import { AITool } from "../types";
 import { CATEGORIES_DATA } from "../data/categoriesData";
+import { getUrlForRoute } from "../services/routerService";
 import { ToolCard } from "../components/tools/ToolCard";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
@@ -36,8 +37,8 @@ export const CategoryDetailPage: React.FC<CategoryDetailPageProps> = ({
       <div className="space-y-6 pb-12">
         <Breadcrumb
           items={[
-            { label: "Categories", href: "/categories", onClick: () => setActiveTab("categories") },
-            { label: category.name, href: `/category/${category.slug}`, active: true },
+            { label: "Categories", href: getUrlForRoute("categories"), onClick: () => setActiveTab("categories") },
+            { label: category.name, href: getUrlForRoute("category-detail", { categorySlug: category.slug }), active: true },
           ]}
         />
 

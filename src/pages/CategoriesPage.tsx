@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, ArrowRight, Sparkles } from "lucide-react";
 import { CATEGORIES_DATA } from "../data/categoriesData";
+import { getUrlForRoute } from "../services/routerService";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
 import { SchemaHead } from "../components/layout/SchemaHead";
@@ -18,7 +19,7 @@ export const CategoriesPage: React.FC<CategoriesPageProps> = ({ onSelectCategory
       />
 
       <div className="space-y-6 pb-12">
-        <Breadcrumb items={[{ label: "Categories", active: true }]} />
+        <Breadcrumb items={[{ label: "Categories", href: getUrlForRoute("categories"), active: true }]} />
 
         <div className="pb-4 border-b border-slate-200/80 dark:border-slate-800">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
