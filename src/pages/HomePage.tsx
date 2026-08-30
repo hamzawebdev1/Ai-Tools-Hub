@@ -47,8 +47,8 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   const filteredTools =
     activeCategory === "all"
-      ? tools
-      : tools.filter((t) => t.category === activeCategory);
+      ? tools.filter((t) => t.showOnHomepage)
+      : tools.filter((t) => t.category === activeCategory && t.showOnHomepage);
 
   const trendingTools = tools.filter((t) => t.isTrending);
   const popularTools = tools.filter((t) => t.isPopular);

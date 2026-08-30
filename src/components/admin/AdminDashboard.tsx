@@ -1347,6 +1347,7 @@ export const AdminDashboard: React.FC = () => {
                               seoDescription: t.seoDescription || t.seoContent?.metaDescription || t.description,
                               searchKeywords: (t.searchKeywords || t.tags || []).join(", "),
                               isActive: t.isActive !== false && t.status !== "DISABLED",
+                              showOnHomepage: t.showOnHomepage !== false,
                             });
                           }}
                           className="px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-500 hover:bg-indigo-500/20 text-[10px] font-bold"
@@ -1493,6 +1494,18 @@ export const AdminDashboard: React.FC = () => {
                       Tool Published & Visible to Public
                     </label>
                   </div>
+                  <div className="flex items-center gap-2 pt-1">
+                    <input
+                      type="checkbox"
+                      id="editShowOnHomepage"
+                      checked={editForm.showOnHomepage}
+                      onChange={(e) => setEditForm({ ...editForm, showOnHomepage: e.target.checked })}
+                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label htmlFor="editShowOnHomepage" className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                      Show on Homepage
+                    </label>
+                  </div>
                 </div>
 
                 <div className="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
@@ -1516,6 +1529,7 @@ export const AdminDashboard: React.FC = () => {
                           .map((s: string) => s.trim())
                           .filter(Boolean),
                         isActive: editForm.isActive,
+                        showOnHomepage: editForm.showOnHomepage,
                         status: editForm.isActive ? "ACTIVE" : "DISABLED",
                       });
                       setEditingTool(null);

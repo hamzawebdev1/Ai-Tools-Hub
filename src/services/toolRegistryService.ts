@@ -27,6 +27,7 @@ export interface ToolAdminOverride {
   seoTitle?: string;
   seoDescription?: string;
   iconName?: string;
+  showOnHomepage?: boolean;
 }
 
 const STORAGE_KEY_OVERRIDES = "mehzandigital_admin_tool_overrides";
@@ -74,6 +75,7 @@ function buildCanonicalTools(): AITool[] {
       isFeatured: raw.isFeatured !== undefined ? raw.isFeatured : !!raw.isTrending,
       isPopular: raw.isPopular !== undefined ? raw.isPopular : !!raw.isPopular,
       isNew: raw.isNew !== undefined ? raw.isNew : false,
+      showOnHomepage: raw.showOnHomepage !== undefined ? raw.showOnHomepage : (raw.isPopular || raw.isTrending || false),
       subcategory: raw.subcategory || raw.category,
       searchKeywords: raw.searchKeywords || raw.tags || [],
       seoTitle: raw.seoContent?.metaTitle || `${raw.name} Online - Free Tool | Mehzan Tools Hub`,

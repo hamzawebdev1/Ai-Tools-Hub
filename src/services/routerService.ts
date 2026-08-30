@@ -157,6 +157,11 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
   // 2. Clean path: strip leading and trailing slashes & normalize
   let cleanPath = pathname.trim().replace(/^\/+|\/+$/g, "").toLowerCase();
 
+  // Strip language prefix if present
+  if (cleanPath.startsWith("en/")) {
+    cleanPath = cleanPath.substring(3);
+  }
+
   if (!cleanPath || cleanPath === "home") {
     return { tab: "home" };
   }
