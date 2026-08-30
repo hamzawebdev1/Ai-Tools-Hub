@@ -24,7 +24,14 @@ export function getDomain(): string {
   if (typeof window !== "undefined" && window.location.origin) {
     return window.location.origin.replace(/\/+$/, "");
   }
-  return "";
+  // Try to use environment variable for SSR
+  if (typeof process !== "undefined" && process.env?.APP_URL) {
+    return process.env.APP_URL.replace(/\/+$/, "");
+  }
+  if (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_APP_URL) {
+    return (import.meta as any).env.VITE_APP_URL.replace(/\/+$/, "");
+  }
+  return "https://mehzandigital.com";
 }
 const DEFAULT_OG_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80";
 
