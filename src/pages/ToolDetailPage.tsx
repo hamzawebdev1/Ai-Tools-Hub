@@ -26,20 +26,21 @@ import { SchemaHead } from "../components/layout/SchemaHead";
 import { RelatedTools } from "../components/tools/RelatedTools";
 import { RelatedArticles } from "../components/seo/RelatedArticles";
 import { saveHistoryItem } from "../services/storageService";
-import { PdfToolsRunner } from "../components/tools/PdfToolsRunner";
-import { ImageToolsRunner } from "../components/tools/ImageToolsRunner";
-import { QrBarcodeToolsRunner } from "../components/tools/QrBarcodeToolsRunner";
-import { TextToolsRunner } from "../components/tools/TextToolsRunner";
-import { DeveloperToolsRunner } from "../components/tools/DeveloperToolsRunner";
-import { SeoToolsRunner } from "../components/tools/SeoToolsRunner";
-import { CalculatorsRunner } from "../components/tools/CalculatorsRunner";
-import { FileToolsRunner } from "../components/tools/FileToolsRunner";
-import { MediaToolsRunner } from "../components/tools/MediaToolsRunner";
-import { StorageStatusDashboard } from "../components/storage/StorageStatusDashboard";
 import { useAuth } from "../context/AuthContext";
 import { canGuestExecute, incrementGuestUsage } from "../services/guestUsageService";
 import { GuestLimitModal } from "../components/auth/GuestLimitModal";
 import { trackToolAction } from "../services/toolTrackingService";
+
+const PdfToolsRunner = React.lazy(() => import("../components/tools/PdfToolsRunner").then(m => ({ default: m.PdfToolsRunner })));
+const ImageToolsRunner = React.lazy(() => import("../components/tools/ImageToolsRunner").then(m => ({ default: m.ImageToolsRunner })));
+const QrBarcodeToolsRunner = React.lazy(() => import("../components/tools/QrBarcodeToolsRunner").then(m => ({ default: m.QrBarcodeToolsRunner })));
+const TextToolsRunner = React.lazy(() => import("../components/tools/TextToolsRunner").then(m => ({ default: m.TextToolsRunner })));
+const DeveloperToolsRunner = React.lazy(() => import("../components/tools/DeveloperToolsRunner").then(m => ({ default: m.DeveloperToolsRunner })));
+const SeoToolsRunner = React.lazy(() => import("../components/tools/SeoToolsRunner").then(m => ({ default: m.SeoToolsRunner })));
+const CalculatorsRunner = React.lazy(() => import("../components/tools/CalculatorsRunner").then(m => ({ default: m.CalculatorsRunner })));
+const FileToolsRunner = React.lazy(() => import("../components/tools/FileToolsRunner").then(m => ({ default: m.FileToolsRunner })));
+const MediaToolsRunner = React.lazy(() => import("../components/tools/MediaToolsRunner").then(m => ({ default: m.MediaToolsRunner })));
+const StorageStatusDashboard = React.lazy(() => import("../components/storage/StorageStatusDashboard").then(m => ({ default: m.StorageStatusDashboard })));
 
 interface ToolDetailPageProps {
   tool: AITool;
@@ -377,32 +378,38 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Main Input & Controls Box (8 Cols) */}
           <div className="lg:col-span-12 space-y-4">
-            {tool.category === "pdf" ? (
-              <>
-                <PdfToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-                <StorageStatusDashboard />
-              </>
-            ) : tool.category === "image" ? (
-              <>
-                <ImageToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-                <StorageStatusDashboard />
-              </>
-            ) : tool.category === "qr" ? (
-              <QrBarcodeToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "text" ? (
-              <TextToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "developer" || tool.category === "network" || tool.category === "security" ? (
-              <DeveloperToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "seo" || tool.category === "website" ? (
-              <SeoToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "calculators" ? (
-              <CalculatorsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "utilities" ? (
-              <FileToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
-            ) : tool.category === "media" ? (
-              <MediaToolsRunner tool={tool} />
-            ) : (
-              <>
+            <React.Suspense fallback={
+              <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 p-8 text-center text-xs text-slate-500 font-medium animate-pulse flex items-center justify-center gap-2">
+                <Sparkles className="w-4 h-4 text-indigo-500 animate-spin" />
+                <span>Loading tool workspace...</span>
+              </div>
+            }>
+              {tool.category === "pdf" ? (
+                <>
+                  <PdfToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+                  <StorageStatusDashboard />
+                </>
+              ) : tool.category === "image" ? (
+                <>
+                  <ImageToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+                  <StorageStatusDashboard />
+                </>
+              ) : tool.category === "qr" ? (
+                <QrBarcodeToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+              ) : tool.category === "text" ? (
+                <TextToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+              ) : tool.category === "developer" || tool.category === "network" || tool.category === "security" ? (
+                <DeveloperToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+              ) : tool.category === "seo" || tool.category === "website" ? (
+                <SeoToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+              ) : tool.category === "calculators" ? (
+                <CalculatorsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+              ) : tool.category === "utilities" ? (
+                <FileToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
+              ) : tool.category === "media" ? (
+                <MediaToolsRunner tool={tool} />
+              ) : (
+                <>
                 <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 shadow-xl space-y-5">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
@@ -606,6 +613,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                 )}
               </>
             )}
+            </React.Suspense>
           </div>
         </div>
 

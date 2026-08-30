@@ -45,6 +45,7 @@ export const CookieBanner: React.FC = () => {
           </div>
           <button
             onClick={() => setIsVisible(false)}
+            aria-label="Close cookie consent banner"
             className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
@@ -80,21 +81,25 @@ export const CookieBanner: React.FC = () => {
               <span className="text-[10px] text-slate-400">Required</span>
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-600 dark:text-slate-300">Analytics & Performance</span>
+              <label htmlFor="cookie-analytics" className="text-slate-600 dark:text-slate-300 cursor-pointer">Analytics & Performance</label>
               <input
+                id="cookie-analytics"
                 type="checkbox"
                 checked={analytics}
                 onChange={(e) => setAnalytics(e.target.checked)}
                 className="rounded-sm text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                aria-label="Allow Analytics & Performance Cookies"
               />
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-600 dark:text-slate-300">AdSense & Personalization</span>
+              <label htmlFor="cookie-marketing" className="text-slate-600 dark:text-slate-300 cursor-pointer">AdSense & Personalization</label>
               <input
+                id="cookie-marketing"
                 type="checkbox"
                 checked={marketing}
                 onChange={(e) => setMarketing(e.target.checked)}
                 className="rounded-sm text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                aria-label="Allow AdSense & Personalization Cookies"
               />
             </div>
             <div className="flex items-center gap-2 pt-2">

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+  <rect width="56" height="56" rx="16" fill="url(#hero-grad)" />
+  <path d="M28 14L38 22V34L28 42L18 34V22L28 14Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28 22V34M22 25L34 31M34 25L22 31" stroke="#A5B4FC" stroke-width="2.5" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="hero-grad" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#9333EA"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -18,49 +18,49 @@ import { AdminProtectedRoute } from "./components/auth/AdminProtectedRoute";
 
 // SEO & Meta components
 import { SEOHead } from "./components/seo/SEOHead";
-import { SEOAuditWidget } from "./components/seo/SEOAuditWidget";
-
-// Security & Auth components
-import { AuthModal } from "./components/auth/AuthModal";
-import { SecurityStatusDashboard } from "./components/security/SecurityStatusDashboard";
-import { AdminDashboard } from "./components/admin/AdminDashboard";
 
 // Layout components
 import { Navbar } from "./components/layout/Navbar";
 import { Footer } from "./components/layout/Footer";
 import { CookieBanner } from "./components/layout/CookieBanner";
 
-// Page components
+// Core Page component (Eager loaded for instant homepage render)
 import { HomePage } from "./pages/HomePage";
-import { AllToolsPage } from "./pages/AllToolsPage";
-import { CategoriesPage } from "./pages/CategoriesPage";
-import { CategoryDetailPage } from "./pages/CategoryDetailPage";
-import { ToolDetailPage } from "./pages/ToolDetailPage";
-import { BlogPage } from "./pages/BlogPage";
-import { BlogPostPage } from "./pages/BlogPostPage";
-import { AboutPage } from "./pages/AboutPage";
-import { ContactPage } from "./pages/ContactPage";
-import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
-import { TermsPage } from "./pages/TermsPage";
-import { DisclaimerPage } from "./pages/DisclaimerPage";
-import { CookiePolicyPage } from "./pages/CookiePolicyPage";
-import { CopyrightPolicyPage } from "./pages/CopyrightPolicyPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { SearchResultsPage } from "./pages/SearchResultsPage";
-import { ProfilePage } from "./pages/ProfilePage";
-import { DashboardPage } from "./pages/DashboardPage";
-import { AdminDashboardPage } from "./pages/AdminDashboardPage";
-import { HistoryPage } from "./pages/HistoryPage";
-import { FavoritesPage } from "./pages/FavoritesPage";
-import { FeedbackPage } from "./pages/FeedbackPage";
-import { SuggestToolPage } from "./pages/SuggestToolPage";
-import { PricingPage } from "./pages/PricingPage";
-import { AuthorPage } from "./pages/AuthorPage";
+
+// Lazy-loaded secondary pages & heavy modules for bundle code splitting
+const AllToolsPage = React.lazy(() => import("./pages/AllToolsPage").then(m => ({ default: m.AllToolsPage })));
+const CategoriesPage = React.lazy(() => import("./pages/CategoriesPage").then(m => ({ default: m.CategoriesPage })));
+const CategoryDetailPage = React.lazy(() => import("./pages/CategoryDetailPage").then(m => ({ default: m.CategoryDetailPage })));
+const ToolDetailPage = React.lazy(() => import("./pages/ToolDetailPage").then(m => ({ default: m.ToolDetailPage })));
+const BlogPage = React.lazy(() => import("./pages/BlogPage").then(m => ({ default: m.BlogPage })));
+const BlogPostPage = React.lazy(() => import("./pages/BlogPostPage").then(m => ({ default: m.BlogPostPage })));
+const AboutPage = React.lazy(() => import("./pages/AboutPage").then(m => ({ default: m.AboutPage })));
+const ContactPage = React.lazy(() => import("./pages/ContactPage").then(m => ({ default: m.ContactPage })));
+const PrivacyPolicyPage = React.lazy(() => import("./pages/PrivacyPolicyPage").then(m => ({ default: m.PrivacyPolicyPage })));
+const TermsPage = React.lazy(() => import("./pages/TermsPage").then(m => ({ default: m.TermsPage })));
+const DisclaimerPage = React.lazy(() => import("./pages/DisclaimerPage").then(m => ({ default: m.DisclaimerPage })));
+const CookiePolicyPage = React.lazy(() => import("./pages/CookiePolicyPage").then(m => ({ default: m.CookiePolicyPage })));
+const CopyrightPolicyPage = React.lazy(() => import("./pages/CopyrightPolicyPage").then(m => ({ default: m.CopyrightPolicyPage })));
+const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage").then(m => ({ default: m.NotFoundPage })));
+const SearchResultsPage = React.lazy(() => import("./pages/SearchResultsPage").then(m => ({ default: m.SearchResultsPage })));
+const DashboardPage = React.lazy(() => import("./pages/DashboardPage").then(m => ({ default: m.DashboardPage })));
+const AdminDashboardPage = React.lazy(() => import("./pages/AdminDashboardPage").then(m => ({ default: m.AdminDashboardPage })));
+const HistoryPage = React.lazy(() => import("./pages/HistoryPage").then(m => ({ default: m.HistoryPage })));
+const FavoritesPage = React.lazy(() => import("./pages/FavoritesPage").then(m => ({ default: m.FavoritesPage })));
+const FeedbackPage = React.lazy(() => import("./pages/FeedbackPage").then(m => ({ default: m.FeedbackPage })));
+const SuggestToolPage = React.lazy(() => import("./pages/SuggestToolPage").then(m => ({ default: m.SuggestToolPage })));
+const PricingPage = React.lazy(() => import("./pages/PricingPage").then(m => ({ default: m.PricingPage })));
+const AuthorPage = React.lazy(() => import("./pages/AuthorPage").then(m => ({ default: m.AuthorPage })));
 
 // Auth Pages
-import { LoginPage } from "./pages/LoginPage";
-import { SignupPage } from "./pages/SignupPage";
-import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
+const LoginPage = React.lazy(() => import("./pages/LoginPage").then(m => ({ default: m.LoginPage })));
+const SignupPage = React.lazy(() => import("./pages/SignupPage").then(m => ({ default: m.SignupPage })));
+const ForgotPasswordPage = React.lazy(() => import("./pages/ForgotPasswordPage").then(m => ({ default: m.ForgotPasswordPage })));
+
+// Heavy Modals & Dashboards
+const AuthModal = React.lazy(() => import("./components/auth/AuthModal").then(m => ({ default: m.AuthModal })));
+const SecurityStatusDashboard = React.lazy(() => import("./components/security/SecurityStatusDashboard").then(m => ({ default: m.SecurityStatusDashboard })));
+const SEOAuditWidget = React.lazy(() => import("./components/seo/SEOAuditWidget").then(m => ({ default: m.SEOAuditWidget })));
 
 // Router Service
 import { parseRoute, getUrlForRoute, navigateTo, enforceCanonicalRedirect } from "./services/routerService";
@@ -234,7 +234,13 @@ function AppContent() {
 
       {/* Main View Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
-        {activeTab === "home" && (
+        <React.Suspense fallback={
+          <div className="py-20 text-center space-y-3">
+            <div className="w-8 h-8 rounded-full border-2 border-indigo-600 border-t-transparent animate-spin mx-auto" />
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">Loading requested view...</p>
+          </div>
+        }>
+          {activeTab === "home" && (
           <HomePage
             tools={TOOLS_DATA}
             onSelectTool={handleSelectTool}
@@ -372,6 +378,7 @@ function AppContent() {
         {activeTab === "pricing" && <PricingPage setActiveTab={handleNavigate} />}
 
         {activeTab === "404" && <NotFoundPage setActiveTab={handleNavigate} />}
+        </React.Suspense>
       </main>
 
       {/* Footer */}
@@ -385,13 +392,13 @@ function AppContent() {
       <CookieBanner />
 
       {/* Auth & Security Modal */}
-      <AuthModal
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-      />
-
-      {/* SEO & Core Web Vitals Live Audit Inspector */}
-      <SEOAuditWidget activeTab={activeTab} />
+      <React.Suspense fallback={null}>
+        <AuthModal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+        />
+        <SEOAuditWidget activeTab={activeTab} />
+      </React.Suspense>
     </div>
   );
 }
