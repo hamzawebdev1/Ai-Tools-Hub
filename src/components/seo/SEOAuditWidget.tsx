@@ -83,8 +83,10 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
     <div className="fixed bottom-4 right-4 z-50 font-sans">
       {!isOpen ? (
         <button
+          type="button"
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2.5 rounded-full shadow-xl hover:bg-indigo-600 dark:hover:bg-indigo-400 dark:hover:text-white transition-all transform hover:scale-105 border border-slate-700 dark:border-slate-300 text-xs font-semibold"
+          aria-label="Open SEO engine and canonical health inspector"
+          className="flex items-center gap-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2.5 rounded-full shadow-xl hover:bg-indigo-600 dark:hover:bg-indigo-400 dark:hover:text-white transition-all transform hover:scale-105 border border-slate-700 dark:border-slate-300 text-xs font-semibold cursor-pointer"
         >
           <Search className="w-4 h-4 text-emerald-400 dark:text-emerald-600" />
           <span>SEO Engine & Canonical Health</span>
@@ -102,8 +104,10 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
               <span className="font-bold text-sm tracking-tight">On-Page SEO & Canonical Inspector</span>
             </div>
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
-              className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+              aria-label="Close SEO inspector"
+              className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
             >
               <ChevronDown className="w-4 h-4" />
             </button>
@@ -363,6 +367,18 @@ export const SEOAuditWidget: React.FC<SEOAuditWidgetProps> = ({ activeTab }) => 
                   <div>
                     <span className="font-semibold text-slate-200 block">Robots Protocol File</span>
                     <span className="text-[11px] text-slate-400 font-mono">/robots.txt</span>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-indigo-400" />
+                </a>
+
+                <a
+                  href="/llms.txt"
+                  target="_blank"
+                  className="flex items-center justify-between p-3 bg-slate-950 rounded-xl border border-slate-800 hover:border-indigo-500 transition-colors"
+                >
+                  <div>
+                    <span className="font-semibold text-slate-200 block">LLM Site Discovery Spec</span>
+                    <span className="text-[11px] text-slate-400 font-mono">/llms.txt</span>
                   </div>
                   <ExternalLink className="w-4 h-4 text-indigo-400" />
                 </a>

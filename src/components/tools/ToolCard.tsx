@@ -57,7 +57,10 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   onToggleFavorite,
   layout = "grid",
 }) => {
-  const handleClick = (e: React.MouseEvent) => {
+  const handleCardClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("button")) return;
+
     if (
       !e.defaultPrevented &&
       !e.ctrlKey &&
@@ -73,10 +76,9 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 
   if (layout === "list") {
     return (
-      <a
-        href={`/${tool.slug}`}
-        onClick={handleClick}
-        className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-4 sm:p-5 shadow-xs hover:shadow-xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 block"
+      <article
+        onClick={handleCardClick}
+        className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-4 sm:p-5 shadow-xs hover:shadow-xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
       >
         <div className="flex items-start gap-4 flex-1">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
@@ -85,7 +87,9 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                {tool.name}
+                <a href={`/${tool.slug}`} onClick={handleCardClick} className="focus:outline-hidden">
+                  {tool.name}
+                </a>
               </h3>
               {tool.isTrending && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
@@ -109,6 +113,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-0 pt-3 sm:pt-0 border-slate-100 dark:border-slate-800">
           <button
             type="button"
+            aria-label={isFavorite ? `Remove ${tool.name} from favorites` : `Save ${tool.name} to favorites`}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -122,20 +127,23 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           >
             <Bookmark className={`w-4 h-4 ${isFavorite ? "fill-pink-500" : ""}`} />
           </button>
-          <span className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all">
+          <a
+            href={`/${tool.slug}`}
+            onClick={handleCardClick}
+            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all"
+          >
             <span>Run Tool</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </span>
+          </a>
         </div>
-      </a>
+      </article>
     );
   }
 
   return (
-    <a
-      href={`/${tool.slug}`}
-      onClick={handleClick}
-      className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-5 shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between block"
+    <article
+      onClick={handleCardClick}
+      className="group relative rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-5 shadow-xs hover:shadow-2xl hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between"
     >
       <div className="space-y-3">
         {/* Header Badges & Favorite */}
@@ -152,6 +160,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
             )}
             <button
               type="button"
+              aria-label={isFavorite ? `Remove ${tool.name} from favorites` : `Save ${tool.name} to favorites`}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -171,7 +180,9 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         {/* Name & Tagline */}
         <div>
           <h3 className="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-            {tool.name}
+            <a href={`/${tool.slug}`} onClick={handleCardClick} className="focus:outline-hidden">
+              {tool.name}
+            </a>
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
             {tool.tagline}
@@ -199,10 +210,14 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           <span className="text-[10px] text-slate-400">({tool.ratingCount})</span>
         </div>
 
-        <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+        <a
+          href={`/${tool.slug}`}
+          onClick={handleCardClick}
+          className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
+        >
           Try Now <ArrowRight className="w-3.5 h-3.5" />
-        </span>
+        </a>
       </div>
-    </a>
+    </article>
   );
 };

@@ -232,6 +232,71 @@ router.get("/robots.txt", (req, res) => {
 });
 
 /**
+ * AI Agent / LLM Site Discovery Specification (/llms.txt)
+ */
+router.get("/llms.txt", (req, res) => {
+  const host = getBaseHost(req);
+
+  const markdown = `# Mehzan Digital
+
+Mehzan Digital operates Mehzan Tools Hub, a client-first, privacy-focused online suite of web utility tools for developers, designers, content creators, marketers, and daily web users. All tools run directly in the browser or transiently with zero registration, zero paywalls, and strict data privacy compliance.
+
+> Mehzan Tools Hub delivers 500+ free browser-native utilities spanning PDF manipulation, image processing, text formatting, developer converters, SEO tools, security hashing, calculators, media editing, and webmaster diagnostics.
+
+## About
+
+- [About Mehzan Digital](${host}/about): Platform overview, engineering philosophy, privacy commitment, and technology stack.
+- [Contact Support](${host}/contact): Reach our technical support team for tool suggestions, bug reporting, or inquiries.
+- [Pricing](${host}/pricing): Information regarding our 100% free accessibility tier and usage guidelines.
+
+## Tools Directory
+
+- [All Tools](${host}/tools): Full directory of 500+ online utilities.
+- [PDF Merge](${host}/pdf-merge): Combine multiple PDF documents client-side.
+- [PDF Compress](${host}/pdf-compress): Optimize and compress PDF file size.
+- [JPG to PDF](${host}/jpg-to-pdf): Convert image files into PDF documents.
+- [Image Compressor](${host}/image-compressor): Reduce image size without losing quality.
+- [Image Resizer](${host}/image-resizer): Adjust image dimensions and scale.
+- [Word Counter](${host}/word-counter): Analyze character, word, sentence, and reading time metrics.
+- [JSON Formatter](${host}/json-formatter): Format, validate, and beautify JSON code.
+- [Meta Tag Generator](${host}/meta-tag-generator): Create SEO tags and Open Graph metadata.
+- [QR Code Generator](${host}/qr-code-generator): Generate custom QR codes with colors and logos.
+- [Password Generator](${host}/password-generator): Create secure, high-entropy cryptographic passwords.
+- [Unit Converter](${host}/unit-converter): Convert length, weight, temperature, and volume metrics.
+
+## Categories
+
+- [PDF Tools](${host}/category/pdf-tools): PDF merge, split, compress, extract, rotate, and OCR utilities.
+- [Image Tools](${host}/category/image-tools): Image resizer, compressor, format converter, cropper, and filter tools.
+- [Text & String Tools](${host}/category/text-string-tools): Case converter, line sorter, duplicate remover, and text analyzer.
+- [Developer Tools](${host}/category/developer-tools): Code formatters, minifiers, regex testers, JWT decoders, and API testing tools.
+- [SEO & SERP Tools](${host}/category/seo-serp-tools): Meta tag generators, schema builders, robots.txt generators, and keyword density analyzers.
+- [Website & Webmaster Tools](${host}/category/website-tools): HTTP header checkers, SSL verifiers, URL inspection, and performance tools.
+- [Network & IP Tools](${host}/category/network-tools): Subnet calculators, IP lookup, ping test, DNS lookup, and WHOIS query tools.
+- [Security & Cryptography](${host}/category/security-tools): Hashing generators (SHA-256, MD5), encryption, UUID generators, and key generators.
+- [Calculators & Converters](${host}/category/calculators-converters): Loan, EMI, mortgage, BMI, age, date difference, scientific, and financial calculators.
+- [QR & Barcode Tools](${host}/category/qr-barcode-tools): High-resolution QR code and barcode creation and reading utilities.
+- [File & Data Utilities](${host}/category/file-data-utilities): File metadata inspector, base64 encoder, CSV/JSON converter, and ZIP tools.
+- [Audio, Video & Media Tools](${host}/category/audio-video-media-tools): Audio/video converter, trimmer, volume adjuster, GIF maker, and metadata extractor.
+
+## Articles
+
+- [Blog](${host}/blog): Latest technical articles, security guides, web performance tips, and utility tutorials.
+
+## Important Resources
+
+- [Privacy Policy](${host}/privacy): Detailed information on privacy standards, zero-data logging, and client-side processing.
+- [Terms of Service](${host}/terms): Terms governing website usage and service conditions.
+- [Disclaimer](${host}/disclaimer): Service availability and general disclaimers.
+- [Cookie Policy](${host}/cookie-policy): Details on local browser storage and cookie policy.
+- [Copyright Policy](${host}/copyright): Intellectual property rights and DMCA procedures.
+`;
+
+  res.header("Content-Type", "text/plain; charset=utf-8");
+  res.send(markdown);
+});
+
+/**
  * Automated SEO Inventory & URL Canonical Audit Engine
  * GET /api/admin/seo-audit and GET /api/seo/audit
  */

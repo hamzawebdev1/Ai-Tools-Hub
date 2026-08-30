@@ -138,6 +138,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search 150+ tools (e.g. PDF Compressor, JSON Formatter, Word Counter)..."
+                  aria-label="Search all online tools"
                   className="w-full pl-12 pr-32 py-4 rounded-2xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-400 text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500 shadow-xl"
                 />
                 <button
@@ -406,10 +407,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                   key={idx}
                   className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 p-5 space-y-2"
                 >
-                  <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-indigo-500 shrink-0" />
                     {faq.q}
-                  </h4>
+                  </h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 pl-6 leading-relaxed">
                     {faq.a}
                   </p>

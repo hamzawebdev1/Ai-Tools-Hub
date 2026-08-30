@@ -71,6 +71,7 @@ export const Newsletter: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address..."
+                aria-label="Email address for newsletter"
                 className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-400 text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
               />
             </div>
@@ -88,7 +89,7 @@ export const Newsletter: React.FC = () => {
 
         <p className="text-[11px] text-slate-400">
           Zero spam. Unsubscribe at any time with one click. Read our{" "}
-          <span className="underline cursor-pointer hover:text-white">Privacy Policy</span>.
+          <a href="/privacy" className="underline hover:text-white transition-colors">Privacy Policy</a>.
         </p>
       </div>
     </div>
