@@ -688,7 +688,7 @@ export function injectSEOMetadataIntoHTML(
     const robotsContent = metadata.noIndex
       ? "noindex, nofollow"
       : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
-    headInjects += `    <meta name="robots" content="${robotsContent}" />\n`;
+    headInjects += `    <!-- DEBUG: routeTab=${routeState.tab}, isPrivate=${isPrivate}, noIndex=${metadata.noIndex} -->\n    <meta name="robots" content="${robotsContent}" />\n`;
 
     // 4. Canonical Tag & CSP Meta
     headInjects += `    <link rel="canonical" href="${canonicalUrl}" />\n`;
