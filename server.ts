@@ -379,7 +379,21 @@ async function startServer() {
     const distPath = path.join(process.cwd(), "dist");
     const indexPath = path.join(distPath, "index.html");
 
-    app.use(express.static(distPath, { index: false }));
+    app.use(
+      express.static(distPath, {
+        index: false,
+        maxAge: "1d",
+        setHeaders: (res, filePath) => {
+          if (filePath.includes("/assets/")) {
+            res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+          } else if (filePath.endsWith(".html")) {
+            res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+          } else {
+            res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+          }
+        },
+      })
+    );
 
     app.get("*", (req, res) => {
       try {

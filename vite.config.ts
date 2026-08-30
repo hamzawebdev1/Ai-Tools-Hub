@@ -13,12 +13,19 @@ export default defineConfig(() => {
     },
     build: {
       target: 'esnext',
+      minify: 'esbuild',
       cssMinify: true,
-      sourcemap: false,
+      sourcemap: 'hidden',
       chunkSizeWarningLimit: 1200,
       rollupOptions: {
         output: {
           manualChunks(id) {
+            if (id.includes('src/pages/AdminDashboardPage') || id.includes('src/components/admin')) {
+              return 'admin-bundle';
+            }
+            if (id.includes('src/pages/DashboardPage') || id.includes('src/components/security')) {
+              return 'dashboard-bundle';
+            }
             if (id.includes('node_modules')) {
               if (id.includes('react') || id.includes('react-dom')) {
                 return 'react-vendor';

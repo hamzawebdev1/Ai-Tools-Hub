@@ -119,10 +119,10 @@ export const ToolCard: React.FC<ToolCardProps> = ({
               e.stopPropagation();
               onToggleFavorite(tool.id, e);
             }}
-            className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+            className={`p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border transition-colors cursor-pointer ${
               isFavorite
                 ? "bg-pink-500/10 border-pink-500/30 text-pink-500"
-                : "border-slate-200 dark:border-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                : "border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
             }`}
           >
             <Bookmark className={`w-4 h-4 ${isFavorite ? "fill-pink-500" : ""}`} />
@@ -130,7 +130,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           <a
             href={`/${tool.slug}`}
             onClick={handleCardClick}
-            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all"
+            className="px-4 py-2.5 min-h-[44px] rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all"
           >
             <span>Run Tool</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -154,7 +154,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 
           <div className="flex items-center gap-1.5">
             {tool.isTrending && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
                 <Flame className="w-3 h-3" /> Trending
               </span>
             )}
@@ -166,10 +166,10 @@ export const ToolCard: React.FC<ToolCardProps> = ({
                 e.stopPropagation();
                 onToggleFavorite(tool.id, e);
               }}
-              className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+              className={`p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border transition-colors cursor-pointer ${
                 isFavorite
                   ? "bg-pink-500/10 border-pink-500/30 text-pink-500"
-                  : "border-slate-200 dark:border-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  : "border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
               }`}
             >
               <Bookmark className={`w-4 h-4 ${isFavorite ? "fill-pink-500" : ""}`} />

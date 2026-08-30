@@ -207,7 +207,6 @@ router.get("/robots.txt", (req, res) => {
   let txt = `User-agent: *\n`;
   txt += `Allow: /\n`;
   txt += `Disallow: /api/\n`;
-  txt += `Disallow: /search\n`;
   txt += `Disallow: /admin\n`;
   txt += `Disallow: /dashboard\n`;
   txt += `Disallow: /profile\n`;
@@ -217,17 +216,12 @@ router.get("/robots.txt", (req, res) => {
   txt += `Disallow: /register\n`;
   txt += `Disallow: /forgot-password\n\n`;
 
-  txt += `# Googlebot & Bingbot specific settings\n`;
-  txt += `User-agent: Googlebot\n`;
-  txt += `Allow: /\n`;
-  txt += `Crawl-delay: 1\n\n`;
-
-  txt += `# Sitemap XML References\n`;
   txt += `Sitemap: ${host}/sitemap.xml\n`;
   txt += `Sitemap: ${host}/image-sitemap.xml\n`;
   txt += `Sitemap: ${host}/news-sitemap.xml\n`;
 
   res.header("Content-Type", "text/plain; charset=utf-8");
+  res.header("Cache-Control", "public, max-age=86400, s-maxage=86400");
   res.send(txt);
 });
 

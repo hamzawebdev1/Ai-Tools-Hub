@@ -78,6 +78,15 @@ function AppContent() {
   const [selectedPostSlug, setSelectedPostSlug] = useState<string>(initialRoute.postSlug || "");
   const [searchQuery, setSearchQuery] = useState<string>(initialRoute.searchQuery || "");
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [showDeferredWidgets, setShowDeferredWidgets] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const timer = setTimeout(() => {
+      setShowDeferredWidgets(true);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [profile, setProfile] = useState<UserProfile>(getStoredProfile());
   const [favorites, setFavorites] = useState<string[]>(getStoredFavorites());
@@ -391,13 +400,15 @@ function AppContent() {
       {/* Cookie Consent Banner */}
       <CookieBanner />
 
-      {/* Auth & Security Modal */}
+      {/* Auth & Security Modal & SEO Audit Widget */}
       <React.Suspense fallback={null}>
-        <AuthModal
-          isOpen={authModalOpen}
-          onClose={() => setAuthModalOpen(false)}
-        />
-        <SEOAuditWidget activeTab={activeTab} />
+        {authModalOpen && (
+          <AuthModal
+            isOpen={authModalOpen}
+            onClose={() => setAuthModalOpen(false)}
+          />
+        )}
+        {showDeferredWidgets && <SEOAuditWidget activeTab={activeTab} />}
       </React.Suspense>
     </div>
   );
