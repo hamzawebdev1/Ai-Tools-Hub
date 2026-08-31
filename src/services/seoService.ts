@@ -478,7 +478,8 @@ export function buildSEOMetadata(
         ogType: "product",
         ogImage: DEFAULT_OG_IMAGE,
         schemas,
-        breadcrumbs
+        breadcrumbs,
+        noIndex: false
       };
     }
 
@@ -788,7 +789,8 @@ export function buildSEOMetadata(
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [orgSchema],
-        breadcrumbs: [{ name: "Home", url: "/" }, { name: activeTab, url: `/${activeTab}` }]
+        breadcrumbs: [{ name: "Home", url: "/" }, { name: activeTab, url: `/${activeTab}` }],
+        noIndex: false
       };
     }
   }

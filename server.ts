@@ -125,6 +125,12 @@ async function startServer() {
       }
     }
 
+    // 7. Language Prefix Redirect
+    if (/^\/[a-z]{2}\//.test(req.path)) {
+      const cleanPath = req.path.replace(/^\/[a-z]{2}/, "");
+      return res.redirect(301, cleanPath || "/");
+    }
+
     // Static route alias redirects
     const STATIC_REDIRECTS: Record<string, string> = {
       "/all-tools": "/tools",

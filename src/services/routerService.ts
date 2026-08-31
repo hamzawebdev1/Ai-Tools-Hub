@@ -156,18 +156,24 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
 
   // 2. Clean path: strip leading and trailing slashes & normalize
   let cleanPath = pathname.trim().replace(/^\/+|\/+$/g, "").toLowerCase();
+  
+  console.log(`[Router] Incoming pathname: "${pathname}", search: "${search}", cleanPath: "${cleanPath}"`);
 
-  // Strip language prefix if present
-  if (cleanPath.startsWith("en/")) {
+  // Strip language prefix if present (e.g., /en/, /fr/, /de/)
+  if (/^[a-z]{2}\//.test(cleanPath)) {
+    console.log(`[Router] Stripping language prefix from: "${cleanPath}"`);
     cleanPath = cleanPath.substring(3);
+    console.log(`[Router] Clean path after prefix strip: "${cleanPath}"`);
   }
 
   if (!cleanPath || cleanPath === "home") {
+    console.log(`[Router] Resolved to home`);
     return { tab: "home" };
   }
 
   // Resolve static aliases
   if (STATIC_ROUTE_ALIASES[cleanPath]) {
+    console.log(`[Router] Resolved static alias: "${cleanPath}" -> "${STATIC_ROUTE_ALIASES[cleanPath]}"`);
     cleanPath = STATIC_ROUTE_ALIASES[cleanPath];
   }
 
@@ -269,6 +275,7 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
   // Handle DIRECT tool slug: e.g. /split-pdf-pages, /jpg-to-pdf, /pdf-to-word, /image-compressor
   let directSlug = cleanPath.toLowerCase();
   if (TOOL_SLUG_ALIASES[directSlug]) {
+    console.log(`[Router] Resolved tool alias: "${directSlug}" -> "${TOOL_SLUG_ALIASES[directSlug]}"`);
     directSlug = TOOL_SLUG_ALIASES[directSlug];
   }
   const matchedTool = TOOLS_DATA.find(
@@ -276,7 +283,10 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
   );
 
   if (matchedTool) {
+    console.log(`[Router] Tool match found: "${directSlug}" -> slug: "${matchedTool.slug}"`);
     return { tab: "tool-detail", toolSlug: matchedTool.slug };
+  } else {
+    console.log(`[Router] No tool match found for: "${directSlug}"`);
   }
 
   // Handle Category direct fallback if someone typed /pdf-tools
