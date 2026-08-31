@@ -63,6 +63,9 @@ export const STATIC_ROUTE_ALIASES: Record<string, string> = {
   "signin": "login",
   "profile": "dashboard",
   "suggest": "suggest-tool",
+  "write-for-us": "guest-post",
+  "guest-posts": "guest-post",
+  "guest-posting": "guest-post",
 };
 
 /**
@@ -93,9 +96,9 @@ export function normalizePath(rawPath: string = "/"): string {
     clean = STATIC_ROUTE_ALIASES[clean];
   }
 
-  // Check prefix aliases: /tools/:slug or /tool/:slug -> /:slug
-  if (clean.startsWith("tools/") || clean.startsWith("tool/")) {
-    const slug = clean.replace(/^(tools|tool)\//, "");
+  // Check prefix aliases: /tools/:slug, /tool/:slug, or /en/:slug
+  if (clean.startsWith("tools/") || clean.startsWith("tool/") || clean.startsWith("en/")) {
+    const slug = clean.replace(/^(tools|tool|en)\//, "");
     if (slug) {
       // Check if it's a category
       const isCat = CATEGORIES_DATA.some((c) => c.slug === slug || c.id === slug);
@@ -103,7 +106,7 @@ export function normalizePath(rawPath: string = "/"): string {
         return `/category/${slug}`;
       }
       const canonicalSlug = TOOL_SLUG_ALIASES[slug] || slug;
-      return `/${canonicalSlug}`;
+      return `/en/${canonicalSlug}`;
     }
     return "/tools";
   }
@@ -114,9 +117,26 @@ export function normalizePath(rawPath: string = "/"): string {
     return slug ? `/category/${slug}` : "/categories";
   }
 
-  // Check tool slug aliases
-  if (TOOL_SLUG_ALIASES[clean]) {
-    return `/${TOOL_SLUG_ALIASES[clean]}`;
+  // Check direct tool slug or alias match
+  let targetSlug = clean;
+  if (TOOL_SLUG_ALIASES[targetSlug]) {
+    targetSlug = TOOL_SLUG_ALIASES[targetSlug];
+  }
+  const isToolMatch = TOOLS_DATA.some((t) => t.slug === targetSlug || t.id === targetSlug);
+  if (isToolMatch) {
+    return `/en/${targetSlug}`;
+  }
+
+  // Static routes
+  const staticRoutes = [
+    "tools", "categories", "blog", "about", "contact", "privacy", "terms",
+    "disclaimer", "cookie-policy", "copyright", "pricing", "search",
+    "favorites", "history", "suggest-tool", "feedback", "login", "register",
+    "forgot-password", "dashboard", "admin"
+  ];
+
+  if (staticRoutes.includes(clean) || clean.startsWith("category/") || clean.startsWith("blog/") || clean.startsWith("author/") || clean.startsWith("admin/")) {
+    return `/${clean}`;
   }
 
   return `/${clean}`;
@@ -212,6 +232,8 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
       return { tab: "history" };
     case "suggest-tool":
       return { tab: "suggest-tool" };
+    case "guest-post":
+      return { tab: "guest-post" };
     case "feedback":
       return { tab: "feedback" };
     case "login":
@@ -325,7 +347,7 @@ export function getUrlForRoute(
     case "category-detail":
       return `/category/${params?.categorySlug || "pdf-tools"}`;
     case "tool-detail":
-      return `/${params?.toolSlug || "jpg-to-pdf"}`;
+      return `/en/${params?.toolSlug || "jpg-to-pdf"}`;
     case "blog":
       return "/blog";
     case "blog-post":

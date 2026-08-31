@@ -10,6 +10,7 @@ import webAnalysisRoutes from "./src/server/webAnalysisRoutes";
 import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
 import adminRoutes from "./src/server/admin/adminRoutes";
+import guestPostRoutes from "./src/server/guestPostRoutes";
 import { injectSEOMetadataIntoHTML } from "./src/server/seoHtmlRenderer";
 import { parseRoute } from "./src/services/routerService";
 import { addContactMessage, addBugReport, addFeatureRequest } from "./src/server/admin/submissionsStore.js";
@@ -22,6 +23,8 @@ import {
   csrfProtectionMiddleware,
 } from "./src/server/security/securityMiddleware";
 import { CATEGORIES_DATA } from "./src/data/categoriesData";
+import { TOOLS_DATA } from "./src/data/toolsData";
+import { TOOL_SLUG_ALIASES } from "./src/services/routerService";
 
 const currentFile = typeof __filename !== "undefined" ? __filename : (typeof import.meta !== "undefined" && import.meta.url ? fileURLToPath(import.meta.url) : process.cwd());
 const currentDir = typeof __dirname !== "undefined" ? __dirname : path.dirname(currentFile);
@@ -86,12 +89,13 @@ async function startServer() {
       return res.redirect(301, `${cleanPath}${queryString}`);
     }
 
-    // 5. Query Parameter Route Redirects on Root & /tool /tools (e.g. /?tool=jpg-to-pdf -> /jpg-to-pdf, /tool?id=jpg-to-pdf -> /jpg-to-pdf)
+    // 5. Query Parameter Route Redirects on Root & /tool /tools (e.g. /?tool=jpg-to-pdf -> /en/jpg-to-pdf)
     if (req.path === "/" || req.path === "/tool" || req.path === "/tools") {
       const toolParam = (req.query.tool || req.query.slug || req.query.id) as string;
       if (toolParam && typeof toolParam === "string") {
         const cleanSlug = toolParam.toLowerCase().trim();
-        return res.redirect(301, `/${cleanSlug}`);
+        const canonicalSlug = TOOL_SLUG_ALIASES[cleanSlug] || cleanSlug;
+        return res.redirect(301, `/en/${canonicalSlug}`);
       }
       if (req.path === "/" && req.query.category) {
         const cat = req.query.category as string;
@@ -104,8 +108,24 @@ async function startServer() {
       }
     }
 
-    // 6. Duplicate Prefix Aliases 301 Redirection
-    // /tools/:slug or /tool/:slug -> /:slug (or /category/:slug)
+    // 6. Canonicalize /en/:slug for Tool Aliases
+    if (req.path.startsWith("/en/")) {
+      const subSlug = req.path.replace(/^\/en\//, "").toLowerCase().trim();
+      if (subSlug) {
+        // If it's a tool alias, redirect to the canonical tool slug
+        if (TOOL_SLUG_ALIASES[subSlug]) {
+          const queryString = req.url.includes("?") ? `?${req.url.split("?")[1]}` : "";
+          return res.redirect(301, `/en/${TOOL_SLUG_ALIASES[subSlug]}${queryString}`);
+        }
+        // If it's a category, redirect to /category/:slug
+        const isCat = CATEGORIES_DATA.some((c) => c.slug === subSlug || c.id === subSlug);
+        if (isCat) {
+          return res.redirect(301, `/category/${subSlug}`);
+        }
+      }
+    }
+
+    // 7. Duplicate Prefix Aliases (/tools/:slug or /tool/:slug -> /en/:slug)
     if (req.path.startsWith("/tools/") || req.path.startsWith("/tool/")) {
       const rawSlug = req.path.replace(/^\/(tools|tool)\//, "").toLowerCase().trim();
       if (rawSlug) {
@@ -113,11 +133,23 @@ async function startServer() {
         if (isCat) {
           return res.redirect(301, `/category/${rawSlug}`);
         }
-        return res.redirect(301, `/${rawSlug}`);
+        const canonicalSlug = TOOL_SLUG_ALIASES[rawSlug] || rawSlug;
+        return res.redirect(301, `/en/${canonicalSlug}`);
       }
     }
 
-    // /categories/:slug -> /category/:slug
+    // 8. Direct legacy non-prefixed tool URLs e.g. /json-formatter -> /en/json-formatter
+    const directSlug = req.path.replace(/^\//, "").toLowerCase().trim();
+    if (directSlug && !directSlug.includes("/")) {
+      const canonicalSlug = TOOL_SLUG_ALIASES[directSlug] || directSlug;
+      const isTool = TOOLS_DATA.some((t) => t.slug === canonicalSlug || t.id === canonicalSlug);
+      if (isTool) {
+        const queryString = req.url.includes("?") ? `?${req.url.split("?")[1]}` : "";
+        return res.redirect(301, `/en/${canonicalSlug}${queryString}`);
+      }
+    }
+
+    // 9. /categories/:slug -> /category/:slug
     if (req.path.startsWith("/categories/")) {
       const rawSlug = req.path.replace(/^\/categories\//, "").toLowerCase().trim();
       if (rawSlug) {
@@ -125,8 +157,8 @@ async function startServer() {
       }
     }
 
-    // 7. Language Prefix Redirect
-    if (/^\/[a-z]{2}\//.test(req.path)) {
+    // 10. Language Prefix Redirect (non-en language codes like /fr/, /de/)
+    if (/^\/(?!en\/)[a-z]{2}\//.test(req.path)) {
       const cleanPath = req.path.replace(/^\/[a-z]{2}/, "");
       return res.redirect(301, cleanPath || "/");
     }
@@ -164,6 +196,9 @@ async function startServer() {
 
   // Mount Enterprise Admin Routes
   app.use("/api/admin", adminRoutes);
+
+  // Mount Public Guest Post Routes
+  app.use("/api/guest-posts", guestPostRoutes);
 
   // Mount Secure Encrypted Cloud Storage Routes
   app.use("/api/storage", storageRoutes);

@@ -22,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({
     e.preventDefault();
     if (onSelectTool) onSelectTool(slug);
     setActiveTab("tool-detail");
-    navigateTo(`/${slug}`);
+    navigateTo(`/en/${slug}`);
   };
 
   const handleCatClick = (slug: string, e: React.MouseEvent) => {
@@ -116,7 +116,7 @@ export const Footer: React.FC<FooterProps> = ({
               {popularTools.map((tool) => (
                 <li key={tool.id}>
                   <a
-                    href={`/${tool.slug}`}
+                    href={`/en/${tool.slug}`}
                     onClick={(e) => handleToolClick(tool.slug, e)}
                     className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors text-left cursor-pointer inline-block"
                   >
@@ -173,11 +173,11 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <a
-                  href="/author/alex-rivera"
-                  onClick={(e) => handlePageClick("author-alex-rivera", "/author/alex-rivera", e)}
+                  href="/author/hamza"
+                  onClick={(e) => handlePageClick("author-hamza", "/author/hamza", e)}
                   className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block"
                 >
-                  Editorial Board & Authors
+                  Hamza (Founder & Author)
                 </a>
               </li>
               <li>

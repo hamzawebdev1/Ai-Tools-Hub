@@ -43,6 +43,7 @@ import {
   Cpu,
   UserPlus,
   HelpCircle,
+  BookOpen,
 } from "lucide-react";
 import { SchemaHead } from "../components/layout/SchemaHead";
 import { useAuth } from "../context/AuthContext";
@@ -56,6 +57,7 @@ import { MediaManagementSection } from "../components/admin/MediaManagementSecti
 import { SiteSettingsSection } from "../components/admin/SiteSettingsSection";
 import { AuditLogsSection } from "../components/admin/AuditLogsSection";
 import { KeywordManagementSection } from "../components/admin/KeywordManagementSection";
+import { GuestPostManagementSection } from "../components/admin/GuestPostManagementSection";
 export type { Role, RoleConfig } from "../types/roles";
 export { ROLE_CONFIGS } from "../types/roles";
 
@@ -74,6 +76,7 @@ export type AdminMenuKey =
   | "keywords"
   | "analytics"
   | "content"
+  | "guest-posts"
   | "inbox"
   | "newsletter"
   | "media"
@@ -301,8 +304,14 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       subItems: [
         { key: "articles", label: "All Articles" },
         { key: "add-new", label: "Add New" },
+        { key: "guest-posts", label: "Guest Submissions" },
         { key: "categories", label: "Categories" },
       ],
+    },
+    {
+      key: "guest-posts",
+      label: "Guest Posts",
+      icon: <BookOpen className="w-4 h-4 text-emerald-400" />,
     },
     {
       key: "inbox",
@@ -1359,11 +1368,22 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
             {/* ========================================================= */}
             {/* VIEW 6: CONTENT & ARTICLES SECTION                        */}
             {/* ========================================================= */}
-            {activeMenu === "content" && (
+            {activeMenu === "content" && activeSubItem !== "guest-posts" && (
               <div className="animate-fade-in">
                 <BlogManagementSection
                   onShowNotification={showNotification}
                   onNavigate={onNavigate}
+                />
+              </div>
+            )}
+
+            {/* ========================================================= */}
+            {/* VIEW 6.5: GUEST POSTS MANAGEMENT                          */}
+            {/* ========================================================= */}
+            {(activeMenu === "guest-posts" || (activeMenu === "content" && activeSubItem === "guest-posts")) && (
+              <div className="animate-fade-in">
+                <GuestPostManagementSection
+                  onShowNotification={showNotification}
                 />
               </div>
             )}

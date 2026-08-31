@@ -110,6 +110,15 @@ export const RAW_CATEGORIES: CategoryInfo[] = [
     count: 68,
     color: "from-fuchsia-500 to-rose-600",
   },
+  {
+    id: "student",
+    name: "Student Tools",
+    slug: "student-tools",
+    description: "Free GPA, CGPA, grade, final grade, attendance, study schedule, Pomodoro timer, citation generators, and academic calculators for students.",
+    iconName: "GraduationCap",
+    count: 15,
+    color: "from-emerald-500 to-teal-600",
+  },
 ];
 
 // Returns dynamically counted category list

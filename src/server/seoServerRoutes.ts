@@ -65,11 +65,11 @@ router.get("/sitemap.xml", (req, res) => {
     xml += `  </url>\n`;
   }
 
-  // 2. Active Canonical Tool URLs (/${tool.slug})
+  // 2. Active Canonical Tool URLs (/en/${tool.slug})
   const activeTools = TOOLS_DATA.filter((t) => t.status !== "DISABLED" && t.isActive !== false);
   for (const tool of activeTools) {
     xml += `  <url>\n`;
-    xml += `    <loc>${host}/${tool.slug}</loc>\n`;
+    xml += `    <loc>${host}/en/${tool.slug}</loc>\n`;
     xml += `    <lastmod>${now}</lastmod>\n`;
     xml += `    <changefreq>daily</changefreq>\n`;
     xml += `    <priority>0.9</priority>\n`;
@@ -133,7 +133,7 @@ router.get("/image-sitemap.xml", (req, res) => {
   const activeTools = TOOLS_DATA.filter((t) => t.status !== "DISABLED" && t.isActive !== false);
   for (const tool of activeTools) {
     xml += `  <url>\n`;
-    xml += `    <loc>${host}/${tool.slug}</loc>\n`;
+    xml += `    <loc>${host}/en/${tool.slug}</loc>\n`;
     xml += `    <image:image>\n`;
     xml += `      <image:loc>https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>\n`;
     xml += `      <image:title>${escapeXml(tool.name)} - Free Online Utility</image:title>\n`;

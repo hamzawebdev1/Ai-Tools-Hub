@@ -53,6 +53,8 @@ export interface CMSBlogPost {
     avatar: string;
     role: string;
     email?: string;
+    bio?: string;
+    website?: string;
   };
   category: string;
   tags: string[];
@@ -143,6 +145,7 @@ export interface CMSSiteSettings {
     keywords: string[];
   };
   robotsTxt: string;
+  guestPostingSettings?: any;
 }
 
 export interface CMSDatabase {

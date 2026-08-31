@@ -51,6 +51,14 @@ import {
   importFullBackup,
   CMSTool,
 } from "./cmsStore.js";
+import {
+  getAllGuestPosts,
+  getGuestPostById,
+  updateGuestPost,
+  updateGuestPostStatus,
+  deleteGuestPost,
+  publishGuestPost,
+} from "./guestPostsStore.js";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -1442,8 +1450,94 @@ router.get("/public/catalog", (req, res) => {
       announcementBarText: settings.announcementBarText,
       announcementBarActive: settings.announcementBarActive,
       socialLinks: settings.socialLinks,
+      guestPostingSettings: settings.guestPostingSettings,
     },
   });
+});
+
+// =============================================================
+// 12. ADMIN GUEST POSTS MANAGEMENT
+// =============================================================
+router.get("/guest-posts", (req, res) => {
+  const { status, search, category } = req.query;
+  let list = getAllGuestPosts();
+
+  if (status && status !== "all") {
+    list = list.filter((g) => g.status === status);
+  }
+  if (category && category !== "all") {
+    list = list.filter((g) => g.category.toLowerCase() === String(category).toLowerCase());
+  }
+  if (search) {
+    const q = String(search).toLowerCase();
+    list = list.filter(
+      (g) =>
+        g.title.toLowerCase().includes(q) ||
+        g.authorName.toLowerCase().includes(q) ||
+        g.authorEmail.toLowerCase().includes(q) ||
+        g.category.toLowerCase().includes(q)
+    );
+  }
+
+  return res.json({ success: true, count: list.length, submissions: list });
+});
+
+router.get("/guest-posts/:id", (req, res) => {
+  const item = getGuestPostById(req.params.id);
+  if (!item) return res.status(404).json({ success: false, error: "Guest post submission not found." });
+  return res.json({ success: true, submission: item });
+});
+
+router.put("/guest-posts/:id", (req, res) => {
+  const { email, ip } = getActor(req);
+  const { id } = req.params;
+  const updates = req.body;
+
+  const updated = updateGuestPost(id, updates, email, ip);
+  if (!updated) return res.status(404).json({ success: false, error: "Guest post submission not found." });
+
+  return res.json({ success: true, message: "Guest post submission updated.", submission: updated });
+});
+
+router.patch("/guest-posts/:id/status", (req, res) => {
+  const { email, ip } = getActor(req);
+  const { id } = req.params;
+  const { status, moderatorNotes } = req.body;
+
+  if (!status) return res.status(400).json({ success: false, error: "Status is required." });
+
+  const result = updateGuestPostStatus(id, status, email, moderatorNotes, ip);
+  if (!result.success) return res.status(400).json({ success: false, error: result.error });
+
+  return res.json({
+    success: true,
+    message: `Guest post status updated to "${status}".`,
+    submission: result.submission,
+  });
+});
+
+router.post("/guest-posts/:id/publish", (req, res) => {
+  const { email, ip } = getActor(req);
+  const { id } = req.params;
+
+  const result = publishGuestPost(id, email, ip);
+  if (!result.success) return res.status(400).json({ success: false, error: result.error });
+
+  return res.json({
+    success: true,
+    message: `Guest post "${result.submission?.title}" published to live blog.`,
+    submission: result.submission,
+  });
+});
+
+router.delete("/guest-posts/:id", (req, res) => {
+  const { email, ip } = getActor(req);
+  const { id } = req.params;
+
+  const deleted = deleteGuestPost(id, email, ip);
+  if (!deleted) return res.status(404).json({ success: false, error: "Guest post submission not found." });
+
+  return res.json({ success: true, message: "Guest post submission deleted." });
 });
 
 export default router;

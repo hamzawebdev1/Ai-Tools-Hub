@@ -26,11 +26,12 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
   onShowNotification,
 }) => {
   const [settings, setSettings] = useState<CMSSiteSettings | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Sub Tab
-  const [activeSubTab, setActiveSubTab] = useState<"general" | "seo_robots" | "ads" | "backup">("general");
+  const [activeSubTab, setActiveSubTab] = useState<"general" | "seo_robots" | "ads" | "guest_posting" | "backup">("general");
 
   // Sitemap & Index Ping
   const [sitemapXml, setSitemapXml] = useState("");
@@ -62,14 +63,35 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
 
   const fetchSettings = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/admin/settings");
-      const data = await res.json();
-      if (data.success) {
-        setSettings(data.settings);
+      if (!res.ok) {
+        throw new Error(`Server returned HTTP status ${res.status}`);
       }
-    } catch (err) {
+      const data = await res.json();
+      if (data.success && data.settings) {
+        const loaded = data.settings;
+        if (!loaded.guestPostingSettings) {
+          loaded.guestPostingSettings = {
+            enabled: true,
+            guidelines: "Submit original, high-quality technical articles, software tutorials, or digital marketing guides. Min 500 words. Promotional links must be relevant and safe.",
+            minWordCount: 500,
+            maxWordCount: 5000,
+            allowedCategories: ["Web Development", "Digital Marketing", "SEO", "Developer Tools", "PDF Utilities", "Student Tools"],
+            requireFeaturedImage: false,
+            requireAuthorBio: true,
+            moderationRequired: true,
+            autoPublish: false,
+          };
+        }
+        setSettings(loaded);
+      } else {
+        setError(data.error || "Failed to parse site settings from server.");
+      }
+    } catch (err: any) {
       console.error("Failed to load settings:", err);
+      setError(err.message || "Network connection error loading site settings.");
     } finally {
       setLoading(false);
     }
@@ -174,11 +196,29 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
     }
   };
 
-  if (!settings) {
+  if (loading) {
     return (
-      <div className="p-12 text-center text-slate-500">
+      <div className="p-12 text-center text-slate-500 font-medium text-sm">
         <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-indigo-500" />
         Loading site settings...
+      </div>
+    );
+  }
+
+  if (error || !settings) {
+    return (
+      <div className="p-8 max-w-xl mx-auto my-12 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-2xl text-center space-y-4">
+        <AlertTriangle className="w-10 h-10 text-rose-500 mx-auto" />
+        <h3 className="text-base font-bold text-rose-900 dark:text-rose-200">Unable to Load Site Settings</h3>
+        <p className="text-xs text-rose-700 dark:text-rose-300">
+          {error || "Settings object was empty or invalid."}
+        </p>
+        <button
+          onClick={fetchSettings}
+          className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-2 cursor-pointer transition-colors shadow-sm"
+        >
+          <RefreshCw className="w-4 h-4" /> Retry Loading Settings
+        </button>
       </div>
     );
   }
@@ -238,6 +278,16 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
           }`}
         >
           Monetization & Ads
+        </button>
+        <button
+          onClick={() => setActiveSubTab("guest_posting")}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            activeSubTab === "guest_posting"
+              ? "bg-indigo-600 text-white shadow-md"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          }`}
+        >
+          Guest Posting & Policy
         </button>
         <button
           onClick={() => setActiveSubTab("backup")}
@@ -332,6 +382,75 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
                   onChange={(e) => setSettings({ ...settings, logoUrl: e.target.value })}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono"
                 />
+              </div>
+
+              {/* Social Profiles Settings */}
+              <div className="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                <span className="font-bold text-slate-900 dark:text-white block text-xs flex items-center gap-1.5">
+                  <Share2 className="w-3.5 h-3.5 text-indigo-500" /> Configurable Social Links (Leave empty to hide)
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">Twitter / X</label>
+                    <input
+                      type="url"
+                      value={settings.socialLinks?.twitter || ""}
+                      onChange={(e) => setSettings({ ...settings, socialLinks: { ...(settings.socialLinks || { twitter: "", github: "", linkedin: "", facebook: "", discord: "", youtube: "" }), twitter: e.target.value } })}
+                      placeholder="https://twitter.com/username"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">GitHub</label>
+                    <input
+                      type="url"
+                      value={settings.socialLinks?.github || ""}
+                      onChange={(e) => setSettings({ ...settings, socialLinks: { ...(settings.socialLinks || { twitter: "", github: "", linkedin: "", facebook: "", discord: "", youtube: "" }), github: e.target.value } })}
+                      placeholder="https://github.com/username"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">LinkedIn</label>
+                    <input
+                      type="url"
+                      value={settings.socialLinks?.linkedin || ""}
+                      onChange={(e) => setSettings({ ...settings, socialLinks: { ...(settings.socialLinks || { twitter: "", github: "", linkedin: "", facebook: "", discord: "", youtube: "" }), linkedin: e.target.value } })}
+                      placeholder="https://linkedin.com/in/username"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">Facebook</label>
+                    <input
+                      type="url"
+                      value={settings.socialLinks?.facebook || ""}
+                      onChange={(e) => setSettings({ ...settings, socialLinks: { ...(settings.socialLinks || { twitter: "", github: "", linkedin: "", facebook: "", discord: "", youtube: "" }), facebook: e.target.value } })}
+                      placeholder="https://facebook.com/page"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">Discord</label>
+                    <input
+                      type="url"
+                      value={settings.socialLinks?.discord || ""}
+                      onChange={(e) => setSettings({ ...settings, socialLinks: { ...(settings.socialLinks || { twitter: "", github: "", linkedin: "", facebook: "", discord: "", youtube: "" }), discord: e.target.value } })}
+                      placeholder="https://discord.gg/invite"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-500 block mb-1">YouTube</label>
+                    <input
+                      type="url"
+                      value={settings.socialLinks?.youtube || ""}
+                      onChange={(e) => setSettings({ ...settings, socialLinks: { ...(settings.socialLinks || { twitter: "", github: "", linkedin: "", facebook: "", discord: "", youtube: "" }), youtube: e.target.value } })}
+                      placeholder="https://youtube.com/@channel"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-mono"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -591,6 +710,270 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
                 Enable Ad Placements on Tools & Blog Posts
               </span>
             </label>
+          </div>
+        )}
+
+        {activeSubTab === "guest_posting" && (
+          <div className="p-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl space-y-6 text-xs">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <FileCode className="w-4 h-4 text-indigo-500" /> Guest Article Submission Guidelines & Constraints
+                </h3>
+                <p className="text-slate-500 text-xs">
+                  Configure submission controls, word counts, allowed categories, and auto-publishing rules.
+                </p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={settings.guestPostingSettings?.enabled ?? true}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      guestPostingSettings: {
+                        ...(settings.guestPostingSettings || {
+                          enabled: true,
+                          guidelines: "",
+                          minWordCount: 500,
+                          maxWordCount: 5000,
+                          allowedCategories: ["Web Development", "Digital Marketing", "SEO", "Developer Tools", "PDF Utilities", "Student Tools"],
+                          requireFeaturedImage: false,
+                          requireAuthorBio: true,
+                          moderationRequired: true,
+                          autoPublish: false,
+                        }),
+                        enabled: e.target.checked,
+                      },
+                    })
+                  }
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-indigo-600"></div>
+                <span className="ml-3 font-bold text-slate-700 dark:text-slate-300">
+                  {settings.guestPostingSettings?.enabled ? "Submissions Open" : "Submissions Closed"}
+                </span>
+              </label>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                  Minimum Article Word Count
+                </label>
+                <input
+                  type="number"
+                  min={100}
+                  max={2000}
+                  value={settings.guestPostingSettings?.minWordCount ?? 500}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      guestPostingSettings: {
+                        ...(settings.guestPostingSettings || {
+                          enabled: true,
+                          guidelines: "",
+                          minWordCount: 500,
+                          maxWordCount: 5000,
+                          allowedCategories: [],
+                          requireFeaturedImage: false,
+                          requireAuthorBio: true,
+                          moderationRequired: true,
+                          autoPublish: false,
+                        }),
+                        minWordCount: parseInt(e.target.value) || 500,
+                      },
+                    })
+                  }
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-medium text-slate-900 dark:text-white"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                  Maximum Article Word Count
+                </label>
+                <input
+                  type="number"
+                  min={1000}
+                  max={20000}
+                  value={settings.guestPostingSettings?.maxWordCount ?? 5000}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      guestPostingSettings: {
+                        ...(settings.guestPostingSettings || {
+                          enabled: true,
+                          guidelines: "",
+                          minWordCount: 500,
+                          maxWordCount: 5000,
+                          allowedCategories: [],
+                          requireFeaturedImage: false,
+                          requireAuthorBio: true,
+                          moderationRequired: true,
+                          autoPublish: false,
+                        }),
+                        maxWordCount: parseInt(e.target.value) || 5000,
+                      },
+                    })
+                  }
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-medium text-slate-900 dark:text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                Editorial Submission Guidelines (Displayed on /guest-post)
+              </label>
+              <textarea
+                rows={4}
+                value={settings.guestPostingSettings?.guidelines || ""}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    guestPostingSettings: {
+                      ...(settings.guestPostingSettings || {
+                        enabled: true,
+                        guidelines: "",
+                        minWordCount: 500,
+                        maxWordCount: 5000,
+                        allowedCategories: [],
+                        requireFeaturedImage: false,
+                        requireAuthorBio: true,
+                        moderationRequired: true,
+                        autoPublish: false,
+                      }),
+                      guidelines: e.target.value,
+                    },
+                  })
+                }
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-medium text-slate-900 dark:text-white"
+                placeholder="Detail article standards, original content policy, link requirements..."
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+              <label className="flex items-center gap-2 cursor-pointer p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
+                <input
+                  type="checkbox"
+                  checked={settings.guestPostingSettings?.requireAuthorBio ?? true}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      guestPostingSettings: {
+                        ...(settings.guestPostingSettings || {
+                          enabled: true,
+                          guidelines: "",
+                          minWordCount: 500,
+                          maxWordCount: 5000,
+                          allowedCategories: [],
+                          requireFeaturedImage: false,
+                          requireAuthorBio: true,
+                          moderationRequired: true,
+                          autoPublish: false,
+                        }),
+                        requireAuthorBio: e.target.checked,
+                      },
+                    })
+                  }
+                  className="rounded border-slate-300 text-indigo-600 w-4 h-4"
+                />
+                <span className="font-bold text-slate-700 dark:text-slate-300">
+                  Require Author Bio
+                </span>
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
+                <input
+                  type="checkbox"
+                  checked={settings.guestPostingSettings?.requireFeaturedImage ?? false}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      guestPostingSettings: {
+                        ...(settings.guestPostingSettings || {
+                          enabled: true,
+                          guidelines: "",
+                          minWordCount: 500,
+                          maxWordCount: 5000,
+                          allowedCategories: [],
+                          requireFeaturedImage: false,
+                          requireAuthorBio: true,
+                          moderationRequired: true,
+                          autoPublish: false,
+                        }),
+                        requireFeaturedImage: e.target.checked,
+                      },
+                    })
+                  }
+                  className="rounded border-slate-300 text-indigo-600 w-4 h-4"
+                />
+                <span className="font-bold text-slate-700 dark:text-slate-300">
+                  Require Featured Image
+                </span>
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
+                <input
+                  type="checkbox"
+                  checked={settings.guestPostingSettings?.moderationRequired ?? true}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      guestPostingSettings: {
+                        ...(settings.guestPostingSettings || {
+                          enabled: true,
+                          guidelines: "",
+                          minWordCount: 500,
+                          maxWordCount: 5000,
+                          allowedCategories: [],
+                          requireFeaturedImage: false,
+                          requireAuthorBio: true,
+                          moderationRequired: true,
+                          autoPublish: false,
+                        }),
+                        moderationRequired: e.target.checked,
+                      },
+                    })
+                  }
+                  className="rounded border-slate-300 text-indigo-600 w-4 h-4"
+                />
+                <span className="font-bold text-slate-700 dark:text-slate-300">
+                  Require Admin Review
+                </span>
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
+                <input
+                  type="checkbox"
+                  checked={settings.guestPostingSettings?.autoPublish ?? false}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      guestPostingSettings: {
+                        ...(settings.guestPostingSettings || {
+                          enabled: true,
+                          guidelines: "",
+                          minWordCount: 500,
+                          maxWordCount: 5000,
+                          allowedCategories: [],
+                          requireFeaturedImage: false,
+                          requireAuthorBio: true,
+                          moderationRequired: true,
+                          autoPublish: false,
+                        }),
+                        autoPublish: e.target.checked,
+                      },
+                    })
+                  }
+                  className="rounded border-slate-300 text-indigo-600 w-4 h-4"
+                />
+                <span className="font-bold text-slate-700 dark:text-slate-300">
+                  Auto-Publish (No Review)
+                </span>
+              </label>
+            </div>
           </div>
         )}
 

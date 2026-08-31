@@ -11,6 +11,7 @@ import { CALCULATORTOOLS } from "../data/tools/calculatorTools";
 import { QRTOOLS } from "../data/tools/qrTools";
 import { FILE_TOOLS } from "../data/tools/fileTools";
 import { MEDIA_TOOLS } from "../data/tools/mediaTools";
+import { STUDENT_TOOLS } from "../data/tools/studentTools";
 
 export interface ToolAdminOverride {
   status?: ToolStatus;
@@ -47,6 +48,7 @@ function buildCanonicalTools(): AITool[] {
     ...QRTOOLS,
     ...FILE_TOOLS,
     ...MEDIA_TOOLS,
+    ...STUDENT_TOOLS,
   ];
 
   const seenIds = new Set<string>();
@@ -69,7 +71,7 @@ function buildCanonicalTools(): AITool[] {
     const tool: AITool = {
       ...raw,
       slug,
-      route: `/${slug}`,
+      route: `/en/${slug}`,
       status: raw.status || "ACTIVE",
       isActive: raw.isActive !== undefined ? raw.isActive : true,
       isFeatured: raw.isFeatured !== undefined ? raw.isFeatured : !!raw.isTrending,

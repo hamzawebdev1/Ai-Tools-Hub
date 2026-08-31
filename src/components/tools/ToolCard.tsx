@@ -9,6 +9,11 @@ import {
   Share2,
   Image as ImageIcon,
   Briefcase,
+  GraduationCap,
+  Award,
+  Calendar,
+  Clock,
+  Target,
   Zap,
   Star,
   Bookmark,
@@ -45,6 +50,16 @@ export const getToolIcon = (iconName: string) => {
       return <ImageIcon className="w-5 h-5" />;
     case "Briefcase":
       return <Briefcase className="w-5 h-5" />;
+    case "GraduationCap":
+      return <GraduationCap className="w-5 h-5" />;
+    case "Award":
+      return <Award className="w-5 h-5" />;
+    case "Calendar":
+      return <Calendar className="w-5 h-5" />;
+    case "Clock":
+      return <Clock className="w-5 h-5" />;
+    case "Target":
+      return <Target className="w-5 h-5" />;
     default:
       return <Zap className="w-5 h-5" />;
   }
@@ -87,7 +102,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                <a href={`/${tool.slug}`} onClick={handleCardClick} className="focus:outline-hidden">
+                <a href={`/en/${tool.slug}`} onClick={handleCardClick} className="focus:outline-hidden">
                   {tool.name}
                 </a>
               </h3>
@@ -128,7 +143,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
             <Bookmark className={`w-4 h-4 ${isFavorite ? "fill-pink-500" : ""}`} />
           </button>
           <a
-            href={`/${tool.slug}`}
+            href={`/en/${tool.slug}`}
             onClick={handleCardClick}
             className="px-4 py-2.5 min-h-[44px] rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all"
           >
@@ -180,7 +195,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         {/* Name & Tagline */}
         <div>
           <h3 className="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-            <a href={`/${tool.slug}`} onClick={handleCardClick} className="focus:outline-hidden">
+            <a href={`/en/${tool.slug}`} onClick={handleCardClick} className="focus:outline-hidden">
               {tool.name}
             </a>
           </h3>
@@ -211,7 +226,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         </div>
 
         <a
-          href={`/${tool.slug}`}
+          href={`/en/${tool.slug}`}
           onClick={handleCardClick}
           className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
         >

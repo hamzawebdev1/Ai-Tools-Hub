@@ -13,18 +13,23 @@ interface AuthorPageProps {
 }
 
 export const AuthorPage: React.FC<AuthorPageProps> = ({
-  authorSlug = "alex-rivera",
+  authorSlug = "hamza",
   setActiveTab,
   onSelectPost,
 }) => {
   const author = AUTHORS_DATA.find((a) => a.slug === authorSlug) || AUTHORS_DATA[0];
   const authorPosts = BLOG_POSTS_DATA.filter((p) => p.author.name === author.name);
 
+  // Filter non-empty social links
+  const activeSocials = Object.entries(author.socials || {}).filter(
+    ([_, url]) => url && url.trim().length > 0
+  );
+
   return (
     <>
       <SchemaHead
-        title={`${author.name} - Author Profile & Editorial Standards`}
-        description={`Learn more about ${author.name}, ${author.role} at Mehzan Tools Hub. Read expert articles, technical guides, and security research.`}
+        title={`${author.name} - Web Developer & Digital Marketing Expert Profile`}
+        description={`Learn more about ${author.name}, ${author.role}. 5+ years experience in web development, agency operations, and digital marketing.`}
         schemaType="Article"
         schemaData={{
           "@type": "Person",
@@ -54,12 +59,12 @@ export const AuthorPage: React.FC<AuthorPageProps> = ({
             <div className="space-y-3 flex-1">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[11px] font-bold uppercase tracking-wider mb-1">
-                  <UserCheck className="w-3.5 h-3.5" /> Verified Technical Author
+                  <UserCheck className="w-3.5 h-3.5" /> Verified Technical Author & Founder
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
                   {author.name}
                 </h1>
-                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
                   {author.role}
                 </p>
               </div>
@@ -67,6 +72,42 @@ export const AuthorPage: React.FC<AuthorPageProps> = ({
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 {author.bio}
               </p>
+
+              {/* Social Profiles (Rendered ONLY if configured) */}
+              {activeSocials.length > 0 && (
+                <div className="flex items-center gap-3 pt-1 justify-center sm:justify-start">
+                  {author.socials.twitter && (
+                    <a
+                      href={author.socials.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition-colors"
+                    >
+                      Twitter / X
+                    </a>
+                  )}
+                  {author.socials.linkedin && (
+                    <a
+                      href={author.socials.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition-colors"
+                    >
+                      LinkedIn
+                    </a>
+                  )}
+                  {author.socials.github && (
+                    <a
+                      href={author.socials.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition-colors"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              )}
 
               {/* Expertise tags */}
               <div className="space-y-1.5 pt-1">

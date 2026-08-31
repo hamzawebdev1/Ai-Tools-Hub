@@ -15,7 +15,8 @@ export type ToolCategory =
   | "social"
   | "productivity"
   | "utilities"
-  | "business";
+  | "business"
+  | "student";
 
 export type ToolStatus = "ACTIVE" | "DISABLED" | "BROKEN" | "NEEDS_REVIEW";
 

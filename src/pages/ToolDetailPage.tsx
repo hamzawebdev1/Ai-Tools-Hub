@@ -44,6 +44,7 @@ const SeoToolsRunner = React.lazy(() => import("../components/tools/SeoToolsRunn
 const CalculatorsRunner = React.lazy(() => import("../components/tools/CalculatorsRunner").then(m => ({ default: m.CalculatorsRunner })));
 const FileToolsRunner = React.lazy(() => import("../components/tools/FileToolsRunner").then(m => ({ default: m.FileToolsRunner })));
 const MediaToolsRunner = React.lazy(() => import("../components/tools/MediaToolsRunner").then(m => ({ default: m.MediaToolsRunner })));
+const StudentToolsRunner = React.lazy(() => import("../components/tools/StudentToolsRunner").then(m => ({ default: m.StudentToolsRunner })));
 const StorageStatusDashboard = React.lazy(() => import("../components/storage/StorageStatusDashboard").then(m => ({ default: m.StorageStatusDashboard })));
 
 interface ToolDetailPageProps {
@@ -425,6 +426,8 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                 <FileToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
               ) : tool.category === "media" ? (
                 <MediaToolsRunner tool={tool} />
+              ) : tool.category === "student" ? (
+                <StudentToolsRunner toolId={tool.id} toolName={tool.name} toolSlug={tool.slug} />
               ) : (
                 <>
                 <div className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 shadow-xl space-y-5">

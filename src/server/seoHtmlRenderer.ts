@@ -68,7 +68,7 @@ function renderPrerenderedBodyContent(
         <div>
           <h4 style="color: #ffffff; font-weight: 700; margin-bottom: 0.75rem;">Popular Tools</h4>
           <ul style="list-style: none; padding: 0; margin: 0; line-height: 2;">
-            ${featuredTools.map((t) => `<li><a href="/${t.slug}" style="color: #cbd5e1; text-decoration: none;">${escapeHtml(t.name)}</a></li>`).join("\n")}
+            ${featuredTools.map((t) => `<li><a href="/en/${t.slug}" style="color: #cbd5e1; text-decoration: none;">${escapeHtml(t.name)}</a></li>`).join("\n")}
             <li><a href="/tools" style="color: #818cf8; text-decoration: none; font-weight: 600;">View All 50+ Tools &rarr;</a></li>
           </ul>
         </div>
@@ -164,7 +164,7 @@ function renderPrerenderedBodyContent(
           <h2 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Related ${escapeHtml(categoryName)}</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;">
             ${relatedTools.map((rt) => `
-              <a href="/${rt.slug}" style="display: block; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; text-decoration: none; background-color: #ffffff;">
+              <a href="/en/${rt.slug}" style="display: block; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; text-decoration: none; background-color: #ffffff;">
                 <h3 style="font-size: 1rem; font-weight: 700; color: #4f46e5; margin: 0 0 0.25rem 0;">${escapeHtml(rt.name)}</h3>
                 <p style="font-size: 0.85rem; color: #64748b; margin: 0; line-height: 1.4;">${escapeHtml(rt.description)}</p>
               </a>
@@ -209,7 +209,7 @@ function renderPrerenderedBodyContent(
           <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1.25rem;">Available ${escapeHtml(category.name)} (${categoryTools.length} Tools)</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
             ${categoryTools.map((t) => `
-              <a href="/${t.slug}" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
+              <a href="/en/${t.slug}" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
                 <h3 style="font-size: 1.125rem; font-weight: 700; color: #4f46e5; margin: 0 0 0.5rem 0;">${escapeHtml(t.name)}</h3>
                 <p style="font-size: 0.875rem; color: #64748b; margin: 0; line-height: 1.5;">${escapeHtml(t.description)}</p>
               </a>

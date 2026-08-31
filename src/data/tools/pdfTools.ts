@@ -50,7 +50,8 @@ const rawPdfTools = [
   { id: 'pdf-to-docx', name: 'Convert PDF to Word DOCX', slug: 'pdf-to-word', tagline: 'Convert PDF files into editable Microsoft Word DOCX documents.' },
   { id: 'docx-to-pdf', name: 'Convert Word DOCX to PDF', slug: 'docx-to-pdf', tagline: 'Convert Microsoft Word (.docx) documents into styled PDF files.' },
   { id: 'csv-to-pdf', name: 'Convert CSV to PDF Table', slug: 'csv-to-pdf', tagline: 'Convert CSV spreadsheet tables into formatted PDF reports.' },
-  { id: 'pdf-editor', name: 'PDF Editor & Annotator', slug: 'pdf-editor', tagline: 'Annotate PDF with custom text, highlighter, shapes, redaction, and stamps.' }
+  { id: 'pdf-editor', name: 'PDF Editor & Annotator', slug: 'pdf-editor', tagline: 'Annotate PDF with custom text, highlighter, shapes, redaction, and stamps.' },
+  { id: 'pdf-compare', name: 'PDF Compare & Diff Viewer', slug: 'pdf-compare', tagline: 'Compare two PDF documents side-by-side and highlight structural differences.' }
 ];
 
 export const PDFTOOLS: AITool[] = rawPdfTools.map((item, idx) => ({

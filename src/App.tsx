@@ -48,6 +48,7 @@ const AdminDashboardPage = React.lazy(() => import("./pages/AdminDashboardPage")
 const HistoryPage = React.lazy(() => import("./pages/HistoryPage").then(m => ({ default: m.HistoryPage })));
 const FavoritesPage = React.lazy(() => import("./pages/FavoritesPage").then(m => ({ default: m.FavoritesPage })));
 const FeedbackPage = React.lazy(() => import("./pages/FeedbackPage").then(m => ({ default: m.FeedbackPage })));
+const GuestPostPage = React.lazy(() => import("./pages/GuestPostPage").then(m => ({ default: m.GuestPostPage })));
 const SuggestToolPage = React.lazy(() => import("./pages/SuggestToolPage").then(m => ({ default: m.SuggestToolPage })));
 const PricingPage = React.lazy(() => import("./pages/PricingPage").then(m => ({ default: m.PricingPage })));
 const AuthorPage = React.lazy(() => import("./pages/AuthorPage").then(m => ({ default: m.AuthorPage })));
@@ -169,7 +170,7 @@ function AppContent() {
   const handleSelectTool = (slug: string) => {
     setSelectedToolSlug(slug);
     setActiveTab("tool-detail");
-    navigateTo(`/${slug}`);
+    navigateTo(`/en/${slug}`);
   };
 
   const handleSelectCategory = (slug: string) => {
@@ -315,6 +316,8 @@ function AppContent() {
         )}
 
         {activeTab === "contact" && <ContactPage />}
+
+        {activeTab === "guest-post" && <GuestPostPage />}
 
         {activeTab === "privacy" && <PrivacyPolicyPage />}
 

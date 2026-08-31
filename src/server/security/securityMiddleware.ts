@@ -55,6 +55,20 @@ export const authRateLimiter = rateLimit({
 });
 
 /**
+ * Guest Post Submission Rate Limiter: Max 5 submissions per 30 minutes per IP
+ */
+export const guestPostRateLimiter = rateLimit({
+  windowMs: 30 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    error: "Too many guest article submissions from this IP. Please wait before submitting another article.",
+  },
+});
+
+/**
  * Anti-XSS and Input Sanitization Middleware (OWASP A03:2021)
  * Strips script tags, javascript: URIs, inline handlers, and suspicious SQL syntax
  */

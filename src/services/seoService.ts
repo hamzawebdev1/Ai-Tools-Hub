@@ -206,7 +206,7 @@ export function getBreadcrumbSchema(items: { name: string; url: string }[]) {
  * SoftwareApplication / Tool Schema
  */
 export function getToolSoftwareSchema(tool: AITool) {
-  const toolUrl = getCanonicalUrl(`/${tool.slug}`);
+  const toolUrl = getCanonicalUrl(`/en/${tool.slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -258,7 +258,7 @@ export function getToolHowToSchema(tool: AITool) {
     return null;
   }
 
-  const toolUrl = getCanonicalUrl(`/${tool.slug}`);
+  const toolUrl = getCanonicalUrl(`/en/${tool.slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -451,11 +451,11 @@ export function buildSEOMetadata(
 
     case "tool-detail": {
       const tool = data?.tool || TOOLS_DATA[0];
-      const canonicalUrl = getCanonicalUrl(`/${tool.slug}`);
+      const canonicalUrl = getCanonicalUrl(`/en/${tool.slug}`);
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: tool.category ? `${tool.category.toUpperCase()} Tools` : "Tools", url: `/category/${tool.category || "pdf-tools"}` },
-        { name: tool.name, url: `/${tool.slug}` }
+        { name: tool.name, url: `/en/${tool.slug}` }
       ];
 
       const schemas: Record<string, any>[] = [
