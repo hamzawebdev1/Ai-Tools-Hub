@@ -42,40 +42,15 @@ export const HomePage: React.FC<HomePageProps> = ({
   setSearchQuery,
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [visibleCount, setVisibleCount] = useState<number>(12);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  const filteredTools =
+  const popularAndTrendingTools = tools.filter((t) => t.isPopular || t.isTrending);
+
+  const displayedTools =
     activeCategory === "all"
-      ? tools.filter((t) => t.showOnHomepage)
-      : tools.filter((t) => t.category === activeCategory && t.showOnHomepage);
+      ? popularAndTrendingTools.slice(0, 12)
+      : tools.filter((t) => t.category === activeCategory).slice(0, 12);
 
   const trendingTools = tools.filter((t) => t.isTrending);
-  const popularTools = tools.filter((t) => t.isPopular);
-
-  useEffect(() => {
-    setVisibleCount(12);
-  }, [activeCategory]);
-
-  useEffect(() => {
-    if (visibleCount >= filteredTools.length) return;
-    if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCount((prev) => Math.min(prev + 24, filteredTools.length));
-        }
-      },
-      { rootMargin: "250px" }
-    );
-
-    if (sentinelRef.current) {
-      observer.observe(sentinelRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [visibleCount, filteredTools.length]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -247,7 +222,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   : "bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800"
               }`}
             >
-              🔥 All Tools ({tools.length})
+              🔥 Popular Tools
             </button>
             {CATEGORIES_DATA.map((cat) => (
               <button
@@ -265,10 +240,10 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
         </section>
 
-        {/* Tools Grid */}
-        <section className="space-y-4">
+        {/* Popular Tools Grid */}
+        <section className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTools.slice(0, visibleCount).map((tool) => (
+            {displayedTools.map((tool) => (
               <ToolCard
                 key={tool.id}
                 tool={tool}
@@ -279,18 +254,41 @@ export const HomePage: React.FC<HomePageProps> = ({
             ))}
           </div>
 
-          {/* Sentinel & Load More trigger */}
-          {visibleCount < filteredTools.length && (
-            <div ref={sentinelRef} className="pt-6 text-center">
-              <button
-                onClick={() => setVisibleCount((prev) => Math.min(prev + 24, filteredTools.length))}
-                className="px-6 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer inline-flex items-center gap-2"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-spin" />
-                <span>Showing {visibleCount} of {filteredTools.length} tools — Load More</span>
-              </button>
+          {/* Explore All Tools Banner CTA */}
+          <div className="pt-2 text-center">
+            <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-slate-900/50 to-purple-950/40 border border-indigo-500/20 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+              <div className="text-left space-y-1">
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-base sm:text-lg flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-indigo-500 shrink-0" />
+                  {activeCategory === "all"
+                    ? "Looking for all 500+ free tools?"
+                    : `Explore all ${CATEGORIES_DATA.find((c) => c.id === activeCategory)?.name || activeCategory} utilities`}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                  {activeCategory === "all"
+                    ? "Browse our complete directory of 500+ online tools or use the search bar above."
+                    : `Access the complete list of tools in the ${CATEGORIES_DATA.find((c) => c.id === activeCategory)?.name || activeCategory} category.`}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto shrink-0 justify-end">
+                {activeCategory !== "all" && (
+                  <button
+                    onClick={() => onSelectCategory(activeCategory)}
+                    className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors border border-slate-700 cursor-pointer"
+                  >
+                    View Category Page
+                  </button>
+                )}
+                <button
+                  onClick={() => setActiveTab("all-tools")}
+                  className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-indigo-600/30 flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 cursor-pointer hover:scale-105"
+                >
+                  <span>Browse All 500+ Tools</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-          )}
+          </div>
         </section>
 
         {/* AdSense In-Content Banner Placement */}

@@ -20,6 +20,8 @@ import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
 import { Newsletter } from "../components/layout/Newsletter";
 import { SchemaHead } from "../components/layout/SchemaHead";
+import { getRelatedTools } from "../utils/linkBuilder";
+import { injectLinksIntoContent } from "../utils/seoLinkInjector";
 
 interface BlogPostPageProps {
   postSlug: string;
@@ -217,7 +219,11 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
           {/* Article HTML Body */}
           <div
             className="prose prose-slate dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 text-sm sm:text-base leading-relaxed space-y-4 prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-lg prose-table:my-6 prose-a:text-indigo-600 dark:prose-a:text-indigo-400"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: (() => {
+                const tools = getRelatedTools(post.category);
+                const links = tools.map(t => ({ text: t.name, url: t.url }));
+                return injectLinksIntoContent(post.content, links);
+            })() }}
           />
 
           {/* FAQ Accordion Section */}

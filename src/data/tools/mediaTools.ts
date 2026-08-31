@@ -1676,7 +1676,7 @@ export const MEDIA_TOOLS: AITool[] = [
     id: "gif-resizer",
     slug: "gif-resizer",
     name: "GIF Resizer Tool",
-    tagline: "Resize animated GIF pixel dimensions without breaking animation",
+    tagline: "Resize animated GIF pixel dimensions with this gif resizer tool.",
     description: "Scale animated GIF width and height while maintaining full animation frame sequences.",
     category: "media",
     iconName: "Maximize2",

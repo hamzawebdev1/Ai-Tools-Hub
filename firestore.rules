@@ -60,6 +60,10 @@ service cloud.firestore {
     match /keywords/{keywordId} {
       allow read, write: if true;
     }
+
+    match /media/{mediaId} {
+      allow read, write: if true;
+    }
   }
 }
 

@@ -22,7 +22,7 @@ const rawPdfTools = [
   { id: 'png-to-pdf', name: 'Convert PNG to PDF', slug: 'png-to-pdf', tagline: 'Convert transparent or solid PNG graphics into PDF.' },
   { id: 'images-to-pdf', name: 'Convert Images to PDF', slug: 'images-to-pdf', tagline: 'Combine JPG, PNG, WEBP, and BMP images into one PDF.' },
   { id: 'pdf-page-counter', name: 'PDF Page Counter & Metrics', slug: 'pdf-page-counter', tagline: 'Instantly count pages, words, and structural metrics in PDF.' },
-  { id: 'pdf-metadata-viewer', name: 'PDF Metadata Viewer', slug: 'pdf-metadata-viewer', tagline: 'Inspect author, title, creation date, and producer tags.' },
+  { id: 'pdf-metadata-viewer', name: 'PDF Metadata Viewer', slug: 'pdf-metadata-viewer', tagline: 'Inspect author, title, and creation date with this pdf metadata viewer.' },
   { id: 'pdf-metadata-editor', name: 'PDF Metadata Editor', slug: 'pdf-metadata-editor', tagline: 'Edit title, author, subject, and keyword metadata tags.' },
   { id: 'pdf-metadata-remover', name: 'PDF Metadata Remover', slug: 'pdf-metadata-remover', tagline: 'Sanitize hidden author data and metadata from PDF files.' },
   { id: 'pdf-extract-images', name: 'Extract Images from PDF', slug: 'pdf-extract-images', tagline: 'Export all high-resolution embedded images from PDF.' },

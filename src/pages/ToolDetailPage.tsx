@@ -32,6 +32,8 @@ import { useAuth } from "../context/AuthContext";
 import { canGuestExecute, incrementGuestUsage } from "../services/guestUsageService";
 import { GuestLimitModal } from "../components/auth/GuestLimitModal";
 import { trackToolAction } from "../services/toolTrackingService";
+import { getRelatedTools } from "../utils/linkBuilder";
+import { injectLinksIntoContent } from "../utils/seoLinkInjector";
 
 const PdfToolsRunner = React.lazy(() => import("../components/tools/PdfToolsRunner").then(m => ({ default: m.PdfToolsRunner })));
 const ImageToolsRunner = React.lazy(() => import("../components/tools/ImageToolsRunner").then(m => ({ default: m.ImageToolsRunner })));
@@ -641,8 +643,11 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
               About {tool.name}
             </h2>
-            <p className="text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-              {tool.seoContent.overview}
+            <p className="text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300" dangerouslySetInnerHTML={{ __html: (() => {
+                const tools = getRelatedTools(tool.id);
+                const links = tools.map(t => ({ text: t.name, url: t.url }));
+                return injectLinksIntoContent(tool.seoContent.overview, links);
+            })() }}>
             </p>
           </section>
 
@@ -704,6 +709,25 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                     {faq.answer}
                   </p>
                 </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Related Tools Section */}
+          <section className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+              Related Tools
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {getRelatedTools(tool.category, tool.id).map((t) => (
+                <a
+                  key={t.id}
+                  href={getUrlForRoute("tool-detail", { toolSlug: t.slug })}
+                  className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 transition-colors"
+                >
+                  <h4 className="font-semibold text-sm text-slate-900 dark:text-white">{t.name}</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.tagline}</p>
+                </a>
               ))}
             </div>
           </section>

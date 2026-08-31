@@ -74,6 +74,7 @@ export interface AITool {
   isPopular?: boolean;
   isFeatured?: boolean;
   isNew?: boolean;
+  showOnHomepage?: boolean;
   isActive?: boolean;
   status?: ToolStatus;
   route?: string;
