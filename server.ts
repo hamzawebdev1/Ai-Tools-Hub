@@ -6,6 +6,7 @@ import { createServer as createViteServer } from "vite";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import seoServerRoutes from "./src/server/seoServerRoutes";
+import rssRoutes from "./src/server/rssRoutes";
 import webAnalysisRoutes from "./src/server/webAnalysisRoutes";
 import storageRoutes from "./src/server/storage/storageRoutes";
 import authRoutes from "./src/server/security/authRoutes";
@@ -202,8 +203,11 @@ async function startServer() {
   // Mount Secure Encrypted Cloud Storage Routes
   app.use("/api/storage", storageRoutes);
 
-  // SEO XML Sitemaps & robots.txt routes
-  app.use(seoServerRoutes);
+import rssRoutes from "./src/server/rssRoutes";
+import rssRoutes from "./src/server/rssRoutes";
+import webAnalysisRoutes from "./src/server/webAnalysisRoutes";  
+  // RSS Feed
+  app.use(rssRoutes);
 
   // Web analysis, HTTP inspection & SSRF-safe URL checking routes
   app.use(webAnalysisRoutes);

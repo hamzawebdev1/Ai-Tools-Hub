@@ -369,6 +369,70 @@ router.get(["/api/admin/seo-audit", "/api/seo/audit"], (req, res) => {
   });
 });
 
+/**
+ * Bing Webmaster Tools Verification File (/BingSiteAuth.xml)
+ */
+router.get("/BingSiteAuth.xml", (req, res) => {
+  const bingCode = process.env.BING_VERIFICATION_CODE || process.env.BING_SITE_AUTH || "MEHZANDIGITALBINGAUTH2026";
+  const xml = `<?xml version="1.0"?>\n<users>\n  <user>${escapeXml(bingCode)}</user>\n</users>`;
+  res.header("Content-Type", "application/xml; charset=utf-8");
+  res.send(xml);
+});
+
+/**
+ * IndexNow Key Verification Route (serves INDEXNOW_KEY.txt if configured)
+ */
+router.get("/:keyText.txt", (req, res, next) => {
+  const keyParam = req.params.keyText;
+  const configuredKey = process.env.INDEXNOW_KEY || "mehzan_indexnow_sec_2026";
+  if (keyParam === configuredKey) {
+    res.header("Content-Type", "text/plain; charset=utf-8");
+    return res.send(configuredKey);
+  }
+  next();
+});
+
+/**
+ * IndexNow Submission Endpoint (/api/seo/indexnow)
+ */
+router.post("/api/seo/indexnow", async (req, res) => {
+  try {
+    const { urls } = req.body || {};
+    const host = getBaseHost(req).replace(/^https?:\/\//, "");
+    const indexNowKey = process.env.INDEXNOW_KEY || "mehzan_indexnow_sec_2026";
+    const protocol = req.protocol || "https";
+    const keyLocation = `${protocol}://${host}/${indexNowKey}.txt`;
+
+    if (!urls || !Array.isArray(urls) || urls.length === 0) {
+      return res.status(400).json({ success: false, error: "No URLs provided for IndexNow submission" });
+    }
+
+    const payload = {
+      host: host.replace(/^www\./, ""),
+      key: indexNowKey,
+      keyLocation: keyLocation,
+      urlList: urls,
+    };
+
+    // Forward to IndexNow API (api.indexnow.org)
+    const indexNowRes = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(payload),
+    });
+
+    const responseStatus = indexNowRes.status;
+    res.json({
+      success: responseStatus === 200 || responseStatus === 202,
+      status: responseStatus,
+      submittedCount: urls.length,
+      message: "IndexNow submission processed successfully",
+    });
+  } catch (e: any) {
+    res.status(500).json({ success: false, error: e.message || "Failed to submit to IndexNow" });
+  }
+});
+
 function escapeXml(unsafe: string): string {
   return unsafe
     .replace(/&/g, "&amp;")

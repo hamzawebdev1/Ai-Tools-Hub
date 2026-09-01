@@ -471,6 +471,66 @@ function renderPrerenderedBodyContent(
       </main>
     `;
   }
+  // 7.5 Author Profile Page
+  else if (routeState.tab && routeState.tab.startsWith("author-")) {
+    const authorSlug = routeState.tab.replace("author-", "");
+    const authorName = authorSlug.split("-").map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    const authorPosts = BLOG_POSTS_DATA.filter((p) => p.author.name.toLowerCase().includes(authorName.toLowerCase()) || p.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === authorSlug);
+    
+    mainHtml = `
+      <main style="max-width: 56rem; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; color: #334155;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">
+          <a href="/" style="color: #6366f1; text-decoration: none;">Home</a> &gt;
+          <a href="/about" style="color: #6366f1; text-decoration: none;">Authors</a> &gt;
+          <span style="color: #0f172a; font-weight: 600;">${escapeHtml(authorName)}</span>
+        </nav>
+
+        <article>
+          <header style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2.5rem; background: #f8fafc; padding: 2rem; border-radius: 1rem; border: 1px solid #e2e8f0; flex-wrap: wrap;">
+            <div style="width: 120px; height: 120px; border-radius: 50%; background: #4f46e5; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; flex-shrink: 0;">
+              ${escapeHtml(authorName.charAt(0))}
+            </div>
+            <div style="flex: 1; min-width: 280px;">
+              <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin: 0 0 0.5rem 0;">${escapeHtml(authorName)}</h1>
+              <p style="font-size: 1.1rem; color: #4f46e5; font-weight: 700; margin: 0 0 0.75rem 0;">Web Developer, Digital Marketing Expert &amp; Editorial Lead at Mehzan Digital</p>
+              <p style="font-size: 0.95rem; color: #475569; margin: 0; line-height: 1.6;">
+                Hamza brings 5+ years of hands-on expertise in full-stack web development, client-side browser utilities, technical SEO, and digital agency leadership. Founder and lead architect behind Mehzan Digital, dedicated to building lightning-fast, zero-friction developer tools and secure document utilities.
+              </p>
+            </div>
+          </header>
+
+          <section style="margin-bottom: 2.5rem;">
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Expertise &amp; Professional Focus</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+              <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
+                <h3 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0;">Web Development</h3>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Advanced TypeScript, React, Node.js, WebAssembly sandbox security, and high-performance client-side utility algorithms.</p>
+              </div>
+              <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
+                <h3 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0;">Technical SEO &amp; Growth</h3>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Comprehensive crawlability architecture, schema markup engineering, structured entity networks, and AdSense optimization.</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Published Articles &amp; Technical Guides</h2>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              ${(authorPosts.length > 0 ? authorPosts : BLOG_POSTS_DATA.slice(0, 3)).map((p: any) => `
+                <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; background: #ffffff;">
+                  <span style="font-size: 0.75rem; font-weight: 700; color: #4f46e5; text-transform: uppercase;">${escapeHtml(p.category)}</span>
+                  <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0.25rem 0 0.5rem 0;">
+                    <a href="/blog/${p.slug}" style="color: inherit; text-decoration: none;">${escapeHtml(p.title)}</a>
+                  </h3>
+                  <p style="font-size: 0.875rem; color: #64748b; margin: 0; line-height: 1.5;">${escapeHtml(p.excerpt)}</p>
+                </div>
+              `).join("")}
+            </div>
+          </section>
+        </article>
+      </main>
+    `;
+  }
   // 8. Terms, Disclaimer, Copyright
   else if (routeState.tab === "terms") {
     mainHtml = `

@@ -64,8 +64,10 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
   const fetchSettings = async () => {
     setLoading(true);
     setError(null);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
     try {
-      const res = await fetch("/api/admin/settings");
+      const res = await fetch("/api/admin/settings", { signal: controller.signal });
       if (!res.ok) {
         throw new Error(`Server returned HTTP status ${res.status}`);
       }
@@ -90,9 +92,14 @@ export const SiteSettingsSection: React.FC<SiteSettingsSectionProps> = ({
         setError(data.error || "Failed to parse site settings from server.");
       }
     } catch (err: any) {
-      console.error("Failed to load settings:", err);
-      setError(err.message || "Network connection error loading site settings.");
+      if (err.name === 'AbortError') {
+        setError("Connection to server timed out.");
+      } else {
+        console.error("Failed to load settings:", err);
+        setError(err.message || "Network connection error loading site settings.");
+      }
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   };
