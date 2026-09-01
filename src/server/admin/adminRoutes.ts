@@ -75,7 +75,7 @@ const getBaseHost = (req: any): string => {
   if (req.get("host")) {
     return `${req.protocol}://${req.get("host")}`;
   }
-  return process.env.APP_URL || "https://mehzandigital.com";
+  return process.env.APP_URL || "https://www.mehzandigital.com";
 };
 
 // In-memory Users Store with sync

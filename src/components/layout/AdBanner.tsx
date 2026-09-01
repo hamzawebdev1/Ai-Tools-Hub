@@ -6,11 +6,35 @@ interface AdBannerProps {
   slotId?: string;
 }
 
+const LOW_VALUE_SYSTEM_PATHS = [
+  "/login",
+  "/register",
+  "/admin",
+  "/dashboard",
+  "/pricing",
+  "/history",
+  "/favorites",
+  "/forgot-password",
+  "/404",
+  "/search",
+];
+
 export const AdBanner: React.FC<AdBannerProps> = ({
   placement,
   className = "",
   slotId = "default-ad-slot",
 }) => {
+  // Prevent rendering ads on low-value system, private, or auth pages
+  if (typeof window !== "undefined") {
+    const currentPath = window.location.pathname.toLowerCase();
+    const isExcluded = LOW_VALUE_SYSTEM_PATHS.some(
+      (path) => currentPath === path || currentPath.startsWith(`${path}/`)
+    );
+    if (isExcluded) {
+      return null;
+    }
+  }
+
   const getDimensions = () => {
     switch (placement) {
       case "header":
@@ -59,3 +83,4 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     </div>
   );
 };
+

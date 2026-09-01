@@ -77,4 +77,17 @@ export const AUTHORS_DATA: Author[] = [
     },
     articlesCount: 15,
   },
+  {
+    id: "4",
+    slug: "dr-priya-sharma",
+    name: "Dr. Priya Sharma",
+    role: "Senior Quantitative Researcher & Financial Analyst",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+    bio: "Dr. Priya Sharma holds a Ph.D. in Applied Mathematics and financial modeling. She leads algorithmic testing and accuracy auditing for financial calculators, loan formulas, and mathematical converters on Mehzan Tools Hub.",
+    expertise: ["Applied Mathematics", "Financial Algorithms", "Calculator Precision", "Data Science"],
+    socials: {
+      linkedin: "",
+    },
+    articlesCount: 10,
+  },
 ];

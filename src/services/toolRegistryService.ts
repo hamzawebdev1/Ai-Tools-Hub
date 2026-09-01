@@ -1,4 +1,5 @@
 import { AITool, ToolCategory, ToolStatus } from "../types";
+import { getEnrichedToolSEO } from "../utils/toolSeoHelper";
 import { PDFTOOLS } from "../data/tools/pdfTools";
 import { IMAGETOOLS } from "../data/tools/imageTools";
 import { TEXTTOOLS } from "../data/tools/textTools";
@@ -68,6 +69,17 @@ function buildCanonicalTools(): AITool[] {
     seenSlugs.add(slug);
 
     // Normalize and enrich missing properties
+    const fallbackSeo = getEnrichedToolSEO(raw);
+    const seoContent = {
+      metaTitle: raw.seoContent?.metaTitle || fallbackSeo.metaTitle,
+      metaDescription: raw.seoContent?.metaDescription || fallbackSeo.metaDescription,
+      overview: raw.seoContent?.overview || fallbackSeo.overview,
+      useCases: (raw.seoContent?.useCases && raw.seoContent.useCases.length > 0) ? raw.seoContent.useCases : fallbackSeo.useCases,
+      keyFeatures: (raw.seoContent?.keyFeatures && raw.seoContent.keyFeatures.length > 0) ? raw.seoContent.keyFeatures : fallbackSeo.keyFeatures,
+      howToUseSteps: (raw.seoContent?.howToUseSteps && raw.seoContent.howToUseSteps.length > 0) ? raw.seoContent.howToUseSteps : fallbackSeo.howToUseSteps,
+      faqs: (raw.seoContent?.faqs && raw.seoContent.faqs.length > 0) ? raw.seoContent.faqs : fallbackSeo.faqs,
+    };
+
     const tool: AITool = {
       ...raw,
       slug,
@@ -80,8 +92,9 @@ function buildCanonicalTools(): AITool[] {
       showOnHomepage: raw.showOnHomepage !== undefined ? raw.showOnHomepage : (raw.isPopular || raw.isTrending || false),
       subcategory: raw.subcategory || raw.category,
       searchKeywords: raw.searchKeywords || raw.tags || [],
-      seoTitle: raw.seoContent?.metaTitle || `${raw.name} Online - Free Tool | Mehzan Tools Hub`,
-      seoDescription: raw.seoContent?.metaDescription || `${raw.description} 100% free, private in-browser utility on Mehzan Tools Hub.`,
+      seoTitle: seoContent.metaTitle,
+      seoDescription: seoContent.metaDescription,
+      seoContent,
       createdAt: raw.createdAt || "2025-01-01",
     };
 

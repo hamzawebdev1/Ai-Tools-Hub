@@ -24,7 +24,7 @@ function renderPrerenderedBodyContent(
   tool?: any,
   category?: any,
   post?: any,
-  domain: string = "https://mehzandigital.com"
+  domain: string = "https://www.mehzandigital.com"
 ): string {
   // Navigation header HTML
   const navHtml = `
@@ -77,7 +77,8 @@ function renderPrerenderedBodyContent(
           <ul style="list-style: none; padding: 0; margin: 0; line-height: 2;">
             ${latestPosts.slice(0, 3).map((p) => `<li><a href="/blog/${p.slug}" style="color: #cbd5e1; text-decoration: none;">${escapeHtml(p.title)}</a></li>`).join("\n")}
             <li><a href="/privacy" style="color: #cbd5e1; text-decoration: none;">Privacy Policy</a> • <a href="/terms" style="color: #cbd5e1; text-decoration: none;">Terms of Service</a></li>
-            <li><a href="/disclaimer" style="color: #cbd5e1; text-decoration: none;">Disclaimer</a> • <a href="/copyright" style="color: #cbd5e1; text-decoration: none;">Copyright Policy</a></li>
+            <li><a href="/disclaimer" style="color: #cbd5e1; text-decoration: none;">Disclaimer</a> • <a href="/cookie-policy" style="color: #cbd5e1; text-decoration: none;">Cookie Policy</a> • <a href="/copyright" style="color: #cbd5e1; text-decoration: none;">Copyright Policy</a></li>
+            <li><a href="/author/hamza" style="color: #818cf8; text-decoration: none; font-weight: 600;">Meet Our Engineering &amp; Author Team &rarr;</a></li>
           </ul>
         </div>
       </div>
@@ -234,7 +235,7 @@ function renderPrerenderedBodyContent(
             <div style="font-size: 0.875rem; font-weight: 700; color: #6366f1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">${escapeHtml(post.category)}</div>
             <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; line-height: 1.25; margin-bottom: 1rem;">${escapeHtml(post.title)}</h1>
             <div style="display: flex; align-items: center; gap: 1rem; color: #64748b; font-size: 0.875rem;">
-              <span>By <strong>${escapeHtml(post.author.name)}</strong> (${escapeHtml(post.author.role)})</span>
+              <span>By <a href="/author/${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}" style="color: #4f46e5; text-decoration: none; font-weight: 700;">${escapeHtml(post.author.name)}</a> (${escapeHtml(post.author.role)})</span>
               <span>•</span>
               <time datetime="${post.date}">${post.date}</time>
               <span>•</span>
@@ -349,17 +350,27 @@ function renderPrerenderedBodyContent(
             <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Editorial Team &amp; Engineering Leadership</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
               <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">Alex Rivera</h3>
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;"><a href="/author/hamza" style="color: #4f46e5; text-decoration: none;">Hamza</a></h3>
+                <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">Founder &amp; Lead Web Developer</p>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">5+ years experience in web development, full-stack browser tools, digital agency leadership, and technical SEO.</p>
+              </div>
+              <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;"><a href="/author/alex-rivera" style="color: #4f46e5; text-decoration: none;">Alex Rivera</a></h3>
                 <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">Lead Systems Engineer</p>
                 <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Specializes in client-side WebAssembly compilation, document sandbox security, and high-performance algorithms.</p>
               </div>
               <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">Sophia Chen</h3>
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;"><a href="/author/sophia-chen" style="color: #4f46e5; text-decoration: none;">Sophia Chen</a></h3>
                 <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">UX Architect &amp; Media Codecs Lead</p>
                 <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Expert in browser image optimization codecs, responsive canvas rendering, and visual accessibility.</p>
               </div>
               <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">Dr. Priya Sharma</h3>
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;"><a href="/author/marcus-vance" style="color: #4f46e5; text-decoration: none;">Marcus Vance</a></h3>
+                <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">SEO Growth Lead &amp; Webmaster</p>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Specializes in technical SEO, structured JSON-LD schema engineering, and Google AdSense compliance.</p>
+              </div>
+              <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;"><a href="/author/dr-priya-sharma" style="color: #4f46e5; text-decoration: none;">Dr. Priya Sharma</a></h3>
                 <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">Senior Quantitative Researcher</p>
                 <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Ph.D. in Applied Mathematics focusing on algorithmic precision and financial calculator models.</p>
               </div>
@@ -450,7 +461,7 @@ function renderPrerenderedBodyContent(
                 </h2>
                 <p style="font-size: 0.875rem; color: #64748b; margin: 0 0 1rem 0; line-height: 1.5; flex: 1;">${escapeHtml(p.excerpt)}</p>
                 <div style="font-size: 0.75rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; display: flex; justify-content: space-between;">
-                  <span>By ${escapeHtml(p.author.name)}</span>
+                  <span>By <a href="/author/${p.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}" style="color: #4f46e5; text-decoration: none; font-weight: 600;">${escapeHtml(p.author.name)}</a></span>
                   <span>${p.readTime}</span>
                 </div>
               </div>
@@ -532,7 +543,7 @@ function renderPrerenderedBodyContent(
         </header>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
           ${TOOLS_DATA.map((t) => `
-            <a href="/${t.slug}" style="display: block; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
+            <a href="/en/${t.slug}" style="display: block; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
               <h2 style="font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0;">${escapeHtml(t.name)}</h2>
               <p style="font-size: 0.875rem; color: #64748b; margin: 0; line-height: 1.5;">${escapeHtml(t.description)}</p>
             </a>
@@ -588,7 +599,7 @@ function renderPrerenderedBodyContent(
           <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1.25rem;">Featured Online Utilities</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
             ${featuredList.map((t) => `
-              <a href="/${t.slug}" style="display: block; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
+              <a href="/en/${t.slug}" style="display: block; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; text-decoration: none; background-color: #ffffff;">
                 <h3 style="font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0 0 0.5rem 0;">${escapeHtml(t.name)}</h3>
                 <p style="font-size: 0.875rem; color: #64748b; margin: 0; line-height: 1.5;">${escapeHtml(t.description)}</p>
               </a>
@@ -641,18 +652,6 @@ export function injectSEOMetadataIntoHTML(
       ? BLOG_POSTS_DATA.find((p) => p.slug === routeState.postSlug)
       : undefined;
 
-    // Check if page is private/admin or 404
-    const isPrivate =
-      routeState.tab === "admin" ||
-      routeState.tab === "dashboard" ||
-      routeState.tab === "login" ||
-      routeState.tab === "register" ||
-      routeState.tab === "forgot-password" ||
-      routeState.tab === "history" ||
-      routeState.tab === "favorites" ||
-      routeState.tab === "404" ||
-      routeState.isNotFound;
-
     const metadata = buildSEOMetadata(routeState.tab, {
       tool,
       category,
@@ -660,20 +659,21 @@ export function injectSEOMetadataIntoHTML(
       searchQuery: routeState.searchQuery,
     });
 
-    if (isPrivate) {
+    if (routeState.isNotFound) {
       metadata.noIndex = true;
+      metadata.robotsMeta = "noindex, nofollow";
     }
 
     // Determine clean canonical URL
     const cleanPath = normalizePath(reqPath);
-    const domain = reqHost
-      ? `${reqProto}://${reqHost.replace(/^www\./i, "")}`
-      : "https://mehzandigital.com";
-
-    const canonicalUrl = cleanPath === "/" ? `${domain}/` : `${domain}${cleanPath}`;
+    const envAppUrl = process.env.APP_URL || "";
+    const canonicalDomain = (envAppUrl && !envAppUrl.includes("run.app") && !envAppUrl.includes("localhost"))
+      ? envAppUrl.replace(/\/+$/, "")
+      : "https://www.mehzandigital.com";
+    const canonicalUrl = metadata.canonicalUrl || (cleanPath === "/" ? `${canonicalDomain}/` : `${canonicalDomain}${cleanPath}`);
     const ogImage = metadata.ogImage.startsWith("http")
       ? metadata.ogImage
-      : `${domain}${metadata.ogImage.startsWith("/") ? metadata.ogImage : `/${metadata.ogImage}`}`;
+      : `${canonicalDomain}${metadata.ogImage.startsWith("/") ? metadata.ogImage : `/${metadata.ogImage}`}`;
 
     // Construct Head Elements
     let headInjects = "";
@@ -685,10 +685,10 @@ export function injectSEOMetadataIntoHTML(
     headInjects += `    <meta name="description" content="${escapeHtml(metadata.description)}" />\n`;
 
     // 3. Meta Robots
-    const robotsContent = metadata.noIndex
+    const robotsContent = metadata.robotsMeta || (metadata.noIndex
       ? "noindex, nofollow"
-      : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
-    headInjects += `    <!-- DEBUG: routeTab=${routeState.tab}, isPrivate=${isPrivate}, noIndex=${metadata.noIndex} -->\n    <meta name="robots" content="${robotsContent}" />\n`;
+      : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+    headInjects += `    <meta name="robots" content="${robotsContent}" />\n`;
 
     // 4. Canonical Tag & CSP Meta
     headInjects += `    <link rel="canonical" href="${canonicalUrl}" />\n`;
@@ -754,7 +754,7 @@ export function injectSEOMetadataIntoHTML(
       routeState.tab === "favorites";
 
     if (!isInternalAuthTab) {
-      const bodyHtml = renderPrerenderedBodyContent(routeState, tool, category, post, domain);
+      const bodyHtml = renderPrerenderedBodyContent(routeState, tool, category, post, canonicalDomain);
       if (result.includes('<div id="root"></div>')) {
         result = result.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
       } else if (result.includes('<div id="root">')) {

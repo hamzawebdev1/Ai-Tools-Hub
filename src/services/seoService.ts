@@ -1,9 +1,10 @@
-import { AITool, BlogPost, CategoryInfo, ToolCategory } from "../types";
+import { AITool, BlogPost, CategoryInfo, ToolCategory, SEOPageType } from "../types";
 import { TOOLS_DATA } from "../data/toolsData";
 import { CATEGORIES_DATA } from "../data/categoriesData";
 import { BLOG_POSTS_DATA } from "../data/blogData";
 
 export interface SEOMetadata {
+  pageType: SEOPageType;
   title: string;
   description: string;
   keywords: string[];
@@ -14,24 +15,103 @@ export interface SEOMetadata {
   author?: string;
   publishedDate?: string;
   modifiedDate?: string;
-  noIndex?: boolean;
+  noIndex: boolean;
+  robotsMeta: string;
   schemas: Record<string, any>[];
   breadcrumbs?: { name: string; url: string }[];
 }
 
 const SITE_NAME = "Mehzan Tools Hub";
+
 export function getDomain(): string {
   if (typeof window !== "undefined" && window.location.origin) {
-    return window.location.origin.replace(/\/+$/, "");
+    const origin = window.location.origin.replace(/\/+$/, "");
+    if (!origin.includes("run.app") && !origin.includes("localhost") && !origin.includes("127.0.0.1")) {
+      return origin.includes("mehzandigital.com") && !origin.includes("www.mehzandigital.com")
+        ? origin.replace("mehzandigital.com", "www.mehzandigital.com")
+        : origin;
+    }
   }
-  // Try to use environment variable for SSR
-  if (typeof process !== "undefined" && process.env?.APP_URL) {
-    return process.env.APP_URL.replace(/\/+$/, "");
+  const rawEnv = (typeof process !== "undefined" && (process.env?.PRODUCTION_DOMAIN || process.env?.APP_URL)) ||
+                 (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_APP_URL) || "";
+  if (rawEnv && !rawEnv.includes("run.app") && !rawEnv.includes("localhost") && !rawEnv.includes("127.0.0.1")) {
+    let clean = rawEnv.replace(/\/+$/, "");
+    if (clean.includes("mehzandigital.com") && !clean.includes("www.mehzandigital.com")) {
+      clean = clean.replace("mehzandigital.com", "www.mehzandigital.com");
+    }
+    return clean;
   }
-  if (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_APP_URL) {
-    return (import.meta as any).env.VITE_APP_URL.replace(/\/+$/, "");
+  return "https://www.mehzandigital.com";
+}
+
+/**
+ * Generate robots directive string based on page type
+ */
+export function getRobotsMeta(pageType: SEOPageType): string {
+  switch (pageType) {
+    case "PUBLIC_INDEXABLE":
+      return "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+    case "PUBLIC_NON_INDEXABLE":
+      return "noindex, follow";
+    case "PRIVATE":
+    case "NOT_FOUND":
+    case "REDIRECT":
+    default:
+      return "noindex, nofollow";
   }
-  return "https://mehzandigital.com";
+}
+
+/**
+ * Single Source of Truth for Indexable Sitemap Routes
+ * Extracted directly from central tool, category, and blog registries.
+ */
+export function getPublicIndexableRoutes(): Array<{ urlPath: string; priority: string; changefreq: string }> {
+  const routes: Array<{ urlPath: string; priority: string; changefreq: string }> = [
+    { urlPath: "/", priority: "1.0", changefreq: "daily" },
+    { urlPath: "/tools", priority: "0.9", changefreq: "daily" },
+    { urlPath: "/categories", priority: "0.8", changefreq: "weekly" },
+    { urlPath: "/blog", priority: "0.8", changefreq: "daily" },
+    { urlPath: "/about", priority: "0.5", changefreq: "monthly" },
+    { urlPath: "/contact", priority: "0.5", changefreq: "monthly" },
+    { urlPath: "/privacy", priority: "0.3", changefreq: "yearly" },
+    { urlPath: "/terms", priority: "0.3", changefreq: "yearly" },
+    { urlPath: "/disclaimer", priority: "0.3", changefreq: "yearly" },
+    { urlPath: "/cookie-policy", priority: "0.3", changefreq: "yearly" },
+    { urlPath: "/copyright", priority: "0.3", changefreq: "yearly" },
+  ];
+
+  // 1. Active Tools (Strictly /en/${slug})
+  const activeTools = TOOLS_DATA.filter((t) => t.status !== "DISABLED" && t.isActive !== false);
+  for (const tool of activeTools) {
+    routes.push({ urlPath: `/en/${tool.slug}`, priority: "0.9", changefreq: "daily" });
+  }
+
+  // 2. Categories (/category/${slug})
+  for (const cat of CATEGORIES_DATA) {
+    routes.push({ urlPath: `/category/${cat.slug}`, priority: "0.8", changefreq: "weekly" });
+  }
+
+  // 3. Blog Posts (/blog/${slug})
+  for (const post of BLOG_POSTS_DATA) {
+    routes.push({ urlPath: `/blog/${post.slug}`, priority: "0.8", changefreq: "monthly" });
+  }
+
+  // 4. Authors (/author/${slug})
+  const authorSlugs = Array.from(
+    new Set(
+      BLOG_POSTS_DATA.map((p) =>
+        p.author.name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "")
+      )
+    )
+  );
+  for (const author of authorSlugs) {
+    routes.push({ urlPath: `/author/${author}`, priority: "0.6", changefreq: "monthly" });
+  }
+
+  return routes;
 }
 const DEFAULT_OG_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80";
 
@@ -357,7 +437,11 @@ export function buildSEOMetadata(
   switch (activeTab) {
     case "home": {
       const canonicalUrl = getCanonicalUrl("/");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Mehzan Tools Hub - 50+ Free Online Web Utilities, PDF & Image Tools",
         description: "Access 50+ free online utility tools on Mehzan Tools Hub including PDF merger, image compressor, JSON formatter, word counter, and QR generator. Fast, private, and 100% in-browser.",
         keywords: ["Mehzan Tools Hub", "free online tools", "PDF tools", "image compressor", "JSON formatter", "text tools", "web utilities"],
@@ -384,11 +468,15 @@ export function buildSEOMetadata(
 
     case "all-tools": {
       const canonicalUrl = getCanonicalUrl("/tools");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "All Tools", url: "/tools" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "All Free Online Tools Directory | Mehzan Tools Hub",
         description: "Explore the comprehensive directory of 500+ free online tools categorized by PDF, Image, Text, Developer, SEO, Security, and Calculators on Mehzan Tools Hub.",
         keywords: ["tools directory", "free online utilities list", "web tools catalog", "Mehzan Tools Hub tools"],
@@ -405,11 +493,15 @@ export function buildSEOMetadata(
 
     case "categories": {
       const canonicalUrl = getCanonicalUrl("/categories");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Categories", url: "/categories" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Browse Tool Categories | Mehzan Tools Hub",
         description: "Filter tools by specialized categories including PDF Tools, Image Processing, Text Utilities, Developer Code, SEO & SERP, and Calculators on Mehzan Tools Hub.",
         keywords: ["tool categories", "PDF utilities", "image tools category", "developer tools"],
@@ -429,12 +521,16 @@ export function buildSEOMetadata(
       const catName = catObj ? catObj.name : "Category";
       const catSlug = catObj ? catObj.slug : "category";
       const canonicalUrl = getCanonicalUrl(`/category/${catSlug}`);
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Categories", url: "/categories" },
         { name: catName, url: `/category/${catSlug}` }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: `${catName} - Free Online Utilities | Mehzan Tools Hub`,
         description: catObj?.description || `Explore top-rated free ${catName} on Mehzan Tools Hub. Fast, secure, browser-native processing.`,
         keywords: [catName, `${catName} tools`, `free ${catName} online`],
@@ -452,6 +548,7 @@ export function buildSEOMetadata(
     case "tool-detail": {
       const tool = data?.tool || TOOLS_DATA[0];
       const canonicalUrl = getCanonicalUrl(`/en/${tool.slug}`);
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: tool.category ? `${tool.category.toUpperCase()} Tools` : "Tools", url: `/category/${tool.category || "pdf-tools"}` },
@@ -471,6 +568,9 @@ export function buildSEOMetadata(
       if (faqSchema) schemas.push(faqSchema);
 
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: tool.seoContent?.metaTitle || `${tool.name} Online - Free Tool | Mehzan Tools Hub`,
         description: tool.seoContent?.metaDescription || `${tool.description} 100% free, private in-browser utility on Mehzan Tools Hub.`,
         keywords: [tool.name, ...tool.tags, tool.category, "free online tool", "Mehzan Tools Hub"],
@@ -478,18 +578,21 @@ export function buildSEOMetadata(
         ogType: "product",
         ogImage: DEFAULT_OG_IMAGE,
         schemas,
-        breadcrumbs,
-        noIndex: false
+        breadcrumbs
       };
     }
 
     case "blog": {
       const canonicalUrl = getCanonicalUrl("/blog");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Blog & Guides", url: "/blog" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Tech Insights, Tutorials & Utility Guides | Mehzan Tools Hub Blog",
         description: "Read expert guides on client-side security, file processing, PDF workflows, image optimization, and web developer utilities on Mehzan Tools Hub.",
         keywords: ["web utilities blog", "PDF guides", "image compression tips", "developer tutorials", "Mehzan Tools Hub"],
@@ -507,6 +610,7 @@ export function buildSEOMetadata(
     case "blog-post": {
       const post = data?.post || BLOG_POSTS_DATA[0];
       const canonicalUrl = getCanonicalUrl(`/blog/${post.slug}`);
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Blog", url: "/blog" },
@@ -527,6 +631,9 @@ export function buildSEOMetadata(
       }
 
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: post.seoTitle || `${post.title} | Mehzan Tools Hub`,
         description: post.metaDescription || post.excerpt,
         keywords: post.tags,
@@ -542,11 +649,15 @@ export function buildSEOMetadata(
 
     case "about": {
       const canonicalUrl = getCanonicalUrl("/about");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "About Us", url: "/about" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "About Mehzan Tools Hub - Free Web-Native Online Utilities Suite",
         description: "Learn about Mehzan Tools Hub, our mission for high-speed, private, client-side online tools for PDF, images, text, code, and calculation utilities.",
         keywords: ["About Mehzan Tools Hub", "free online utilities", "client-side privacy"],
@@ -569,11 +680,15 @@ export function buildSEOMetadata(
 
     case "pricing": {
       const canonicalUrl = getCanonicalUrl("/pricing");
+      const pageType: SEOPageType = "PRIVATE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Pricing", url: "/pricing" }
       ];
       return {
+        pageType,
+        noIndex: true,
+        robotsMeta: getRobotsMeta(pageType),
         title: "100% Free Access | Mehzan Tools Hub",
         description: "Explore our 100% free online utility tools platform with zero paywalls, no subscriptions, and instant client-side execution.",
         keywords: ["Mehzan Tools Hub pricing", "free web utilities", "free developer tools"],
@@ -582,17 +697,7 @@ export function buildSEOMetadata(
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [
           orgSchema,
-          getBreadcrumbSchema(breadcrumbs),
-          getFAQSchema([
-            {
-              question: "Can I use Mehzan Tools Hub tools for free?",
-              answer: "Yes, all tools on Mehzan Tools Hub are 100% free to use online with zero registration or payment needed."
-            },
-            {
-              question: "Are there any usage limits or paywalls?",
-              answer: "No, all tools are freely accessible with instant browser execution and zero paywalls."
-            }
-          ])!
+          getBreadcrumbSchema(breadcrumbs)
         ],
         breadcrumbs
       };
@@ -600,11 +705,15 @@ export function buildSEOMetadata(
 
     case "contact": {
       const canonicalUrl = getCanonicalUrl("/contact");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Contact", url: "/contact" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Contact Support | Mehzan Tools Hub",
         description: "Get in touch with the Mehzan Tools Hub team for assistance, tool suggestions, bug reports, and feedback.",
         keywords: ["contact Mehzan Tools Hub", "support", "help"],
@@ -618,11 +727,15 @@ export function buildSEOMetadata(
 
     case "privacy": {
       const canonicalUrl = getCanonicalUrl("/privacy");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Privacy Policy", url: "/privacy" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Privacy Policy | Mehzan Tools Hub",
         description: "Review Mehzan Tools Hub's privacy policy, detailing zero server-side file retention and client-side processing practices.",
         keywords: ["privacy policy", "data protection", "Mehzan Tools Hub privacy"],
@@ -636,11 +749,15 @@ export function buildSEOMetadata(
 
     case "terms": {
       const canonicalUrl = getCanonicalUrl("/terms");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Terms of Service", url: "/terms" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Terms of Service | Mehzan Tools Hub",
         description: "Read the terms of service governing the usage of Mehzan Tools Hub's free web utility tools.",
         keywords: ["terms of service", "user agreement", "Mehzan Tools Hub terms"],
@@ -654,11 +771,15 @@ export function buildSEOMetadata(
 
     case "disclaimer": {
       const canonicalUrl = getCanonicalUrl("/disclaimer");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Disclaimer", url: "/disclaimer" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Disclaimer & Advertising Disclosure | Mehzan Tools Hub",
         description: "Advertising disclosure and general disclaimer for Mehzan Tools Hub online utilities.",
         keywords: ["disclaimer", "advertising disclosure", "Mehzan Tools Hub"],
@@ -672,11 +793,15 @@ export function buildSEOMetadata(
 
     case "cookie-policy": {
       const canonicalUrl = getCanonicalUrl("/cookie-policy");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Cookie Policy", url: "/cookie-policy" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Cookie Policy | Mehzan Tools Hub",
         description: "Learn how cookies and local storage are utilized on Mehzan Tools Hub for preferences and performance.",
         keywords: ["cookie policy", "cookies", "Mehzan Tools Hub"],
@@ -690,11 +815,15 @@ export function buildSEOMetadata(
 
     case "copyright": {
       const canonicalUrl = getCanonicalUrl("/copyright");
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Copyright Policy", url: "/copyright" }
       ];
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: "Copyright Policy & DMCA Notice | Mehzan Digital",
         description: "Read our Copyright Policy, IP protection statement, open-source distinctions, and DMCA takedown procedures.",
         keywords: ["copyright policy", "DMCA notice", "intellectual property", "Mehzan Digital"],
@@ -708,7 +837,11 @@ export function buildSEOMetadata(
 
     case "search": {
       const canonicalUrl = getCanonicalUrl("/search");
+      const pageType: SEOPageType = "PUBLIC_NON_INDEXABLE";
       return {
+        pageType,
+        noIndex: true,
+        robotsMeta: getRobotsMeta(pageType),
         title: data?.searchQuery ? `Search Results for "${data.searchQuery}" | Mehzan Tools Hub` : "Search Tools Directory | Mehzan Tools Hub",
         description: `Browse matching free tools and utilities on Mehzan Tools Hub.`,
         keywords: ["search tools", data?.searchQuery || "", "Mehzan Tools Hub"],
@@ -716,7 +849,24 @@ export function buildSEOMetadata(
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [orgSchema],
-        noIndex: true // Search result pages must not be indexed to prevent duplicate/thin content
+      };
+    }
+
+    case "favorites":
+    case "history": {
+      const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
+      const pageType: SEOPageType = "PUBLIC_NON_INDEXABLE";
+      return {
+        pageType,
+        noIndex: true,
+        robotsMeta: getRobotsMeta(pageType),
+        title: `${activeTab.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())} | Mehzan Tools Hub`,
+        description: "User history and favorites on Mehzan Tools Hub.",
+        keywords: [activeTab, "Mehzan Tools Hub"],
+        canonicalUrl,
+        ogType: "website",
+        ogImage: DEFAULT_OG_IMAGE,
+        schemas: [orgSchema],
       };
     }
 
@@ -728,25 +878,30 @@ export function buildSEOMetadata(
     case "signup":
     case "signin":
     case "forgot-password":
-    case "history":
-    case "favorites":
     case "suggest-tool":
     case "feedback": {
       const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
+      const pageType: SEOPageType = "PRIVATE";
       return {
+        pageType,
+        noIndex: true,
+        robotsMeta: getRobotsMeta(pageType),
         title: `${activeTab.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())} | Mehzan Tools Hub`,
-        description: "User dashboard and settings on Mehzan Tools Hub.",
+        description: "User account management and settings on Mehzan Tools Hub.",
         keywords: [activeTab, "Mehzan Tools Hub"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [orgSchema],
-        noIndex: true // Private or authenticated pages must never be indexed
       };
     }
 
     case "404": {
+      const pageType: SEOPageType = "NOT_FOUND";
       return {
+        pageType,
+        noIndex: true,
+        robotsMeta: getRobotsMeta(pageType),
         title: "404 - Page Not Found | Mehzan Tools Hub",
         description: "The page or tool you are looking for does not exist or has been moved on Mehzan Tools Hub.",
         keywords: ["404", "not found", "Mehzan Tools Hub"],
@@ -754,7 +909,6 @@ export function buildSEOMetadata(
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [orgSchema],
-        noIndex: true
       };
     }
 
@@ -763,12 +917,16 @@ export function buildSEOMetadata(
         const authorSlug = activeTab.replace("author-", "");
         const canonicalUrl = getCanonicalUrl(`/author/${authorSlug}`);
         const authorName = authorSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        const pageType: SEOPageType = "PUBLIC_INDEXABLE";
         const breadcrumbs = [
           { name: "Home", url: "/" },
           { name: "Authors", url: "/about" },
           { name: authorName, url: `/author/${authorSlug}` }
         ];
         return {
+          pageType,
+          noIndex: false,
+          robotsMeta: getRobotsMeta(pageType),
           title: `${authorName} - Editorial Board & Author | Mehzan Tools Hub`,
           description: `Read technical guides, optimization tutorials, and utility reviews by ${authorName} on Mehzan Tools Hub.`,
           keywords: [authorName, "editorial author", "Mehzan Tools Hub"],
@@ -781,7 +939,11 @@ export function buildSEOMetadata(
       }
 
       const canonicalUrl = getCanonicalUrl(`/${activeTab}`);
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
       return {
+        pageType,
+        noIndex: false,
+        robotsMeta: getRobotsMeta(pageType),
         title: `${activeTab.replace("-", " ").toUpperCase()} | Mehzan Tools Hub`,
         description: "Mehzan Tools Hub - Discover 50+ free web-native online utilities.",
         keywords: ["Mehzan Tools Hub"],
@@ -790,7 +952,6 @@ export function buildSEOMetadata(
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [orgSchema],
         breadcrumbs: [{ name: "Home", url: "/" }, { name: activeTab, url: `/${activeTab}` }],
-        noIndex: false
       };
     }
   }

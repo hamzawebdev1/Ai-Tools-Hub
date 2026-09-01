@@ -2,19 +2,24 @@ import { Router } from "express";
 import { TOOLS_DATA } from "../data/toolsData";
 import { CATEGORIES_DATA } from "../data/categoriesData";
 import { BLOG_POSTS_DATA } from "../data/blogData";
+import { getPublicIndexableRoutes } from "../services/seoService";
 
 const router = Router();
 
 const getBaseHost = (req: any): string => {
   if (req.get("x-forwarded-host")) {
     const proto = req.get("x-forwarded-proto") || req.protocol || "https";
-    return `${proto}://${req.get("x-forwarded-host")}`.replace(/\/+$/, "");
+    let rawHost = req.get("x-forwarded-host");
+    if (rawHost === "mehzandigital.com") rawHost = "www.mehzandigital.com";
+    return `${proto}://${rawHost}`.replace(/\/+$/, "");
   }
   if (req.get("host")) {
     const proto = req.get("x-forwarded-proto") || req.protocol || "https";
-    return `${proto}://${req.get("host")}`.replace(/\/+$/, "");
+    let rawHost = req.get("host");
+    if (rawHost === "mehzandigital.com") rawHost = "www.mehzandigital.com";
+    return `${proto}://${rawHost}`.replace(/\/+$/, "");
   }
-  return (process.env.APP_URL || "https://mehzandigital.com").replace(/\/+$/, "");
+  return (process.env.APP_URL || "https://www.mehzandigital.com").replace(/\/+$/, "");
 };
 
 // Distinct author slugs from blog posts
@@ -30,88 +35,23 @@ const AUTHOR_SLUGS = Array.from(
 );
 
 /**
- * Main XML Sitemap (/sitemap.xml) - strictly primary canonical URLs only
+ * Main XML Sitemap (/sitemap.xml) - strictly primary canonical URLs from getPublicIndexableRoutes()
  */
 router.get("/sitemap.xml", (req, res) => {
   const host = getBaseHost(req);
   const now = new Date().toISOString();
-
-  // Core static pages (strictly canonical, no trailing slashes)
-  const staticPages = [
-    { url: "", priority: "1.0", changefreq: "daily" },
-    { url: "/tools", priority: "0.9", changefreq: "daily" },
-    { url: "/categories", priority: "0.8", changefreq: "weekly" },
-    { url: "/blog", priority: "0.8", changefreq: "daily" },
-    { url: "/about", priority: "0.5", changefreq: "monthly" },
-    { url: "/pricing", priority: "0.7", changefreq: "weekly" },
-    { url: "/contact", priority: "0.5", changefreq: "monthly" },
-    { url: "/privacy", priority: "0.3", changefreq: "yearly" },
-    { url: "/terms", priority: "0.3", changefreq: "yearly" },
-    { url: "/disclaimer", priority: "0.3", changefreq: "yearly" },
-    { url: "/cookie-policy", priority: "0.3", changefreq: "yearly" },
-    { url: "/copyright", priority: "0.3", changefreq: "yearly" },
-  ];
+  const indexableRoutes = getPublicIndexableRoutes();
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-  // 1. Static pages
-  for (const page of staticPages) {
+  for (const page of indexableRoutes) {
+    const cleanPath = page.urlPath === "/" ? "" : page.urlPath;
     xml += `  <url>\n`;
-    xml += `    <loc>${host}${page.url}</loc>\n`;
+    xml += `    <loc>${host}${cleanPath}</loc>\n`;
     xml += `    <lastmod>${now}</lastmod>\n`;
     xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
     xml += `    <priority>${page.priority}</priority>\n`;
-    xml += `  </url>\n`;
-  }
-
-  // 2. Active Canonical Tool URLs (/en/${tool.slug})
-  const activeTools = TOOLS_DATA.filter((t) => t.status !== "DISABLED" && t.isActive !== false);
-  for (const tool of activeTools) {
-    xml += `  <url>\n`;
-    xml += `    <loc>${host}/en/${tool.slug}</loc>\n`;
-    xml += `    <lastmod>${now}</lastmod>\n`;
-    xml += `    <changefreq>daily</changefreq>\n`;
-    xml += `    <priority>0.9</priority>\n`;
-    xml += `  </url>\n`;
-  }
-
-  // 3. Category pages (/category/:slug)
-  for (const cat of CATEGORIES_DATA) {
-    xml += `  <url>\n`;
-    xml += `    <loc>${host}/category/${cat.slug}</loc>\n`;
-    xml += `    <lastmod>${now}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.8</priority>\n`;
-    xml += `  </url>\n`;
-  }
-
-  // 4. Blog posts (/blog/:slug)
-  for (const post of BLOG_POSTS_DATA) {
-    let postMod = now;
-    try {
-      const parsed = new Date(post.updatedDate || post.date);
-      if (!isNaN(parsed.getTime())) {
-        postMod = parsed.toISOString();
-      }
-    } catch {
-      postMod = now;
-    }
-    xml += `  <url>\n`;
-    xml += `    <loc>${host}/blog/${post.slug}</loc>\n`;
-    xml += `    <lastmod>${postMod}</lastmod>\n`;
-    xml += `    <changefreq>monthly</changefreq>\n`;
-    xml += `    <priority>0.8</priority>\n`;
-    xml += `  </url>\n`;
-  }
-
-  // 5. Author pages (/author/:slug)
-  for (const authorSlug of AUTHOR_SLUGS) {
-    xml += `  <url>\n`;
-    xml += `    <loc>${host}/author/${authorSlug}</loc>\n`;
-    xml += `    <lastmod>${now}</lastmod>\n`;
-    xml += `    <changefreq>monthly</changefreq>\n`;
-    xml += `    <priority>0.6</priority>\n`;
     xml += `  </url>\n`;
   }
 
@@ -245,18 +185,18 @@ Mehzan Digital operates Mehzan Tools Hub, a client-first, privacy-focused online
 
 ## Tools Directory
 
-- [All Tools](${host}/tools): Full directory of 500+ online utilities.
-- [PDF Merge](${host}/pdf-merge): Combine multiple PDF documents client-side.
-- [PDF Compress](${host}/pdf-compress): Optimize and compress PDF file size.
-- [JPG to PDF](${host}/jpg-to-pdf): Convert image files into PDF documents.
-- [Image Compressor](${host}/image-compressor): Reduce image size without losing quality.
-- [Image Resizer](${host}/image-resizer): Adjust image dimensions and scale.
-- [Word Counter](${host}/word-counter): Analyze character, word, sentence, and reading time metrics.
-- [JSON Formatter](${host}/json-formatter): Format, validate, and beautify JSON code.
-- [Meta Tag Generator](${host}/meta-tag-generator): Create SEO tags and Open Graph metadata.
-- [QR Code Generator](${host}/qr-code-generator): Generate custom QR codes with colors and logos.
-- [Password Generator](${host}/password-generator): Create secure, high-entropy cryptographic passwords.
-- [Unit Converter](${host}/unit-converter): Convert length, weight, temperature, and volume metrics.
+- [All Tools](${host}/tools): Full directory of 50+ online utilities.
+- [PDF Merge](${host}/en/pdf-merge): Combine multiple PDF documents client-side.
+- [PDF Compress](${host}/en/pdf-compress): Optimize and compress PDF file size.
+- [JPG to PDF](${host}/en/jpg-to-pdf): Convert image files into PDF documents.
+- [Image Compressor](${host}/en/image-compressor): Reduce image size without losing quality.
+- [Image Resizer](${host}/en/image-resizer): Adjust image dimensions and scale.
+- [Word Counter](${host}/en/word-counter): Analyze character, word, sentence, and reading time metrics.
+- [JSON Formatter](${host}/en/json-formatter): Format, validate, and beautify JSON code.
+- [Meta Tag Generator](${host}/en/meta-tag-generator): Create SEO tags and Open Graph metadata.
+- [QR Code Generator](${host}/en/qr-code-generator): Generate custom QR codes with colors and logos.
+- [Password Generator](${host}/en/password-generator): Create secure, high-entropy cryptographic passwords.
+- [Unit Converter](${host}/en/unit-converter): Convert length, weight, temperature, and volume metrics.
 
 ## Categories
 
@@ -310,7 +250,7 @@ router.get(["/api/admin/seo-audit", "/api/seo/audit"], (req, res) => {
   }> = [];
 
   // 1. Primary static URLs
-  const staticUrls = ["/", "/tools", "/categories", "/blog", "/about", "/pricing", "/contact", "/privacy", "/terms", "/disclaimer", "/cookie-policy"];
+  const staticUrls = ["/", "/tools", "/categories", "/blog", "/about", "/contact", "/privacy", "/terms", "/disclaimer", "/cookie-policy"];
   for (const p of staticUrls) {
     inventory.push({
       url: `${host}${p}`,
@@ -323,12 +263,12 @@ router.get(["/api/admin/seo-audit", "/api/seo/audit"], (req, res) => {
     });
   }
 
-  // 2. Primary Tool URLs (/${slug})
+  // 2. Primary Tool URLs (/en/${slug})
   for (const t of activeTools) {
     inventory.push({
-      url: `${host}/${t.slug}`,
+      url: `${host}/en/${t.slug}`,
       type: "tool",
-      canonical: `${host}/${t.slug}`,
+      canonical: `${host}/en/${t.slug}`,
       status: 200,
       indexable: true,
       inSitemap: true,
@@ -378,9 +318,10 @@ router.get(["/api/admin/seo-audit", "/api/seo/audit"], (req, res) => {
   // 6. Test common legacy / duplicate patterns and their 301 resolution
   const sampleTool = activeTools[0]?.slug || "jpg-to-pdf";
   const duplicateTests = [
-    { testUrl: `${host}/${sampleTool}/`, expectedRedirect: `${host}/${sampleTool}`, issue: "Trailing slash" },
-    { testUrl: `${host}/tools/${sampleTool}`, expectedRedirect: `${host}/${sampleTool}`, issue: "Legacy /tools/ prefix" },
-    { testUrl: `${host}/tool/${sampleTool}`, expectedRedirect: `${host}/${sampleTool}`, issue: "Legacy /tool/ prefix" },
+    { testUrl: `${host}/${sampleTool}`, expectedRedirect: `${host}/en/${sampleTool}`, issue: "Legacy /:slug without /en/ prefix" },
+    { testUrl: `${host}/${sampleTool}/`, expectedRedirect: `${host}/en/${sampleTool}`, issue: "Trailing slash" },
+    { testUrl: `${host}/tools/${sampleTool}`, expectedRedirect: `${host}/en/${sampleTool}`, issue: "Legacy /tools/ prefix" },
+    { testUrl: `${host}/tool/${sampleTool}`, expectedRedirect: `${host}/en/${sampleTool}`, issue: "Legacy /tool/ prefix" },
     { testUrl: `${host}/categories/pdf-tools`, expectedRedirect: `${host}/category/pdf-tools`, issue: "Legacy /categories/ prefix" },
     { testUrl: `${host}/about-us`, expectedRedirect: `${host}/about`, issue: "Alias route /about-us" },
     { testUrl: `${host}/contact-us`, expectedRedirect: `${host}/contact`, issue: "Alias route /contact-us" },

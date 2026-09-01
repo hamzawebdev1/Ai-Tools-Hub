@@ -164,9 +164,10 @@ export const PrivacyPolicyPage: React.FC = () => {
               If you have any questions, requests, or concerns regarding this Privacy Policy or data protection, please contact our privacy compliance desk:
             </p>
             <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-800 space-y-1 font-mono text-xs">
-              <p><strong>Entity:</strong> Mehzan Digital - Privacy Compliance Office</p>
-              <p><strong>Email:</strong> privacy@mehzandigital.com</p>
-              <p><strong>Contact Form:</strong> https://mehzandigital.com/contact</p>
+              <p><strong>Entity:</strong> Mehzan Digital - Privacy Compliance Office (Operated by Hamza)</p>
+              <p><strong>Direct Email:</strong> hamza.web.dev5324@gmail.com</p>
+              <p><strong>Support Email:</strong> support@mehzandigital.com</p>
+              <p><strong>Contact Desk:</strong> https://mehzandigital.com/contact</p>
             </div>
           </section>
         </div>

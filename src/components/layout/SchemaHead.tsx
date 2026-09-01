@@ -68,9 +68,58 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
     setMetaTag("twitter:title", fullTitle, true);
     setMetaTag("twitter:description", description, true);
 
-    // Clean up any legacy or duplicate script tags
-    const legacy = document.getElementById("json-ld-schema");
-    if (legacy) legacy.remove();
+    // Inject Structured Data JSON-LD
+    let script = document.getElementById("json-ld-schema") as HTMLScriptElement;
+    if (!script) {
+      script = document.createElement("script");
+      script.id = "json-ld-schema";
+      script.type = "application/ld+json";
+      document.head.appendChild(script);
+    }
+
+    const graph: any[] = [];
+
+    if (schemaType === "SoftwareApplication" && schemaData) {
+      graph.push({
+        "@type": "SoftwareApplication",
+        "name": schemaData.name,
+        "operatingSystem": "All (Web Browser)",
+        "applicationCategory": "UtilitiesApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "aggregateRating": schemaData.rating ? {
+          "@type": "AggregateRating",
+          "ratingValue": schemaData.rating,
+          "ratingCount": schemaData.ratingCount || 12
+        } : undefined
+      });
+    }
+
+    if (schemaData?.faqs && Array.isArray(schemaData.faqs) && schemaData.faqs.length > 0) {
+      graph.push({
+        "@type": "FAQPage",
+        "mainEntity": schemaData.faqs.map((faq: any) => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      });
+    }
+
+    if (graph.length > 0) {
+      script.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": graph
+      });
+    } else {
+      script.remove();
+    }
   }, [title, description, safeCanonical, schemaType, schemaData]);
 
   return null;

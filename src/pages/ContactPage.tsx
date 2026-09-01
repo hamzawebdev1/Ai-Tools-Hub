@@ -79,8 +79,26 @@ export const ContactPage: React.FC = () => {
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Contact Our Team</h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Have questions, feedback, or custom API integration inquiries? We typically respond within 24 hours.
+            Have questions, feedback, or custom tool requests? We typically respond within 24 hours.
           </p>
+        </div>
+
+        {/* Direct Email Card */}
+        <div className="p-4 rounded-2xl border border-indigo-200/80 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-950/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shrink-0">
+              <Mail className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="font-bold text-slate-900 dark:text-white block">Direct Founder & Support Email</span>
+              <a href="mailto:hamza.web.dev5324@gmail.com" className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">
+                hamza.web.dev5324@gmail.com
+              </a>
+            </div>
+          </div>
+          <span className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <Clock className="w-3.5 h-3.5 text-indigo-500" /> Mon-Fri, 24h SLA
+          </span>
         </div>
 
         {submitted ? (

@@ -16,10 +16,16 @@ export interface RouteState {
 /**
  * Primary Production Canonical Domain
  */
-export const CANONICAL_DOMAIN = (
+const rawEnvUrl = (
   (typeof process !== "undefined" && process.env?.APP_URL) ||
   (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_APP_URL) ||
-  "https://mehzandigital.com"
+  ""
+);
+
+export const CANONICAL_DOMAIN = (
+  rawEnvUrl && !rawEnvUrl.includes("run.app") && !rawEnvUrl.includes("localhost")
+    ? rawEnvUrl
+    : "https://www.mehzandigital.com"
 ).replace(/\/+$/, "");
 
 /**
@@ -42,6 +48,10 @@ export const TOOL_SLUG_ALIASES: Record<string, string> = {
   "pdf2word": "pdf-to-word",
   "wifi-qr-code": "wifi-qr-code-generator",
   "wifi-qr-code-maker": "wifi-qr-code-generator",
+  "decimal-to-hex": "decimal-to-hexadecimal",
+  "hex-to-decimal": "hexadecimal-to-decimal",
+  "dec-to-hex": "decimal-to-hexadecimal",
+  "hex-to-dec": "hexadecimal-to-decimal",
 };
 
 /**
@@ -176,14 +186,10 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
 
   // 2. Clean path: strip leading and trailing slashes & normalize
   let cleanPath = pathname.trim().replace(/^\/+|\/+$/g, "").toLowerCase();
-  
-  console.log(`[Router] Incoming pathname: "${pathname}", search: "${search}", cleanPath: "${cleanPath}"`);
 
   // Strip language prefix if present (e.g., /en/, /fr/, /de/)
   if (/^[a-z]{2}\//.test(cleanPath)) {
-    console.log(`[Router] Stripping language prefix from: "${cleanPath}"`);
     cleanPath = cleanPath.substring(3);
-    console.log(`[Router] Clean path after prefix strip: "${cleanPath}"`);
   }
 
   if (!cleanPath || cleanPath === "home") {
@@ -297,7 +303,6 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
   // Handle DIRECT tool slug: e.g. /split-pdf-pages, /jpg-to-pdf, /pdf-to-word, /image-compressor
   let directSlug = cleanPath.toLowerCase();
   if (TOOL_SLUG_ALIASES[directSlug]) {
-    console.log(`[Router] Resolved tool alias: "${directSlug}" -> "${TOOL_SLUG_ALIASES[directSlug]}"`);
     directSlug = TOOL_SLUG_ALIASES[directSlug];
   }
   const matchedTool = TOOLS_DATA.find(
@@ -305,10 +310,7 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
   );
 
   if (matchedTool) {
-    console.log(`[Router] Tool match found: "${directSlug}" -> slug: "${matchedTool.slug}"`);
     return { tab: "tool-detail", toolSlug: matchedTool.slug };
-  } else {
-    console.log(`[Router] No tool match found for: "${directSlug}"`);
   }
 
   // Handle Category direct fallback if someone typed /pdf-tools
@@ -404,7 +406,7 @@ export function getUrlForRoute(
  * Generates the full absolute canonical HTTPS URL for any route
  */
 export function getCanonicalUrl(
-  tab: string,
+  tabOrPath: string,
   params?: {
     toolSlug?: string;
     categorySlug?: string;
@@ -414,9 +416,13 @@ export function getCanonicalUrl(
   },
   domain: string = CANONICAL_DOMAIN
 ): string {
-  const relativePath = getUrlForRoute(tab, params);
   const base = domain.replace(/\/+$/, "");
-  return `${base}${relativePath}`;
+  if (tabOrPath.startsWith("/")) {
+    const norm = normalizePath(tabOrPath);
+    return norm === "/" ? `${base}/` : `${base}${norm}`;
+  }
+  const relativePath = getUrlForRoute(tabOrPath, params);
+  return relativePath === "/" ? `${base}/` : `${base}${relativePath}`;
 }
 
 /**

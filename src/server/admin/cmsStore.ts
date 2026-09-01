@@ -229,7 +229,7 @@ function buildInitialDatabase(): CMSDatabase {
     readTime: b.readTime || "5 min read",
     metaTitle: `${b.title} | Mehzan Tools Hub`,
     metaDescription: b.excerpt,
-    canonicalUrl: `https://mehzandigital.com/blog/${b.slug}`,
+    canonicalUrl: `https://www.mehzandigital.com/blog/${b.slug}`,
     views: 0,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

@@ -3,7 +3,6 @@ import { Bookmark, Sparkles } from "lucide-react";
 import { AITool } from "../types";
 import { ToolCard } from "../components/tools/ToolCard";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
-import { AdBanner } from "../components/layout/AdBanner";
 import { SchemaHead } from "../components/layout/SchemaHead";
 
 interface FavoritesPageProps {
@@ -42,8 +41,6 @@ export const FavoritesPage: React.FC<FavoritesPageProps> = ({
             Quick launcher for your saved tools ({favoriteTools.length} bookmarked)
           </p>
         </div>
-
-        <AdBanner placement="header" slotId="favorites-top-ad" />
 
         {favoriteTools.length === 0 ? (
           <div className="py-16 text-center space-y-3 rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">

@@ -69,10 +69,9 @@ async function startServer() {
       return res.redirect(301, `https://${host}${req.originalUrl}`);
     }
 
-    // 2. Strip WWW prefix to guarantee canonical apex domain
-    if (host.startsWith("www.")) {
-      const apexHost = host.replace(/^www\./i, "");
-      return res.redirect(301, `${proto}://${apexHost}${req.originalUrl}`);
+    // 2. Enforce WWW prefix on custom production domain to match canonical sitemap & metadata
+    if (host === "mehzandigital.com") {
+      return res.redirect(301, `https://www.mehzandigital.com${req.originalUrl}`);
     }
 
     // 3. Strip Trailing Slash (except root "/")

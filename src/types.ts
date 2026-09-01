@@ -18,6 +18,13 @@ export type ToolCategory =
   | "business"
   | "student";
 
+export type SEOPageType =
+  | "PUBLIC_INDEXABLE"
+  | "PUBLIC_NON_INDEXABLE"
+  | "PRIVATE"
+  | "NOT_FOUND"
+  | "REDIRECT";
+
 export type ToolStatus = "ACTIVE" | "DISABLED" | "BROKEN" | "NEEDS_REVIEW";
 
 export interface CategoryInfo {
@@ -55,6 +62,13 @@ export interface ToolSEOContent {
   metaTitle: string;
   metaDescription: string;
   overview: string;
+  problemSolved?: string;
+  targetAudience?: string;
+  howItWorks?: string;
+  outputExpectation?: string;
+  commonMistakes?: string[];
+  processingType?: "CLIENT_SIDE_BROWSER" | "SERVER_SIDE_AI";
+  processingDetails?: string;
   useCases: string[];
   keyFeatures: string[];
   howToUseSteps: string[];

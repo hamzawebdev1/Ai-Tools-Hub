@@ -17,6 +17,10 @@ import {
   AlertTriangle,
   PlusCircle,
   Upload,
+  ShieldCheck,
+  User,
+  AlertCircle,
+  Lock,
 } from "lucide-react";
 import { AITool } from "../types";
 import { CATEGORIES_DATA } from "../data/categoriesData";
@@ -34,6 +38,7 @@ import { GuestLimitModal } from "../components/auth/GuestLimitModal";
 import { trackToolAction } from "../services/toolTrackingService";
 import { getRelatedTools } from "../utils/linkBuilder";
 import { injectLinksIntoContent } from "../utils/seoLinkInjector";
+import { getEnrichedToolSEO } from "../utils/toolSeoHelper";
 
 const PdfToolsRunner = React.lazy(() => import("../components/tools/PdfToolsRunner").then(m => ({ default: m.PdfToolsRunner })));
 const ImageToolsRunner = React.lazy(() => import("../components/tools/ImageToolsRunner").then(m => ({ default: m.ImageToolsRunner })));
@@ -300,16 +305,23 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
     (c) => c.slug === tool.category || c.id === tool.category || c.name === tool.category
   );
 
+  // Compute rich SEO content merging tool overrides with fallback defaults
+  const enrichedSeo = {
+    ...getEnrichedToolSEO(tool),
+    ...(tool.seoContent || {}),
+  };
+
   return (
     <>
       <SchemaHead
-        title={tool.seoContent.metaTitle}
-        description={tool.seoContent.metaDescription}
+        title={enrichedSeo.metaTitle}
+        description={enrichedSeo.metaDescription}
         schemaType="SoftwareApplication"
         schemaData={{
           name: tool.name,
           rating: tool.rating,
           ratingCount: tool.ratingCount,
+          faqs: enrichedSeo.faqs,
         }}
       />
 
@@ -649,52 +661,114 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
             <p className="text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300" dangerouslySetInnerHTML={{ __html: (() => {
                 const tools = getRelatedTools(tool.id);
                 const links = tools.map(t => ({ text: t.name, url: t.url }));
-                return injectLinksIntoContent(tool.seoContent.overview, links);
+                return injectLinksIntoContent(enrichedSeo.overview, links);
             })() }}>
             </p>
           </section>
 
-          <section className="space-y-3">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-              Key Features
+          {/* Problem Solved & Target Audience */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {enrichedSeo.problemSolved && (
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-indigo-500" /> What Problem Does It Solve?
+                </h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {enrichedSeo.problemSolved}
+                </p>
+              </div>
+            )}
+
+            {enrichedSeo.targetAudience && (
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800 space-y-1.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <User className="w-4 h-4 text-emerald-500" /> Who Can Use It?
+                </h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {enrichedSeo.targetAudience}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Technical Architecture & Processing Disclosure */}
+          <section className="p-4 sm:p-5 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 space-y-2 text-xs">
+            <h3 className="font-bold text-indigo-950 dark:text-indigo-200 flex items-center gap-2 text-sm">
+              <Zap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> How It Works & Data Privacy Architecture
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {tool.seoContent.keyFeatures.map((feat, idx) => (
-                <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-800">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">{feat}</span>
-                </div>
-              ))}
-            </div>
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+              {enrichedSeo.howItWorks}
+            </p>
+            {enrichedSeo.processingDetails && (
+              <div className="pt-2 border-t border-indigo-100 dark:border-indigo-900/40 font-medium text-indigo-900 dark:text-indigo-300 flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                <span><strong>Privacy Guarantee:</strong> {enrichedSeo.processingDetails}</span>
+              </div>
+            )}
           </section>
 
-          <section className="space-y-3">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-              Common Use Cases
-            </h3>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-              {tool.seoContent.useCases.map((uc, idx) => (
-                <li key={idx} className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
-                  <span>{uc}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
+          {/* Key Features & Common Use Cases */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section className="space-y-3">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                Key Features
+              </h3>
+              <div className="space-y-2">
+                {enrichedSeo.keyFeatures.map((feat, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-800">
+                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                    <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
 
-          <section className="space-y-3">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-              How to Use Step-by-Step
-            </h3>
-            <ol className="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-              {tool.seoContent.howToUseSteps.map((step, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="font-bold text-indigo-600 dark:text-indigo-400">{idx + 1}.</span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
+            <section className="space-y-3">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                Common Use Cases
+              </h3>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                {enrichedSeo.useCases.map((uc, idx) => (
+                  <li key={idx} className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+                    <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0" />
+                    <span>{uc}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </div>
+
+          {/* Step-by-Step Guide & Common Mistakes */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <section className="md:col-span-2 space-y-3">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                How to Use {tool.name} Step-by-Step
+              </h3>
+              <ol className="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                {enrichedSeo.howToUseSteps.map((step, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-800">
+                    <span className="font-bold text-indigo-600 dark:text-indigo-400 shrink-0">{idx + 1}.</span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            {enrichedSeo.commonMistakes && enrichedSeo.commonMistakes.length > 0 && (
+              <section className="space-y-3">
+                <h3 className="text-sm font-bold text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
+                  <AlertCircle className="w-4 h-4 text-amber-500" /> Common Mistakes to Avoid
+                </h3>
+                <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                  {enrichedSeo.commonMistakes.map((m, idx) => (
+                    <li key={idx} className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 leading-relaxed">
+                      • {m}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
 
           {/* FAQs */}
           <section className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
@@ -702,13 +776,13 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
               <HelpCircle className="w-5 h-5 text-indigo-500" />
               Frequently Asked Questions
             </h3>
-            <div className="space-y-3">
-              {tool.seoContent.faqs.map((faq, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 space-y-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {enrichedSeo.faqs.map((faq, idx) => (
+                <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-800 space-y-1.5">
                   <h4 className="text-xs font-bold text-slate-900 dark:text-white">
                     {faq.question}
                   </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
@@ -719,17 +793,17 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           {/* Related Tools Section */}
           <section className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-              Related Tools
+              Related Mehzan Digital Tools
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {getRelatedTools(tool.category, tool.id).map((t) => (
                 <a
                   key={t.id}
                   href={getUrlForRoute("tool-detail", { toolSlug: t.slug })}
-                  className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 transition-colors"
+                  className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 transition-colors"
                 >
-                  <h4 className="font-semibold text-sm text-slate-900 dark:text-white">{t.name}</h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{t.tagline}</p>
+                  <h4 className="font-semibold text-xs text-slate-900 dark:text-white">{t.name}</h4>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{t.tagline}</p>
                 </a>
               ))}
             </div>

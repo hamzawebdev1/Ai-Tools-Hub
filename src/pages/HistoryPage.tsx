@@ -64,8 +64,6 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({
           )}
         </div>
 
-        <AdBanner placement="header" slotId="history-top-ad" />
-
         {history.length === 0 ? (
           <div className="py-16 text-center space-y-3 rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
             <History className="w-12 h-12 text-slate-400 mx-auto" />
