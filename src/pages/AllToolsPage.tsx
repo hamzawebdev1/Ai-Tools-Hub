@@ -7,6 +7,7 @@ import { ToolCard } from "../components/tools/ToolCard";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
 import { SchemaHead } from "../components/layout/SchemaHead";
+import { ReviewCTA } from "../components/common/ReviewCTA";
 
 interface AllToolsPageProps {
   tools: AITool[];
@@ -177,6 +178,8 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({
             ))}
           </div>
         )}
+
+        <ReviewCTA />
       </div>
     </>
   );

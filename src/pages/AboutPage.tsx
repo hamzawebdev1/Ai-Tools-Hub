@@ -3,6 +3,7 @@ import { Sparkles, ShieldCheck, Zap, Globe, UserCheck, Mail } from "lucide-react
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { SchemaHead } from "../components/layout/SchemaHead";
 import { getUrlForRoute } from "../services/routerService";
+import { ReviewCTA } from "../components/common/ReviewCTA";
 
 interface AboutPageProps {
   setActiveTab: (tab: string) => void;
@@ -124,6 +125,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
             </button>
           </div>
         </div>
+
+        <ReviewCTA />
       </div>
     </>
   );

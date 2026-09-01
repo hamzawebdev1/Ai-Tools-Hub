@@ -3,12 +3,14 @@ import { PDF_ARTICLES } from "./blog/pdfArticles";
 import { IMAGE_ARTICLES } from "./blog/imageArticles";
 import { CALCULATOR_ARTICLES } from "./blog/calculatorArticles";
 import { CONVERTER_ARTICLES } from "./blog/converterArticles";
+import { TRUSTPILOT_HOSTINGER_ARTICLES } from "./blog/trustpilotHostingerArticles";
 
 export const BLOG_POSTS_DATA: BlogPost[] = [
   ...PDF_ARTICLES,
   ...IMAGE_ARTICLES,
   ...CALCULATOR_ARTICLES,
   ...CONVERTER_ARTICLES,
+  ...TRUSTPILOT_HOSTINGER_ARTICLES,
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {

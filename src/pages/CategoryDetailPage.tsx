@@ -6,6 +6,7 @@ import { ToolCard } from "../components/tools/ToolCard";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { AdBanner } from "../components/layout/AdBanner";
 import { SchemaHead } from "../components/layout/SchemaHead";
+import { ReviewCTA } from "../components/common/ReviewCTA";
 
 interface CategoryDetailPageProps {
   categorySlug: string;
@@ -65,6 +66,8 @@ export const CategoryDetailPage: React.FC<CategoryDetailPageProps> = ({
             />
           ))}
         </div>
+
+        <ReviewCTA />
       </div>
     </>
   );

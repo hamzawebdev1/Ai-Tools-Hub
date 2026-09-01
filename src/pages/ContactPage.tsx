@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mail, Send, CheckCircle, AlertCircle, Clock, MessageSquare, Paperclip, ShieldCheck, RefreshCw } from "lucide-react";
 import { Breadcrumb } from "../components/layout/Breadcrumb";
 import { SchemaHead } from "../components/layout/SchemaHead";
+import { ReviewCTA } from "../components/common/ReviewCTA";
 
 export const ContactPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -243,6 +244,8 @@ export const ContactPage: React.FC = () => {
             </div>
           </form>
         )}
+
+        <ReviewCTA />
       </div>
     </>
   );

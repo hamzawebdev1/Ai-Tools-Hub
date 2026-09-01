@@ -39,6 +39,7 @@ import { trackToolAction } from "../services/toolTrackingService";
 import { getRelatedTools } from "../utils/linkBuilder";
 import { injectLinksIntoContent } from "../utils/seoLinkInjector";
 import { getEnrichedToolSEO } from "../utils/toolSeoHelper";
+import { ReviewCTA } from "../components/common/ReviewCTA";
 
 const PdfToolsRunner = React.lazy(() => import("../components/tools/PdfToolsRunner").then(m => ({ default: m.PdfToolsRunner })));
 const ImageToolsRunner = React.lazy(() => import("../components/tools/ImageToolsRunner").then(m => ({ default: m.ImageToolsRunner })));
@@ -808,6 +809,8 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
               ))}
             </div>
           </section>
+
+          <ReviewCTA />
         </article>
 
         {/* Related & Trending Tools Section */}

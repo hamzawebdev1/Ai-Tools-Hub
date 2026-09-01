@@ -22,6 +22,7 @@ import { Newsletter } from "../components/layout/Newsletter";
 import { SchemaHead } from "../components/layout/SchemaHead";
 import { getRelatedTools } from "../utils/linkBuilder";
 import { injectLinksIntoContent } from "../utils/seoLinkInjector";
+import { ReviewCTA } from "../components/common/ReviewCTA";
 
 interface BlogPostPageProps {
   postSlug: string;
@@ -347,6 +348,8 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
               </div>
             </div>
           )}
+
+          <ReviewCTA />
 
           <Newsletter />
         </article>
