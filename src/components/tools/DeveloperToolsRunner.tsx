@@ -89,6 +89,9 @@ export const DeveloperToolsRunner: React.FC<DeveloperToolsRunnerProps> = ({
     if (id.includes("sql")) {
       return "SELECT id, name, email FROM users WHERE status = 'active' ORDER BY created_at DESC;";
     }
+    if (id.includes("css")) {
+      return "/* Sample Stylesheet */\nbody {\n  font-family: sans-serif;\n  background-color: #f8fafc;\n  color: #1e293b;\n}\n\n.card {\n  padding: 16px;\n  border-radius: 8px;\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);\n}";
+    }
     if (id.includes("jwt")) {
       return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjI1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     }
@@ -221,6 +224,12 @@ export const DeveloperToolsRunner: React.FC<DeveloperToolsRunnerProps> = ({
         setResultOutput(DevEngine.formatYaml(inputVal));
       } else if (toolId.includes("sql")) {
         setResultOutput(DevEngine.formatSql(inputVal));
+      } else if (toolId.includes("css")) {
+        if (toolId.includes("minifi")) {
+          setResultOutput(DevEngine.minifyCss(inputVal));
+        } else {
+          setResultOutput(DevEngine.formatCss(inputVal));
+        }
       } else if (toolId.includes("regex")) {
         const res = DevEngine.executeRegexTest(inputVal, regexFlags, regexTestText);
         setResultOutput(

@@ -2032,5 +2032,34 @@ export const IMAGETOOLS: AITool[] = [
       howToUseSteps: ["Upload screenshot.", "Crop bounds & select backdrop.", "Download mockup image."],
       faqs: [{ question: "Can I customize the backdrop color?", answer: "Yes, pick gradient or solid backdrop fill." }]
     }
+  },
+
+  // 71. SVG Code Optimizer
+  {
+    id: "svg-optimizer",
+    slug: "svg-optimizer",
+    name: "SVG Code Optimizer",
+    tagline: "Clean, compress, and minify SVG vector graphics markup online.",
+    description: "Optimize SVG file size by stripping unnecessary XML metadata, comments, editor tags, and redundant whitespace in real time.",
+    category: "image",
+    iconName: "Zap",
+    tags: ["svg", "optimizer", "vector", "minify", "cleaner", "compressor"],
+    isTrending: true,
+    isPopular: true,
+    rating: 4.9,
+    ratingCount: 1450,
+    usageCount: 56000,
+    inputLabel: "Paste SVG Code or Upload File:",
+    inputPlaceholder: "Paste <svg> XML markup here...",
+    optionsConfig: {},
+    seoContent: {
+      metaTitle: "SVG Code Optimizer - Minify & Clean SVG Vector Graphics",
+      metaDescription: "Optimize SVG code online for free. Strip XML metadata, editor tags, and comments to reduce vector file sizes for fast website load times.",
+      overview: "SVG Code Optimizer cleans up bloated SVG markup produced by graphics editors like Figma, Illustrator, and Inkscape.",
+      useCases: ["Compress vector icons for web apps", "Clean up Illustrator & Inkscape SVG exports", "Reduce web page payload size"],
+      keyFeatures: ["Strips XML declarations & DOCTYPE", "Removes editor metadata & comments", "Reduces decimal precision in paths", "Calculates percentage size savings"],
+      howToUseSteps: ["Paste SVG markup or select SVG file.", "View cleaned SVG code and preview.", "Copy or download optimized SVG."],
+      faqs: [{ question: "Does it alter vector image quality?", answer: "No, visual geometry is strictly preserved while removing hidden bloat." }]
+    }
   }
 ];

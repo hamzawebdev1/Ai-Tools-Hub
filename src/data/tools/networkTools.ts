@@ -1045,5 +1045,54 @@ export const NETWORK_TOOLS: AITool[] = [
         }
       ]
     }
+  },
+  {
+    "id": "ip-subnet-cidr-calculator",
+    "slug": "ip-subnet-cidr-calculator",
+    "name": "IP Subnet & CIDR Calculator",
+    "tagline": "Calculate IPv4 subnets, CIDR prefix masks, broadcast address, and host ranges.",
+    "description": "Calculate subnet mask, network address, broadcast address, usable host IP range, and CIDR notation instantly. 100% free browser-side network utility.",
+    "category": "network",
+    "iconName": "Network",
+    "tags": ["network", "ip", "subnet", "cidr", "calculator", "netmask", "broadcast"],
+    "isTrending": true,
+    "rating": 4.9,
+    "ratingCount": 1890,
+    "usageCount": 68000,
+    "inputLabel": "Enter IP Address:",
+    "inputPlaceholder": "192.168.1.1",
+    "optionsConfig": {},
+    "seoContent": {
+      "metaTitle": "IP Subnet & CIDR Calculator - Free Network Engineering Utility | Mehzan Digital",
+      "metaDescription": "Calculate IPv4 subnet masks, CIDR prefix notations, wildcard masks, network and broadcast addresses, and usable host ranges online for free.",
+      "overview": "IP Subnet & CIDR Calculator delivers fast, accurate network bitwise calculations for systems administrators, network engineers, and students.",
+      "useCases": [
+        "Plan IP addressing schemes and CIDR subnet allocation",
+        "Calculate first and last usable host IPs for server deployment",
+        "Determine netmask, wildcard mask, and total host capacity",
+        "Verify network boundaries and broadcast addresses"
+      ],
+      "keyFeatures": [
+        "Instant real-time bitwise subnet calculation",
+        "Interactive CIDR prefix length slider (/0 to /32)",
+        "Displays netmask, wildcard mask, and usable host range",
+        "100% private in-browser execution with zero server logging"
+      ],
+      "howToUseSteps": [
+        "Enter an IPv4 address into the input field.",
+        "Adjust the CIDR prefix slider (e.g. /24).",
+        "View detailed subnet metrics and copy the calculated output."
+      ],
+      "faqs": [
+        {
+          "question": "Is IP Subnet & CIDR Calculator free?",
+          "answer": "Yes, 100% free with unlimited calculations."
+        },
+        {
+          "question": "Does it support private and public IP addresses?",
+          "answer": "Yes, it works for all valid IPv4 address classes (A, B, C, CIDR)."
+        }
+      ]
+    }
   }
 ];

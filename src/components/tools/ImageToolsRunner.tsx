@@ -38,6 +38,7 @@ import {
   createCollageImage,
   compareAndDiffImages,
   extractExifMetadata,
+  optimizeSvgCode,
   ExifMetadata,
   ColorSample,
 } from "../../services/imageEngine";
@@ -404,6 +405,12 @@ export const ImageToolsRunner: React.FC<ImageToolsRunnerProps> = ({ toolId, tool
         outputBlob = res.blob;
         outputUrl = res.url;
         outName = `filtered_${mainFile.name}`;
+      } else if (toolId === "svg-optimizer") {
+        const textContent = await mainFile.text();
+        const svgRes = optimizeSvgCode(textContent);
+        outputBlob = new Blob([svgRes.optimizedSvg], { type: "image/svg+xml" });
+        outputUrl = URL.createObjectURL(outputBlob);
+        outName = `optimized_${mainFile.name.replace(/\.[^/.]+$/, "")}.svg`;
       } else if (toolId === "round-image-corners") {
         const res = await addCornersAndBorder(mainFile, {
           cornerRadius,

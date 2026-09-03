@@ -482,6 +482,9 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
 
         case "jpg-to-pdf":
         case "png-to-pdf":
+        case "webp-to-pdf":
+        case "bmp-to-pdf":
+        case "tiff-to-pdf":
         case "images-to-pdf":
           outBytes = await imagesToPdf(files);
           outFileName = `converted_images.pdf`;
@@ -624,12 +627,6 @@ export const PdfToolsRunner: React.FC<PdfToolsRunnerProps> = ({ toolId, toolName
           const webpRes = await pdfToWebpImages(primaryFile);
           outBlobUrl = URL.createObjectURL(webpRes.blob);
           outFileName = webpRes.fileName;
-          break;
-
-        case "webp-to-pdf":
-        case "bmp-to-pdf":
-          outBytes = await imagesToPdfCustom(files);
-          outFileName = `converted_images.pdf`;
           break;
 
         case "pdf-to-html":

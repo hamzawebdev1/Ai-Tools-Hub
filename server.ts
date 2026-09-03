@@ -203,6 +203,9 @@ async function startServer() {
   // Mount Secure Encrypted Cloud Storage Routes
   app.use("/api/storage", storageRoutes);
 
+  // SEO & Indexability Routes (sitemap.xml, robots.txt, ads.txt, llms.txt)
+  // PROTECTED PRODUCTION FILE: DO NOT MODIFY OR DELETE /ads.txt WITHOUT EXPLICIT USER PERMISSION.
+  app.use(seoServerRoutes);
 
   // RSS Feed
   app.use(rssRoutes);

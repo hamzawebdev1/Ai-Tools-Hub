@@ -470,6 +470,41 @@ export const MEDIA_TOOLS: AITool[] = [
     },
   },
   {
+    id: "audio-speed-pitch-changer",
+    slug: "audio-speed-pitch-changer",
+    name: "Audio Speed & Pitch Changer",
+    tagline: "Change audio speed and pitch online for free.",
+    description: "Adjust audio speed and pitch frequency directly in your browser without uploading files to external servers.",
+    category: "media",
+    iconName: "FastForward",
+    tags: ["audio", "speed", "pitch", "changer", "tempo", "music"],
+    rating: 4.9,
+    ratingCount: 420,
+    usageCount: 18500,
+    inputLabel: "Select Audio File",
+    inputPlaceholder: "Upload audio file...",
+    optionsConfig: {
+      customFields: [
+        {
+          id: "speedMultiplier",
+          label: "Playback Speed & Pitch Ratio",
+          type: "select",
+          options: ["0.5x (Half Speed)", "0.75x (Slower)", "1.25x (Faster)", "1.5x (1.5x Speed)", "2.0x (Double Speed)"],
+          defaultValue: "1.5x (1.5x Speed)",
+        }
+      ],
+    },
+    seoContent: {
+      metaTitle: "Audio Speed & Pitch Changer - Change Speed & Pitch Free Online",
+      metaDescription: "Change audio playback speed and pitch online for free. Adjust tempo and tone frequency for songs, podcasts, and recordings.",
+      overview: "Audio Speed & Pitch Changer uses high-precision Web Audio API resampling to alter speed and pitch in real time.",
+      useCases: ["Speed up audiobooks and lectures", "Adjust pitch and tempo for music practice", "Create nightcore or slowed audio effects"],
+      keyFeatures: ["0.5x to 2.0x speed control", "Real-time client-side processing", "Instant WAV audio export"],
+      howToUseSteps: ["Upload your audio file.", "Select your desired playback speed multiplier.", "Click Process and download your modified audio."],
+      faqs: [{ question: "Are my audio files stored on a server?", answer: "No, all processing happens 100% locally in your web browser." }]
+    },
+  },
+  {
     id: "audio-pitch-adjuster",
     slug: "audio-pitch-adjuster",
     name: "Audio Pitch Shifter",

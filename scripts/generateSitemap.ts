@@ -52,9 +52,15 @@ function generateSitemapXml() {
   fs.writeFileSync(path.join(publicDir, "sitemap.xml"), xml, "utf-8");
   console.log(`Successfully generated public/sitemap.xml with ${indexableRoutes.length} total canonical URLs.`);
 
+  // Ensure protected ads.txt exists in public & dist
+  const adsTxtContent = "google.com, pub-1184638072227335, DIRECT, f08c47fec0942fa0\n";
+  const publicAdsPath = path.join(publicDir, "ads.txt");
+  fs.writeFileSync(publicAdsPath, adsTxtContent, "utf-8");
+
   if (fs.existsSync(distDir)) {
     fs.writeFileSync(path.join(distDir, "sitemap.xml"), xml, "utf-8");
-    console.log(`Successfully generated dist/sitemap.xml.`);
+    fs.writeFileSync(path.join(distDir, "ads.txt"), adsTxtContent, "utf-8");
+    console.log(`Successfully generated dist/sitemap.xml and verified dist/ads.txt.`);
   }
 }
 

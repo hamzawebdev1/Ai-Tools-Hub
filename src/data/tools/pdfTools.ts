@@ -46,6 +46,7 @@ const rawPdfTools = [
   { id: 'pdf-to-webp', name: 'Convert PDF to WEBP', slug: 'pdf-to-webp', tagline: 'Convert PDF pages into modern high-efficiency WEBP image files.' },
   { id: 'webp-to-pdf', name: 'Convert WEBP to PDF', slug: 'webp-to-pdf', tagline: 'Convert WEBP photos into a clean formatted PDF document.' },
   { id: 'bmp-to-pdf', name: 'Convert BMP to PDF', slug: 'bmp-to-pdf', tagline: 'Convert Windows BMP bitmap files into standard PDF.' },
+  { id: 'tiff-to-pdf', name: 'Convert TIFF to PDF', slug: 'tiff-to-pdf', tagline: 'Convert TIFF image files into a clean formatted PDF document.' },
   { id: 'pdf-to-html', name: 'Convert PDF to HTML', slug: 'pdf-to-html', tagline: 'Convert PDF text and page layouts into structured HTML.' },
   { id: 'pdf-to-docx', name: 'Convert PDF to Word DOCX', slug: 'pdf-to-word', tagline: 'Convert PDF files into editable Microsoft Word DOCX documents.' },
   { id: 'docx-to-pdf', name: 'Convert Word DOCX to PDF', slug: 'docx-to-pdf', tagline: 'Convert Microsoft Word (.docx) documents into styled PDF files.' },

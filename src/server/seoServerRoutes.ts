@@ -166,6 +166,16 @@ router.get("/robots.txt", (req, res) => {
 });
 
 /**
+ * PROTECTED PRODUCTION FILE: Google AdSense Authorized Digital Sellers (/ads.txt)
+ * DO NOT MODIFY OR DELETE /ads.txt WITHOUT EXPLICIT USER PERMISSION.
+ */
+router.get("/ads.txt", (_req, res) => {
+  res.header("Content-Type", "text/plain; charset=utf-8");
+  res.header("Cache-Control", "public, max-age=86400, s-maxage=86400");
+  res.send("google.com, pub-1184638072227335, DIRECT, f08c47fec0942fa0");
+});
+
+/**
  * AI Agent / LLM Site Discovery Specification (/llms.txt)
  */
 router.get("/llms.txt", (req, res) => {

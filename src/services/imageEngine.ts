@@ -947,3 +947,48 @@ export async function compareAndDiffImages(
     file2Url: URL.createObjectURL(await canvasToBlob(c2, "image/png")),
   };
 }
+
+// 17. SVG Code Optimizer Engine
+export function optimizeSvgCode(svgText: string): {
+  optimizedSvg: string;
+  originalSize: number;
+  optimizedSize: number;
+  savingsPercent: number;
+} {
+  if (!svgText || !svgText.trim()) {
+    return { optimizedSvg: "", originalSize: 0, optimizedSize: 0, savingsPercent: 0 };
+  }
+
+  const originalSize = new Blob([svgText]).size;
+
+  let cleaned = svgText
+    // Remove XML declaration
+    .replace(/<\?xml[\s\S]*?\?>/gi, "")
+    // Remove DOCTYPE
+    .replace(/<!DOCTYPE[\s\S]*?>/gi, "")
+    // Remove HTML/XML comments
+    .replace(/<!--[\s\S]*?-->/g, "")
+    // Remove generator metadata tags (Inkscape, Illustrator, Figma)
+    .replace(/<sodipodi:[\s\S]*?>/gi, "")
+    .replace(/<inkscape:[\s\S]*?>/gi, "")
+    .replace(/xmlns:sodipodi="[^"]*"/gi, "")
+    .replace(/xmlns:inkscape="[^"]*"/gi, "")
+    // Remove metadata tags
+    .replace(/<metadata[\s\S]*?<\/metadata>/gi, "")
+    // Strip trailing decimal precision beyond 3 decimal places
+    .replace(/(\d+\.\d{3})\d+/g, "$1")
+    // Collapse whitespace
+    .replace(/>\s+</g, "><")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const optimizedSize = new Blob([cleaned]).size;
+  const savingsPercent = originalSize > 0 ? Math.max(0, Math.round(((originalSize - optimizedSize) / originalSize) * 100)) : 0;
+
+  return {
+    optimizedSvg: cleaned,
+    originalSize,
+    optimizedSize,
+    savingsPercent,
+  };
+}

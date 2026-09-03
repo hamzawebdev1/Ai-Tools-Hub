@@ -286,7 +286,7 @@ export const MediaToolsRunner: React.FC<MediaToolsRunnerProps> = ({ tool }) => {
         setResultBlobUrl(URL.createObjectURL(wavBlob));
         setResultFileName(`${primaryFile.name.replace(/\.[^/.]+$/, "")}_fade_out.wav`);
         setResultType("audio");
-      } else if (tool.id === "audio-speed-changer") {
+      } else if (tool.id === "audio-speed-changer" || tool.id === "audio-speed-pitch-changer") {
         setStatusText("Adjusting playback speed tempo...");
         const audioBuf = await decodeAudioFile(primaryFile);
         setProgress(40);

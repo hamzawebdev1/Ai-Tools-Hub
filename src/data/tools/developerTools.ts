@@ -2544,5 +2544,54 @@ export const DEVELOPERTOOLS: AITool[] = [
         }
       ]
     }
+  },
+  {
+    "id": "css-minifier-formatter",
+    "slug": "css-minifier-formatter",
+    "name": "CSS Minifier & Formatter",
+    "tagline": "Compress and beautify CSS code online for free.",
+    "description": "Compress CSS file size or beautify minified stylesheets with custom indentation. Fast, high-precision client-side browser processing.",
+    "category": "developer",
+    "iconName": "Code",
+    "tags": ["developer", "css", "minifier", "formatter", "beautifier", "free utility"],
+    "isTrending": true,
+    "rating": 4.9,
+    "ratingCount": 1180,
+    "usageCount": 42000,
+    "inputLabel": "Input CSS Code:",
+    "inputPlaceholder": "Paste CSS code here...",
+    "optionsConfig": {},
+    "seoContent": {
+      "metaTitle": "CSS Minifier & Formatter - Free Online Utility | Mehzan Digital",
+      "metaDescription": "Minify CSS code to reduce file size or format minified CSS into clean readable code. 100% free tool running locally in your browser.",
+      "overview": "CSS Minifier & Formatter delivers fast, browser-native stylesheet optimization without sending code to external servers.",
+      "useCases": [
+        "Minify CSS stylesheets for faster web page load speeds",
+        "Beautify minified production CSS for debugging",
+        "Strip comments and redundant whitespace",
+        "100% private in-browser code processing"
+      ],
+      "keyFeatures": [
+        "Instant real-time minification and formatting",
+        "Zero server data storage or tracking",
+        "Clean dark and light console view",
+        "One-click copy and export output"
+      ],
+      "howToUseSteps": [
+        "Paste your CSS code into the input workspace.",
+        "Toggle between Minify or Format mode.",
+        "Copy or download the optimized CSS output."
+      ],
+      "faqs": [
+        {
+          "question": "Is CSS Minifier & Formatter free to use?",
+          "answer": "Yes, 100% free with no registration or usage limits."
+        },
+        {
+          "question": "Is my CSS code uploaded anywhere?",
+          "answer": "No, processing happens entirely within your web browser."
+        }
+      ]
+    }
   }
 ];
