@@ -100,6 +100,41 @@ export const StudentToolsRunner: React.FC<StudentToolsRunnerProps> = ({
   const [expTransport, setExpTransport] = useState(80);
   const [expLeisure, setExpLeisure] = useState(120);
 
+  // 9. GPA to Percentage State
+  const [gpaVal, setGpaVal] = useState(3.6);
+  const [gpaScale, setGpaScale] = useState(4.0);
+
+  // 10. Course Assignment Grade State
+  const [assignmentCats, setAssignmentCats] = useState<StudentEngine.AssignmentCategory[]>([
+    { name: "Homework & Quizzes", weightPercent: 20, scoreEarned: 90, maxScore: 100 },
+    { name: "Midterm Exam 1", weightPercent: 25, scoreEarned: 85, maxScore: 100 },
+    { name: "Research Project", weightPercent: 25, scoreEarned: 92, maxScore: 100 },
+    { name: "Final Examination", weightPercent: 30, scoreEarned: 88, maxScore: 100 },
+  ]);
+
+  // 11. Essay Word Count Helper State
+  const [essayText, setEssayText] = useState("Academic research shows that active learning techniques significantly improve student retention in STEM disciplines. By combining structured lecture material with peer discussion and interactive problem solving, university students demonstrate higher conceptual mastery.");
+  const [essayTargetWords, setEssayTargetWords] = useState(2500);
+
+  // 12. Exam Countdown State
+  const [examTitle, setExamTitle] = useState("Organic Chemistry Final Exam");
+  const [examDate, setExamDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 14);
+    return d.toISOString().split("T")[0];
+  });
+
+  // 13. Student Timetable State
+  const [timetable, setTimetable] = useState([
+    { course: "Math 101 Lecture", day: "Monday", time: "09:00 - 10:30 AM", room: "Hall B", color: "bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300" },
+    { course: "Computer Science Lab", day: "Tuesday", time: "11:00 AM - 01:00 PM", room: "Lab 3", color: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300" },
+    { course: "Physics Discussion", day: "Wednesday", time: "02:00 - 03:30 PM", room: "Room 204", color: "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300" },
+  ]);
+  const [newTtCourse, setNewTtCourse] = useState("");
+  const [newTtDay, setNewTtDay] = useState("Monday");
+  const [newTtTime, setNewTtTime] = useState("10:00 - 11:30 AM");
+  const [newTtRoom, setNewTtRoom] = useState("Room 101");
+
   // Dynamic Output State
   const [calcResult, setCalcResult] = useState<StudentEngine.StudentCalcResult | null>(null);
 
@@ -171,18 +206,38 @@ export const StudentToolsRunner: React.FC<StudentToolsRunnerProps> = ({
     expBooks,
     expTransport,
     expLeisure,
+    gpaVal,
+    gpaScale,
+    assignmentCats,
+    essayText,
+    essayTargetWords,
+    examTitle,
+    examDate,
+    timetable,
   ]);
 
   const executeCalculation = () => {
     setErrorMessage(null);
     try {
-      if (toolId.includes("gpa-calculator") && !toolId.includes("cgpa")) {
+      if (toolId.includes("gpa-to-percentage")) {
+        const res = StudentEngine.convertGpaToPercentage(gpaVal, gpaScale);
+        setCalcResult(res);
+      } else if (toolId.includes("assignment-grade-calculator")) {
+        const res = StudentEngine.calculateCourseWeightedGrade(assignmentCats);
+        setCalcResult(res);
+      } else if (toolId.includes("assignment-word-count-helper")) {
+        const res = StudentEngine.analyzeAssignmentWordCount(essayText, essayTargetWords);
+        setCalcResult(res);
+      } else if (toolId.includes("exam-countdown") || toolId.includes("study-break-interval")) {
+        const res = StudentEngine.calculateSpacedRepetitionIntervals(examDate);
+        setCalcResult(res);
+      } else if (toolId.includes("gpa-calculator") && !toolId.includes("cgpa")) {
         const res = StudentEngine.calculateGPA(courses);
         setCalcResult(res);
       } else if (toolId.includes("cgpa-calculator")) {
         const res = StudentEngine.calculateCGPA(semesters);
         setCalcResult(res);
-      } else if (toolId.includes("final-grade-calculator") || toolId.includes("grade-calculator") || toolId.includes("semester-grade")) {
+      } else if (toolId.includes("final-grade-calculator") || (toolId.includes("grade-calculator") && !toolId.includes("assignment"))) {
         const res = StudentEngine.calculateFinalGradeNeeded(currentGrade, targetGrade, finalExamWeight);
         setCalcResult(res);
       } else if (toolId.includes("attendance-calculator")) {
@@ -206,8 +261,16 @@ export const StudentToolsRunner: React.FC<StudentToolsRunnerProps> = ({
           { tuition: expTuition, rent: expRent, food: expFood, books: expBooks, transport: expTransport, leisure: expLeisure }
         );
         setCalcResult(res);
+      } else if (toolId.includes("timetable") || toolId.includes("planner")) {
+        setCalcResult({
+          title: "Weekly Class Schedule",
+          formattedResult: `${timetable.length} Active Courses`,
+          formula: "Weekly Timetable Grid",
+          explanation: "Interactive weekly class timetable with custom room locations.",
+          steps: ["Add weekly class lectures and labs.", "Print or copy your schedule grid."],
+          breakdown: timetable.map((t) => ({ label: `${t.day} - ${t.course}`, value: `${t.time} (${t.room})` })),
+        });
       } else {
-        // Fallback or default GPA
         const res = StudentEngine.calculateGPA(courses);
         setCalcResult(res);
       }
@@ -780,6 +843,247 @@ export const StudentToolsRunner: React.FC<StudentToolsRunnerProps> = ({
                     className="w-full p-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 rounded-xl text-xs"
                   />
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* 9. GPA TO PERCENTAGE INPUTS */}
+          {toolId.includes("gpa-to-percentage") && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+                    Grading Scale Standard
+                  </label>
+                  <select
+                    value={gpaScale}
+                    onChange={(e) => setGpaScale(Number(e.target.value))}
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-xs font-bold"
+                  >
+                    <option value={4.0}>4.0 Scale (USA / Canada Standard)</option>
+                    <option value={9.0}>9.0 Scale (Canada York / OMSAS)</option>
+                    <option value={10.0}>10.0 Scale (Europe / Mexico / India CGPA)</option>
+                    <option value={5.0}>5.0 Scale (Germany / Middle East / UK ECTS)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+                    Earned GPA / CGPA Score
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max={gpaScale}
+                    value={gpaVal}
+                    onChange={(e) => setGpaVal(Number(e.target.value))}
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-sm font-semibold"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 10. ASSIGNMENT GRADE CALCULATOR INPUTS */}
+          {toolId.includes("assignment-grade-calculator") && (
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+                  Weighted Course Categories
+                </label>
+                <button
+                  onClick={() => setAssignmentCats([...assignmentCats, { name: "New Assignment", weightPercent: 10, scoreEarned: 80, maxScore: 100 }])}
+                  className="px-3 py-1.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 rounded-xl text-xs font-semibold flex items-center gap-1 cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Add Category
+                </button>
+              </div>
+              <div className="space-y-2">
+                {assignmentCats.map((cat, idx) => (
+                  <div key={idx} className="grid grid-cols-12 gap-2 items-center bg-slate-50 dark:bg-slate-950 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <input
+                      type="text"
+                      value={cat.name}
+                      onChange={(e) => {
+                        const updated = [...assignmentCats];
+                        updated[idx].name = e.target.value;
+                        setAssignmentCats(updated);
+                      }}
+                      className="col-span-4 p-2 bg-white dark:bg-slate-900 border rounded-xl text-xs"
+                      placeholder="Category Title"
+                    />
+                    <input
+                      type="number"
+                      value={cat.weightPercent}
+                      onChange={(e) => {
+                        const updated = [...assignmentCats];
+                        updated[idx].weightPercent = Number(e.target.value);
+                        setAssignmentCats(updated);
+                      }}
+                      className="col-span-3 p-2 bg-white dark:bg-slate-900 border rounded-xl text-xs"
+                      placeholder="Weight %"
+                    />
+                    <input
+                      type="number"
+                      value={cat.scoreEarned}
+                      onChange={(e) => {
+                        const updated = [...assignmentCats];
+                        updated[idx].scoreEarned = Number(e.target.value);
+                        setAssignmentCats(updated);
+                      }}
+                      className="col-span-2 p-2 bg-white dark:bg-slate-900 border rounded-xl text-xs"
+                      placeholder="Earned"
+                    />
+                    <input
+                      type="number"
+                      value={cat.maxScore}
+                      onChange={(e) => {
+                        const updated = [...assignmentCats];
+                        updated[idx].maxScore = Number(e.target.value);
+                        setAssignmentCats(updated);
+                      }}
+                      className="col-span-2 p-2 bg-white dark:bg-slate-900 border rounded-xl text-xs"
+                      placeholder="Max"
+                    />
+                    <button
+                      onClick={() => setAssignmentCats(assignmentCats.filter((_, i) => i !== idx))}
+                      className="col-span-1 text-rose-500 hover:text-rose-700"
+                    >
+                      <Trash2 className="w-4 h-4 mx-auto" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 11. ESSAY WORD COUNT HELPER INPUTS */}
+          {toolId.includes("assignment-word-count-helper") && (
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+                  Target Essay Word Goal
+                </label>
+                <input
+                  type="number"
+                  value={essayTargetWords}
+                  onChange={(e) => setEssayTargetWords(Number(e.target.value))}
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs font-semibold mb-3"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+                  Essay Draft / Assignment Text
+                </label>
+                <textarea
+                  rows={6}
+                  value={essayText}
+                  onChange={(e) => setEssayText(e.target.value)}
+                  className="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-xs"
+                  placeholder="Paste or write your essay text here..."
+                />
+              </div>
+            </div>
+          )}
+
+          {/* 12. EXAM COUNTDOWN & REVISION INPUTS */}
+          {(toolId.includes("exam-countdown") || toolId.includes("study-break-interval")) && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+                    Subject / Exam Title
+                  </label>
+                  <input
+                    type="text"
+                    value={examTitle}
+                    onChange={(e) => setExamTitle(e.target.value)}
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-950 border rounded-2xl text-xs font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+                    Exam Date
+                  </label>
+                  <input
+                    type="date"
+                    value={examDate}
+                    onChange={(e) => setExamDate(e.target.value)}
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-950 border rounded-2xl text-xs font-semibold"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 13. TIMETABLE PLANNER INPUTS */}
+          {(toolId.includes("timetable") || toolId.includes("planner")) && (
+            <div className="space-y-4">
+              <span className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block">
+                Add Class or Study Session
+              </span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <input
+                  type="text"
+                  placeholder="Course Title"
+                  value={newTtCourse}
+                  onChange={(e) => setNewTtCourse(e.target.value)}
+                  className="p-2 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs"
+                />
+                <select
+                  value={newTtDay}
+                  onChange={(e) => setNewTtDay(e.target.value)}
+                  className="p-2 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs font-semibold"
+                >
+                  {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  placeholder="Time Slot"
+                  value={newTtTime}
+                  onChange={(e) => setNewTtTime(e.target.value)}
+                  className="p-2 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs"
+                />
+                <input
+                  type="text"
+                  placeholder="Room / Hall"
+                  value={newTtRoom}
+                  onChange={(e) => setNewTtRoom(e.target.value)}
+                  className="p-2 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  if (!newTtCourse) return;
+                  setTimetable([
+                    ...timetable,
+                    { course: newTtCourse, day: newTtDay, time: newTtTime, room: newTtRoom, color: "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300" }
+                  ]);
+                  setNewTtCourse("");
+                }}
+                className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors"
+              >
+                + Add Class Slot to Timetable
+              </button>
+
+              <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-400 block">Weekly Schedule Entries:</span>
+                {timetable.map((item, idx) => (
+                  <div key={idx} className={`p-2.5 rounded-xl text-xs flex justify-between items-center ${item.color}`}>
+                    <div>
+                      <span className="font-bold block">{item.day}: {item.course}</span>
+                      <span className="text-[11px] opacity-80">{item.time} ({item.room})</span>
+                    </div>
+                    <button
+                      onClick={() => setTimetable(timetable.filter((_, i) => i !== idx))}
+                      className="text-rose-600 hover:text-rose-800 p-1"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           )}

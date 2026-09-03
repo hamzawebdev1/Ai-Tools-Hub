@@ -396,5 +396,67 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
       <h2>Calculating Your Estimated Delivery Date</h2>
       <p>A full-term human pregnancy spans approximately 40 weeks (280 days) from the first day of the last menstrual period. Discover your week-by-week timeline with our free <a href="/pregnancy-due-date-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Pregnancy Due Date Calculator</a>.</p>
     `
+  },
+  {
+    id: "calc-art-11",
+    slug: "how-to-calculate-college-gpa-weighted-unweighted",
+    title: "How to Calculate College GPA: Weighted & Unweighted 4.0 Scale Guide",
+    seoTitle: "How to Calculate College GPA (Weighted & Unweighted Scale Guide)",
+    metaDescription: "Learn how to calculate your semester and cumulative college GPA on a 4.0 scale. Step-by-step formulas for weighted vs unweighted letter grades and credit hours.",
+    excerpt: "Understand how credit hours, grade point averages, and weighted honors classes affect your cumulative college academic standing.",
+    category: "Calculators",
+    primaryKeyword: "college gpa calculator",
+    secondaryKeywords: ["weighted gpa calculator", "cumulative gpa score", "how to calculate college gpa", "gpa conversion scale"],
+    searchIntent: "Informational",
+    author: {
+      name: "Dr. Priya Sharma",
+      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+      role: "Senior Quantitative Analyst & Financial Researcher",
+      bio: "Ph.D. in Applied Mathematics specializing in educational statistical modeling and quantitative grade point scaling."
+    },
+    date: "Sep 01, 2026",
+    updatedDate: "Sep 03, 2026",
+    readTime: "7 min read",
+    tags: ["GPA Calculator", "Student Tools", "College Academic Guide", "Grade Point Average"],
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+    relatedToolIds: ["gpa-calculator", "percentage-calculator", "scientific-calculator"],
+    relatedArticleSlugs: ["how-to-calculate-percentage-increase-decrease", "how-to-count-words-characters-reading-time"],
+    faqs: [
+      {
+        question: "What is the difference between an unweighted and weighted GPA scale?",
+        answer: "Unweighted GPA caps every course at a 4.0 maximum regardless of difficulty. Weighted GPA assigns extra points (e.g. 5.0 scale) for Advanced Placement (AP) or Honors courses."
+      },
+      {
+        question: "How do credit hours affect overall GPA calculation?",
+        answer: "Course grades are multiplied by their credit weight. A 4-credit course has double the influence on your cumulative GPA compared to a 2-credit seminar."
+      }
+    ],
+    content: `
+      <h2>The Standard 4.0 College GPA Scale</h2>
+      <p>Grade Point Average (GPA) is the universal metric used by higher education institutions to measure academic performance. Letter grades correspond to standard numerical grade points:</p>
+      <ul>
+        <li><strong>A / A+:</strong> 4.0 Grade Points</li>
+        <li><strong>A-:</strong> 3.7 Grade Points</li>
+        <li><strong>B+:</strong> 3.3 Grade Points</li>
+        <li><strong>B:</strong> 3.0 Grade Points</li>
+        <li><strong>B-:</strong> 2.7 Grade Points</li>
+        <li><strong>C+:</strong> 2.3 Grade Points</li>
+        <li><strong>C:</strong> 2.0 Grade Points</li>
+        <li><strong>D:</strong> 1.0 Grade Point</li>
+        <li><strong>F:</strong> 0.0 Grade Points</li>
+      </ul>
+
+      <h2>The Mathematical Formula for Cumulative GPA</h2>
+      <p>To calculate your semester or cumulative GPA manually:</p>
+      <p><code>Cumulative GPA = (Total Grade Points Earned) / (Total Credit Hours Attempted)</code></p>
+
+      <h2>Step-by-Step Calculation Example</h2>
+      <ol>
+        <li>Multiply each course's grade points by its credit hours to find quality points.</li>
+        <li>Sum up all quality points across all completed semesters.</li>
+        <li>Divide total quality points by total credit hours.</li>
+      </ol>
+      <p>Alternatively, calculate your exact score in seconds with our <a href="/gpa-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free College GPA Calculator Tool</a>.</p>
+    `
   }
 ];

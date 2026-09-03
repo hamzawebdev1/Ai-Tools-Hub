@@ -433,5 +433,327 @@ export const STUDENT_TOOLS: AITool[] = [
         }
       ]
     }
+  },
+  {
+    id: "gpa-to-percentage-converter",
+    name: "Free GPA to Percentage Converter",
+    slug: "gpa-to-percentage-converter",
+    tagline: "Convert GPA scores on 4.0, 5.0, or 10.0 scales to percentage equivalents.",
+    description: "Convert Grade Point Average (GPA or CGPA) scores on 4.0, 5.0, or 10.0 scale into equivalent percentage marks and international honors classifications.",
+    category: "student",
+    iconName: "Percent",
+    route: "/en/gpa-to-percentage-converter",
+    isPopular: true,
+    rating: 4.9,
+    ratingCount: 3820,
+    usageCount: 112000,
+    inputLabel: "GPA Score & Scale Selection:",
+    inputPlaceholder: "Enter GPA score and select maximum scale...",
+    optionsConfig: {},
+    tags: ["gpa to percentage converter", "cgpa to percentage", "4.0 gpa to percentage", "10.0 cgpa conversion", "international grade converter"],
+    searchKeywords: [
+      "gpa to percentage converter",
+      "cgpa to percentage calculator",
+      "how to convert 4.0 gpa to percentage",
+      "10 point cgpa to percentage",
+      "gpa percentage formula",
+      "convert gpa to percent"
+    ],
+    seoContent: {
+      metaTitle: "Free GPA to Percentage Converter — Convert 4.0, 5.0 & 10.0 Scale GPA",
+      metaDescription: "Convert GPA and CGPA scores on 4.0, 5.0, and 10.0 scales into percentage equivalents and international degree classifications (First Class, Distinction, 2:1) instantly.",
+      overview: "Convert your Grade Point Average (GPA or CGPA) directly into a percentage score! Works for US, Canadian, European, Pakistani, Indian, and global grading scales. Perfect for job applications, scholarship forms, and graduate school admissions.",
+      keyFeatures: [
+        "Supports 4.0 scale (US/Canada), 10.0 scale (India/Europe), & 5.0 scale",
+        "Calculates exact percentage equivalents instantly",
+        "Displays international degree honors classification",
+        "100% free and client-side private"
+      ],
+      useCases: [
+        "Convert GPA for job application minimum grade forms",
+        "Translate transcript scores for overseas university applications",
+        "Calculate scholarship percentage eligibility"
+      ],
+      howToUseSteps: [
+        "Select your institution's GPA scale (4.0, 5.0, or 10.0).",
+        "Enter your cumulative GPA or CGPA score.",
+        "Read your percentage equivalent and honors classification."
+      ],
+      faqs: [
+        {
+          question: "How is 4.0 GPA converted to percentage?",
+          answer: "On a standard 4.0 scale, Percentage = (GPA / 4.0) × 100. For example, a 3.6 GPA equates to 90%."
+        },
+        {
+          question: "How is 10.0 CGPA converted to percentage?",
+          answer: "Under CBSE and European conventions, Percentage = CGPA × 9.5. For example, an 8.0 CGPA equates to 76%."
+        }
+      ]
+    }
+  },
+  {
+    id: "assignment-grade-calculator",
+    name: "Free Course & Assignment Grade Calculator",
+    slug: "assignment-grade-calculator",
+    tagline: "Calculate weighted course grades across homework, quizzes, and exams.",
+    description: "Calculate your current weighted course grade and letter grade average across quizzes, homework assignments, midterms, and final exams.",
+    category: "student",
+    iconName: "BookOpen",
+    route: "/en/assignment-grade-calculator",
+    isPopular: true,
+    rating: 4.8,
+    ratingCount: 2900,
+    usageCount: 88000,
+    inputLabel: "Assignment Category Entries:",
+    inputPlaceholder: "Add categories, weights %, and scores earned...",
+    optionsConfig: {},
+    tags: ["assignment grade calculator", "weighted grade calculator", "course grade calculator", "class average calculator", "weighted percentage grade"],
+    searchKeywords: [
+      "assignment grade calculator",
+      "weighted grade calculator",
+      "course grade calculator",
+      "calculate class average",
+      "weighted percentage calculator",
+      "how to calculate course grade"
+    ],
+    seoContent: {
+      metaTitle: "Free Weighted Grade Calculator — Calculate Course Grade & Class Average",
+      metaDescription: "Calculate your overall class average and letter grade using weighted assignment categories. Input scores for homework, quizzes, midterms, and final exams.",
+      overview: "Determine your exact overall class grade in any course! Input assignment categories with their percentage weights (e.g., Homework 20%, Midterm 30%, Final 50%) and your earned scores to see your weighted course grade.",
+      keyFeatures: [
+        "Supports unlimited weighted assignment categories",
+        "Calculates exact weighted percentage and letter grade (A, B, C, D, F)",
+        "Handles partial semester category progress seamlessly",
+        "Shows breakdown contribution per category"
+      ],
+      useCases: [
+        "Track overall course grade mid-semester",
+        "Calculate quiz and assignment score impact on final GPA",
+        "Plan target scores for remaining assignments"
+      ],
+      howToUseSteps: [
+        "Add an assignment category (e.g., Homework, Midterm Exam).",
+        "Enter category percentage weight (e.g., 25%).",
+        "Enter score earned and maximum points possible.",
+        "View overall weighted class grade and letter grade."
+      ],
+      faqs: [
+        {
+          question: "How does a weighted grade calculation work?",
+          answer: "Each category score is converted to a percentage, multiplied by its category weight percentage, and summed together to produce the final course grade."
+        }
+      ]
+    }
+  },
+  {
+    id: "assignment-word-count-helper",
+    name: "Free Essay & Assignment Word Count Helper",
+    slug: "assignment-word-count-helper",
+    tagline: "Track essay target length, remaining words, reading time, and density.",
+    description: "Analyze essay and assignment word counts against target requirements. Calculate words remaining, completion percentage, reading time, and sentence metrics.",
+    category: "student",
+    iconName: "FileText",
+    route: "/en/assignment-word-count-helper",
+    isPopular: false,
+    rating: 4.8,
+    ratingCount: 2100,
+    usageCount: 64000,
+    inputLabel: "Essay Text & Target Length:",
+    inputPlaceholder: "Paste your assignment draft text here...",
+    optionsConfig: {},
+    tags: ["assignment word count helper", "essay word counter", "assignment word goal", "reading time calculator", "essay progress tracker"],
+    searchKeywords: [
+      "assignment word count helper",
+      "essay word counter",
+      "essay progress counter",
+      "how many words left in essay",
+      "assignment length checker",
+      "essay reading time calculator"
+    ],
+    seoContent: {
+      metaTitle: "Free Essay & Assignment Word Count Helper — Track Progress & Reading Time",
+      metaDescription: "Check your essay draft word count against assignment target requirements. Shows completion percentage, words remaining, paragraph density, and estimated reading time.",
+      overview: "Writing a 1,500 or 3,000-word university essay? Use our Assignment Word Count Helper to track your writing progress in real time, monitor remaining words, analyze sentence density, and calculate speech presentation duration.",
+      keyFeatures: [
+        "Tracks word count progress against custom assignment target goals",
+        "Calculates words remaining to reach minimum word requirements",
+        "Provides paragraph, sentence, and character counts",
+        "Estimates silent reading time and oral presentation speaking duration"
+      ],
+      useCases: [
+        "Track progress when writing research papers and dissertations",
+        "Check if essay meets professor's strict minimum word count criteria",
+        "Time oral presentations based on essay word count"
+      ],
+      howToUseSteps: [
+        "Enter your target word count requirement (e.g., 2,500 words).",
+        "Paste or type your assignment draft in the text area.",
+        "View word count progress bar, words remaining, and reading time."
+      ],
+      faqs: [
+        {
+          question: "How is estimated presentation speaking time calculated?",
+          answer: "The average speech rate for academic presentations is approximately 130 words per minute."
+        }
+      ]
+    }
+  },
+  {
+    id: "exam-countdown-timer",
+    name: "Free Exam Countdown & Study Target Timer",
+    slug: "exam-countdown-timer",
+    tagline: "Count down days to exam dates and calculate daily study targets.",
+    description: "Track days, hours, and minutes remaining until exam dates or assignment deadlines with daily study hour allocation targets.",
+    category: "student",
+    iconName: "Calendar",
+    route: "/en/exam-countdown-timer",
+    isPopular: true,
+    rating: 4.9,
+    ratingCount: 2750,
+    usageCount: 81000,
+    inputLabel: "Exam Name & Target Date:",
+    inputPlaceholder: "Select upcoming exam date...",
+    optionsConfig: {},
+    tags: ["exam countdown timer", "days until exam", "study deadline tracker", "exam date counter", "student countdown"],
+    searchKeywords: [
+      "exam countdown timer",
+      "days until exam calculator",
+      "exam deadline countdown",
+      "study date countdown",
+      "how many days until my finals",
+      "exam revision countdown"
+    ],
+    seoContent: {
+      metaTitle: "Free Exam Countdown Timer — Days Remaining Until Finals & Deadlines",
+      metaDescription: "Count down exact days, hours, and minutes remaining until upcoming exams and assignment submission deadlines. Calculates daily study hour targets.",
+      overview: "Stay organized ahead of finals week! Our free Exam Countdown Timer tracks exact days and hours left before your exams and calculates recommended daily study time allocations so you never cram at the last minute.",
+      keyFeatures: [
+        "Live countdown timer in days, hours, and minutes",
+        "Calculates recommended daily study hours before exam date",
+        "Supports multiple exam entries and deadlines",
+        "100% free with local browser state persistence"
+      ],
+      useCases: [
+        "Count down to midterms, finals, SATs, GREs, or university exams",
+        "Allocate daily revision hours based on days remaining",
+        "Prevent exam cramming with structured preparation countdowns"
+      ],
+      howToUseSteps: [
+        "Enter subject exam title (e.g., Organic Chemistry Final).",
+        "Select target exam date and time.",
+        "Read remaining days countdown and daily study target."
+      ],
+      faqs: [
+        {
+          question: "How does the daily study target calculation work?",
+          answer: "It divides your estimated total required study hours by the number of days remaining until your exam date."
+        }
+      ]
+    }
+  },
+  {
+    id: "student-timetable-planner",
+    name: "Free Student Weekly Timetable Planner",
+    slug: "student-timetable-planner",
+    tagline: "Organize weekly class lectures, labs, and study slots into a weekly grid.",
+    description: "Create, organize, and print your weekly college or school class timetable with custom course colors, lab slots, and study blocks.",
+    category: "student",
+    iconName: "Calendar",
+    route: "/en/student-timetable-planner",
+    isPopular: false,
+    rating: 4.7,
+    ratingCount: 1850,
+    usageCount: 52000,
+    inputLabel: "Weekly Class Schedule Entry:",
+    inputPlaceholder: "Add class titles, days, times, and location...",
+    optionsConfig: {},
+    tags: ["student timetable planner", "weekly class schedule", "college timetable generator", "study schedule planner", "school timetable grid"],
+    searchKeywords: [
+      "student timetable planner",
+      "weekly class schedule generator",
+      "college timetable maker",
+      "study schedule planner",
+      "class schedule grid creator",
+      "printable student schedule"
+    ],
+    seoContent: {
+      metaTitle: "Free Student Timetable Planner — Generate Weekly Class & Study Schedule",
+      metaDescription: "Organize your weekly college and school class schedule. Create custom lecture, lab, and study timetables with course color codes and printable grids.",
+      overview: "Design a clean, color-coded weekly schedule for your lectures, labs, and study sessions! Print or save your timetable to keep track of class locations and time slots all semester.",
+      keyFeatures: [
+        "Interactive weekly Monday-Sunday schedule grid",
+        "Color-code lectures, labs, seminars, and study blocks",
+        "One-click print and copy layout option",
+        "100% private in-browser schedule storage"
+      ],
+      useCases: [
+        "Map out college course schedule at start of semester",
+        "Coordinate study blocks around lectures and part-time jobs",
+        "Print physical weekly timetable for campus binder"
+      ],
+      howToUseSteps: [
+        "Add course name, room/building, day of week, and start/end time.",
+        "Choose a custom color badge for each course.",
+        "View and print your complete interactive weekly grid schedule."
+      ],
+      faqs: [
+        {
+          question: "Can I save my schedule across browser sessions?",
+          answer: "Yes! Your timetable entries are stored securely in your browser local storage."
+        }
+      ]
+    }
+  },
+  {
+    id: "study-break-interval-calculator",
+    name: "Free Spaced Repetition Revision Calculator",
+    slug: "study-break-interval-calculator",
+    tagline: "Calculate optimal spaced repetition review dates before exam day.",
+    description: "Calculate scientific spaced repetition review milestones (Day 1, Day 3, 1-Week, 2-Weeks) leading up to your exam date to maximize long-term retention.",
+    category: "student",
+    iconName: "Clock",
+    route: "/en/study-break-interval-calculator",
+    isPopular: false,
+    rating: 4.8,
+    ratingCount: 1520,
+    usageCount: 41000,
+    inputLabel: "Exam Date Target:",
+    inputPlaceholder: "Select target exam date...",
+    optionsConfig: {},
+    tags: ["spaced repetition calculator", "revision interval calculator", "forgetting curve schedule", "study review dates", "active recall planner"],
+    searchKeywords: [
+      "spaced repetition calculator",
+      "revision interval calculator",
+      "study review date generator",
+      "forgetting curve study schedule",
+      "active recall review intervals"
+    ],
+    seoContent: {
+      metaTitle: "Free Spaced Repetition Calculator — Optimal Exam Revision Dates",
+      metaDescription: "Calculate cognitive spaced repetition review dates leading up to your exam. Combat the Ebbinghaus forgetting curve with structured study revision dates.",
+      overview: "Maximize memory retention using cognitive science! Based on the Ebbinghaus forgetting curve, our Spaced Repetition Calculator generates exact calendar review dates between today and your exam day.",
+      keyFeatures: [
+        "Calculates 5 cognitive revision dates based on active recall principles",
+        "Fights the forgetting curve before final exams",
+        "Provides calendar dates for spaced review sessions",
+        "Enhances long-term memory consolidation"
+      ],
+      useCases: [
+        "Plan flashcard and textbook review dates for difficult subjects",
+        "Space out study sessions for comprehensive final exams",
+        "Optimize memory retention for medical, law, or STEM courses"
+      ],
+      howToUseSteps: [
+        "Enter your target exam date.",
+        "Read generated spaced repetition review milestone dates.",
+        "Add milestone dates to your calendar for active recall review."
+      ],
+      faqs: [
+        {
+          question: "What is spaced repetition in studying?",
+          answer: "Spaced repetition is a learning technique that reviews study material at increasing time intervals to convert short-term knowledge into long-term memory."
+        }
+      ]
+    }
   }
 ];

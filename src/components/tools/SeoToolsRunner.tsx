@@ -41,6 +41,7 @@ export const SeoToolsRunner: React.FC<SeoToolsRunnerProps> = ({
   );
   const [targetUrl, setTargetUrl] = useState("https://mehzandigital.com/tools");
   const [targetKeyword, setTargetKeyword] = useState("free developer tools");
+  const [serpRegion, setSerpRegion] = useState("google.com");
   const [bodyText, setBodyText] = useState(
     "Welcome to Mehzan Tools Hub. We offer free online tools for developers, content creators, SEO specialists, and businesses. Our tools run instantly with zero limits."
   );
@@ -240,6 +241,36 @@ export const SeoToolsRunner: React.FC<SeoToolsRunnerProps> = ({
             rows={2}
             className="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs leading-relaxed"
           />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+              Target Search Keyword
+            </label>
+            <input
+              type="text"
+              value={targetKeyword}
+              onChange={(e) => setTargetKeyword(e.target.value)}
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 block mb-1">
+              Target Search Engine Region (Google Domain)
+            </label>
+            <select
+              value={serpRegion}
+              onChange={(e) => setSerpRegion(e.target.value)}
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium"
+            >
+              <option value="google.com">United States — Google.com</option>
+              <option value="google.ca">Canada — Google.ca</option>
+              <option value="google.co.uk">United Kingdom & Europe — Google.co.uk</option>
+              <option value="google.de">Europe / Germany — Google.de</option>
+              <option value="google.com.mx">México — Google.com.mx</option>
+            </select>
+          </div>
         </div>
 
         {(toolId.includes("analyzer") || toolId.includes("density") || toolId.includes("word-count")) && (

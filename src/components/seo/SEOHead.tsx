@@ -139,6 +139,26 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     // 3. EXACT ONE Canonical URL (Dynamically built from routerService normalized path)
     updateLinkTag("canonical", dynamicCanonicalUrl);
 
+    // 3.1 International SEO: Hreflang Tags for Global, USA, Canada, Europe, Mexico
+    const updateHreflangTag = (hreflang: string, href: string) => {
+      let element = document.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`) as HTMLLinkElement;
+      if (!element) {
+        element = document.createElement("link");
+        element.setAttribute("rel", "alternate");
+        element.setAttribute("hreflang", hreflang);
+        document.head.appendChild(element);
+      }
+      element.setAttribute("href", href);
+    };
+
+    updateHreflangTag("x-default", dynamicCanonicalUrl);
+    updateHreflangTag("en", dynamicCanonicalUrl);
+    updateHreflangTag("en-US", dynamicCanonicalUrl);
+    updateHreflangTag("en-CA", dynamicCanonicalUrl);
+    updateHreflangTag("en-GB", dynamicCanonicalUrl);
+    updateHreflangTag("es", dynamicCanonicalUrl);
+    updateHreflangTag("es-MX", dynamicCanonicalUrl);
+
     // Pagination links (rel="prev" and rel="next")
     if (pagination) {
       const baseDomain = getDynamicBaseDomain();

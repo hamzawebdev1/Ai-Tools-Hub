@@ -750,8 +750,15 @@ export function injectSEOMetadataIntoHTML(
       : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
     headInjects += `    <meta name="robots" content="${robotsContent}" />\n`;
 
-    // 4. Canonical Tag & CSP Meta
+    // 4. Canonical Tag, CSP Meta, and International Hreflang Tags
     headInjects += `    <link rel="canonical" href="${canonicalUrl}" />\n`;
+    headInjects += `    <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />\n`;
+    headInjects += `    <link rel="alternate" hreflang="en" href="${canonicalUrl}" />\n`;
+    headInjects += `    <link rel="alternate" hreflang="en-US" href="${canonicalUrl}" />\n`;
+    headInjects += `    <link rel="alternate" hreflang="en-CA" href="${canonicalUrl}" />\n`;
+    headInjects += `    <link rel="alternate" hreflang="en-GB" href="${canonicalUrl}" />\n`;
+    headInjects += `    <link rel="alternate" hreflang="es" href="${canonicalUrl}" />\n`;
+    headInjects += `    <link rel="alternate" hreflang="es-MX" href="${canonicalUrl}" />\n`;
     headInjects += `    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors *;" />\n`;
 
     // 5. Open Graph Meta Tags

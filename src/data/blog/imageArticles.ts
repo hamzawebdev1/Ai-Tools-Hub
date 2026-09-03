@@ -408,5 +408,112 @@ export const IMAGE_ARTICLES: BlogPost[] = [
       <h2>The Core Web Vitals Connection</h2>
       <p>Google uses page experience signals as a direct search ranking factor. Images account for the vast majority of website byte weight. Optimizing hero banners with WebP compression and explicit width/height tags guarantees instant rendering.</p>
     `
+  },
+  {
+    id: "img-art-11",
+    slug: "how-to-remove-background-from-image-online",
+    title: "How to Remove Background from Images Online Free (Complete Guide)",
+    seoTitle: "How to Remove Background from Image Online Free (Step-by-Step)",
+    metaDescription: "Learn how to automatically isolate subjects and create transparent PNG backgrounds for e-commerce products, passport photos, and social graphics for free.",
+    excerpt: "Isolate product photos, profile portraits, and graphic assets with automated edge detection to generate clean transparent PNG images.",
+    category: "Image Tools",
+    primaryKeyword: "how to remove background from image",
+    secondaryKeywords: ["remove background from image free", "background remove online", "make background transparent png", "ai background remover"],
+    searchIntent: "Transactional / How-to",
+    author: {
+      name: "Sophia Chen",
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+      role: "Creative Director & UX Architect",
+      bio: "Visual media compression researcher and UI designer specializing in client-side canvas algorithms and automated background isolation."
+    },
+    date: "Sep 01, 2026",
+    updatedDate: "Sep 03, 2026",
+    readTime: "6 min read",
+    tags: ["Image Tools", "Background Remover", "Transparent PNG", "E-Commerce Photos"],
+    image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=800&q=80",
+    relatedToolIds: ["background-remover", "image-resizer", "image-compressor"],
+    relatedArticleSlugs: ["how-to-make-passport-size-photo-online", "how-to-resize-and-crop-images-for-web-and-social"],
+    faqs: [
+      {
+        question: "How do I make an image background transparent without Photoshop?",
+        answer: "Upload your image to our free Online Background Remover tool. The client-side edge detection engine isolates foreground subjects and generates a transparent PNG instantly."
+      },
+      {
+        question: "What image file formats support transparent backgrounds?",
+        answer: "PNG and WebP formats support full 8-bit alpha transparency. JPEG files do not support transparency and will always convert transparent pixels to white."
+      },
+      {
+        question: "Is there any charge or subscription needed for removing backgrounds?",
+        answer: "No, our background isolation tool is 100% free with unlimited exports and zero watermarks."
+      }
+    ],
+    content: `
+      <h2>Why Transparent Backgrounds Are Essential in Digital Design</h2>
+      <p>Whether you are listing apparel products on Amazon, Shopify, or eBay, preparing candidate headshots for corporate team pages, or composing social media marketing ads, solid background clutter distracts from your core subject.</p>
+      <p>Creating transparent PNG assets allows designers to place subjects seamlessly over any website backdrop, gradient canvas, or promotional banner.</p>
+
+      <h2>How Automated Image Background Removal Works</h2>
+      <p>Modern browser-based background isolation relies on luminance thresholding and color channel segmentation to detect high-contrast boundaries between foreground subjects and peripheral backdrop pixels.</p>
+
+      <h2>Step-by-Step: Removing Image Backgrounds Online</h2>
+      <ol>
+        <li>Open the <a href="/background-remover" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free Background Remover Tool</a> on Mehzan Digital.</li>
+        <li>Upload your photo (JPG, PNG, or WEBP).</li>
+        <li>Wait a moment as the automatic boundary engine isolates your subject.</li>
+        <li>Fine-tune backdrop options:
+          <ul>
+            <li><strong>Transparent PNG:</strong> Keeps backdrop completely see-through for graphic design overlays.</li>
+            <li><strong>Solid Backdrop Fill:</strong> Replace background with clean studio white, off-white, or custom colors.</li>
+          </ul>
+        </li>
+        <li>Click <strong>Download Isolated Image</strong> to save your high-resolution PNG asset.</li>
+      </ol>
+    `
+  },
+  {
+    id: "img-art-12",
+    slug: "how-to-extract-text-from-images-online-ocr-guide",
+    title: "How to Extract Text from Images and Scanned Docs with Free Online OCR",
+    seoTitle: "How to Extract Text from Images & Scanned Docs (Free OCR Guide)",
+    metaDescription: "Discover how optical character recognition (OCR) extracts text from photos, receipts, screenshots, and scanned PDFs into editable text in seconds.",
+    excerpt: "Convert screenshots, book photos, business cards, and scanned invoices into editable plain text without manual typing.",
+    category: "Image Tools",
+    primaryKeyword: "ocr image to text",
+    secondaryKeywords: ["extract text from photo", "convert image to editable text", "free online ocr tool", "image to text converter"],
+    searchIntent: "Transactional / How-to",
+    author: {
+      name: "Alex Rivera",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+      role: "Lead Systems Engineer"
+    },
+    date: "Sep 02, 2026",
+    updatedDate: "Sep 03, 2026",
+    readTime: "6 min read",
+    tags: ["Image OCR", "Image to Text", "Text Extraction", "Document Digitization"],
+    image: "https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=800&q=80",
+    relatedToolIds: ["image-ocr-extractor", "pdf-to-text", "word-counter"],
+    relatedArticleSlugs: ["how-to-convert-pdf-to-word-without-losing-formatting", "how-to-count-words-characters-reading-time"],
+    faqs: [
+      {
+        question: "How accurate is optical character recognition (OCR) on phone screenshots?",
+        answer: "Digital screenshots achieve near 99%+ accuracy because text pixels are crisp and uncompressed. Photos of paper pages perform best with even lighting and high contrast."
+      },
+      {
+        question: "Can OCR convert handwritten notes into editable text?",
+        answer: "OCR engines excel at printed typography and clean block lettering. Cursive or highly stylized handwriting may require manual verification."
+      }
+    ],
+    content: `
+      <h2>The Power of Optical Character Recognition (OCR)</h2>
+      <p>Manually retyping information from printed invoices, academic textbooks, business cards, or web screenshots is tedious and error-prone. Optical Character Recognition (OCR) analyzes the geometry of pixel clusters to recognize character glyphs and convert image pixels into digital unicode text.</p>
+
+      <h2>How to Extract Text from Photos and Screenshots</h2>
+      <ol>
+        <li>Navigate to the <a href="/image-ocr-extractor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image OCR Text Extractor</a> on Mehzan Digital.</li>
+        <li>Upload your photo, screenshot, or scanned document image.</li>
+        <li>Click <strong>Extract Text</strong>.</li>
+        <li>Copy the extracted text payload directly to your clipboard or download it as a <code>.txt</code> document.</li>
+      </ol>
+    `
   }
 ];

@@ -353,5 +353,52 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
       <h2>The Versatility of Modern QR Codes</h2>
       <p>QR codes bridge offline marketing materials and online digital destinations. Generate instant vector codes for guest Wi-Fi, social handles, or event links using our free <a href="/qr-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">QR Code Generator Tool</a>.</p>
     `
+  },
+  {
+    id: "conv-art-11",
+    slug: "how-to-check-google-serp-rankings-free",
+    title: "How to Check Google SERP Rankings and Keyword Positions for Free",
+    seoTitle: "How to Check Google SERP Rankings & Keyword Positions Free",
+    metaDescription: "Master Google SERP analysis. Learn how search engines rank pages, analyze organic positions, featured snippets, and local packs using free online SERP tools.",
+    excerpt: "Inspect top Google search engine results pages (SERPs) and track target keyword rankings to identify SEO growth opportunities.",
+    category: "SEO Tools",
+    primaryKeyword: "google serp rank checker",
+    secondaryKeywords: ["serp ranking tool", "check google keyword position", "free serp analysis tool", "rank tracker seo tool"],
+    searchIntent: "Informational",
+    author: {
+      name: "Marcus Vance",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      role: "SEO Growth Lead",
+      bio: "SEO strategist and technical auditor specializing in SERP feature tracking, schema markup, and organic search growth."
+    },
+    date: "Sep 01, 2026",
+    updatedDate: "Sep 03, 2026",
+    readTime: "7 min read",
+    tags: ["SEO Tools", "SERP Checker", "Keyword Ranking", "Search Engine Optimization"],
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+    relatedToolIds: ["serp-checker", "seo-audit-analyzer", "keyword-density-checker"],
+    relatedArticleSlugs: ["how-to-optimize-images-for-core-web-vitals-and-seo", "how-to-count-words-characters-reading-time"],
+    faqs: [
+      {
+        question: "Why do search engine results differ by browser and location?",
+        answer: "Google customizes search results based on user IP geolocation, browser search history, device type, and active search personalization features."
+      },
+      {
+        question: "How often should I audit keyword rankings?",
+        answer: "Monthly SERP audits are ideal for tracking organic trend direction. Core algorithm updates or site redesigns warrant weekly checks."
+      }
+    ],
+    content: `
+      <h2>Understanding Google Search Engine Results Pages (SERPs)</h2>
+      <p>A Google Search Engine Results Page (SERP) is far more than a simple list of 10 blue links. Modern SERPs include rich snippets, featured answer boxes, People Also Ask (PAA) drop-downs, image carousels, and local map packs.</p>
+
+      <h2>How to Inspect SERP Positions for Free</h2>
+      <ol>
+        <li>Open the <a href="/serp-checker" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Google SERP Rank Checker</a> on Mehzan Digital.</li>
+        <li>Enter your target search term (e.g. <em>'pdf to word converter'</em>).</li>
+        <li>Analyze the top organic result URLs, title tags, and meta snippet previews.</li>
+        <li>Review related keywords and check on-page optimization with our <a href="/seo-audit-analyzer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free SEO Audit & Analyzer</a>.</li>
+      </ol>
+    `
   }
 ];

@@ -170,6 +170,10 @@ Powered by ${techStackDetail}, ${name} guarantees fast and reliable execution. E
       answer: `No account registration or software installation is required. ${name} works directly inside modern web browsers like Chrome, Safari, Firefox, Edge, and Opera.`,
     },
     {
+      question: `Does ${name} support international and regional standards (USA, Canada, Europe, Mexico)?`,
+      answer: `Yes! ${name} is fully compatible with global paper sizes (US Letter & European A4), international grading scales (US 4.0, European/UK ECTS, Mexican 10-point scale), regional tax structures (US Sales Tax, Canadian GST/HST, European VAT, Mexican IVA), and multi-language character encodings.`,
+    },
+    {
       question: `Can I use ${name} on mobile phones and tablets?`,
       answer: `Yes, ${name} is fully responsive and optimized for touch interfaces on iPhone, iPad, and Android devices.`,
     },

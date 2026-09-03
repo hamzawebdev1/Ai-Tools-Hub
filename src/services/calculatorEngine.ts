@@ -461,3 +461,37 @@ export function isLeapYear(year: number): { isLeap: boolean; explanation: string
     : `${year} is a standard year (365 days).`;
   return { isLeap, explanation };
 }
+
+export function calculateRegionalTax(
+  amount: number,
+  taxRatePercent: number,
+  taxType: "us_sales" | "ca_gst" | "eu_vat" | "mx_iva" = "us_sales"
+): CalculationResult {
+  const taxAmount = (amount * taxRatePercent) / 100;
+  const totalAmount = amount + taxAmount;
+
+  let label = "Sales Tax (USA)";
+  if (taxType === "ca_gst") label = "GST / HST / PST (Canada)";
+  else if (taxType === "eu_vat") label = "VAT (Value Added Tax - Europe & UK)";
+  else if (taxType === "mx_iva") label = "IVA (Impuesto al Valor Agregado - México 16%)";
+
+  return {
+    title: `${label} Calculation`,
+    formattedResult: `$${totalAmount.toFixed(2)} Total ($${taxAmount.toFixed(2)} Tax)`,
+    formula: `Tax = Amount × (Rate / 100) | Total = Amount + Tax`,
+    explanation: `Calculated ${taxRatePercent}% tax on $${amount.toFixed(2)} under ${label} standards.`,
+    steps: [
+      `Base Price: $${amount.toFixed(2)}`,
+      `Tax Rate: ${taxRatePercent}% (${label})`,
+      `Calculated Tax Amount: $${taxAmount.toFixed(2)}`,
+      `Total Final Price: $${totalAmount.toFixed(2)}`,
+    ],
+    breakdown: [
+      { label: "Base Pre-Tax Price", value: `$${amount.toFixed(2)}` },
+      { label: "Applied Tax Rate", value: `${taxRatePercent}%` },
+      { label: "Tax Category", value: label },
+      { label: "Calculated Tax Amount", value: `$${taxAmount.toFixed(2)}` },
+      { label: "Total Final Price", value: `$${totalAmount.toFixed(2)}` },
+    ],
+  };
+}
