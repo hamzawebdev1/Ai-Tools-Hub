@@ -750,7 +750,13 @@ export function injectSEOMetadataIntoHTML(
       : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
     headInjects += `    <meta name="robots" content="${robotsContent}" />\n`;
 
-    // 4. Canonical Tag, CSP Meta, and International Hreflang Tags
+    // 4. Canonical Tag, CSP Meta, Favicons, and International Hreflang Tags
+    headInjects += `    <link rel="icon" type="image/x-icon" href="/favicon.ico" />\n`;
+    headInjects += `    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />\n`;
+    headInjects += `    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />\n`;
+    headInjects += `    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />\n`;
+    headInjects += `    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />\n`;
+    headInjects += `    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />\n`;
     headInjects += `    <link rel="canonical" href="${canonicalUrl}" />\n`;
     headInjects += `    <link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />\n`;
     headInjects += `    <link rel="alternate" hreflang="en" href="${canonicalUrl}" />\n`;

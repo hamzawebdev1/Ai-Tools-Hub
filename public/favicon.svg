@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <!-- Outer Frame Arcs -->
+  <!-- Dark Navy Left/Bottom Arc -->
+  <path d="M 370 60 A 210 210 0 1 0 380 435" stroke="#0B192C" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- Bright Blue Top/Right Arc -->
+  <path d="M 280 50 A 210 210 0 0 1 455 350" stroke="#0066FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- Monogram MD -->
+  <g transform="translate(0, -10)">
+    <!-- Dark Navy M -->
+    <path d="M 120 280 V 130 H 155 L 210 215 L 265 130 H 300 V 195 L 180 280 Z" fill="#0B192C"/>
+    
+    <!-- Diagonal Blue Swoosh Slash -->
+    <path d="M 175 300 L 325 145 L 310 145 L 160 300 Z" fill="#0066FF"/>
+
+    <!-- Bright Blue D -->
+    <path d="M 260 155 H 310 C 365 155 405 185 405 235 C 405 285 365 315 310 315 H 260 V 285 H 310 C 345 285 370 265 370 235 C 370 205 345 185 310 185 H 260 Z" fill="#0066FF"/>
+  </g>
+
+  <!-- Brand Typography -->
+  <g transform="translate(0, 10)">
+    <!-- MEHZAN -->
+    <text x="92" y="360" font-family="'Inter', 'Montserrat', 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="46" fill="#0B192C" letter-spacing="2">MEHZAN</text>
+
+    <!-- DIGITAL -->
+    <text x="282" y="360" font-family="'Inter', 'Montserrat', 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="46" fill="#0066FF" letter-spacing="2">DIGITAL</text>
+
+    <!-- Sub-tagline -->
+    <line x1="102" y1="388" x2="135" y2="388" stroke="#0066FF" stroke-width="3" stroke-linecap="round"/>
+    <text x="142" y="392" font-family="'Inter', 'Montserrat', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="16" fill="#334155" letter-spacing="2.5">TOOLS • SOLUTIONS • GROWTH</text>
+    <line x1="388" y1="388" x2="420" y2="388" stroke="#0066FF" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
