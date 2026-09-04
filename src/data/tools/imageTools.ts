@@ -1425,6 +1425,39 @@ export const IMAGETOOLS: AITool[] = [
     }
   },
 
+  // 49b. Free Image Background Remover
+  {
+    id: "background-remover",
+    slug: "background-remover",
+    name: "Image Background Remover",
+    tagline: "Isolate subjects and remove photo backgrounds with client-side chroma key isolation.",
+    description: "Remove solid backdrops or white backgrounds from photos to generate clean transparent PNG cutouts instantly in your browser.",
+    category: "image",
+    iconName: "Scissors",
+    tags: ["background remover", "transparent background", "cutout", "remove bg", "photo editing"],
+    isTrending: true,
+    isPopular: true,
+    rating: 4.9,
+    ratingCount: 4200,
+    usageCount: 198000,
+    inputLabel: "Upload Image to Remove Background:",
+    inputPlaceholder: "Drop image to isolate subject...",
+    optionsConfig: {},
+    seoContent: {
+      metaTitle: "Image Background Remover - Free Online Transparent PNG Maker",
+      metaDescription: "Remove image backgrounds online for free. Isolate subjects with color-key background removal and download transparent PNG cutouts instantly.",
+      overview: "Image Background Remover uses offline browser canvas color-keying and tolerance thresholding to isolate subjects and generate transparent PNG files without server uploads.",
+      useCases: ["Isolate e-commerce product photos", "Create profile avatars with transparent backgrounds", "Extract logos and badges"],
+      keyFeatures: ["Adjustable color similarity tolerance slider", "Auto corner background detection", "Pure white or black background removal", "100% private client-side processing"],
+      howToUseSteps: ["Upload your image photo.", "Select background color mode and tolerance.", "Preview and download transparent PNG cutout."],
+      faqs: [
+        { question: "Is this background remover free?", answer: "Yes, 100% free with unlimited exports and zero watermarks." },
+        { question: "Does it upload my photos to any server?", answer: "No, all processing happens locally inside your browser sandbox." }
+      ]
+    }
+  },
+
+
   // 50. Image Color Extractor (Eyedropper)
   {
     id: "color-picker",

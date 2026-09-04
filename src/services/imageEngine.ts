@@ -992,3 +992,69 @@ export function optimizeSvgCode(svgText: string): {
     savingsPercent,
   };
 }
+
+// 18. Client-Side Color-Key Background Remover Engine
+export async function removeImageBackground(
+  file: File,
+  options: {
+    tolerance?: number; // 0 to 100
+    targetColor?: "white" | "black" | "auto" | "custom";
+    customHexColor?: string;
+  } = {}
+): Promise<{ blob: Blob; url: string; width: number; height: number }> {
+  const img = await loadImageFromFile(file);
+  const w = img.naturalWidth || img.width;
+  const h = img.naturalHeight || img.height;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas context initialization failed.");
+
+  ctx.drawImage(img, 0, 0, w, h);
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+
+  let rTarget = 255, gTarget = 255, bTarget = 255;
+  const targetMode = options.targetColor || "auto";
+
+  if (targetMode === "white") {
+    rTarget = 255; gTarget = 255; bTarget = 255;
+  } else if (targetMode === "black") {
+    rTarget = 0; gTarget = 0; bTarget = 0;
+  } else if (targetMode === "custom" && options.customHexColor) {
+    const hex = options.customHexColor.replace("#", "");
+    rTarget = parseInt(hex.substring(0, 2), 16) || 255;
+    gTarget = parseInt(hex.substring(2, 4), 16) || 255;
+    bTarget = parseInt(hex.substring(4, 6), 16) || 255;
+  } else {
+    rTarget = data[0];
+    gTarget = data[1];
+    bTarget = data[2];
+  }
+
+  const tolerance = options.tolerance !== undefined ? options.tolerance : 35;
+  const maxDist = (tolerance / 100) * 441.67; // max Euclidean distance in RGB cube
+
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+
+    const dist = Math.sqrt(
+      Math.pow(r - rTarget, 2) +
+      Math.pow(g - gTarget, 2) +
+      Math.pow(b - bTarget, 2)
+    );
+
+    if (dist <= maxDist) {
+      data[i + 3] = 0;
+    }
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+  const blob = await canvasToBlob(canvas, "image/png", 0.95);
+  return { blob, url: URL.createObjectURL(blob), width: w, height: h };
+}
+
