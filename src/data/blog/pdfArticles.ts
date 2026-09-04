@@ -53,7 +53,7 @@ export const PDF_ARTICLES: BlogPost[] = [
 
       <h2>Step-by-Step: How to Reduce PDF Size Online</h2>
       <ol>
-        <li>Open the <a href="/pdf-compress" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free PDF Compressor Tool</a>.</li>
+        <li>Open the <a href="/en/pdf-compress" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free PDF Compressor Tool</a>.</li>
         <li>Drag and drop your PDF document or click <em>Choose File</em>.</li>
         <li>Select your desired compression intensity:
           <ul>
@@ -100,7 +100,7 @@ export const PDF_ARTICLES: BlogPost[] = [
       </div>
 
       <h2>Pro Tips for Managing Bulky Documents</h2>
-      <p>If your PDF remains too large even after compression, consider removing unnecessary pages with our <a href="/split-pdf-pages" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Split PDF Tool</a> or converting heavy embedded bitmap diagrams into vector formats.</p>
+      <p>If your PDF remains too large even after compression, consider removing unnecessary pages with our <a href="/en/pdf-split" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Split PDF Tool</a> or converting heavy embedded bitmap diagrams into vector formats.</p>
     `
   },
   {
@@ -125,7 +125,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["PDF Tools", "Merge PDF", "Productivity", "Document Management"],
     image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["pdf-merge", "pdf-reorder-pages", "pdf-compress"],
+    relatedToolIds: ["pdf-merge", "pdf-organizer", "pdf-compress"],
     relatedArticleSlugs: ["how-to-compress-pdf-without-losing-quality", "how-to-split-and-extract-pdf-pages"],
     faqs: [
       {
@@ -143,7 +143,7 @@ export const PDF_ARTICLES: BlogPost[] = [
 
       <h2>How to Combine PDF Documents in 3 Easy Steps</h2>
       <ol>
-        <li>Navigate to the <a href="/pdf-merge" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Merge PDF Online Tool</a>.</li>
+        <li>Navigate to the <a href="/en/pdf-merge" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Merge PDF Online Tool</a>.</li>
         <li>Upload all the PDF files you want to combine by clicking <em>Select Files</em> or dragging them into the drop zone.</li>
         <li>Drag and reorder the files into your preferred page hierarchy.</li>
         <li>Click <strong>Merge PDF Files</strong> to compile and download your unified document.</li>
@@ -151,9 +151,9 @@ export const PDF_ARTICLES: BlogPost[] = [
 
       <h2>Best Practices When Combining Documents</h2>
       <ul>
-        <li><strong>Uniform Page Orientation:</strong> Ensure all landscape charts and portrait pages are oriented correctly using <a href="/pdf-rotate" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Rotate PDF Pages</a> before merging.</li>
-        <li><strong>Numbering Pages:</strong> Apply continuous pagination using <a href="/pdf-page-numbers" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Add Page Numbers to PDF</a> so readers can reference sections easily.</li>
-        <li><strong>Final File Size Optimization:</strong> Running the newly merged master document through our <a href="/pdf-compress" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF Compressor</a> ensures the final file remains compact.</li>
+        <li><strong>Uniform Page Orientation:</strong> Ensure all landscape charts and portrait pages are oriented correctly using <a href="/en/pdf-rotate" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Rotate PDF Pages</a> before merging.</li>
+        <li><strong>Numbering Pages:</strong> Apply continuous pagination using <a href="/en/pdf-page-numbers" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Add Page Numbers to PDF</a> so readers can reference sections easily.</li>
+        <li><strong>Final File Size Optimization:</strong> Running the newly merged master document through our <a href="/en/pdf-compress" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF Compressor</a> ensures the final file remains compact.</li>
       </ul>
     `
   },
@@ -178,7 +178,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "6 min read",
     tags: ["PDF Tools", "Word Converter", "DOCX", "Document Editing"],
     image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["pdf-extract-text", "pdf-preview", "pdf-compress"],
+    relatedToolIds: ["pdf-to-word", "pdf-reader", "pdf-compress"],
     relatedArticleSlugs: ["how-to-compress-pdf-without-losing-quality", "how-to-merge-pdf-files-into-one"],
     faqs: [
       {
@@ -196,7 +196,7 @@ export const PDF_ARTICLES: BlogPost[] = [
 
       <h2>Methods to Turn PDFs into Editable Word Documents</h2>
       <ol>
-        <li><strong>Direct Browser Conversion:</strong> Use our <a href="/pdf-extract-text" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF Text Extractor</a> or preview tools to extract raw formatted copy without software installation.</li>
+        <li><strong>Direct Browser Conversion:</strong> Use our <a href="/en/pdf-to-text" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF Text Extractor</a> or preview tools to extract raw formatted copy without software installation.</li>
         <li><strong>OCR for Scanned Documents:</strong> If the PDF is a flat photocopy or image scan, use optical character recognition to synthesize character codes into editable sentences.</li>
         <li><strong>Desktop Office Import:</strong> Microsoft Word allows direct opening of modern native PDFs through its built-in reflow converter.</li>
       </ol>
@@ -223,7 +223,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["PDF Tools", "Image Converter", "JPG to PDF", "Mobile Scanning"],
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["jpg-to-pdf", "png-to-pdf", "images-to-pdf"],
+    relatedToolIds: ["jpg-to-pdf", "pdf-compress"],
     relatedArticleSlugs: ["how-to-compress-pdf-without-losing-quality", "how-to-compress-images-to-20kb-100kb"],
     faqs: [
       {
@@ -241,7 +241,7 @@ export const PDF_ARTICLES: BlogPost[] = [
 
       <h2>Step-by-Step: Converting Photos to PDF</h2>
       <ol>
-        <li>Open the <a href="/jpg-to-pdf" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Convert JPG to PDF Tool</a>.</li>
+        <li>Open the <a href="/en/jpg-to-pdf" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Convert JPG to PDF Tool</a>.</li>
         <li>Upload your photos or screenshots.</li>
         <li>Choose your layout options:
           <ul>
@@ -275,7 +275,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["PDF Tools", "Split PDF", "Extract Pages", "Document Organization"],
     image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["split-pdf-pages", "pdf-extract-pages", "pdf-delete-pages"],
+    relatedToolIds: ["pdf-split", "pdf-organizer"],
     relatedArticleSlugs: ["how-to-merge-pdf-files-into-one", "how-to-rotate-and-reorder-pdf-pages"],
     faqs: [
       {
@@ -295,7 +295,7 @@ export const PDF_ARTICLES: BlogPost[] = [
       <ul>
         <li><strong>Extract Range:</strong> Specify custom ranges like <em>1-5, 8, 12-15</em> to create a curated sub-document.</li>
         <li><strong>Burst into Single Pages:</strong> Convert every page of a 20-page document into 20 separate individual PDFs.</li>
-        <li><strong>Delete Pages:</strong> Select and discard redundant cover sheets, blank pages, or outdated appendices with <a href="/pdf-delete-pages" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Delete PDF Pages</a>.</li>
+        <li><strong>Delete Pages:</strong> Select and discard redundant cover sheets, blank pages, or outdated appendices with <a href="/en/pdf-organizer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Delete PDF Pages</a>.</li>
       </ul>
     `
   },
@@ -320,7 +320,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["PDF Security", "Password Protection", "Encryption", "Privacy"],
     image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["pdf-protect", "pdf-unlock", "pdf-metadata-remover"],
+    relatedToolIds: ["pdf-protect", "pdf-unlock", "pdf-compress"],
     relatedArticleSlugs: ["how-to-unlock-password-protected-pdf", "how-to-add-watermark-and-page-numbers-to-pdf"],
     faqs: [
       {
@@ -338,7 +338,7 @@ export const PDF_ARTICLES: BlogPost[] = [
 
       <h2>How to Encrypt Your PDF</h2>
       <ol>
-        <li>Open the <a href="/pdf-protect" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Protect PDF Tool</a>.</li>
+        <li>Open the <a href="/en/pdf-protect" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Protect PDF Tool</a>.</li>
         <li>Upload your target PDF document.</li>
         <li>Enter a strong password (minimum 8 characters with numbers and symbols).</li>
         <li>Click <strong>Encrypt & Protect PDF</strong> and download your locked file.</li>
@@ -376,7 +376,8 @@ export const PDF_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Why Remove Passwords from Personal PDFs?</h2>
-      <p>Bank e-statements and payslips are often delivered with birthdate passwords. Entering passwords every time you open archival records creates unnecessary friction. Unlocking them once creates an unencumbered archive copy for your personal offline records.</p>
+      <p>Bank e-statements, tax records, and monthly payslips are often delivered with birthdate passwords. Entering passwords every time you open archival records creates unnecessary friction. Unlocking them once creates an unencumbered archive copy for your personal offline records.</p>
+      <p>Using our browser-native <a href="/en/pdf-unlock" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free PDF Unlocker Tool</a>, you can securely remove restrictions in seconds. Afterwards, if you ever need to re-encrypt sensitive files before sending them over email, protect them with military-grade security using our <a href="/en/pdf-protect" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF Encryption & Password Tool</a>, or reduce their file size for fast uploads with our <a href="/en/pdf-compress" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online PDF Compressor</a>.</p>
     `
   },
   {
@@ -400,7 +401,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "4 min read",
     tags: ["PDF Tools", "Rotate PDF", "Page Sequence", "Scanning"],
     image: "https://images.unsplash.com/photo-1583521214690-73421a1829a9?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["pdf-rotate", "pdf-reorder-pages", "pdf-organizer"],
+    relatedToolIds: ["pdf-rotate", "pdf-organizer"],
     relatedArticleSlugs: ["how-to-merge-pdf-files-into-one", "how-to-split-and-extract-pdf-pages"],
     faqs: [
       {
@@ -410,7 +411,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Fixing Scanned PDF Orientation Errors</h2>
-      <p>Automatic document feeder scanners frequently flip pages sideways or upside-down. Reading sideways charts causes neck strain and looks unprofessional. Using <a href="/pdf-rotate" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Rotate PDF Pages</a> permanently updates the PDF rotation matrix metadata so it opens perfectly in all viewers.</p>
+      <p>Automatic document feeder scanners frequently flip pages sideways or upside-down. Reading sideways charts causes neck strain and looks unprofessional. Using <a href="/en/pdf-rotate" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Rotate PDF Pages</a> permanently updates the PDF rotation matrix metadata so it opens perfectly in all viewers.</p>
     `
   },
   {
@@ -434,7 +435,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["PDF Tools", "Watermark", "Page Numbers", "Document Branding"],
     image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["pdf-watermark", "pdf-page-numbers", "pdf-header"],
+    relatedToolIds: ["pdf-watermark", "pdf-page-numbers"],
     relatedArticleSlugs: ["how-to-password-protect-and-encrypt-pdf", "how-to-merge-pdf-files-into-one"],
     faqs: [
       {
@@ -445,6 +446,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     content: `
       <h2>Why Watermarking and Page Numbers Matter</h2>
       <p>Draft agreements and sensitive proposals should always be marked with 'CONFIDENTIAL' or 'DRAFT' watermarks. Adding clean footer page numbers ensures audit compliance and prevents confusion during physical board meetings.</p>
+      <p>You can instantly brand your documents using our <a href="/en/pdf-watermark" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online PDF Watermark Tool</a> and <a href="/en/pdf-page-numbers" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Add Page Numbers to PDF</a>. For additional document organization, explore our complete <a href="/category/pdf-tools" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF Utilities Suite</a>.</p>
     `
   },
   {
@@ -468,7 +470,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     readTime: "6 min read",
     tags: ["PDF Tools", "OCR", "Text Extraction", "Scanned Documents"],
     image: "https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["pdf-ocr-extractor", "pdf-extract-text", "pdf-to-text"],
+    relatedToolIds: ["pdf-to-text", "pdf-to-word"],
     relatedArticleSlugs: ["how-to-convert-pdf-to-word-doc", "how-to-split-and-extract-pdf-pages"],
     faqs: [
       {
@@ -479,6 +481,7 @@ export const PDF_ARTICLES: BlogPost[] = [
     content: `
       <h2>The Difference Between Native and Scanned PDFs</h2>
       <p>Native PDFs generated from Word or Google Docs contain real digital fonts. Scanned PDFs are simply flat image snapshots. OCR scans each pixel grid, recognizes character shapes, and outputs a searchable, copyable text layer.</p>
+      <p>To extract searchable plain text from scanned PDFs or images immediately, launch our client-side <a href="/en/pdf-to-text" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF OCR Extractor Tool</a> or convert directly to Word using the <a href="/en/pdf-to-word" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF to Word Converter</a>.</p>
     `
   },
   {
@@ -534,7 +537,7 @@ export const PDF_ARTICLES: BlogPost[] = [
 
       <h2>Step-by-Step: How to Convert PDF to Word Without Formatting Loss</h2>
       <ol>
-        <li>Open the <a href="/pdf-to-word" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free PDF to Word Converter Tool</a> on Mehzan Digital.</li>
+        <li>Open the <a href="/en/pdf-to-word" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free PDF to Word Converter Tool</a> on Mehzan Digital.</li>
         <li>Drag and drop your PDF file or click to select it from your device.</li>
         <li>Select <strong>Preserve Complete Layout & Typography</strong> in the conversion configuration.</li>
         <li>Click <strong>Convert to Word DOCX</strong>.</li>
@@ -544,7 +547,7 @@ export const PDF_ARTICLES: BlogPost[] = [
       <h2>Pro Tips for Complex PDF Conversion</h2>
       <div class="bg-slate-50 dark:bg-slate-800/60 p-5 rounded-xl border border-slate-200 dark:border-slate-700 my-6">
         <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">1. Check for Embedded Images vs Real Text</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-300">If you cannot highlight individual words inside your PDF viewer, your document is a scanned image snapshot. Use our <a href="/image-ocr-extractor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image OCR Extractor</a> or OCR conversion mode before editing text.</p>
+        <p class="text-sm text-slate-600 dark:text-slate-300">If you cannot highlight individual words inside your PDF viewer, your document is a scanned image snapshot. Use our <a href="/en/image-to-text" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image OCR Extractor</a> or OCR conversion mode before editing text.</p>
       </div>
     `
   }

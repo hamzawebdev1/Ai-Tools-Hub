@@ -45,7 +45,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
 
       <h2>How to Hit Exact File Size Targets (20KB, 50KB, 100KB)</h2>
       <ol>
-        <li>Open the <a href="/image-compressor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online Image Compressor Tool</a>.</li>
+        <li>Open the <a href="/en/image-compressor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online Image Compressor Tool</a>.</li>
         <li>Upload your photo, scanned certificate, or signature snapshot.</li>
         <li>Choose your target compression mode:
           <ul>
@@ -130,7 +130,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
 
       <h2>How to Convert WebP to JPG in 2 Clicks</h2>
       <ol>
-        <li>Visit the <a href="/image-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Converter Tool</a>.</li>
+        <li>Visit the <a href="/en/image-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Converter Tool</a>.</li>
         <li>Select your <code>.webp</code> file or drag multiple files into the queue.</li>
         <li>Select <strong>JPG</strong> as your target export format.</li>
         <li>Click <strong>Convert</strong> and save your universal JPG images.</li>
@@ -169,6 +169,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>The HEIC Dilemma on Non-Apple Devices</h2>
       <p>Apple introduced HEIC as the default camera format in iOS 11. While it saves precious iPhone storage space, transferring these photos to Windows PCs or uploading them to non-Apple portals often triggers unsupported format errors.</p>
+      <p>To convert your iPhone photos into universal JPG or PNG files without downloading desktop software, use our free <a href="/en/image-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online HEIC & Image Converter</a>. After converting, you can also reduce their file size for fast email sharing using our <a href="/en/image-compressor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Compressor</a>.</p>
     `
   },
   {
@@ -192,7 +193,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["Background Remover", "Transparent PNG", "E-Commerce", "Photo Editing"],
     image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["image-background-remover", "image-cropper", "image-resizer"],
+    relatedToolIds: ["background-remover", "image-cropper", "image-resizer"],
     relatedArticleSlugs: ["how-to-make-passport-size-photo-online", "how-to-generate-favicons-and-app-icons"],
     faqs: [
       {
@@ -203,6 +204,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>Why Clean Background Removal is Essential</h2>
       <p>Whether you are preparing Amazon/Shopify product catalogs, designing YouTube thumbnails, or creating professional profile avatars, isolating the subject from messy backgrounds is essential for high conversion rates.</p>
+      <p>Launch our <a href="/en/background-remover" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free Image Background Remover Tool</a> to generate clean transparent PNG cutouts instantly. Once isolated, you can crop your photo for official documents with our <a href="/en/image-cropper" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Cropper</a> or adjust pixel dimensions with the <a href="/en/image-resizer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Resizer</a>.</p>
     `
   },
   {
@@ -237,6 +239,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>Maintaining Image Sharpness While Resizing</h2>
       <p>Resizing images down preserves sharpness, but enlarging low-resolution images can cause pixelation. Always use high-quality bicubic interpolation filters.</p>
+      <p>Use our browser-native <a href="/en/image-resizer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online Image Resizer</a> and <a href="/en/image-cropper" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Cropper</a> to tailor social media graphics and website banners to exact pixel dimensions.</p>
     `
   },
   {
@@ -271,6 +274,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>Government Passport Photo Guidelines</h2>
       <p>Avoid expensive photo studio fees. Position yourself against a solid wall with neutral lighting, look straight into your smartphone camera with a natural expression, and use our cropper to produce government-standard photo sheets.</p>
+      <p>You can prepare compliant headshots using our <a href="/en/image-cropper" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Photo Cropper Tool</a>, remove background shadows with the <a href="/en/background-remover" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Background Isolation Utility</a>, and compress down to 20KB/50KB limits with our <a href="/en/image-compressor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Exam Photo Compressor</a>.</p>
     `
   },
   {
@@ -294,7 +298,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["PNG to JPG", "JPG to PNG", "Image Formats", "Web Optimization"],
     image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["image-converter", "image-compressor", "image-webp-converter"],
+    relatedToolIds: ["image-converter", "image-compressor", "image-resizer"],
     relatedArticleSlugs: ["how-to-convert-webp-to-jpg-and-png", "how-to-compress-images-to-20kb-100kb"],
     faqs: [
       {
@@ -305,6 +309,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>PNG vs JPG: When to Use Which</h2>
       <p>Use PNG for logos, icons, screenshots with text, and graphics requiring transparent backgrounds. Use JPG for photographs and complex real-world scenes where file size reduction is critical.</p>
+      <p>Convert your image files freely using our <a href="/en/image-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Universal Image Converter</a> and optimize them for mobile loading speed with our <a href="/en/image-compressor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online Image Compressor</a>.</p>
     `
   },
   {
@@ -339,6 +344,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>The Importance of Favicons for SEO and Trust</h2>
       <p>Google Search results display your site's favicon directly beside your search snippet URL. A crisp, identifiable favicon increases brand recognition and improves organic CTR.</p>
+      <p>Build your favicon package in one click with our <a href="/en/favicon-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online Favicon Generator Tool</a>. For vector icon conversions, check out our <a href="/en/image-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">SVG & Vector Image Converter</a>.</p>
     `
   },
   {
@@ -373,6 +379,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>Why Rasterize Vector SVGs?</h2>
       <p>SVGs are ideal for responsive web design, but many email clients, social networks, and word processors do not support vector rendering. Converting SVGs to high-DPI PNGs bridges the gap.</p>
+      <p>Easily convert SVG files to PNG with our <a href="/en/image-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Vector & Image Converter Tool</a>. Afterwards, generate custom website favicons with our <a href="/en/favicon-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Favicon Generator</a>.</p>
     `
   },
   {
@@ -396,7 +403,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     readTime: "7 min read",
     tags: ["Image SEO", "Core Web Vitals", "LCP", "Page Speed Optimization"],
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["image-compressor", "image-webp-converter", "image-resizer"],
+    relatedToolIds: ["image-compressor", "image-converter", "image-resizer"],
     relatedArticleSlugs: ["how-to-compress-images-to-20kb-100kb", "how-to-convert-webp-to-jpg-and-png"],
     faqs: [
       {
@@ -407,6 +414,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     content: `
       <h2>The Core Web Vitals Connection</h2>
       <p>Google uses page experience signals as a direct search ranking factor. Images account for the vast majority of website byte weight. Optimizing hero banners with WebP compression and explicit width/height tags guarantees instant rendering.</p>
+      <p>Achieve 100/100 PageSpeed scores using our <a href="/en/image-compressor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Online Image Compressor</a>, <a href="/en/image-resizer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Resizer</a>, and <a href="/category/image-tools" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Utilities Hub</a>.</p>
     `
   },
   {
@@ -457,7 +465,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
 
       <h2>Step-by-Step: Removing Image Backgrounds Online</h2>
       <ol>
-        <li>Open the <a href="/background-remover" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free Background Remover Tool</a> on Mehzan Digital.</li>
+        <li>Open the <a href="/en/background-remover" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free Background Remover Tool</a> on Mehzan Digital.</li>
         <li>Upload your photo (JPG, PNG, or WEBP).</li>
         <li>Wait a moment as the automatic boundary engine isolates your subject.</li>
         <li>Fine-tune backdrop options:
@@ -491,7 +499,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
     readTime: "6 min read",
     tags: ["Image OCR", "Image to Text", "Text Extraction", "Document Digitization"],
     image: "https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["image-ocr-extractor", "pdf-to-text", "word-counter"],
+    relatedToolIds: ["image-to-text", "pdf-to-text", "word-counter"],
     relatedArticleSlugs: ["how-to-convert-pdf-to-word-without-losing-formatting", "how-to-count-words-characters-reading-time"],
     faqs: [
       {
@@ -509,7 +517,7 @@ export const IMAGE_ARTICLES: BlogPost[] = [
 
       <h2>How to Extract Text from Photos and Screenshots</h2>
       <ol>
-        <li>Navigate to the <a href="/image-ocr-extractor" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image OCR Text Extractor</a> on Mehzan Digital.</li>
+        <li>Navigate to the <a href="/en/image-to-text" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image OCR Text Extractor</a> on Mehzan Digital.</li>
         <li>Upload your photo, screenshot, or scanned document image.</li>
         <li>Click <strong>Extract Text</strong>.</li>
         <li>Copy the extracted text payload directly to your clipboard or download it as a <code>.txt</code> document.</li>

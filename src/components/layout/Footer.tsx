@@ -15,7 +15,7 @@ export const Footer: React.FC<FooterProps> = ({
   onSelectCategory,
   onSelectTool,
 }) => {
-  const popularTools = TOOLS_DATA.slice(0, 6);
+  const popularTools = TOOLS_DATA.filter((t) => t.isPopular || t.isFeatured || t.isTrending).slice(0, 14);
 
   const handleToolClick = (slug: string, e: React.MouseEvent) => {
     if (e.metaKey || e.ctrlKey) return;
@@ -130,10 +130,10 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Categories Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-              Categories
+              Tool Categories
             </h4>
             <ul className="space-y-2">
-              {CATEGORIES_DATA.slice(0, 6).map((cat) => (
+              {CATEGORIES_DATA.map((cat) => (
                 <li key={cat.id}>
                   <a
                     href={`/category/${cat.slug}`}
@@ -144,6 +144,15 @@ export const Footer: React.FC<FooterProps> = ({
                   </a>
                 </li>
               ))}
+              <li className="pt-1 font-bold text-indigo-600 dark:text-indigo-400">
+                <a
+                  href="/categories"
+                  onClick={(e) => handlePageClick("categories", "/categories", e)}
+                  className="hover:underline cursor-pointer"
+                >
+                  All Categories Hub →
+                </a>
+              </li>
             </ul>
           </div>
 

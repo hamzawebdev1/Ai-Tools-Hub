@@ -61,11 +61,19 @@ export interface FAQItem {
 export interface ToolSEOContent {
   metaTitle: string;
   metaDescription: string;
+  primaryKeyword?: string;
+  secondaryKeywords?: string[];
+  searchIntent?: string;
+  semanticRelatedTerms?: string[];
   overview: string;
   problemSolved?: string;
   targetAudience?: string;
   howItWorks?: string;
+  supportedInputsFormats?: string;
   outputExpectation?: string;
+  limitations?: string;
+  privacySecurity?: string;
+  troubleshooting?: string[];
   commonMistakes?: string[];
   processingType?: "CLIENT_SIDE_BROWSER" | "SERVER_SIDE_AI";
   processingDetails?: string;
@@ -85,6 +93,8 @@ export interface AITool {
   subcategory?: string;
   iconName: string;
   tags: string[];
+  primaryKeyword?: string;
+  secondaryKeywords?: string[];
   isTrending?: boolean;
   isPopular?: boolean;
   isFeatured?: boolean;

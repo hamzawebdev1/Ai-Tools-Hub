@@ -67,6 +67,31 @@ export const CategoryDetailPage: React.FC<CategoryDetailPageProps> = ({
           ))}
         </div>
 
+        {/* Related Category Hubs */}
+        <div className="pt-8 space-y-4 border-t border-slate-200 dark:border-slate-800">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+            Explore Other Tool Categories
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {CATEGORIES_DATA.filter((c) => c.slug !== category.slug).map((cat) => (
+              <a
+                key={cat.id}
+                href={`/category/${cat.slug}`}
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey) return;
+                  e.preventDefault();
+                  setActiveTab("category-detail");
+                  window.history.pushState({}, "", `/category/${cat.slug}`);
+                }}
+                className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 transition-colors"
+              >
+                <div className="font-bold text-xs text-slate-900 dark:text-white">{cat.name}</div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1">{cat.description}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+
         <ReviewCTA />
       </div>
     </>

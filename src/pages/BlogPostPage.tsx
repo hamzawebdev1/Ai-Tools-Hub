@@ -142,17 +142,25 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                 <span className="flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5" /> {post.date}
+                  <Calendar className="w-3.5 h-3.5" /> Published: {post.date}
                 </span>
+                {post.updatedDate && (
+                  <>
+                    <span>•</span>
+                    <span className="flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-semibold">
+                      <Calendar className="w-3.5 h-3.5" /> Updated: {post.updatedDate}
+                    </span>
+                  </>
+                )}
                 <span>•</span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5" /> {post.readTime}
                 </span>
                 <span className="hidden sm:inline">•</span>
                 <span className="hidden sm:inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Fact Checked
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Verified Expertise
                 </span>
               </div>
             </div>
@@ -272,16 +280,28 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
               alt={post.author.name}
               className="w-16 h-16 rounded-full object-cover border-2 border-indigo-500 shrink-0"
             />
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <h4 className="font-bold text-slate-900 dark:text-white text-base">
-                  Written by {post.author.name}
-                </h4>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
-                  Verified Author
-                </span>
+            <div className="space-y-2 flex-1">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <h4 className="font-bold text-slate-900 dark:text-white text-base">
+                    Written by {post.author.name}
+                  </h4>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
+                    Verified Author
+                  </span>
+                </div>
+                <a
+                  href={getUrlForRoute(`author-${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveTab(`author-${post.author.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
+                  }}
+                  className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1"
+                >
+                  View Author Profile &rarr;
+                </a>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              <p className="text-xs text-indigo-600 dark:text-indigo-400 font-medium">
                 {post.author.role}
               </p>
               {post.author.bio && (

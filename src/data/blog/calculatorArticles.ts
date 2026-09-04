@@ -23,7 +23,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     readTime: "6 min read",
     tags: ["Percentage Calculator", "Math Formulas", "Financial Math", "Education"],
     image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["percentage-calculator", "discount-calculator", "gst-calculator"],
+    relatedToolIds: ["percentage-calculator", "discount-calculator", "profit-calculator"],
     relatedArticleSlugs: ["how-to-calculate-discount-and-sale-savings", "how-to-calculate-compound-interest-growth"],
     faqs: [
       {
@@ -47,7 +47,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
       </ul>
 
       <h2>Try the Free Calculator</h2>
-      <p>Save time on manual arithmetic by using our interactive <a href="/percentage-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Percentage Calculator Tool</a> for instant step-by-step breakdowns.</p>
+      <p>Save time on manual arithmetic by using our interactive <a href="/en/percentage-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Percentage Calculator Tool</a> for instant step-by-step breakdowns.</p>
     `
   },
   {
@@ -122,7 +122,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
         </table>
       </div>
 
-      <p>Calculate your score instantly using our free <a href="/bmi-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">BMI Calculator Tool</a>.</p>
+      <p>Calculate your score instantly using our free <a href="/en/bmi-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">BMI Calculator Tool</a>.</p>
     `
   },
   {
@@ -156,7 +156,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Why Precise Age Calculation Matters</h2>
-      <p>Many government exams, competitive sports categories, insurance policies, and visa criteria enforce strict age eligibility cuts down to the exact day on a cutoff date. Use our <a href="/age-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Age Calculator</a> for 100% verified chronological results.</p>
+      <p>Many government exams, competitive sports categories, insurance policies, and visa criteria enforce strict age eligibility cuts down to the exact day on a cutoff date. Use our <a href="/en/age-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Age Calculator</a> for 100% verified chronological results.</p>
     `
   },
   {
@@ -190,7 +190,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>The Mechanics of Loan Amortization</h2>
-      <p>An Equated Monthly Installment (EMI) is a fixed payment amount made by a borrower to a lender at a specified date each calendar month. In the early years of a 20-year mortgage, over 70% of your monthly payment goes toward interest. Use our <a href="/emi-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">EMI Calculator</a> to plan prepayments and reduce total interest liability.</p>
+      <p>An Equated Monthly Installment (EMI) is a fixed payment amount made by a borrower to a lender at a specified date each calendar month. In the early years of a 20-year mortgage, over 70% of your monthly payment goes toward interest. Use our <a href="/en/emi-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">EMI Calculator</a> to plan prepayments and reduce total interest liability.</p>
     `
   },
   {
@@ -224,7 +224,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>How Grade Point Averages are Computed</h2>
-      <p>Each letter grade corresponds to a point value (A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0). Multiplying grade points by credit hours gives total quality points. Dividing total quality points by total credits results in your cumulative GPA. Calculate yours with the <a href="/gpa-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">GPA Calculator</a>.</p>
+      <p>Each letter grade corresponds to a point value (A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0). Multiplying grade points by credit hours gives total quality points. Dividing total quality points by total credits results in your cumulative GPA. Calculate yours with the <a href="/en/gpa-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">GPA Calculator</a>.</p>
     `
   },
   {
@@ -258,7 +258,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>The Power of Compound Interest</h2>
-      <p>Albert Einstein famously remarked that compound interest is the eighth wonder of the world. Reinvesting earnings creates a snowball effect where interest earns interest over long time horizons. Test investment timelines on our <a href="/compound-interest-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Compound Interest Calculator</a>.</p>
+      <p>Albert Einstein famously remarked that compound interest is the eighth wonder of the world. Reinvesting earnings creates a snowball effect where interest earns interest over long time horizons. Test investment timelines on our <a href="/en/compound-interest-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Compound Interest Calculator</a>.</p>
     `
   },
   {
@@ -282,7 +282,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["GST Calculator", "Tax Calculation", "Invoicing", "Small Business"],
     image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["gst-calculator", "discount-calculator", "percentage-calculator"],
+    relatedToolIds: ["profit-calculator", "discount-calculator", "percentage-calculator"],
     relatedArticleSlugs: ["how-to-calculate-discount-and-sale-savings", "how-to-calculate-salary-take-home-pay"],
     faqs: [
       {
@@ -292,7 +292,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Calculating GST for Invoices and Receipts</h2>
-      <p>Whether invoicing corporate clients or auditing retail purchases, accurately calculating GST-inclusive and GST-exclusive amounts ensures tax compliance. Run instant numbers on our <a href="/gst-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">GST Calculator</a>.</p>
+      <p>Whether invoicing corporate clients or auditing retail purchases, accurately calculating GST-inclusive and GST-exclusive amounts ensures tax compliance. Run instant numbers on our <a href="/en/percentage-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Percentage Calculator</a>.</p>
     `
   },
   {
@@ -316,7 +316,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["Zakat Calculator", "Islamic Finance", "Charity", "Nisab"],
     image: "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["zakat-calculator", "percentage-calculator", "currency-converter"],
+    relatedToolIds: ["percentage-calculator", "profit-calculator", "currency-converter"],
     relatedArticleSlugs: ["how-to-calculate-percentage-increase-decrease", "how-to-calculate-salary-take-home-pay"],
     faqs: [
       {
@@ -326,7 +326,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Understanding Zakat and the Nisab Threshold</h2>
-      <p>Zakat is a foundational pillar of Islamic finance. When your qualifying net assets (cash, gold, business inventory minus immediate debts) exceed the current monetary value of 87.48 grams of gold or 612.36 grams of silver, Zakat of 2.5% becomes due. Compute your exact obligations with the <a href="/zakat-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Zakat Calculator</a>.</p>
+      <p>Zakat is a foundational pillar of Islamic finance. When your qualifying net assets (cash, gold, business inventory minus immediate debts) exceed the current monetary value of 87.48 grams of gold or 612.36 grams of silver, Zakat of 2.5% becomes due. Compute your exact obligations with the <a href="/en/percentage-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Percentage Calculator</a>.</p>
     `
   },
   {
@@ -350,7 +350,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     readTime: "6 min read",
     tags: ["Salary Calculator", "Income Tax", "Take-Home Pay", "Personal Finance"],
     image: "https://images.unsplash.com/photo-1554224154-22dec7ec8818?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["salary-calculator", "income-tax-calculator", "percentage-calculator"],
+    relatedToolIds: ["profit-calculator", "percentage-calculator"],
     relatedArticleSlugs: ["how-to-calculate-emi-loan-amortization", "how-to-calculate-percentage-increase-decrease"],
     faqs: [
       {
@@ -360,7 +360,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Decoding Your Paycheck</h2>
-      <p>Comparing job offers based solely on gross annual salary can be misleading due to progressive tax brackets and statutory withholdings. Check your realistic monthly cash flow using our <a href="/salary-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Salary Calculator</a>.</p>
+      <p>Comparing job offers based solely on gross annual salary can be misleading due to progressive tax brackets and statutory withholdings. Check your realistic monthly cash flow using our <a href="/en/percentage-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Percentage Calculator</a>.</p>
     `
   },
   {
@@ -384,7 +384,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["Pregnancy Calculator", "Due Date", "Health & Wellness", "Parenting"],
     image: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["pregnancy-due-date-calculator", "ovulation-calculator", "age-calculator"],
+    relatedToolIds: ["age-calculator", "time-duration-calculator"],
     relatedArticleSlugs: ["how-to-calculate-exact-age-in-years-months-days", "how-to-calculate-bmi-healthy-weight-ranges"],
     faqs: [
       {
@@ -394,7 +394,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Calculating Your Estimated Delivery Date</h2>
-      <p>A full-term human pregnancy spans approximately 40 weeks (280 days) from the first day of the last menstrual period. Discover your week-by-week timeline with our free <a href="/pregnancy-due-date-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Pregnancy Due Date Calculator</a>.</p>
+      <p>A full-term human pregnancy spans approximately 40 weeks (280 days) from the first day of the last menstrual period. Discover your week-by-week timeline with our free <a href="/en/age-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Age Calculator</a>.</p>
     `
   },
   {
@@ -456,7 +456,7 @@ export const CALCULATOR_ARTICLES: BlogPost[] = [
         <li>Sum up all quality points across all completed semesters.</li>
         <li>Divide total quality points by total credit hours.</li>
       </ol>
-      <p>Alternatively, calculate your exact score in seconds with our <a href="/gpa-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free College GPA Calculator Tool</a>.</p>
+      <p>Alternatively, calculate your exact score in seconds with our <a href="/en/gpa-calculator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free College GPA Calculator Tool</a>.</p>
     `
   }
 ];

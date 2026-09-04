@@ -4,6 +4,7 @@ import { IMAGE_ARTICLES } from "./blog/imageArticles";
 import { CALCULATOR_ARTICLES } from "./blog/calculatorArticles";
 import { CONVERTER_ARTICLES } from "./blog/converterArticles";
 import { TRUSTPILOT_HOSTINGER_ARTICLES } from "./blog/trustpilotHostingerArticles";
+import { SEO_AND_STUDENT_ARTICLES } from "./blog/seoAndStudentArticles";
 
 export const BLOG_POSTS_DATA: BlogPost[] = [
   ...PDF_ARTICLES,
@@ -11,6 +12,7 @@ export const BLOG_POSTS_DATA: BlogPost[] = [
   ...CALCULATOR_ARTICLES,
   ...CONVERTER_ARTICLES,
   ...TRUSTPILOT_HOSTINGER_ARTICLES,
+  ...SEO_AND_STUDENT_ARTICLES,
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {

@@ -3,6 +3,7 @@ import { buildSEOMetadata } from "../services/seoService";
 import { TOOLS_DATA } from "../data/toolsData";
 import { CATEGORIES_DATA } from "../data/categoriesData";
 import { BLOG_POSTS_DATA } from "../data/blogData";
+import { getEnrichedToolSEO } from "../utils/toolSeoHelper";
 
 /**
  * Escapes HTML characters for safe injection into meta attributes.
@@ -45,8 +46,8 @@ function renderPrerenderedBodyContent(
   `;
 
   // Footer HTML with crawlable internal links
-  const topCategories = CATEGORIES_DATA.slice(0, 6);
-  const featuredTools = TOOLS_DATA.filter((t) => t.isFeatured || t.isPopular).slice(0, 8);
+  const topCategories = CATEGORIES_DATA;
+  const featuredTools = TOOLS_DATA.filter((t) => t.isFeatured || t.isPopular || t.isTrending).slice(0, 16);
   const latestPosts = BLOG_POSTS_DATA.slice(0, 5);
 
   const footerHtml = `
@@ -93,6 +94,9 @@ function renderPrerenderedBodyContent(
     const categoryName = categoryInfo ? categoryInfo.name : tool.category;
     const categorySlug = categoryInfo ? categoryInfo.slug : "pdf-tools";
 
+    const enrichedSeo = getEnrichedToolSEO(tool);
+    const seoContent = { ...enrichedSeo, ...tool.seoContent };
+
     // Related tools in same category
     const relatedTools = TOOLS_DATA.filter((t) => (t.category === tool.category || t.subcategory === tool.subcategory) && t.id !== tool.id).slice(0, 6);
     // Related articles
@@ -119,38 +123,91 @@ function renderPrerenderedBodyContent(
           <p style="font-size: 0.95rem; color: #e0e7ff; max-width: 36rem; margin: 0 auto 1.5rem auto;">Select or drop your input files to execute ${escapeHtml(tool.name)} instantly in your browser sandbox.</p>
         </section>
 
+        <!-- About & Comprehensive Overview -->
+        <section style="margin-bottom: 2.5rem; line-height: 1.7; color: #334155; font-size: 1rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">About ${escapeHtml(tool.name)}</h2>
+          <p style="margin-bottom: 1rem;">${escapeHtml(seoContent.overview)}</p>
+        </section>
+
+        <!-- Problem Solved & Target Audience Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem;">
+          ${seoContent.problemSolved ? `
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+              <h3 style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: #4f46e5; margin-bottom: 0.5rem;">What Problem Does It Solve?</h3>
+              <p style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin: 0;">${escapeHtml(seoContent.problemSolved)}</p>
+            </div>
+          ` : ""}
+          ${seoContent.targetAudience ? `
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+              <h3 style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: #059669; margin-bottom: 0.5rem;">Who Can Use It?</h3>
+              <p style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin: 0;">${escapeHtml(seoContent.targetAudience)}</p>
+            </div>
+          ` : ""}
+        </div>
+
+        <!-- Supported Inputs & Expected Output Standard -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem;">
+          ${seoContent.supportedInputsFormats ? `
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+              <h3 style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: #2563eb; margin-bottom: 0.5rem;">Supported Inputs &amp; File Formats</h3>
+              <p style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin: 0;">${escapeHtml(seoContent.supportedInputsFormats)}</p>
+            </div>
+          ` : ""}
+          ${seoContent.outputExpectation ? `
+            <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+              <h3 style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: #059669; margin-bottom: 0.5rem;">Expected Output Standard</h3>
+              <p style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin: 0;">${escapeHtml(seoContent.outputExpectation)}</p>
+            </div>
+          ` : ""}
+        </div>
+
+        <!-- How It Works & Privacy Architecture -->
+        <section style="background-color: #e0e7ff; border: 1px solid #c7d2fe; border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 2.5rem; font-size: 0.9rem; color: #1e1b4b;">
+          <h3 style="font-size: 1rem; font-weight: 700; color: #312e81; margin-bottom: 0.5rem;">How It Works &amp; Data Privacy Architecture</h3>
+          <p style="line-height: 1.6; margin-bottom: 0.75rem;">${escapeHtml(seoContent.howItWorks)}</p>
+          ${seoContent.privacySecurity ? `<p style="font-weight: 600; color: #065f46; margin: 0;"><strong>Privacy Guarantee:</strong> ${escapeHtml(seoContent.privacySecurity)}</p>` : ""}
+        </section>
+
+        <!-- Technical Limitations -->
+        ${seoContent.limitations ? `
+          <section style="background-color: #fffbebf5; border: 1px solid #fef08a; border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 2.5rem;">
+            <h3 style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: #b45309; margin-bottom: 0.5rem;">Technical Limitations &amp; Boundaries</h3>
+            <p style="font-size: 0.9rem; color: #78350f; line-height: 1.6; margin: 0;">${escapeHtml(seoContent.limitations)}</p>
+          </section>
+        ` : ""}
+
         <!-- How To Use Section -->
-        <section style="margin-bottom: 3rem;">
+        <section style="margin-bottom: 2.5rem;">
           <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">How to Use ${escapeHtml(tool.name)}</h2>
           <ol style="padding-left: 1.5rem; line-height: 1.8; color: #334155; font-size: 1rem;">
-            ${(tool.seoContent?.howToUseSteps || [
-              `Select or drag and drop your input files or text into the ${tool.name} interface above.`,
-              `Configure any optional parameters, quality settings, or formatting options.`,
-              `Click the primary execution button to process your data locally in under 300 milliseconds.`,
-              `Download, copy, or export your processed output file or text directly.`
-            ]).map((step: string) => `<li style="margin-bottom: 0.5rem;">${escapeHtml(step)}</li>`).join("")}
+            ${(seoContent.howToUseSteps || []).map((step: string) => `<li style="margin-bottom: 0.5rem;">${escapeHtml(step)}</li>`).join("")}
           </ol>
         </section>
 
         <!-- Key Features Section -->
-        <section style="margin-bottom: 3rem; background-color: #f8fafc; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+        <section style="margin-bottom: 2.5rem; background-color: #f8fafc; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
           <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Key Features &amp; Technical Capabilities</h2>
           <ul style="padding-left: 1.5rem; line-height: 1.8; color: #334155; font-size: 0.95rem;">
-            ${(tool.seoContent?.keyFeatures || [
-              "100% Private Client-Side Sandbox: Data is processed locally inside your web browser.",
-              "Sub-300ms High Performance: Powered by WebAssembly and optimized JavaScript APIs.",
-              "Zero Registration Required: No login, subscription, or software installation required.",
-              "Universal Platform Compatibility: Works seamlessly on Chrome, Safari, Firefox, Edge, and mobile devices."
-            ]).map((feat: string) => `<li style="margin-bottom: 0.5rem;">${escapeHtml(feat)}</li>`).join("")}
+            ${(seoContent.keyFeatures || []).map((feat: string) => `<li style="margin-bottom: 0.5rem;">${escapeHtml(feat)}</li>`).join("")}
           </ul>
         </section>
 
+        <!-- Troubleshooting Section -->
+        ${seoContent.troubleshooting && seoContent.troubleshooting.length > 0 ? `
+          <section style="margin-bottom: 2.5rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Troubleshooting &amp; Common Edge Cases</h2>
+            <ul style="padding-left: 1.5rem; line-height: 1.8; color: #475569; font-size: 0.95rem;">
+              ${seoContent.troubleshooting.map((item: string) => `<li style="margin-bottom: 0.5rem;">${escapeHtml(item)}</li>`).join("")}
+            </ul>
+          </section>
+        ` : ""}
+
         <!-- FAQs Section -->
-        ${tool.seoContent?.faqs && tool.seoContent.faqs.length > 0 ? `
-          <section style="margin-bottom: 3rem;">
+        ${seoContent.faqs && seoContent.faqs.length > 0 ? `
+          <section style="margin-bottom: 2.5rem;">
             <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1rem;">Frequently Asked Questions</h2>
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-              ${tool.seoContent.faqs.map((faq: any) => `
+              ${seoContent.faqs.map((faq: any) => `
                 <details style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem;">
                   <summary style="font-weight: 700; color: #0f172a; cursor: pointer;">${escapeHtml(faq.question)}</summary>
                   <p style="margin-top: 0.5rem; color: #475569; line-height: 1.6; font-size: 0.95rem;">${escapeHtml(faq.answer)}</p>
@@ -351,8 +408,8 @@ function renderPrerenderedBodyContent(
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
               <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;"><a href="/author/hamza" style="color: #4f46e5; text-decoration: none;">Hamza</a></h3>
-                <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">Founder &amp; Lead Web Developer</p>
-                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">5+ years experience in web development, full-stack browser tools, digital agency leadership, and technical SEO.</p>
+                <p style="font-size: 0.85rem; color: #6366f1; font-weight: 600; margin: 0 0 0.5rem 0;">Founder, Web Developer &amp; Digital Marketing Expert</p>
+                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">5+ years of experience in web development and digital marketing. Operates his own agency focused on web development and digital marketing services.</p>
               </div>
               <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #ffffff;">
                 <h3 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;"><a href="/author/alex-rivera" style="color: #4f46e5; text-decoration: none;">Alex Rivera</a></h3>

@@ -41,7 +41,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
 
       <h2>How to Convert MP4 to MP3 in 3 Steps</h2>
       <ol>
-        <li>Open the <a href="/audio-mp3-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">MP4 to MP3 Converter Tool</a>.</li>
+        <li>Open the <a href="/en/audio-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">MP4 to MP3 Converter Tool</a>.</li>
         <li>Upload your video file from your computer or phone.</li>
         <li>Select your target quality (320kbps for music, 192kbps for voice/speech).</li>
         <li>Click <strong>Extract MP3 Audio</strong> and save your file.</li>
@@ -79,7 +79,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Managing Strict Word & Character Limits</h2>
-      <p>Whether submitting a 280-character post, drafting a 500-word university admissions essay, or optimizing a 155-character Google meta description, real-time counters ensure you stay within bounds. Try our <a href="/word-counter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Word Counter Tool</a>.</p>
+      <p>Whether submitting a 280-character post, drafting a 500-word university admissions essay, or optimizing a 155-character Google meta description, real-time counters ensure you stay within bounds. Try our <a href="/en/word-counter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Word Counter Tool</a>.</p>
     `
   },
   {
@@ -113,7 +113,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Making API Responses Readable</h2>
-      <p>Working with compressed API responses or log streams is impossible when millions of characters sit on a single line. Paste your payload into our <a href="/json-formatter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">JSON Formatter Tool</a> for instant 2-space or 4-space indentation and tree view navigation.</p>
+      <p>Working with compressed API responses or log streams is impossible when millions of characters sit on a single line. Paste your payload into our <a href="/en/json-formatter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">JSON Formatter Tool</a> for instant 2-space or 4-space indentation and tree view navigation.</p>
     `
   },
   {
@@ -147,7 +147,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>The Right Case for Every Context</h2>
-      <p>Whether fixing accidental CAPS LOCK typing, structuring Chicago-style editorial titles, or converting SQL column names into JavaScript camelCase variables, use our <a href="/case-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Case Converter Tool</a>.</p>
+      <p>Whether fixing accidental CAPS LOCK typing, structuring Chicago-style editorial titles, or converting SQL column names into JavaScript camelCase variables, use our <a href="/en/case-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Case Converter Tool</a>.</p>
     `
   },
   {
@@ -181,7 +181,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>The Purpose of Base64 Encoding</h2>
-      <p>Binary files (like images or encrypted keys) contain raw byte values that get mangled when transmitted across legacy text protocols like email or JSON. Base64 translates arbitrary binary data into 64 safe ASCII characters. Use our <a href="/base64-encoder" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Base64 Encoder Tool</a>.</p>
+      <p>Binary files (like images or encrypted keys) contain raw byte values that get mangled when transmitted across legacy text protocols like email or JSON. Base64 translates arbitrary binary data into 64 safe ASCII characters. Use our <a href="/en/base64-encoder" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Base64 Encoder Tool</a>.</p>
     `
   },
   {
@@ -215,7 +215,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Quick Mental Temperature Conversion</h2>
-      <p>For a quick mental approximation while traveling: double the Celsius value and add 30. For exact precision, use our interactive <a href="/temperature-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Temperature Converter Tool</a>.</p>
+      <p>For a quick mental approximation while traveling: double the Celsius value and add 30. For exact precision, use our interactive <a href="/en/temperature-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Temperature Converter Tool</a>.</p>
     `
   },
   {
@@ -249,7 +249,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Metric vs Imperial Weight Measurements</h2>
-      <p>Converting between metric kilograms and imperial pounds is essential for airline baggage allowances (e.g. 23kg = 50.7 lbs) and gym training. Try the <a href="/weight-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Weight Converter Tool</a>.</p>
+      <p>Converting between metric kilograms and imperial pounds is essential for airline baggage allowances (e.g. 23kg = 50.7 lbs) and gym training. Try the <a href="/en/weight-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Weight Converter Tool</a>.</p>
     `
   },
   {
@@ -283,7 +283,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Converting Height from Metric to Feet & Inches</h2>
-      <p>Whether filling out visa applications requiring centimeters (e.g. 175 cm = 5 ft 9 in) or ordering apparel, use our <a href="/length-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Length Converter Tool</a> for instant conversions.</p>
+      <p>Whether filling out visa applications requiring centimeters (e.g. 175 cm = 5 ft 9 in) or ordering apparel, use our <a href="/en/length-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Length Converter Tool</a> for instant conversions.</p>
     `
   },
   {
@@ -307,7 +307,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["Timestamp Converter", "Epoch Time", "Developer Tools", "Backend"],
     image: "https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["unix-timestamp-converter", "json-formatter", "base64-encoder"],
+    relatedToolIds: ["date-to-unix-timestamp", "json-formatter", "base64-encoder"],
     relatedArticleSlugs: ["how-to-format-validate-and-repair-json", "how-to-convert-base64-encode-decode"],
     faqs: [
       {
@@ -317,7 +317,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>Debugging Timestamps in API Logs</h2>
-      <p>Database logs often store event timestamps as raw integers like <code>1724755200</code>. Paste any epoch timestamp into our <a href="/unix-timestamp-converter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Unix Timestamp Converter</a> to view local, UTC, and ISO 8601 timestamps instantly.</p>
+      <p>Database logs often store event timestamps as raw integers like <code>1724755200</code>. Paste any epoch timestamp into our <a href="/en/date-to-unix-timestamp" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Unix Timestamp Converter</a> to view local, UTC, and ISO 8601 timestamps instantly.</p>
     `
   },
   {
@@ -341,7 +341,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     readTime: "5 min read",
     tags: ["QR Code Generator", "Wi-Fi QR Code", "Marketing", "Mobile Scanning"],
     image: "https://images.unsplash.com/photo-1595079672139-bf258b387e83?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["qr-generator", "qr-wifi", "qr-vcard"],
+    relatedToolIds: ["qr-generator", "barcode-generator"],
     relatedArticleSlugs: ["how-to-generate-favicons-and-app-icons", "how-to-convert-svg-to-png-high-resolution"],
     faqs: [
       {
@@ -351,7 +351,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     ],
     content: `
       <h2>The Versatility of Modern QR Codes</h2>
-      <p>QR codes bridge offline marketing materials and online digital destinations. Generate instant vector codes for guest Wi-Fi, social handles, or event links using our free <a href="/qr-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">QR Code Generator Tool</a>.</p>
+      <p>QR codes bridge offline marketing materials and online digital destinations. Generate instant vector codes for guest Wi-Fi, social handles, or event links using our free <a href="/en/qr-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">QR Code Generator Tool</a>.</p>
     `
   },
   {
@@ -376,7 +376,7 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
     readTime: "7 min read",
     tags: ["SEO Tools", "SERP Checker", "Keyword Ranking", "Search Engine Optimization"],
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
-    relatedToolIds: ["serp-checker", "seo-audit-analyzer", "keyword-density-checker"],
+    relatedToolIds: ["serp-preview", "html-seo-analyzer", "keyword-density-checker"],
     relatedArticleSlugs: ["how-to-optimize-images-for-core-web-vitals-and-seo", "how-to-count-words-characters-reading-time"],
     faqs: [
       {
@@ -394,10 +394,10 @@ export const CONVERTER_ARTICLES: BlogPost[] = [
 
       <h2>How to Inspect SERP Positions for Free</h2>
       <ol>
-        <li>Open the <a href="/serp-checker" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Google SERP Rank Checker</a> on Mehzan Digital.</li>
+        <li>Open the <a href="/en/serp-preview" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Google SERP Rank Checker</a> on Mehzan Digital.</li>
         <li>Enter your target search term (e.g. <em>'pdf to word converter'</em>).</li>
         <li>Analyze the top organic result URLs, title tags, and meta snippet previews.</li>
-        <li>Review related keywords and check on-page optimization with our <a href="/seo-audit-analyzer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free SEO Audit & Analyzer</a>.</li>
+        <li>Review related keywords and check on-page optimization with our <a href="/en/html-seo-analyzer" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free SEO Audit & Analyzer</a>.</li>
       </ol>
     `
   }

@@ -34,6 +34,83 @@ export interface ToolAdminOverride {
 
 const STORAGE_KEY_OVERRIDES = "mehzandigital_admin_tool_overrides";
 
+// Set of tool IDs/slugs identified during Phase 9 audit as redundant or low-value micro-duplicates
+const REMOVED_TOOL_IDS = new Set<string>([
+  "pdf-watermark-text", "pdf-watermark-image", "pdf-page-rotation-manager",
+  "pdf-orientation-detector", "pdf-page-size-detector", "pdf-duplicate-pages",
+  "pdf-reverse-pages", "bmp-to-pdf", "tiff-to-pdf",
+
+  "image-flip", "image-mirror", "jpg-to-avif", "png-to-avif", "avif-to-jpg",
+  "avif-to-png", "bmp-to-png", "bmp-to-jpg", "tiff-to-png", "tiff-to-jpg",
+  "gif-to-png", "png-to-ico", "image-to-ico", "favicon-pack-generator",
+  "image-dimensions-checker", "image-size-checker", "image-brightness",
+  "image-contrast", "image-saturation", "text-watermark", "logo-watermark",
+  "dominant-color-extractor", "data-uri-generator", "youtube-thumbnail-resizer",
+  "instagram-resizer", "facebook-resizer", "twitter-resizer", "linkedin-resizer",
+  "image-difference-checker",
+
+  "character-counter-no-spaces", "sentence-counter", "paragraph-counter",
+  "line-counter", "uppercase-converter", "lowercase-converter", "title-case-converter",
+  "sentence-case-converter", "camelcase-converter", "pascalcase-converter",
+  "snakecase-converter", "kebabcase-converter", "sort-lines-a-z", "sort-lines-z-a",
+  "remove-empty-lines", "remove-extra-spaces", "remove-extra-line-breaks",
+  "trim-text", "remove-special-characters", "remove-numbers", "text-difference-checker",
+  "strong-password-generator", "unicode-decoder",
+
+  "json-validator", "json-minifier", "json-beautifier", "json-sorter",
+  "json-escape", "json-unescape", "xml-validator", "xml-minifier",
+  "yaml-validator", "sql-minifier", "regex-generator-helper", "regex-match-extractor",
+  "jwt-inspector", "jwt-payload-viewer", "jwt-payload-inspector",
+  "jwt-expiration-checker", "uuid-v4-generator", "uuid-validator",
+  "sha-1-hash-generator", "sha-256-hash-generator", "sha-384-hash-generator",
+  "sha-512-hash-generator", "html-entity-decoder",
+
+  "twitter-card-preview", "social-share-preview", "word-count-seo-checker",
+  "page-word-counter", "h1-h6-heading-checker", "title-length-checker",
+  "meta-description-length-checker", "sitemap-url-counter", "text-to-html-seo-analyzer",
+  "keyword-density-calculator", "seo-url-checker", "redirect-chain-analyzer",
+  "htaccess-redirect-generator", "nginx-redirect-generator", "apache-redirect-generator",
+
+  "ipv4-validator", "ipv6-validator", "ip-address-parser", "mac-address-validator",
+  "port-number-validator", "network-mask-calculator", "wildcard-mask-calculator",
+  "host-range-calculator", "broadcast-address-calculator", "network-address-calculator",
+  "ip-subnet-cidr-calculator", "base64-decoder", "permissions-policy-generator",
+  "referrer-policy-generator", "cookie-attribute-generator",
+
+  "percentage-increase-calculator", "percentage-decrease-calculator",
+  "mean-median-mode-calculator", "standard-deviation-calculator", "variance-calculator",
+  "range-calculator", "prime-number-checker", "gcd-calculator",
+  "profit-margin-calculator", "markup-calculator", "tax-percentage-calculator",
+  "date-of-birth-calculator", "date-difference-calculator", "add-days-to-date",
+  "subtract-days-from-date", "add-months-to-date", "time-difference-calculator",
+  "date-format-converter", "time-format-converter", "12-hour-24-hour-converter",
+  "distance-converter", "mass-converter", "bits-to-bytes", "bytes-to-kb",
+  "kb-to-mb", "mb-to-gb", "gb-to-tb", "binary-to-decimal", "binary-to-hexadecimal",
+  "decimal-to-hexadecimal", "octal-to-decimal", "rgb-to-hex", "rgb-to-hsl",
+  "hsl-to-rgb", "hsl-to-hex", "cmyk-converter", "hsv-converter", "css-color-generator",
+
+  "qr-wifi", "qr-vcard", "qr-email", "qr-sms", "qr-phone", "qr-geo", "qr-crypto",
+  "qr-event", "qr-text", "qr-whatsapp", "barcode-code128", "barcode-ean13",
+  "barcode-upca", "barcode-code39",
+
+  "file-base64-decoder", "zip-extractor", "zip-contents-viewer", "json-to-csv-converter",
+  "xml-to-json-converter", "json-to-xml-converter", "yaml-to-json-converter",
+  "json-to-yaml-converter", "audio-mp3-converter", "audio-wav-converter",
+  "audio-ogg-converter", "audio-m4a-converter", "audio-flac-converter",
+  "audio-cutter", "audio-fade-in", "audio-fade-out", "audio-speed-pitch-changer",
+  "audio-pitch-adjuster", "audio-metadata-remover", "audio-duration-checker",
+  "audio-file-size-checker", "audio-channel-info", "audio-sample-rate-info",
+  "audio-bitrate-info", "base64-to-audio", "video-cutter", "video-flipper",
+  "video-fps-info", "video-resolution-checker", "video-duration-checker",
+  "video-file-size-checker", "video-metadata-remover", "gif-resizer",
+  "gif-speed-controller", "gif-reverse", "gif-loop-controller", "gif-to-jpg",
+  "png-sequence-to-gif", "media-duration-checker", "media-resolution-checker",
+  "media-format-detector", "media-mime-type-checker", "media-file-size-analyzer",
+
+  "cgpa-calculator", "gpa-to-percentage-converter", "assignment-grade-calculator",
+  "assignment-word-count-helper"
+]);
+
 // Build canonical list from raw tools
 function buildCanonicalTools(): AITool[] {
   const rawList: AITool[] = [
@@ -59,6 +136,11 @@ function buildCanonicalTools(): AITool[] {
   for (const raw of rawList) {
     const id = raw.id;
     const slug = raw.slug || id;
+
+    // Skip removed tools (audit pruning)
+    if (REMOVED_TOOL_IDS.has(id) || REMOVED_TOOL_IDS.has(slug)) {
+      continue;
+    }
 
     // Skip duplicate IDs or Slugs
     if (seenIds.has(id) || seenSlugs.has(slug)) {

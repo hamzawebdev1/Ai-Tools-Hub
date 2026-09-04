@@ -51,10 +51,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setActiveTab }) => {
                 </span>
               </div>
               <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-                Web Developer & Digital Marketing Expert (5+ Years Experience)
+                Founder, Web Developer & Digital Marketing Expert (5+ Years Experience)
               </p>
               <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                Hamza manages digital marketing strategy and web application engineering for Mehzan Digital. He builds client-side browser utilities, PDF tools, image converters, and developer automation suites designed to eliminate unnecessary server latency and safeguard user privacy.
+                Hamza is a Web Developer and Digital Marketing Expert with over 5 years of hands-on experience in web development and digital marketing strategies. He currently operates his own digital agency focused on web development and digital marketing services, where he architects custom web applications, search engine optimization strategies, and client-side web utility platforms like Mehzan Digital.
               </p>
               <div className="pt-2">
                 <a

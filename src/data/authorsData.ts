@@ -22,12 +22,17 @@ export const AUTHORS_DATA: Author[] = [
     id: "0",
     slug: "hamza",
     name: "Hamza",
-    role: "Web Developer & Digital Marketing Expert",
+    role: "Founder, Web Developer & Digital Marketing Expert",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-    bio: "Hamza is a Web Developer and Digital Marketing Expert with approximately 5 years of experience in web development and digital marketing. He now runs his own agency providing web development and digital marketing services, building privacy-first web utilities and growth-oriented digital solutions.",
-    expertise: ["Web Development", "Digital Marketing", "Technical SEO", "Full-Stack Web Utilities", "Agency Leadership"],
+    bio: "Hamza is the Founder of Mehzan Digital and a Web Developer and Digital Marketing Expert with 5+ years of experience in web development and digital marketing. He currently operates his own agency focused on web development and digital marketing, leading technical architecture, client-side web utility engineering, and search optimization.",
+    expertise: [
+      "Web Development (5+ Years)",
+      "Digital Marketing & SEO",
+      "Agency Operations & Strategy",
+      "Full-Stack Web Utilities",
+      "Client-Side Engineering"
+    ],
     socials: {
-      // Configurable social fields: empty strings or undefined mean the link is hidden
       twitter: "",
       github: "",
       linkedin: "",
