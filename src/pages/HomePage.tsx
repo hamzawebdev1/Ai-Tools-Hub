@@ -90,6 +90,13 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </div>
 
+            {/* StartupBase Launch Badge */}
+            <div className="pt-2 flex justify-center">
+              <a href="https://startupbase.io/products/mehzan-tools-hub?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-light" target="_blank" rel="noopener noreferrer">
+                <img src="https://statics.startupbase.io/site/badges/launched-on-sb.svg" alt="Launched on StartupBase" height="55" style={{height:"55px",width:"auto"}} />
+              </a>
+            </div>
+
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight sm:leading-none">
               Free Online Tools That{" "}
               <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
