@@ -38,6 +38,15 @@ export const DirectoryBadgesMarquee: React.FC = () => {
       target: "_blank",
       rel: "dofollow",
     },
+    {
+      href: "https://aiagentsdirectory.com/agent/mehzan-tools-hub",
+      src: "https://aiagentsdirectory.com/featured-badge.svg?v=2024",
+      alt: "Mehzan Tools Hub - Featured on AI Agents Directory",
+      width: 200,
+      height: 50,
+      target: "_blank",
+      rel: "noopener",
+    },
   ];
 
   return (
