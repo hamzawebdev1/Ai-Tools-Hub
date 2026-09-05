@@ -47,6 +47,15 @@ export const DirectoryBadgesMarquee: React.FC = () => {
       target: "_blank",
       rel: "noopener",
     },
+    {
+      href: "https://findly.tools/mehzan-tools-hub?utm_source=mehzan-tools-hub",
+      src: "https://findly.tools/badges/findly-tools-badge-light.svg",
+      alt: "Featured on Findly.tools",
+      width: 175,
+      height: 55,
+      target: "_blank",
+      rel: "noopener noreferrer",
+    },
   ];
 
   return (
