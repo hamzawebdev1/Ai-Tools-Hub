@@ -56,6 +56,15 @@ export const DirectoryBadgesMarquee: React.FC = () => {
       target: "_blank",
       rel: "noopener noreferrer",
     },
+    {
+      href: "https://alternativeto.net/software/mehzan-tools-hub/about/?utm_source=badge&utm_medium=referral",
+      src: "https://alternativeto.net/static/badges/badge-compact-color.svg",
+      alt: "Mehzan Tools Hub | AlternativeTo",
+      width: 244,
+      height: 79,
+      target: "_blank",
+      rel: "noopener",
+    },
   ];
 
   return (
@@ -71,7 +80,7 @@ export const DirectoryBadgesMarquee: React.FC = () => {
               href={b.href}
               target={b.target}
               rel={b.rel}
-              className="transition-transform duration-300 hover:scale-105 shrink-0 opacity-90 hover:opacity-100"
+              className="transition-transform duration-300 hover:scale-105 shrink-0 opacity-95 hover:opacity-100 flex items-center"
               aria-label={b.alt}
             >
               <img
@@ -80,8 +89,20 @@ export const DirectoryBadgesMarquee: React.FC = () => {
                 width={b.width}
                 height={b.height}
                 loading="lazy"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = "none";
+                  const fallback = target.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = "inline-flex";
+                }}
                 style={{ height: "42px", width: "auto", display: "block" }}
               />
+              <span
+                style={{ display: "none" }}
+                className="items-center px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-lg text-xs font-semibold text-indigo-600 dark:text-indigo-400 whitespace-nowrap"
+              >
+                ⭐ {b.alt}
+              </span>
             </a>
           ))}
         </div>
@@ -92,7 +113,7 @@ export const DirectoryBadgesMarquee: React.FC = () => {
               href={b.href}
               target={b.target}
               rel={b.rel}
-              className="transition-transform duration-300 hover:scale-105 shrink-0 opacity-90 hover:opacity-100"
+              className="transition-transform duration-300 hover:scale-105 shrink-0 opacity-95 hover:opacity-100 flex items-center"
               tabIndex={-1}
             >
               <img
@@ -101,8 +122,20 @@ export const DirectoryBadgesMarquee: React.FC = () => {
                 width={b.width}
                 height={b.height}
                 loading="lazy"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = "none";
+                  const fallback = target.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = "inline-flex";
+                }}
                 style={{ height: "42px", width: "auto", display: "block" }}
               />
+              <span
+                style={{ display: "none" }}
+                className="items-center px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-lg text-xs font-semibold text-indigo-600 dark:text-indigo-400 whitespace-nowrap"
+              >
+                ⭐ {b.alt}
+              </span>
             </a>
           ))}
         </div>

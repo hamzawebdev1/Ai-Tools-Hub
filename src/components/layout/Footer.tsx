@@ -276,6 +276,36 @@ export const Footer: React.FC<FooterProps> = ({
                   Copyright Policy
                 </a>
               </li>
+              <li>
+                <a
+                  href="/robots.txt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block text-indigo-500 font-medium"
+                >
+                  robots.txt (AI Crawlers Policy)
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/llms.txt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block text-indigo-500 font-medium"
+                >
+                  llms.txt (AI Direct Context)
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/sitemap.xml"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block text-indigo-500 font-medium"
+                >
+                  sitemap.xml (XML Index)
+                </a>
+              </li>
             </ul>
           </div>
         </div>
