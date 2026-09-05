@@ -67,7 +67,7 @@ export const DirectoryBadgesMarquee: React.FC = () => {
     },
     {
       href: "https://toolfame.com/item/mehzan-tools-hub",
-      src: "https://toolfame.com/badge-light.svg",
+      src: "https://toolfame.com/badge-dark.svg",
       alt: "Featured on toolfame.com",
       width: 182,
       height: 54,
