@@ -66,15 +66,6 @@ export const DirectoryBadgesMarquee: React.FC = () => {
       rel: "noopener",
     },
     {
-      href: "https://toolfame.com/item/mehzan-tools-hub",
-      src: "https://toolfame.com/badge-dark.svg",
-      alt: "Featured on toolfame.com",
-      width: 182,
-      height: 54,
-      target: "_blank",
-      rel: "noopener noreferrer",
-    },
-    {
       href: "https://dailypings.com/p/mehzan-tools-hub",
       src: "https://dailypings.com/badge.svg",
       alt: "Featured on DailyPings",
