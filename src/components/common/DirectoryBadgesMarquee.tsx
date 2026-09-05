@@ -74,6 +74,15 @@ export const DirectoryBadgesMarquee: React.FC = () => {
       target: "_blank",
       rel: "noopener noreferrer",
     },
+    {
+      href: "https://dailypings.com/p/mehzan-tools-hub",
+      src: "https://dailypings.com/badge.svg",
+      alt: "Featured on DailyPings",
+      width: 179,
+      height: 32,
+      target: "_blank",
+      rel: "noopener",
+    },
   ];
 
   const tripleBadges = [...badges, ...badges, ...badges];
