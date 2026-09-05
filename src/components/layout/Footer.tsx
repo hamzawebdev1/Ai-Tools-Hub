@@ -106,10 +106,13 @@ export const Footer: React.FC<FooterProps> = ({
               </a>
             </div>
 
-            {/* StartupBase Launch Badge */}
-            <div className="pt-2">
-              <a href="https://startupbase.io/products/mehzan-tools-hub?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-light" target="_blank" rel="noopener noreferrer">
-                <img src="https://statics.startupbase.io/site/badges/launched-on-sb.svg" alt="Launched on StartupBase" height="55" style={{height:"55px",width:"auto"}} />
+            {/* Directory Badges */}
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <a href="https://confettisaas.com/saas/mehzandigital-com?ref=badge" target="_blank" rel="noopener" aria-label="View Mehzan Tools Hub on ConfettiSaaS">
+                <img src="https://confettisaas.com/badge-light.svg" width={200} height={44} alt="Mehzan Tools Hub on ConfettiSaaS" loading="lazy" style={{display:"block", height:"44px", width:"auto"}} />
+              </a>
+              <a href="https://neeed.directory/products/mehzan-tools-hub?utm_source=mehzan-tools-hub" target="_blank" rel="noopener">
+                <img src="https://neeed.directory/badges/neeed-badge-light.svg" alt="Featured on neeed.directory" width={139} height={44} loading="lazy" style={{display:"block", height:"44px", width:"auto"}} />
               </a>
             </div>
           </div>
