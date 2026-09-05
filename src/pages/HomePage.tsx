@@ -19,6 +19,7 @@ import { AdBanner } from "../components/layout/AdBanner";
 import { Newsletter } from "../components/layout/Newsletter";
 import { SchemaHead } from "../components/layout/SchemaHead";
 import { LazySection } from "../components/common/LazySection";
+import { DirectoryBadgesMarquee } from "../components/common/DirectoryBadgesMarquee";
 
 interface HomePageProps {
   tools: AITool[];
@@ -90,14 +91,9 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
             </div>
 
-            {/* Directory Badges */}
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-              <a href="https://confettisaas.com/saas/mehzandigital-com?ref=badge" target="_blank" rel="noopener" aria-label="View Mehzan Tools Hub on ConfettiSaaS">
-                <img src="https://confettisaas.com/badge-light.svg" width={200} height={44} alt="Mehzan Tools Hub on ConfettiSaaS" loading="lazy" style={{display:"block", height:"44px", width:"auto"}} />
-              </a>
-              <a href="https://neeed.directory/products/mehzan-tools-hub?utm_source=mehzan-tools-hub" target="_blank" rel="noopener">
-                <img src="https://neeed.directory/badges/neeed-badge-light.svg" alt="Featured on neeed.directory" width={139} height={44} loading="lazy" style={{display:"block", height:"44px", width:"auto"}} />
-              </a>
+            {/* Directory Badges Marquee */}
+            <div className="pt-2 w-full max-w-2xl mx-auto">
+              <DirectoryBadgesMarquee />
             </div>
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight sm:leading-none">

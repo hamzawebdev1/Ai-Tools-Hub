@@ -3,6 +3,7 @@ import { Sparkles, ShieldCheck, Zap, Lock } from "lucide-react";
 import { CATEGORIES_DATA } from "../../data/categoriesData";
 import { TOOLS_DATA } from "../../data/toolsData";
 import { navigateTo } from "../../services/routerService";
+import { DirectoryBadgesMarquee } from "../common/DirectoryBadgesMarquee";
 
 interface FooterProps {
   setActiveTab: (tab: string) => void;
@@ -106,14 +107,9 @@ export const Footer: React.FC<FooterProps> = ({
               </a>
             </div>
 
-            {/* Directory Badges */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <a href="https://confettisaas.com/saas/mehzandigital-com?ref=badge" target="_blank" rel="noopener" aria-label="View Mehzan Tools Hub on ConfettiSaaS">
-                <img src="https://confettisaas.com/badge-light.svg" width={200} height={44} alt="Mehzan Tools Hub on ConfettiSaaS" loading="lazy" style={{display:"block", height:"44px", width:"auto"}} />
-              </a>
-              <a href="https://neeed.directory/products/mehzan-tools-hub?utm_source=mehzan-tools-hub" target="_blank" rel="noopener">
-                <img src="https://neeed.directory/badges/neeed-badge-light.svg" alt="Featured on neeed.directory" width={139} height={44} loading="lazy" style={{display:"block", height:"44px", width:"auto"}} />
-              </a>
+            {/* Directory Badges Marquee */}
+            <div className="pt-2 w-full">
+              <DirectoryBadgesMarquee />
             </div>
           </div>
 
