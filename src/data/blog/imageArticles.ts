@@ -523,5 +523,69 @@ export const IMAGE_ARTICLES: BlogPost[] = [
         <li>Copy the extracted text payload directly to your clipboard or download it as a <code>.txt</code> document.</li>
       </ol>
     `
+  },
+  {
+    id: "img-art-13",
+    slug: "how-to-crop-an-image-online-free-guide",
+    title: "How to Crop an Image Online for Free (Step-by-Step Framing & Aspect Ratio Guide)",
+    seoTitle: "How to Crop an Image Online Free - Custom Aspect Ratios & Framing",
+    metaDescription: "Learn how to crop photos and graphics online for free. Adjust framing, lock aspect ratios (1:1, 16:9, 4:3, 9:16), and export crisp PNG/JPG images.",
+    excerpt: "Master digital framing with our step-by-step image cropping guide. Crop photos for social media, passport headshots, e-commerce products, and web banners.",
+    category: "Image Tools",
+    primaryKeyword: "how to crop an image online",
+    secondaryKeywords: [
+      "crop photo online free",
+      "image cropper tool",
+      "crop image aspect ratio",
+      "crop picture online",
+      "online image cropper"
+    ],
+    searchIntent: "Transactional / How-to",
+    author: {
+      name: "Sophia Chen",
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+      role: "Creative Director & UX Architect",
+      bio: "Visual media researcher specializing in web graphics, responsive media framing, and client-side photo processing."
+    },
+    date: "Sep 04, 2026",
+    updatedDate: "Sep 06, 2026",
+    readTime: "5 min read",
+    tags: ["Image Cropper", "Crop Photo", "Graphic Design", "Aspect Ratios"],
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    relatedToolIds: ["image-cropper", "image-resizer", "background-remover"],
+    relatedArticleSlugs: ["how-to-resize-and-crop-images-for-web-and-social", "how-to-make-passport-size-photo-online"],
+    faqs: [
+      {
+        question: "Does cropping an image reduce its file size?",
+        answer: "Yes, removing peripheral pixels decreases total image resolution and byte payload, resulting in faster web loading."
+      },
+      {
+        question: "What is the difference between cropping and resizing an image?",
+        answer: "Cropping cuts away outer areas of an image to change composition or aspect ratio, whereas resizing scales the entire image smaller or larger."
+      }
+    ],
+    content: `
+      <h2>Why Precise Image Cropping Matters</h2>
+      <p>Whether you are creating a 1:1 square profile headshot, a 16:9 YouTube thumbnail banner, or a 9:16 Instagram reel cover, cropping ensures your key subject remains centered without unnecessary background distractions.</p>
+
+      <h2>Popular Aspect Ratio Standards</h2>
+      <ul>
+        <li><strong>1:1 Square (1080 x 1080 px):</strong> Standard format for Instagram feed posts and profile avatars.</li>
+        <li><strong>16:9 Landscape (1920 x 1080 px):</strong> Ideal for YouTube video thumbnails, presentations, and website heroes.</li>
+        <li><strong>9:16 Portrait (1080 x 1920 px):</strong> Perfect for TikTok videos, Instagram Stories, and Mobile Reels.</li>
+        <li><strong>4:3 Standard Photo (1440 x 1080 px):</strong> Classic photography aspect ratio used in digital cameras and portfolios.</li>
+      </ul>
+
+      <h2>Step-by-Step: How to Crop Photos Online</h2>
+      <ol>
+        <li>Open the <a href="/en/image-cropper" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free Image Cropper Tool</a> on Mehzan Digital.</li>
+        <li>Upload your photo or graphic.</li>
+        <li>Select a preset aspect ratio (Free, 1:1, 16:9, 4:3, 9:16) or drag the crop box handles freely.</li>
+        <li>Fine-tune rotation angle and horizontal/vertical flipping if required.</li>
+        <li>Click <strong>Apply Crop & Export</strong> to download your perfectly framed image.</li>
+      </ol>
+
+      <p>Explore more media editing utilities in the complete <a href="/category/image-tools" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Image Utilities Suite</a>.</p>
+    `
   }
 ];

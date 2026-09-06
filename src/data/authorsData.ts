@@ -95,4 +95,15 @@ export const AUTHORS_DATA: Author[] = [
     },
     articlesCount: 10,
   },
+  {
+    id: "5",
+    slug: "elena-rostova",
+    name: "Elena Rostova",
+    role: "SEO Architect & Technical Strategy Consultant",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+    bio: "Elena Rostova is a Technical SEO Architect specializing in crawling efficiency, indexation management, site architecture, and search intent optimization.",
+    expertise: ["Technical SEO", "Sitemap Architecture", "Robots.txt Directives", "Search Intent Optimization"],
+    socials: {},
+    articlesCount: 6,
+  },
 ];

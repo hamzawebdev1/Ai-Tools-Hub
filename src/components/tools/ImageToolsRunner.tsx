@@ -43,6 +43,8 @@ import {
   ExifMetadata,
   ColorSample,
 } from "../../services/imageEngine";
+import { InteractiveImageCropper } from "./InteractiveImageCropper";
+import { InteractiveBgRemover } from "./InteractiveBgRemover";
 
 interface ImageToolsRunnerProps {
   toolId: string;
@@ -812,154 +814,81 @@ export const ImageToolsRunner: React.FC<ImageToolsRunnerProps> = ({ toolId, tool
             </div>
           )}
 
-          {/* Crop Controls UI */}
-          {(toolId === "image-crop" || toolId === "screenshot-cropper") && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Crop X (px):</label>
-                  <input
-                    type="number"
-                    value={cropX}
-                    onChange={(e) => setCropX(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Crop Y (px):</label>
-                  <input
-                    type="number"
-                    value={cropY}
-                    onChange={(e) => setCropY(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Crop Width (px):</label>
-                  <input
-                    type="number"
-                    value={cropW}
-                    onChange={(e) => setCropW(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Crop Height (px):</label>
-                  <input
-                    type="number"
-                    value={cropH}
-                    onChange={(e) => setCropH(Number(e.target.value))}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2 pt-2">
-                <span className="text-xs font-semibold text-slate-400 mr-2">Aspect Ratio Presets:</span>
-                <button
-                  onClick={() => {
-                    setCropAspect("1:1");
-                    const minDim = Math.min(fileWidth, fileHeight);
-                    setCropW(minDim);
-                    setCropH(minDim);
-                  }}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${cropAspect === "1:1" ? "bg-indigo-600 text-white" : "bg-slate-800 text-slate-300"}`}
-                >
-                  1:1 Square
-                </button>
-                <button
-                  onClick={() => {
-                    setCropAspect("16:9");
-                    setCropW(fileWidth);
-                    setCropH(Math.round(fileWidth * (9 / 16)));
-                  }}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${cropAspect === "16:9" ? "bg-indigo-600 text-white" : "bg-slate-800 text-slate-300"}`}
-                >
-                  16:9 Landscape
-                </button>
-                <button
-                  onClick={() => {
-                    setCropAspect("4:3");
-                    setCropW(fileWidth);
-                    setCropH(Math.round(fileWidth * (3 / 4)));
-                  }}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${cropAspect === "4:3" ? "bg-indigo-600 text-white" : "bg-slate-800 text-slate-300"}`}
-                >
-                  4:3 Standard
-                </button>
-                <button
-                  onClick={() => {
-                    setCropAspect("9:16");
-                    setCropH(fileHeight);
-                    setCropW(Math.round(fileHeight * (9 / 16)));
-                  }}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${cropAspect === "9:16" ? "bg-indigo-600 text-white" : "bg-slate-800 text-slate-300"}`}
-                >
-                  9:16 Portrait
-                </button>
-                <button
-                  onClick={() => {
-                    setCropAspect("free");
-                    setCropX(0);
-                    setCropY(0);
-                    setCropW(fileWidth);
-                    setCropH(fileHeight);
-                  }}
-                  className="px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg"
-                >
-                  Reset Full
-                </button>
-              </div>
-            </div>
+          {/* Interactive Cropper Tool UI */}
+          {(toolId === "image-crop" || toolId === "screenshot-cropper" || toolId === "image-cropper") && selectedFiles.length > 0 && (
+            <InteractiveImageCropper
+              file={selectedFiles[0]}
+              onCropChange={(crop) => {
+                setCropX(crop.cropX);
+                setCropY(crop.cropY);
+                setCropW(crop.cropW);
+                setCropH(crop.cropH);
+                setRotationAngle(crop.rotation);
+                setFlipH(crop.flipH);
+                setFlipV(crop.flipV);
+              }}
+              onApplyCrop={async (crop) => {
+                setIsProcessing(true);
+                setErrorMsg(null);
+                try {
+                  const res = await cropRotateFlipMirrorImage(selectedFiles[0], {
+                    cropX: crop.cropX,
+                    cropY: crop.cropY,
+                    cropWidth: crop.cropW,
+                    cropHeight: crop.cropH,
+                    rotation: crop.rotation,
+                    flipH: crop.flipH,
+                    flipV: crop.flipV,
+                  });
+                  setResultBlobUrl(res.url);
+                  setResultSizeBytes(res.blob.size);
+                  setResultFileName(`cropped_${selectedFiles[0].name.replace(/\.[^/.]+$/, "")}.png`);
+                  trackToolAction({
+                    toolId,
+                    toolSlug: toolSlug || toolId,
+                    toolName,
+                    category: "image",
+                    action: "SUCCESS",
+                    fileName: selectedFiles[0].name,
+                    fileSizeBytes: selectedFiles[0].size,
+                  });
+                } catch (err: any) {
+                  setErrorMsg(err.message || "Failed to crop image.");
+                } finally {
+                  setIsProcessing(false);
+                }
+              }}
+            />
           )}
 
-          {/* Background Remover Controls UI */}
-          {(toolId === "background-remover" || toolId === "image-background-remover" || toolId === "bg-remover") && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Target Background Mode:</label>
-                  <select
-                    value={bgTargetColor}
-                    onChange={(e: any) => setBgTargetColor(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white"
-                  >
-                    <option value="auto">Auto Corner Detect</option>
-                    <option value="white">Pure White (#FFFFFF)</option>
-                    <option value="black">Pure Black (#000000)</option>
-                    <option value="custom">Custom Color Picker</option>
-                  </select>
-                </div>
-
-                {bgTargetColor === "custom" && (
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">Custom Backdrop Color:</label>
-                    <input
-                      type="color"
-                      value={bgCustomHex}
-                      onChange={(e) => setBgCustomHex(e.target.value)}
-                      className="w-full h-10 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer"
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Color Tolerance: {bgTolerance}%</label>
-                  <input
-                    type="range"
-                    min="5"
-                    max="90"
-                    value={bgTolerance}
-                    onChange={(e) => setBgTolerance(Number(e.target.value))}
-                    className="w-full accent-indigo-500 mt-2"
-                  />
-                </div>
-              </div>
-
-              <div className="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-xs text-indigo-300">
-                <span className="font-semibold">Offline Browser Isolation:</span> Uses local canvas color-keying to generate clean transparent PNG cutouts instantly with zero server uploads and zero AI keys required.
-              </div>
-            </div>
+          {/* Interactive Background Remover Tool UI */}
+          {(toolId === "background-remover" || toolId === "image-background-remover" || toolId === "bg-remover") && selectedFiles.length > 0 && (
+            <InteractiveBgRemover
+              file={selectedFiles[0]}
+              onApplyBgRemoval={async (opts) => {
+                setIsProcessing(true);
+                setErrorMsg(null);
+                try {
+                  const res = await removeImageBackground(selectedFiles[0], opts);
+                  setResultBlobUrl(res.url);
+                  setResultSizeBytes(res.blob.size);
+                  setResultFileName(`no_bg_${selectedFiles[0].name.replace(/\.[^/.]+$/, "")}.png`);
+                  trackToolAction({
+                    toolId,
+                    toolSlug: toolSlug || toolId,
+                    toolName,
+                    category: "image",
+                    action: "SUCCESS",
+                    fileName: selectedFiles[0].name,
+                    fileSizeBytes: selectedFiles[0].size,
+                  });
+                } catch (err: any) {
+                  setErrorMsg(err.message || "Failed to remove background.");
+                } finally {
+                  setIsProcessing(false);
+                }
+              }}
+            />
           )}
 
           {/* Rotation & Flip Controls */}

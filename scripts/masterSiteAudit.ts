@@ -160,7 +160,7 @@ async function runMasterAudit() {
   }
 
   // 3. Audit Private / Non-Indexable Pages
-  const privateRoutes = ["/pricing", "/login", "/register", "/forgot-password", "/dashboard", "/admin", "/favorites", "/history", "/search"];
+  const privateRoutes = ["/login", "/register", "/forgot-password", "/dashboard", "/admin", "/favorites", "/history", "/search"];
   let privateNoindexCount = 0;
   for (const path of privateRoutes) {
     try {

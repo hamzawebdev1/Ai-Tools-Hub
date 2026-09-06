@@ -78,6 +78,7 @@ export function getPublicIndexableRoutes(): Array<{ urlPath: string; priority: s
     { urlPath: "/disclaimer", priority: "0.3", changefreq: "yearly" },
     { urlPath: "/cookie-policy", priority: "0.3", changefreq: "yearly" },
     { urlPath: "/copyright", priority: "0.3", changefreq: "yearly" },
+    { urlPath: "/pricing", priority: "0.5", changefreq: "monthly" },
   ];
 
   // 1. Active Tools (Strictly /en/${slug})
@@ -775,23 +776,26 @@ export function buildSEOMetadata(
 
     case "pricing": {
       const canonicalUrl = getCanonicalUrl("/pricing");
-      const pageType: SEOPageType = "PRIVATE";
+      const pageType: SEOPageType = "PUBLIC_INDEXABLE";
+      const title = "Free Access & Usage Guidelines | Mehzan Tools Hub";
+      const description = "Explore our 100% free online utility tools platform with zero paywalls, no subscriptions, and instant client-side execution on Mehzan Tools Hub.";
       const breadcrumbs = [
         { name: "Home", url: "/" },
         { name: "Pricing", url: "/pricing" }
       ];
       return {
         pageType,
-        noIndex: true,
+        noIndex: false,
         robotsMeta: getRobotsMeta(pageType),
-        title: "100% Free Access | Mehzan Tools Hub",
-        description: "Explore our 100% free online utility tools platform with zero paywalls, no subscriptions, and instant client-side execution.",
+        title,
+        description,
         keywords: ["Mehzan Tools Hub pricing", "free web utilities", "free developer tools"],
         canonicalUrl,
         ogType: "website",
         ogImage: DEFAULT_OG_IMAGE,
         schemas: [
           orgSchema,
+          getWebPageSchema(canonicalUrl, title, description),
           getBreadcrumbSchema(breadcrumbs)
         ],
         breadcrumbs

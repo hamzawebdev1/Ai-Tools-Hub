@@ -430,23 +430,26 @@ export async function cropRotateFlipMirrorImage(
     }
   }
 
-  // Handle Crop
-  const cropX = params.cropX || 0;
-  const cropY = params.cropY || 0;
-  const cropW = params.cropWidth || rotCanvas.width;
-  const cropH = params.cropHeight || rotCanvas.height;
+  // Handle Crop - Clamp strictly within canvas dimensions
+  const cX = Math.max(0, Math.min(rotCanvas.width - 1, params.cropX || 0));
+  const cY = Math.max(0, Math.min(rotCanvas.height - 1, params.cropY || 0));
+  const reqW = params.cropWidth !== undefined && params.cropWidth > 0 ? params.cropWidth : rotCanvas.width;
+  const reqH = params.cropHeight !== undefined && params.cropHeight > 0 ? params.cropHeight : rotCanvas.height;
+
+  const cW = Math.max(1, Math.min(rotCanvas.width - cX, reqW));
+  const cH = Math.max(1, Math.min(rotCanvas.height - cY, reqH));
 
   const finalCanvas = document.createElement("canvas");
-  finalCanvas.width = cropW;
-  finalCanvas.height = cropH;
+  finalCanvas.width = cW;
+  finalCanvas.height = cH;
   const finalCtx = finalCanvas.getContext("2d");
   if (!finalCtx) throw new Error("Final canvas context error.");
 
-  finalCtx.drawImage(rotCanvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
+  finalCtx.drawImage(rotCanvas, cX, cY, cW, cH, 0, 0, cW, cH);
 
   const mime = params.targetMime || "image/png";
   const blob = await canvasToBlob(finalCanvas, mime, 0.92);
-  return { blob, url: URL.createObjectURL(blob), width: cropW, height: cropH };
+  return { blob, url: URL.createObjectURL(blob), width: cW, height: cH };
 }
 
 // 9. Rounded Corners & Borders
@@ -1000,6 +1003,8 @@ export async function removeImageBackground(
     tolerance?: number; // 0 to 100
     targetColor?: "white" | "black" | "auto" | "custom";
     customHexColor?: string;
+    contiguous?: boolean;
+    customTargetRgb?: { r: number; g: number; b: number };
   } = {}
 ): Promise<{ blob: Blob; url: string; width: number; height: number }> {
   const img = await loadImageFromFile(file);
@@ -1017,39 +1022,105 @@ export async function removeImageBackground(
   const data = imgData.data;
 
   let rTarget = 255, gTarget = 255, bTarget = 255;
-  const targetMode = options.targetColor || "auto";
 
-  if (targetMode === "white") {
+  if (options.customTargetRgb) {
+    rTarget = options.customTargetRgb.r;
+    gTarget = options.customTargetRgb.g;
+    bTarget = options.customTargetRgb.b;
+  } else if (options.targetColor === "white") {
     rTarget = 255; gTarget = 255; bTarget = 255;
-  } else if (targetMode === "black") {
+  } else if (options.targetColor === "black") {
     rTarget = 0; gTarget = 0; bTarget = 0;
-  } else if (targetMode === "custom" && options.customHexColor) {
+  } else if (options.targetColor === "custom" && options.customHexColor) {
     const hex = options.customHexColor.replace("#", "");
     rTarget = parseInt(hex.substring(0, 2), 16) || 255;
     gTarget = parseInt(hex.substring(2, 4), 16) || 255;
     bTarget = parseInt(hex.substring(4, 6), 16) || 255;
   } else {
-    rTarget = data[0];
-    gTarget = data[1];
-    bTarget = data[2];
+    // Auto: average corner pixels (top-left, top-right, bottom-left, bottom-right)
+    const corners = [
+      0,
+      (w - 1) * 4,
+      (h - 1) * w * 4,
+      ((h - 1) * w + (w - 1)) * 4
+    ];
+    let sumR = 0, sumG = 0, sumB = 0;
+    corners.forEach(idx => {
+      sumR += data[idx];
+      sumG += data[idx + 1];
+      sumB += data[idx + 2];
+    });
+    rTarget = Math.round(sumR / 4);
+    gTarget = Math.round(sumG / 4);
+    bTarget = Math.round(sumB / 4);
   }
 
   const tolerance = options.tolerance !== undefined ? options.tolerance : 35;
-  const maxDist = (tolerance / 100) * 441.67; // max Euclidean distance in RGB cube
+  const maxDist = (tolerance / 100) * 441.67; // max Euclidean distance in RGB space
+  const featherRange = maxDist * 0.25; // 25% smooth transition margin
 
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
-
-    const dist = Math.sqrt(
+  const calcDist = (r: number, g: number, b: number) => {
+    return Math.sqrt(
       Math.pow(r - rTarget, 2) +
       Math.pow(g - gTarget, 2) +
       Math.pow(b - bTarget, 2)
     );
+  };
 
-    if (dist <= maxDist) {
-      data[i + 3] = 0;
+  const contiguous = options.contiguous !== false;
+
+  if (contiguous) {
+    // Flood fill from outer image borders
+    const visited = new Uint8Array(w * h);
+    const queue: number[] = [];
+
+    // Push border pixels
+    for (let x = 0; x < w; x++) {
+      queue.push(x, 0);
+      queue.push(x, h - 1);
+    }
+    for (let y = 0; y < h; y++) {
+      queue.push(0, y);
+      queue.push(w - 1, y);
+    }
+
+    let head = 0;
+    while (head < queue.length) {
+      const cx = queue[head++];
+      const cy = queue[head++];
+      const pixelIdx = cy * w + cx;
+
+      if (visited[pixelIdx]) continue;
+      visited[pixelIdx] = 1;
+
+      const dataIdx = pixelIdx * 4;
+      const dist = calcDist(data[dataIdx], data[dataIdx + 1], data[dataIdx + 2]);
+
+      if (dist <= maxDist) {
+        if (dist <= maxDist - featherRange) {
+          data[dataIdx + 3] = 0;
+        } else {
+          const alphaFactor = (dist - (maxDist - featherRange)) / featherRange;
+          data[dataIdx + 3] = Math.round(data[dataIdx + 3] * alphaFactor);
+        }
+
+        // Add 4-directional neighbors
+        if (cx > 0 && !visited[pixelIdx - 1]) queue.push(cx - 1, cy);
+        if (cx < w - 1 && !visited[pixelIdx + 1]) queue.push(cx + 1, cy);
+        if (cy > 0 && !visited[pixelIdx - w]) queue.push(cx, cy - 1);
+        if (cy < h - 1 && !visited[pixelIdx + w]) queue.push(cx, cy + 1);
+      }
+    }
+  } else {
+    // Global color keying across the entire image
+    for (let i = 0; i < data.length; i += 4) {
+      const dist = calcDist(data[i], data[i + 1], data[i + 2]);
+      if (dist <= maxDist - featherRange) {
+        data[i + 3] = 0;
+      } else if (dist <= maxDist) {
+        const alphaFactor = (dist - (maxDist - featherRange)) / featherRange;
+        data[i + 3] = Math.round(data[i + 3] * alphaFactor);
+      }
     }
   }
 

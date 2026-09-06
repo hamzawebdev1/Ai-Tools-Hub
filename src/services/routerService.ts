@@ -1,6 +1,7 @@
 import { TOOLS_DATA } from "../data/toolsData";
 import { CATEGORIES_DATA } from "../data/categoriesData";
 import { BLOG_POSTS_DATA } from "../data/blogData";
+import { AUTHORS_DATA } from "../data/authorsData";
 
 export interface RouteState {
   tab: string;
@@ -510,7 +511,10 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
   // Handle /author/:slug
   if (cleanPath.startsWith("author/")) {
     const authorSlug = cleanPath.split("/")[1]?.toLowerCase();
-    return { tab: `author-${authorSlug}`, authorSlug };
+    const isMatched = AUTHORS_DATA.some((a) => a.slug === authorSlug);
+    if (authorSlug && isMatched) {
+      return { tab: `author-${authorSlug}`, authorSlug };
+    }
   }
 
   // Handle prefixed /tool/:slug or /tools/:slug

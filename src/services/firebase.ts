@@ -20,7 +20,9 @@ import {
   AuthError
 } from "firebase/auth";
 import {
+  initializeFirestore,
   getFirestore,
+  setLogLevel,
   doc,
   setDoc,
   getDoc,
@@ -32,16 +34,33 @@ import {
 } from "firebase/firestore";
 import firebaseConfig from "../../firebase-applet-config.json";
 
+// Set Firestore log level to error to prevent internal stream reconnection noise
+try {
+  setLogLevel("error");
+} catch (_) {}
+
 // Initialize Firebase App
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
 
-// Initialize Firestore (handling custom database ID if present)
-export const db =
-  firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== "(default)"
-    ? getFirestore(app, firebaseConfig.firestoreDatabaseId)
-    : getFirestore(app);
+// Initialize Firestore with experimentalAutoDetectLongPolling to handle sandboxed iframe network streams
+const dbId = firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== "(default)"
+  ? firebaseConfig.firestoreDatabaseId
+  : undefined;
+
+let firestoreInstance;
+try {
+  firestoreInstance = initializeFirestore(
+    app,
+    { experimentalAutoDetectLongPolling: true },
+    dbId
+  );
+} catch (_) {
+  firestoreInstance = dbId ? getFirestore(app, dbId) : getFirestore(app);
+}
+
+export const db = firestoreInstance;
 
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: "select_account" });

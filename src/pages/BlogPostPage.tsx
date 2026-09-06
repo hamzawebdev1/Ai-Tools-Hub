@@ -66,30 +66,20 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
       <SchemaHead
         title={post.seoTitle || `${post.title} | Expert Guide`}
         description={post.metaDescription || post.excerpt}
-        canonicalUrl={`https://multi-tools.app/blog/${post.slug}`}
+        canonicalUrl={`https://www.mehzandigital.com/blog/${post.slug}`}
         schemaType="Article"
         schemaData={{
           headline: post.title,
-          image: [post.image],
+          image: post.image,
           datePublished: post.date,
           dateModified: post.updatedDate || post.date,
-          author: {
-            "@type": "Person",
-            name: post.author.name,
-            jobTitle: post.author.role,
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "Multi-Tools Hub",
-            logo: {
-              "@type": "ImageObject",
-              url: "https://multi-tools.app/icon-192.png",
-            },
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `https://multi-tools.app/blog/${post.slug}`,
-          },
+          authorName: post.author.name,
+          breadcrumbs: [
+            { name: "Home", url: "/" },
+            { name: "Blog & Guides", url: "/blog" },
+            { name: post.title, url: `/blog/${post.slug}` }
+          ],
+          faqs: post.faqs || []
         }}
       />
 

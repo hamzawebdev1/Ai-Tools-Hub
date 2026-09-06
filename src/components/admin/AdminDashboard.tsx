@@ -34,11 +34,13 @@ import {
   CheckSquare,
   Square,
   Eye,
-  Filter
+  Filter,
+  Share2
 } from "lucide-react";
 import { TOOLS_DATA } from "../../data/toolsData";
 import { BLOG_POSTS_DATA } from "../../data/blogData";
 import { UserManagementSection } from "./UserManagementSection";
+import { OffPageSeoSection } from "./OffPageSeoSection";
 import { getAllRegisteredTools, saveToolAdminOverride } from "../../services/toolRegistryService";
 import { SEO_KEYWORDS_DATA, KeywordItem } from "../../data/keywordsData";
 
@@ -52,6 +54,7 @@ type AdminTab =
   | "tools"
   | "blog"
   | "seo"
+  | "offpage"
   | "adsense"
   | "security"
   | "inbox"
@@ -467,6 +470,7 @@ export const AdminDashboard: React.FC = () => {
           { id: "tools", label: "Tools Mgmt", icon: Layers },
           { id: "blog", label: "Blog Content", icon: FileText },
           { id: "seo", label: "SEO & Google Index", icon: Globe },
+          { id: "offpage", label: "Off-Page & Links", icon: Share2 },
           { id: "adsense", label: "AdSense Status", icon: DollarSign },
           { id: "security", label: "WAF & Security", icon: ShieldAlert },
           { id: "inbox", label: "Inbox & Feedback", icon: MessageSquare },
@@ -1669,6 +1673,13 @@ export const AdminDashboard: React.FC = () => {
               </table>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 7b. Off-Page SEO & Backlink Outreach */}
+      {activeTab === "offpage" && (
+        <div className="animate-fade-in">
+          <OffPageSeoSection />
         </div>
       )}
 

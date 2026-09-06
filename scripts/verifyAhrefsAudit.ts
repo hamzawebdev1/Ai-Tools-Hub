@@ -25,7 +25,7 @@ assert(fs.existsSync(sitemapPath), "public/sitemap.xml exists");
 
 const sitemapContent = fs.readFileSync(sitemapPath, "utf-8");
 assert(sitemapContent.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'), "Sitemap has correct XML namespace");
-assert(!sitemapContent.includes("/pricing"), "Sitemap excludes noindex /pricing URL");
+assert(!sitemapContent.includes("/admin"), "Sitemap excludes private /admin URL");
 
 // Check active tools in sitemap
 const activeTools = TOOLS_DATA.filter((t) => t.status !== "DISABLED" && t.isActive !== false);

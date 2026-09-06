@@ -38,6 +38,7 @@ import {
   Smartphone,
   Tablet,
   FolderOpen,
+  Star,
   Send,
   Lock,
   Cpu,
@@ -58,6 +59,7 @@ import { SiteSettingsSection } from "../components/admin/SiteSettingsSection";
 import { AuditLogsSection } from "../components/admin/AuditLogsSection";
 import { KeywordManagementSection } from "../components/admin/KeywordManagementSection";
 import { GuestPostManagementSection } from "../components/admin/GuestPostManagementSection";
+import { ReviewsManagementSection } from "../components/admin/ReviewsManagementSection";
 export type { Role, RoleConfig } from "../types/roles";
 export { ROLE_CONFIGS } from "../types/roles";
 
@@ -77,6 +79,7 @@ export type AdminMenuKey =
   | "analytics"
   | "content"
   | "guest-posts"
+  | "reviews"
   | "inbox"
   | "newsletter"
   | "media"
@@ -312,6 +315,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       key: "guest-posts",
       label: "Guest Posts",
       icon: <BookOpen className="w-4 h-4 text-emerald-400" />,
+    },
+    {
+      key: "reviews",
+      label: "Tool Reviews",
+      icon: <Star className="w-4 h-4 text-amber-400" />,
     },
     {
       key: "inbox",
@@ -1385,6 +1393,15 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                 <GuestPostManagementSection
                   onShowNotification={showNotification}
                 />
+              </div>
+            )}
+
+            {/* ========================================================= */}
+            {/* VIEW 6.8: REVIEWS & COMMENTS MODERATION                   */}
+            {/* ========================================================= */}
+            {activeMenu === "reviews" && (
+              <div className="animate-fade-in">
+                <ReviewsManagementSection />
               </div>
             )}
 

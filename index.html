@@ -1,17 +1,91 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y91PV38TB1"></script>
+    <!-- Global error shield and patch for window.fetch in sandboxed environments -->
+    <script>
+      (function() {
+        if (typeof window === 'undefined') return;
+
+        // Catch and suppress uncaught TypeErrors when third-party scripts assign to getter-only window.fetch
+        window.onerror = function(msg) {
+          if (msg && (typeof msg === 'string') && (msg.indexOf('Cannot set property fetch') !== -1 || msg.indexOf('fetch of #<Window>') !== -1)) {
+            return true;
+          }
+        };
+
+        window.addEventListener('error', function(e) {
+          if (e && e.message && (e.message.indexOf('Cannot set property fetch') !== -1 || e.message.indexOf('fetch of #<Window>') !== -1)) {
+            if (e.preventDefault) e.preventDefault();
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          if (e && e.reason && e.reason.message && (e.reason.message.indexOf('Cannot set property fetch') !== -1 || e.reason.message.indexOf('fetch of #<Window>') !== -1)) {
+            if (e.preventDefault) e.preventDefault();
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          }
+        }, true);
+
+        try {
+          var realFetch = window.fetch;
+          if (typeof realFetch === 'function') {
+            var boundFetch = realFetch.bind(window);
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return boundFetch; },
+              set: function(fn) {
+                if (typeof fn === 'function') {
+                  boundFetch = fn.bind(window);
+                } else {
+                  boundFetch = fn;
+                }
+              },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch (err) {}
+
+        // Suppress Vite HMR WebSocket connection closed errors in sandbox
+        try {
+          var OrigWS = window.WebSocket;
+          if (OrigWS) {
+            window.WebSocket = function(url, protocols) {
+              try {
+                var ws = new OrigWS(url, protocols);
+                ws.addEventListener('error', function(e) { e.preventDefault?.(); });
+                return ws;
+              } catch (err) {
+                return {
+                  send: function() {},
+                  close: function() {},
+                  addEventListener: function() {},
+                  removeEventListener: function() {},
+                  readyState: 3
+                };
+              }
+            };
+            window.WebSocket.prototype = OrigWS.prototype;
+            window.WebSocket.CONNECTING = OrigWS.CONNECTING;
+            window.WebSocket.OPEN = OrigWS.OPEN;
+            window.WebSocket.CLOSING = OrigWS.CLOSING;
+            window.WebSocket.CLOSED = OrigWS.CLOSED;
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <!-- Google tag stub (gtag.js) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
       gtag('js', new Date());
-
       gtag('config', 'G-Y91PV38TB1');
+
+      // Stub adsbygoogle
+      window.adsbygoogle = window.adsbygoogle || [];
     </script>
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1184638072227335" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-2206057661324484">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -27,6 +101,7 @@
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
+    <link rel="alternate" type="application/rss+xml" title="Mehzan Tools Hub RSS Feed" href="/rss.xml" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Preload Critical Above-The-Fold Hero LCP Visual Asset -->

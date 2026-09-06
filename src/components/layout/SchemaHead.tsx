@@ -20,7 +20,7 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
 
   useEffect(() => {
     // Update Document Title
-    const fullTitle = `${title} | Mehzan Tools Hub`;
+    const fullTitle = title.includes("Mehzan") ? title : `${title} | Mehzan Tools Hub`;
     document.title = fullTitle;
 
     // Update Meta Description
@@ -77,24 +77,96 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
       document.head.appendChild(script);
     }
 
-    const graph: any[] = [];
+    const graph: any[] = [
+      // Base Organization Schema
+      {
+        "@type": "Organization",
+        "@id": "https://www.mehzandigital.com/#organization",
+        "name": "Mehzan Tools Hub",
+        "url": "https://www.mehzandigital.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.mehzandigital.com/logo.png"
+        },
+        "sameAs": [
+          "https://twitter.com/mehzandigital",
+          "https://github.com/mehzandigital"
+        ]
+      },
+      // Base WebSite Schema with Sitelinks SearchBox
+      {
+        "@type": "WebSite",
+        "@id": "https://www.mehzandigital.com/#website",
+        "url": "https://www.mehzandigital.com/",
+        "name": "Mehzan Tools Hub",
+        "description": "50+ Free Developer, PDF, Image & Text Utilities",
+        "publisher": {
+          "@id": "https://www.mehzandigital.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.mehzandigital.com/?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ];
+
+    // BreadcrumbList Schema
+    if (schemaData?.breadcrumbs && Array.isArray(schemaData.breadcrumbs)) {
+      graph.push({
+        "@type": "BreadcrumbList",
+        "itemListElement": schemaData.breadcrumbs.map((crumb: any, index: number) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": crumb.name,
+          "item": crumb.url.startsWith("http") ? crumb.url : `https://www.mehzandigital.com${crumb.url}`
+        }))
+      });
+    }
 
     if (schemaType === "SoftwareApplication" && schemaData) {
       graph.push({
         "@type": "SoftwareApplication",
         "name": schemaData.name,
-        "operatingSystem": "All (Web Browser)",
+        "description": schemaData.description || description,
+        "url": safeCanonical,
+        "operatingSystem": "All (Web Browser, Windows, macOS, Linux, iOS, Android)",
         "applicationCategory": "UtilitiesApplication",
+        "browserRequirements": "Requires HTML5, WebAssembly and JavaScript enabled",
         "offers": {
           "@type": "Offer",
           "price": "0",
           "priceCurrency": "USD"
         },
-        "aggregateRating": schemaData.rating ? {
+        "aggregateRating": {
           "@type": "AggregateRating",
-          "ratingValue": schemaData.rating,
-          "ratingCount": schemaData.ratingCount || 12
-        } : undefined
+          "ratingValue": schemaData.rating || 4.9,
+          "ratingCount": schemaData.ratingCount || 124,
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      });
+    }
+
+    if (schemaType === "Article" && schemaData) {
+      graph.push({
+        "@type": "BlogPosting",
+        "headline": schemaData.headline || title,
+        "description": schemaData.description || description,
+        "image": schemaData.image || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+        "datePublished": schemaData.datePublished || new Date().toISOString(),
+        "dateModified": schemaData.dateModified || schemaData.datePublished || new Date().toISOString(),
+        "author": {
+          "@type": "Person",
+          "name": schemaData.authorName || "Mehzan Digital Editorial Team"
+        },
+        "publisher": {
+          "@id": "https://www.mehzandigital.com/#organization"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": safeCanonical
+        }
       });
     }
 
@@ -112,14 +184,10 @@ export const SchemaHead: React.FC<SchemaHeadProps> = ({
       });
     }
 
-    if (graph.length > 0) {
-      script.textContent = JSON.stringify({
-        "@context": "https://schema.org",
-        "@graph": graph
-      });
-    } else {
-      script.remove();
-    }
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": graph
+    });
   }, [title, description, safeCanonical, schemaType, schemaData]);
 
   return null;

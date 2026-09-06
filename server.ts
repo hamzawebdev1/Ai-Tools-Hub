@@ -65,14 +65,24 @@ async function startServer() {
       host.includes("127.0.0.1") ||
       host.endsWith(".run.app");
 
-    // 1. Enforce HTTPS in production (on custom apex domains)
-    if (req.get("x-forwarded-proto") === "http" && process.env.NODE_ENV === "production" && !isLocalOrContainer) {
-      return res.redirect(301, `https://${host}${req.originalUrl}`);
+    // 1 & 2. Combine HTTPS and WWW enforcement in a single 301 step to avoid 2-hop redirect chains
+    let targetHost = host;
+    let targetProto = proto;
+    let needsHostProtoRedirect = false;
+
+    if (host === "mehzandigital.com") {
+      targetHost = "www.mehzandigital.com";
+      needsHostProtoRedirect = true;
     }
 
-    // 2. Enforce WWW prefix on custom production domain to match canonical sitemap & metadata
-    if (host === "mehzandigital.com") {
-      return res.redirect(301, `https://www.mehzandigital.com${req.originalUrl}`);
+    if (proto === "http" && process.env.NODE_ENV === "production" && !isLocalOrContainer) {
+      targetProto = "https";
+      needsHostProtoRedirect = true;
+    }
+
+    if (needsHostProtoRedirect) {
+      const queryString = req.url.includes("?") ? `?${req.url.split("?")[1]}` : "";
+      return res.redirect(301, `${targetProto}://${targetHost}${req.path}${queryString}`);
     }
 
     // 3. Strip Trailing Slash (except root "/")
@@ -138,9 +148,14 @@ async function startServer() {
       }
     }
 
-    // 8. Direct legacy non-prefixed tool URLs e.g. /json-formatter -> /en/json-formatter
+    // 8. Direct legacy non-prefixed category & tool URLs e.g. /pdf-tools -> /category/pdf-tools or /json-formatter -> /en/json-formatter
     const directSlug = req.path.replace(/^\//, "").toLowerCase().trim();
     if (directSlug && !directSlug.includes("/")) {
+      const isCat = CATEGORIES_DATA.some((c) => c.slug === directSlug || c.id === directSlug);
+      if (isCat) {
+        const queryString = req.url.includes("?") ? `?${req.url.split("?")[1]}` : "";
+        return res.redirect(301, `/category/${directSlug}${queryString}`);
+      }
       const canonicalSlug = TOOL_SLUG_ALIASES[directSlug] || directSlug;
       const isTool = TOOLS_DATA.some((t) => t.slug === canonicalSlug || t.id === canonicalSlug);
       if (isTool) {

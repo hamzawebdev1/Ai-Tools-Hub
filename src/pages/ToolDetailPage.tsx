@@ -41,6 +41,7 @@ import { injectLinksIntoContent } from "../utils/seoLinkInjector";
 import { getKeywordMappingForTool } from "../services/keywordMappingService";
 import { getEnrichedToolSEO } from "../utils/toolSeoHelper";
 import { ReviewCTA } from "../components/common/ReviewCTA";
+import { ToolReviews } from "../components/common/ToolReviews";
 
 const PdfToolsRunner = React.lazy(() => import("../components/tools/PdfToolsRunner").then(m => ({ default: m.PdfToolsRunner })));
 const ImageToolsRunner = React.lazy(() => import("../components/tools/ImageToolsRunner").then(m => ({ default: m.ImageToolsRunner })));
@@ -324,6 +325,12 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           rating: tool.rating,
           ratingCount: tool.ratingCount,
           faqs: enrichedSeo.faqs,
+          breadcrumbs: [
+            { name: "Home", url: "/" },
+            { name: "All Tools", url: "/all-tools" },
+            ...(categoryInfo ? [{ name: categoryInfo.name, url: `/category/${categoryInfo.slug}` }] : []),
+            { name: tool.name, url: `/en/${tool.slug}` },
+          ],
         }}
       />
 
@@ -906,6 +913,15 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           </section>
 
           <ReviewCTA />
+
+          {/* Tool Reviews & Discussion Section */}
+          <ToolReviews
+            toolId={tool.id}
+            toolName={tool.name}
+            toolSlug={tool.slug}
+            initialRating={tool.rating}
+            initialRatingCount={tool.ratingCount}
+          />
         </article>
 
         {/* Related & Trending Tools Section */}

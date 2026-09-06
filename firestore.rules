@@ -64,7 +64,26 @@ service cloud.firestore {
     match /media/{mediaId} {
       allow read, write: if true;
     }
+
+    match /guest_posts/{postId} {
+      allow read, write: if true;
+    }
+
+    match /reviews/{reviewId} {
+      allow read, write: if true;
+    }
+
+    match /reports/{reportId} {
+      allow read, write: if true;
+    }
+
+    match /tool_reports/{reportId} {
+      allow read, write: if true;
+    }
+
+    // Catch-all fallback rule for any Firestore document paths
+    match /{document=**} {
+      allow read, write: if true;
+    }
   }
 }
-
-

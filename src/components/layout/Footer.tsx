@@ -188,6 +188,24 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <a
+                  href="/pricing"
+                  onClick={(e) => handlePageClick("pricing", "/pricing", e)}
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block"
+                >
+                  Pricing & Free Access
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/guest-post"
+                  onClick={(e) => handlePageClick("guest-post", "/guest-post", e)}
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block"
+                >
+                  Write For Us / Guest Posts
+                </a>
+              </li>
+              <li>
+                <a
                   href="/author/hamza"
                   onClick={(e) => handlePageClick("author-hamza", "/author/hamza", e)}
                   className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer inline-block"

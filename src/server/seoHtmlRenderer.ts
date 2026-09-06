@@ -77,8 +77,8 @@ function renderPrerenderedBodyContent(
           <h4 style="color: #ffffff; font-weight: 700; margin-bottom: 0.75rem;">Guides &amp; Legal</h4>
           <ul style="list-style: none; padding: 0; margin: 0; line-height: 2;">
             ${latestPosts.slice(0, 3).map((p) => `<li><a href="/blog/${p.slug}" style="color: #cbd5e1; text-decoration: none;">${escapeHtml(p.title)}</a></li>`).join("\n")}
-            <li><a href="/privacy" style="color: #cbd5e1; text-decoration: none;">Privacy Policy</a> • <a href="/terms" style="color: #cbd5e1; text-decoration: none;">Terms of Service</a></li>
-            <li><a href="/disclaimer" style="color: #cbd5e1; text-decoration: none;">Disclaimer</a> • <a href="/cookie-policy" style="color: #cbd5e1; text-decoration: none;">Cookie Policy</a> • <a href="/copyright" style="color: #cbd5e1; text-decoration: none;">Copyright Policy</a></li>
+            <li><a href="/privacy" style="color: #cbd5e1; text-decoration: none;">Privacy Policy</a> • <a href="/terms" style="color: #cbd5e1; text-decoration: none;">Terms of Service</a> • <a href="/pricing" style="color: #cbd5e1; text-decoration: none;">Pricing</a></li>
+            <li><a href="/disclaimer" style="color: #cbd5e1; text-decoration: none;">Disclaimer</a> • <a href="/cookie-policy" style="color: #cbd5e1; text-decoration: none;">Cookie Policy</a> • <a href="/copyright" style="color: #cbd5e1; text-decoration: none;">Copyright Policy</a> • <a href="/guest-post" style="color: #cbd5e1; text-decoration: none;">Guest Posting</a></li>
             <li><a href="/author/hamza" style="color: #818cf8; text-decoration: none; font-weight: 600;">Meet Our Engineering &amp; Author Team &rarr;</a></li>
           </ul>
         </div>

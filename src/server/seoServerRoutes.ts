@@ -166,6 +166,68 @@ router.get("/robots.txt", (req, res) => {
 });
 
 /**
+ * Standard RSS 2.0 Feed Endpoint (/rss.xml & /feed)
+ */
+const renderRssFeed = (req: any, res: any) => {
+  const host = getBaseHost(req);
+  const now = new Date().toUTCString();
+
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  xml += `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n`;
+  xml += `  <channel>\n`;
+  xml += `    <title>Mehzan Tools Hub - Online Developer, PDF &amp; Image Utilities</title>\n`;
+  xml += `    <link>${host}</link>\n`;
+  xml += `    <description>Fast, client-side, zero-upload online tools, PDF utilities, image converters, developer formatters, and technical guides.</description>\n`;
+  xml += `    <language>en-us</language>\n`;
+  xml += `    <lastBuildDate>${now}</lastBuildDate>\n`;
+  xml += `    <atom:link href="${host}/rss.xml" rel="self" type="application/rss+xml" />\n`;
+
+  // Include Articles & Guides
+  for (const post of BLOG_POSTS_DATA) {
+    let pubDate = now;
+    try {
+      const parsed = new Date(post.date);
+      if (!isNaN(parsed.getTime())) pubDate = parsed.toUTCString();
+    } catch {
+      pubDate = now;
+    }
+
+    xml += `    <item>\n`;
+    xml += `      <title>${escapeXml(post.title)}</title>\n`;
+    xml += `      <link>${host}/blog/${post.slug}</link>\n`;
+    xml += `      <guid isPermaLink="true">${host}/blog/${post.slug}</guid>\n`;
+    xml += `      <pubDate>${pubDate}</pubDate>\n`;
+    xml += `      <description>${escapeXml(post.excerpt || post.title)}</description>\n`;
+    xml += `      <author>support@mehzandigital.com (${escapeXml(post.author.name)})</author>\n`;
+    xml += `      <category>${escapeXml(post.category)}</category>\n`;
+    xml += `    </item>\n`;
+  }
+
+  // Include Top Active Tools
+  const activeTools = TOOLS_DATA.filter((t) => t.status !== "DISABLED" && t.isActive !== false).slice(0, 35);
+  for (const tool of activeTools) {
+    xml += `    <item>\n`;
+    xml += `      <title>${escapeXml(tool.name)} - Free Online Utility</title>\n`;
+    xml += `      <link>${host}/en/${tool.slug}</link>\n`;
+    xml += `      <guid isPermaLink="true">${host}/en/${tool.slug}</guid>\n`;
+    xml += `      <pubDate>${now}</pubDate>\n`;
+    xml += `      <description>${escapeXml(tool.description || tool.tagline)}</description>\n`;
+    xml += `      <category>${escapeXml(tool.category)}</category>\n`;
+    xml += `    </item>\n`;
+  }
+
+  xml += `  </channel>\n`;
+  xml += `</rss>`;
+
+  res.header("Content-Type", "application/xml; charset=utf-8");
+  res.header("Cache-Control", "public, max-age=3600, s-maxage=86400");
+  res.send(xml);
+};
+
+router.get("/rss.xml", renderRssFeed);
+router.get("/feed", renderRssFeed);
+
+/**
  * PROTECTED PRODUCTION FILE: Google AdSense Authorized Digital Sellers (/ads.txt)
  * DO NOT MODIFY OR DELETE /ads.txt WITHOUT EXPLICIT USER PERMISSION.
  */
