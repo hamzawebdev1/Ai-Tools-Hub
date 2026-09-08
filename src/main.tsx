@@ -8,8 +8,9 @@ if (typeof window !== 'undefined') {
     }
   }, true);
 
-  window.addEventListener('unhandledrejection', (e: any) => {
-    const msg = e && e.reason && (e.reason.message || String(e.reason));
+  window.addEventListener('unhandledrejection', (e: PromiseRejectionEvent) => {
+    const reason = e && e.reason;
+    const msg = reason && (typeof reason === 'object' && 'message' in reason ? String((reason as { message: unknown }).message) : String(reason));
     if (msg && (msg.includes('Cannot set property fetch') || msg.includes('fetch of #<Window>') || msg.includes('WebSocket') || msg.includes('websocket'))) {
       if (e.preventDefault) e.preventDefault();
       if (e.stopImmediatePropagation) e.stopImmediatePropagation();
@@ -20,11 +21,11 @@ if (typeof window !== 'undefined') {
     const realFetch = window.fetch;
     let boundFetch = typeof realFetch === 'function' ? realFetch.bind(window) : realFetch;
     const getFetch = () => boundFetch;
-    const setFetch = (fn: any) => {
+    const setFetch = (fn: unknown) => {
       if (typeof fn === 'function') {
-        boundFetch = fn.bind(window);
+        boundFetch = (fn as typeof fetch).bind(window);
       } else {
-        boundFetch = fn;
+        boundFetch = fn as typeof fetch;
       }
     };
 
