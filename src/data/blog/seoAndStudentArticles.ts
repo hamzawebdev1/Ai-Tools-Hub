@@ -1,23 +1,19 @@
 import { BlogPost } from "../../types";
+import { HAMZA_AUTHOR } from "../authorsData";
 
 export const SEO_AND_STUDENT_ARTICLES: BlogPost[] = [
   {
     id: "seo-art-1",
     slug: "how-image-to-text-conversion-works-ocr-guide",
     title: "How Image to Text OCR Conversion Works: From Photo to Editable Text",
-    seoTitle: "How Image to Text OCR Conversion Works - Photo to Text Guide",
-    metaDescription: "Discover how Optical Character Recognition (OCR) converts images, scanned PDFs, and photos into clean, editable text. Learn step-by-step extraction.",
+    seoTitle: "How Image to Text OCR Conversion Works | Mehzan Online Tools",
+    metaDescription: "Discover how Optical Character Recognition (OCR) converts images, scanned PDFs, and photos into clean, editable text using Mehzan Tools Hub.",
     excerpt: "Learn the underlying mechanics of Optical Character Recognition (OCR) technology and extract text from photos, receipts, and scanned documents in seconds.",
     category: "Image Tools",
     primaryKeyword: "image to text",
-    secondaryKeywords: ["ocr image to text", "extract text from image", "photo to text converter", "online ocr tool"],
+    secondaryKeywords: ["ocr image to text", "extract text from image", "photo to text converter", "online ocr tool", "Mehzan Online Tools"],
     searchIntent: "Informational",
-    author: {
-      name: "Sophia Chen",
-      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-      role: "Creative Director & UX Architect",
-      bio: "Visual media compression researcher and UI designer specializing in client-side canvas algorithms and computer vision."
-    },
+    author: HAMZA_AUTHOR,
     date: "Aug 25, 2026",
     updatedDate: "Aug 28, 2026",
     readTime: "6 min read",
@@ -268,6 +264,85 @@ export const SEO_AND_STUDENT_ARTICLES: BlogPost[] = [
         <li>Track essay length with the <a href="/en/word-counter" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Word Counter</a>.</li>
         <li>Compress final PDF submissions under 2MB portal limits using the <a href="/en/pdf-compress" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">PDF Compressor</a>.</li>
       </ol>
+    `
+  },
+  {
+    id: "seo-art-6",
+    slug: "how-to-create-and-scan-barcodes-online-free-guide",
+    title: "How to Create and Scan Barcodes Online for Free (CODE128, EAN & UPC Guide)",
+    seoTitle: "How to Create Barcodes Online Free | Mehzan Barcode Generator",
+    metaDescription: "Learn how to generate high-resolution CODE128, EAN-13, and UPC barcodes online for retail products, inventory, and packaging using Mehzan Barcode Generator.",
+    excerpt: "Create custom product barcodes and inventory stickers in CODE128, EAN-13, and UPC-A vector formats instantly without expensive software.",
+    category: "QR & Barcode Tools",
+    primaryKeyword: "create barcode online",
+    secondaryKeywords: ["barcode generator free", "how to generate ean13 barcode", "code128 barcode generator", "Mehzan Barcode Generator", "Mehzan QR Code Generator"],
+    searchIntent: "Transactional / How-to",
+    author: HAMZA_AUTHOR,
+    date: "Sep 05, 2026",
+    updatedDate: "Sep 08, 2026",
+    readTime: "6 min read",
+    tags: ["Barcode Generator", "Retail & Inventory", "EAN-13", "CODE128", "QR Code Tools"],
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
+    relatedToolIds: ["barcode-generator", "qr-code-generator", "wifi-qr-code-generator"],
+    relatedArticleSlugs: ["how-to-generate-custom-qr-codes-wifi-url-vcard"],
+    faqs: [
+      {
+        question: "What is the difference between CODE128 and EAN-13 barcodes?",
+        answer: "CODE128 supports alphanumeric characters (letters, numbers, and symbols) and is ideal for internal inventory tracking. EAN-13 is a 13-digit numeric format used globally for retail point-of-sale product packaging."
+      },
+      {
+        question: "Can I download generated barcodes in high-resolution vector SVG format?",
+        answer: "Yes! Mehzan Barcode Generator allows instant downloads in both crisp PNG raster and scalable vector SVG formats for commercial printing."
+      },
+      {
+        question: "Do generated barcodes require paying licensing fees?",
+        answer: "No. All barcode images rendered on Mehzan Tools Hub are 100% free for personal, educational, and commercial usage."
+      }
+    ],
+    content: `
+      <h2>Direct Answer: How to Create a Barcode Online for Free</h2>
+      <p>Creating custom barcodes for product packaging, warehouse inventory, or ISBN books takes less than 10 seconds. Using the <strong>Mehzan Barcode Generator</strong> on <a href="/" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Mehzan Tools Hub</a>, enter your product alphanumeric string or GTIN number, select your target barcode standard (CODE128, EAN-13, UPC-A, CODE39), and download high-resolution PNG or SVG vector artwork.</p>
+
+      <h2>Understanding Barcode Symbologies (Which Format Do You Need?)</h2>
+      <div class="overflow-x-auto my-6">
+        <table class="w-full text-left border-collapse border border-slate-200 dark:border-slate-800 text-sm">
+          <thead>
+            <tr class="bg-slate-100 dark:bg-slate-800/80">
+              <th class="p-3 border border-slate-200 dark:border-slate-800 font-bold">Symbology</th>
+              <th class="p-3 border border-slate-200 dark:border-slate-800 font-bold">Character Support</th>
+              <th class="p-3 border border-slate-200 dark:border-slate-800 font-bold">Primary Use Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-3 border border-slate-200 dark:border-slate-800 font-medium">CODE128</td>
+              <td class="p-3 border border-slate-200 dark:border-slate-800">Alphanumeric (A-Z, 0-9, Symbols)</td>
+              <td class="p-3 border border-slate-200 dark:border-slate-800">Warehouse logistics, shipping labels, asset tags</td>
+            </tr>
+            <tr class="bg-slate-50/50 dark:bg-slate-900/50">
+              <td class="p-3 border border-slate-200 dark:border-slate-800 font-medium">EAN-13</td>
+              <td class="p-3 border border-slate-200 dark:border-slate-800">13 Numeric Digits</td>
+              <td class="p-3 border border-slate-200 dark:border-slate-800">Global retail point-of-sale product packaging</td>
+            </tr>
+            <tr>
+              <td class="p-3 border border-slate-200 dark:border-slate-800 font-medium">UPC-A</td>
+              <td class="p-3 border border-slate-200 dark:border-slate-800">12 Numeric Digits</td>
+              <td class="p-3 border border-slate-200 dark:border-slate-800">North American retail consumer products</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Step-by-Step: How to Generate Barcodes in 3 Steps</h2>
+      <ol>
+        <li>Navigate to the <a href="/en/barcode-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free Barcode Generator Tool</a> under the <a href="/category/qr" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">QR & Barcode Tools Category</a>.</li>
+        <li>Enter your product code, SKU ID, or GTIN digits in the text input box.</li>
+        <li>Select your barcode format (CODE128, EAN-13, UPC) and adjust bar height and text visibility settings.</li>
+        <li>Click <strong>Download Barcode</strong> to save high-res PNG or SVG files ready for printing.</li>
+      </ol>
+
+      <h2>Complementary Utilities</h2>
+      <p>Need 2D matrix codes? Check out our <a href="/en/qr-code-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Free QR Code Generator</a> or create instant Wi-Fi access tags with the <a href="/en/wifi-qr-code-generator" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Wi-Fi QR Generator</a>.</p>
     `
   }
 ];

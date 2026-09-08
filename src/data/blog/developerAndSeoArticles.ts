@@ -1,12 +1,13 @@
 import { BlogPost } from "../../types";
+import { HAMZA_AUTHOR } from "../authorsData";
 
 export const DEVELOPER_AND_SEO_ARTICLES: BlogPost[] = [
   {
     id: "dev-art-1",
     slug: "ilovepdf-alternatives-free-pdf-tools-online",
     title: "iLovePDF Alternatives: Best Free Online PDF Tools (Objective Comparison & Privacy Guide)",
-    seoTitle: "iLovePDF Alternatives: Best Free Private Online PDF Tools",
-    metaDescription: "Looking for free iLovePDF alternatives? Compare online PDF tools, privacy standards, file limits, and client-side PDF compressors and mergers with zero server uploads.",
+    seoTitle: "iLovePDF Alternatives: Best Free Private PDF Tools | Mehzan PDF Converter",
+    metaDescription: "Looking for free iLovePDF alternatives? Compare online PDF tools, privacy standards, file limits, and client-side PDF compressors and mergers with zero server uploads using Mehzan PDF tools.",
     excerpt: "An in-depth, objective guide comparing cloud-based PDF processors like iLovePDF with private, client-side alternatives that process documents inside your browser without server uploads.",
     category: "PDF Tools",
     primaryKeyword: "ilovepdf alternatives",
@@ -18,15 +19,11 @@ export const DEVELOPER_AND_SEO_ARTICLES: BlogPost[] = [
       "pdf compressor alternative",
       "online pdf tools",
       "free pdf tools",
-      "mehzan pdf tools"
+      "Mehzan PDF tools",
+      "Mehzan PDF Converter"
     ],
     searchIntent: "Informational",
-    author: {
-      name: "Alex Rivera",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      role: "Lead Systems Engineer",
-      bio: "Systems architect specializing in web performance, document processing security, and open web standards."
-    },
+    author: HAMZA_AUTHOR,
     date: "Sep 01, 2026",
     updatedDate: "Sep 06, 2026",
     readTime: "9 min read",

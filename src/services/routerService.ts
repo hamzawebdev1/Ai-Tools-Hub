@@ -12,6 +12,7 @@ export interface RouteState {
   adminSubMenu?: string;
   searchQuery?: string;
   isNotFound?: boolean;
+  is410?: boolean;
 }
 
 /**
@@ -35,20 +36,26 @@ export const CANONICAL_DOMAIN = (
  * Known Tool Slug Aliases mapped directly to their primary canonical slug
  */
 export const TOOL_SLUG_ALIASES: Record<string, string> = {
-  "pdf-split": "split-pdf-pages",
-  "split-pdf": "split-pdf-pages",
-  "pdf-to-docx": "pdf-to-word",
-  "image-compress": "image-compressor",
-  "image-resize": "image-resizer",
-  "image-crop": "image-cropper",
-  "image-rotate": "image-rotator",
+  "pdf-split": "pdf-extract-pages",
+  "split-pdf": "pdf-extract-pages",
+  "pdf-to-docx": "pdf-extract-text",
+  "image-compress": "image-quality-adjuster",
+  "image-resize": "social-media-resizer",
+  "image-crop": "screenshot-cropper",
+  "image-rotate": "image-converter",
+  "color-palette-generator": "palette-generator",
+  "csv-to-json-converter": "csv-to-json",
+  "file-duplicate-line-remover": "remove-duplicate-lines",
+  "file-compare-diff": "text-compare",
+  "doc-word-char-counter": "word-counter",
+  "base64-encoder": "base64-encode",
   "pdf-password-protector": "pdf-protect",
   "pdf-password-remover": "pdf-unlock",
   "merge-pdf": "pdf-merge",
   "pdf-compressor": "pdf-compress",
   "jpg2pdf": "jpg-to-pdf",
   "pdf2jpg": "pdf-to-jpg",
-  "pdf2word": "pdf-to-word",
+  "pdf2word": "pdf-extract-text",
   "wifi-qr-code": "qr-generator",
   "wifi-qr-code-maker": "qr-generator",
   "decimal-to-hex": "number-base-converter",
@@ -68,8 +75,8 @@ export const TOOL_SLUG_ALIASES: Record<string, string> = {
   "bmp-to-pdf": "images-to-pdf",
   "tiff-to-pdf": "images-to-pdf",
 
-  "image-flip": "image-rotator",
-  "image-mirror": "image-rotator",
+  "image-flip": "image-converter",
+  "image-mirror": "image-converter",
   "jpg-to-avif": "image-converter",
   "png-to-avif": "image-converter",
   "avif-to-jpg": "image-converter",
@@ -82,8 +89,8 @@ export const TOOL_SLUG_ALIASES: Record<string, string> = {
   "png-to-ico": "favicon-generator",
   "image-to-ico": "favicon-generator",
   "favicon-pack-generator": "favicon-generator",
-  "image-dimensions-checker": "image-resizer",
-  "image-size-checker": "image-compressor",
+  "image-dimensions-checker": "aspect-ratio-calculator",
+  "image-size-checker": "image-quality-adjuster",
   "image-brightness": "image-quality-adjuster",
   "image-contrast": "image-quality-adjuster",
   "image-saturation": "image-quality-adjuster",
@@ -173,7 +180,7 @@ export const TOOL_SLUG_ALIASES: Record<string, string> = {
   "broadcast-address-calculator": "subnet-calculator",
   "network-address-calculator": "subnet-calculator",
   "ip-subnet-cidr-calculator": "subnet-calculator",
-  "base64-decoder": "base64-encoder",
+  "base64-decoder": "base64-decode",
   "permissions-policy-generator": "csp-header-generator",
   "referrer-policy-generator": "csp-header-generator",
   "cookie-attribute-generator": "csp-header-generator",
@@ -235,7 +242,7 @@ export const TOOL_SLUG_ALIASES: Record<string, string> = {
   "file-base64-decoder": "file-base64-encoder",
   "zip-extractor": "zip-creator",
   "zip-contents-viewer": "zip-creator",
-  "json-to-csv-converter": "csv-to-json-converter",
+  "json-to-csv-converter": "json-to-csv",
   "xml-to-json-converter": "xml-formatter",
   "json-to-xml-converter": "json-formatter",
   "yaml-to-json-converter": "yaml-formatter",
@@ -281,6 +288,12 @@ export const TOOL_SLUG_ALIASES: Record<string, string> = {
   "assignment-grade-calculator": "final-grade-calculator",
   "assignment-word-count-helper": "word-counter",
 };
+
+export const GONE_410_SLUGS = new Set<string>([
+  "obsolete-tool-sample",
+  "deprecated-placeholder-tool",
+  "removed-junk-utility",
+]);
 
 /**
  * Static route alias mapping to their single canonical equivalent
@@ -550,6 +563,11 @@ export function parseRoute(pathname: string = "/", search: string = ""): RouteSt
   );
   if (matchedCategory) {
     return { tab: "category-detail", categorySlug: matchedCategory.slug };
+  }
+
+  // Handle 410 Gone for explicitly retired obsolete paths
+  if (GONE_410_SLUGS.has(cleanPath) || GONE_410_SLUGS.has(directSlug)) {
+    return { tab: "410", is410: true };
   }
 
   // If no match found, 404

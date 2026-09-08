@@ -1,23 +1,19 @@
 import { BlogPost } from "../../types";
+import { HAMZA_AUTHOR } from "../authorsData";
 
 export const IMAGE_ARTICLES: BlogPost[] = [
   {
     id: "img-art-1",
     slug: "how-to-compress-images-to-20kb-100kb",
     title: "How to Compress Images to 20KB, 50KB, or 100KB for Government Forms & Portals",
-    seoTitle: "Compress Image to 20KB / 100KB Online Free (Exact Size Target)",
-    metaDescription: "Compress JPEG and PNG photos down to exact file size limits (20KB, 50KB, 100KB) for government exam portals, visas, and passport forms without blurriness.",
+    seoTitle: "Compress Image to 20KB / 100KB Online | Mehzan Image Compressor",
+    metaDescription: "Compress JPEG and PNG photos down to exact file size limits (20KB, 50KB, 100KB) using Mehzan Image Compressor. 100% free with no watermark.",
     excerpt: "Quickly reduce image file sizes to meet strict 20KB, 50KB, and 100KB application form limits while maintaining clean facial clarity and signatures.",
     category: "Image Tools",
     primaryKeyword: "compress image to 20kb",
-    secondaryKeywords: ["compress jpeg to 100kb", "image compressor online", "reduce photo size for exam form", "compress photo to 50kb"],
+    secondaryKeywords: ["compress jpeg to 100kb", "image compressor online", "reduce photo size for exam form", "compress photo to 50kb", "Mehzan Image Compressor"],
     searchIntent: "Transactional / How-to",
-    author: {
-      name: "Sophia Chen",
-      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-      role: "Creative Director & UX Architect",
-      bio: "Visual media compression researcher specializing in browser-based image codecs and responsive asset workflows."
-    },
+    author: HAMZA_AUTHOR,
     date: "Aug 15, 2026",
     updatedDate: "Aug 26, 2026",
     readTime: "6 min read",

@@ -1,23 +1,19 @@
 import { BlogPost } from "../../types";
+import { HAMZA_AUTHOR } from "../authorsData";
 
 export const CONVERTER_ARTICLES: BlogPost[] = [
   {
     id: "conv-art-1",
     slug: "how-to-convert-mp4-to-mp3-extract-audio",
     title: "How to Convert MP4 Video to MP3 Audio (High Bitrate 320kbps Extraction)",
-    seoTitle: "Convert MP4 to MP3 Online Free - 320kbps Audio Extractor",
-    metaDescription: "Extract crystal clear audio tracks from MP4 video files into high-quality MP3 (320kbps, 256kbps, 192kbps). Fast, free, browser-based video-to-audio converter.",
+    seoTitle: "Convert MP4 to MP3 Online Free | Mehzan Online Tools",
+    metaDescription: "Extract crystal clear audio tracks from MP4 video files into high-quality MP3 (320kbps) using Mehzan Online Tools. Fast, free, browser-based video-to-audio converter.",
     excerpt: "Extract voiceovers, podcast recordings, conference speeches, and music tracks from MP4 video files into studio-quality MP3 audio files in seconds.",
     category: "Media & Converters",
     primaryKeyword: "mp4 to mp3 converter",
-    secondaryKeywords: ["extract audio from video", "convert video to audio free", "mp4 to mp3 320kbps", "video to sound converter"],
+    secondaryKeywords: ["extract audio from video", "convert video to audio free", "mp4 to mp3 320kbps", "video to sound converter", "Mehzan Online Tools"],
     searchIntent: "Transactional / How-to",
-    author: {
-      name: "Alex Rivera",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      role: "Lead Systems Engineer",
-      bio: "Systems architect and multimedia specialist with deep experience in WebAudio, FFmpeg WASM pipelines, and client-side processing."
-    },
+    author: HAMZA_AUTHOR,
     date: "Aug 16, 2026",
     updatedDate: "Aug 26, 2026",
     readTime: "5 min read",

@@ -1,23 +1,19 @@
 import { BlogPost } from "../../types";
+import { HAMZA_AUTHOR } from "../authorsData";
 
 export const CALCULATOR_ARTICLES: BlogPost[] = [
   {
     id: "calc-art-1",
     slug: "how-to-calculate-percentage-increase-decrease",
     title: "How to Calculate Percentage Increase, Decrease, and Difference (Formulas & Examples)",
-    seoTitle: "Percentage Calculator & Formulas - Calculate Percentage Increase & Decrease",
-    metaDescription: "Master percentage calculations with clear formulas and practical examples. Calculate percentage increase, decrease, discount savings, and ratios easily.",
+    seoTitle: "How to Calculate Percentage Increase & Decrease | Mehzan Online Tools",
+    metaDescription: "Master percentage calculations with clear formulas and practical examples using Mehzan Online Tools. Calculate percentage increase, decrease, discount savings, and ratios easily.",
     excerpt: "Learn the exact mathematical formulas for percentage increase, decrease, markup, and discount calculations with clear step-by-step examples.",
     category: "Calculators",
     primaryKeyword: "percentage calculator",
-    secondaryKeywords: ["calculate percentage increase", "percentage decrease formula", "percentage difference calculator", "how to find percentage of a number"],
+    secondaryKeywords: ["calculate percentage increase", "percentage decrease formula", "percentage difference calculator", "how to find percentage of a number", "Mehzan Online Tools"],
     searchIntent: "Informational",
-    author: {
-      name: "Dr. Priya Sharma",
-      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-      role: "Senior Quantitative Analyst & Financial Researcher",
-      bio: "Ph.D. in Applied Mathematics with extensive research in mathematical modeling, algorithmic precision, and quantitative finance."
-    },
+    author: HAMZA_AUTHOR,
     date: "Aug 14, 2026",
     updatedDate: "Aug 26, 2026",
     readTime: "6 min read",

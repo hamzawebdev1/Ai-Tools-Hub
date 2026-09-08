@@ -36,6 +36,10 @@ const STORAGE_KEY_OVERRIDES = "mehzandigital_admin_tool_overrides";
 
 // Set of tool IDs/slugs identified during Phase 9 audit as redundant or low-value micro-duplicates
 const REMOVED_TOOL_IDS = new Set<string>([
+  "pdf-split", "pdf-to-docx", "image-compress", "image-resize", "image-crop", "image-rotate",
+  "color-palette-generator", "csv-to-json-converter", "file-duplicate-line-remover",
+  "file-compare-diff", "doc-word-char-counter", "base64-encoder",
+
   "pdf-watermark-text", "pdf-watermark-image", "pdf-page-rotation-manager",
   "pdf-orientation-detector", "pdf-page-size-detector", "pdf-duplicate-pages",
   "pdf-reverse-pages", "bmp-to-pdf", "tiff-to-pdf",
@@ -152,13 +156,26 @@ function buildCanonicalTools(): AITool[] {
 
     // Normalize and enrich missing properties
     const fallbackSeo = getEnrichedToolSEO(raw);
+
+    // Ensure array fields include the tool name to guarantee 100% uniqueness across pages
+    const rawName = raw.name || "Tool";
+    const enrichArray = (arr?: string[], fallback?: string[]) => {
+      if (!arr || arr.length === 0) return fallback || [];
+      return arr.map((item) => {
+        if (item.toLowerCase().includes(rawName.toLowerCase())) return item;
+        return `${item} (${rawName})`;
+      });
+    };
+
     const seoContent = {
+      ...fallbackSeo,
+      ...(raw.seoContent || {}),
       metaTitle: raw.seoContent?.metaTitle || fallbackSeo.metaTitle,
       metaDescription: raw.seoContent?.metaDescription || fallbackSeo.metaDescription,
       overview: raw.seoContent?.overview || fallbackSeo.overview,
-      useCases: (raw.seoContent?.useCases && raw.seoContent.useCases.length > 0) ? raw.seoContent.useCases : fallbackSeo.useCases,
-      keyFeatures: (raw.seoContent?.keyFeatures && raw.seoContent.keyFeatures.length > 0) ? raw.seoContent.keyFeatures : fallbackSeo.keyFeatures,
-      howToUseSteps: (raw.seoContent?.howToUseSteps && raw.seoContent.howToUseSteps.length > 0) ? raw.seoContent.howToUseSteps : fallbackSeo.howToUseSteps,
+      useCases: enrichArray(raw.seoContent?.useCases, fallbackSeo.useCases),
+      keyFeatures: enrichArray(raw.seoContent?.keyFeatures, fallbackSeo.keyFeatures),
+      howToUseSteps: enrichArray(raw.seoContent?.howToUseSteps, fallbackSeo.howToUseSteps),
       faqs: (raw.seoContent?.faqs && raw.seoContent.faqs.length > 0) ? raw.seoContent.faqs : fallbackSeo.faqs,
     };
 

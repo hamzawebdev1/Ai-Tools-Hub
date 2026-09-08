@@ -18,21 +18,36 @@ if (typeof window !== 'undefined') {
 
   try {
     const realFetch = window.fetch;
-    if (typeof realFetch === 'function') {
-      let boundFetch = realFetch.bind(window);
+    let boundFetch = typeof realFetch === 'function' ? realFetch.bind(window) : realFetch;
+    const getFetch = () => boundFetch;
+    const setFetch = (fn: any) => {
+      if (typeof fn === 'function') {
+        boundFetch = fn.bind(window);
+      } else {
+        boundFetch = fn;
+      }
+    };
+
+    const winProto = typeof Window !== 'undefined' && Window.prototype;
+    if (winProto) {
+      try {
+        Object.defineProperty(winProto, 'fetch', {
+          get: getFetch,
+          set: setFetch,
+          configurable: true,
+          enumerable: true,
+        });
+      } catch (_) {}
+    }
+
+    try {
       Object.defineProperty(window, 'fetch', {
-        get() { return boundFetch; },
-        set(fn) {
-          if (typeof fn === 'function') {
-            boundFetch = fn.bind(window);
-          } else {
-            boundFetch = fn;
-          }
-        },
+        get: getFetch,
+        set: setFetch,
         configurable: true,
         enumerable: true,
       });
-    }
+    } catch (_) {}
   } catch (_) {}
 }
 

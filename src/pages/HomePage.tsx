@@ -354,10 +354,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <h4 className="font-bold text-base text-slate-900 dark:text-white">
-                Privacy First & OWASP Safe
+                100% In-Browser Privacy
               </h4>
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                All processing executes in volatile cloud memory. Temporary inputs and generated results auto-purge completely after 24 hours.
+                Local PDF, image, developer, text, and calculator conversions process entirely in client RAM. Your files never touch remote servers.
               </p>
             </div>
 
@@ -371,6 +371,102 @@ export const HomePage: React.FC<HomePageProps> = ({
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                 Strictly adheres to publisher guidelines with valuable content structures, clear disclosure labels, and zero invasive popups.
               </p>
+            </div>
+          </section>
+        </LazySection>
+
+        {/* About Mehzan Tools Hub & Comprehensive Overview */}
+        <LazySection placeholderHeight="300px">
+          <section className="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-10 space-y-6 shadow-sm">
+            <div className="max-w-3xl space-y-3">
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
+                Independent Utility Platform
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                About Mehzan Tools Hub
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <strong>Mehzan Tools Hub</strong> (operated by <em>Mehzan Digital</em>) is a comprehensive online directory and suite of 330+ high-precision web utilities. Built for software engineers, digital marketers, content creators, students, and administrative staff across the US, UK, Canada, Europe, and globally, our platform eliminates the hassle of installing heavy desktop applications, enduring subscription paywalls, or uploading sensitive files to unknown remote servers.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-2">
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                  What You Can Do on Mehzan Tools Hub
+                </h3>
+                <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <li>• <strong>PDF Utilities:</strong> Merge, split, compress, unlock, convert, and OCR PDF documents client-side.</li>
+                  <li>• <strong>Image Editing:</strong> Compress PNG/JPG/WebP, crop photos, convert graphic formats, and make favicons.</li>
+                  <li>• <strong>Developer Utilities:</strong> Format JSON, decode JWTs, test Regex, minify code, and beautify SQL queries.</li>
+                  <li>• <strong>Text & String Tools:</strong> Live word count, case conversion, diff checking, and character limits.</li>
+                  <li>• <strong>Calculators:</strong> High-precision loan EMI, age difference, BMI, percentage, and unit converters.</li>
+                </ul>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 space-y-2">
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-indigo-500" />
+                  Why Choose Our Browser-First Architecture?
+                </h3>
+                <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <li>• <strong>Client-Side Processing:</strong> Local file converters run in WebAssembly and browser RAM.</li>
+                  <li>• <strong>Zero Account Wall:</strong> Instant access to all 330+ tools without mandatory registration.</li>
+                  <li>• <strong>Sub-300ms Speed:</strong> Optimized algorithms execute calculations and conversions in milliseconds.</li>
+                  <li>• <strong>Global Standards Compliant:</strong> Supports US/EU paper formats, multi-currency metrics, and character sets.</li>
+                  <li>• <strong>Clean Publisher Standards:</strong> Ad-safe layout with transparent disclosures and zero malware popups.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </LazySection>
+
+        {/* Category Navigation Directory */}
+        <LazySection placeholderHeight="250px">
+          <section className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  Browse Tool Hubs by Category
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Explore specialized category hubs designed for specific technical workflows
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveTab("categories")}
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                View All Categories <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {CATEGORIES_DATA.map((cat) => (
+                <a
+                  key={cat.id}
+                  href={`/category/${cat.slug}`}
+                  onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey) return;
+                    e.preventDefault();
+                    onSelectCategory(cat.id);
+                  }}
+                  className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all shadow-xs hover:shadow-md group cursor-pointer"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-extrabold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {cat.name}
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                      {cat.count} tools
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                    {cat.description}
+                  </p>
+                </a>
+              ))}
             </div>
           </section>
         </LazySection>
@@ -395,16 +491,24 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="max-w-3xl mx-auto space-y-4">
               {[
                 {
-                  q: "Are all utility tools on this website free?",
-                  a: "Yes! Mehzan Tools Hub provides 100% free online browser utility tools with instant execution and zero paywalls.",
+                  q: "Are all 330+ utility tools on this website completely free?",
+                  a: "Yes! Mehzan Tools Hub provides 100% free online browser utility tools with instant execution and zero subscription paywalls.",
                 },
                 {
-                  q: "Do I need to sign up or enter a credit card?",
-                  a: "No registration or payment details are required to use our suite of web utilities.",
+                  q: "Do I need to create an account or provide payment details?",
+                  a: "No registration or payment details are required. All tools are immediately accessible to all site visitors.",
                 },
                 {
-                  q: "Is my data and text kept private?",
-                  a: "Absolutely. All conversions and calculations execute client-side or transiently in memory, ensuring complete data privacy.",
+                  q: "Is my document and text data kept private?",
+                  a: "Absolutely. All local PDF, image, text, developer, and calculator conversions run client-side in your browser RAM sandbox. Your data is never uploaded to remote servers.",
+                },
+                {
+                  q: "Can I use Mehzan Tools Hub on mobile devices?",
+                  a: "Yes! The platform is fully responsive and optimized for mobile screens on Chrome, Safari, Firefox, and Edge across iOS and Android.",
+                },
+                {
+                  q: "Who operates Mehzan Tools Hub?",
+                  a: "Mehzan Tools Hub is owned and maintained by Mehzan Digital, an independent software publisher dedicated to fast, private, accessible web software.",
                 },
               ].map((faq, idx) => (
                 <div

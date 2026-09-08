@@ -17,6 +17,13 @@ export interface Author {
   articlesCount: number;
 }
 
+export const HAMZA_AUTHOR = {
+  name: "Hamza",
+  role: "Founder / Web Developer & Digital Marketing Professional",
+  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+  bio: "Hamza is the Founder of Mehzan Digital and a Web Developer & Digital Marketing Professional with 5+ years of experience in web development, client-side web utility engineering, and search engine optimization.",
+};
+
 export const AUTHORS_DATA: Author[] = [
   {
     id: "0",
@@ -33,9 +40,10 @@ export const AUTHORS_DATA: Author[] = [
       "Client-Side Engineering"
     ],
     socials: {
-      twitter: "",
-      github: "",
-      linkedin: "",
+      website: "https://www.mehzandigital.com/",
+      twitter: "https://x.com/mehzandigital",
+      linkedin: "https://www.linkedin.com/company/mehzandigital",
+      github: "https://github.com/mehzandigital",
     },
     articlesCount: 18,
   },

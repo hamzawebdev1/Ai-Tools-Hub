@@ -30,21 +30,30 @@
 
         try {
           var realFetch = window.fetch;
-          if (typeof realFetch === 'function') {
-            var boundFetch = realFetch.bind(window);
+          var boundFetch = typeof realFetch === 'function' ? realFetch.bind(window) : realFetch;
+          function getFetch() { return boundFetch; }
+          function setFetch(fn) { boundFetch = typeof fn === 'function' ? fn.bind(window) : fn; }
+
+          var winProto = typeof Window !== 'undefined' && Window.prototype;
+          if (winProto) {
+            try {
+              Object.defineProperty(winProto, 'fetch', {
+                get: getFetch,
+                set: setFetch,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (pErr) {}
+          }
+
+          try {
             Object.defineProperty(window, 'fetch', {
-              get: function() { return boundFetch; },
-              set: function(fn) {
-                if (typeof fn === 'function') {
-                  boundFetch = fn.bind(window);
-                } else {
-                  boundFetch = fn;
-                }
-              },
+              get: getFetch,
+              set: setFetch,
               configurable: true,
               enumerable: true
             });
-          }
+          } catch (wErr) {}
         } catch (err) {}
 
         // Suppress Vite HMR WebSocket connection closed errors in sandbox

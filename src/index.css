@@ -11,6 +11,11 @@
     --color-text-secondary: #cbd5e1;
     --color-text-muted: #94a3b8;
   }
+
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
 }
 
 /* Global contrast enhancements to guarantee WCAG AA 4.5:1 ratio */

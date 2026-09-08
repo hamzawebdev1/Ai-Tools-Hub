@@ -41,6 +41,7 @@ const TermsPage = React.lazy(() => import("./pages/TermsPage").then(m => ({ defa
 const DisclaimerPage = React.lazy(() => import("./pages/DisclaimerPage").then(m => ({ default: m.DisclaimerPage })));
 const CookiePolicyPage = React.lazy(() => import("./pages/CookiePolicyPage").then(m => ({ default: m.CookiePolicyPage })));
 const CopyrightPolicyPage = React.lazy(() => import("./pages/CopyrightPolicyPage").then(m => ({ default: m.CopyrightPolicyPage })));
+const Gone410Page = React.lazy(() => import("./pages/Gone410Page").then(m => ({ default: m.Gone410Page })));
 const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage").then(m => ({ default: m.NotFoundPage })));
 const SearchResultsPage = React.lazy(() => import("./pages/SearchResultsPage").then(m => ({ default: m.SearchResultsPage })));
 const DashboardPage = React.lazy(() => import("./pages/DashboardPage").then(m => ({ default: m.DashboardPage })));
@@ -388,6 +389,8 @@ function AppContent() {
         {activeTab === "suggest-tool" && <SuggestToolPage />}
 
         {activeTab === "pricing" && <PricingPage setActiveTab={handleNavigate} />}
+
+        {activeTab === "410" && <Gone410Page onNavigate={handleNavigate} />}
 
         {activeTab === "404" && <NotFoundPage setActiveTab={handleNavigate} />}
         </React.Suspense>

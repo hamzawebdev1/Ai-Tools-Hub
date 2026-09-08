@@ -1,23 +1,19 @@
 import { BlogPost } from "../../types";
+import { HAMZA_AUTHOR } from "../authorsData";
 
 export const PDF_ARTICLES: BlogPost[] = [
   {
     id: "pdf-art-1",
     slug: "how-to-compress-pdf-without-losing-quality",
     title: "How to Compress PDF Files Online Without Losing Quality (Step-by-Step Guide)",
-    seoTitle: "How to Compress PDF Without Losing Quality (Free Online Guide)",
-    metaDescription: "Learn how to compress PDF file sizes down to 200KB, 500KB, or 1MB while preserving sharp text and clear images. 100% private, browser-based compression.",
+    seoTitle: "How to Compress PDF Without Losing Quality | Mehzan PDF Converter",
+    metaDescription: "Learn how to compress PDF file sizes down to 200KB, 500KB, or 1MB while preserving sharp text and clear images using Mehzan PDF tools. 100% free & private.",
     excerpt: "Reduce PDF file sizes dramatically for email attachments, job portals, and university uploads while maintaining razor-sharp typography and image clarity.",
     category: "PDF Tools",
     primaryKeyword: "compress pdf",
-    secondaryKeywords: ["reduce pdf size", "pdf compressor online", "how to make pdf smaller", "compress pdf to 200kb"],
+    secondaryKeywords: ["reduce pdf size", "pdf compressor online", "how to make pdf smaller", "compress pdf to 200kb", "Mehzan PDF tools"],
     searchIntent: "Transactional / How-to",
-    author: {
-      name: "Alex Rivera",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      role: "Lead Systems Engineer",
-      bio: "Systems architect and performance engineer specializing in client-side document processing and data security."
-    },
+    author: HAMZA_AUTHOR,
     date: "Aug 12, 2026",
     updatedDate: "Aug 26, 2026",
     readTime: "6 min read",

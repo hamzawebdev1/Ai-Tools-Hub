@@ -1,23 +1,19 @@
 import { BlogPost } from "../../types";
+import { HAMZA_AUTHOR } from "../authorsData";
 
 export const TRUSTPILOT_HOSTINGER_ARTICLES: BlogPost[] = [
   {
     id: "review-art-1",
     slug: "why-online-reviews-matter-trustpilot",
     title: "Why Online Reviews Matter: How Trustpilot Helps Customers Make Better Decisions",
-    seoTitle: "Why Online Reviews Matter: Trustpilot Guide & Customer Feedback",
+    seoTitle: "Why Online Reviews Matter: Trustpilot Guide | Mehzan Digital",
     metaDescription: "Explore why online reviews matter, how Trustpilot helps customers evaluate businesses, why honest feedback matters, and how to share your experience with Mehzan Digital.",
     excerpt: "Discover the vital role of transparent customer reviews in digital commerce, how platforms like Trustpilot empower consumers, and why authentic feedback drives business growth and trust.",
     category: "Digital Marketing",
     primaryKeyword: "why online reviews matter",
     secondaryKeywords: ["trustpilot review guide", "customer feedback importance", "honest business reviews", "mehzan digital trustpilot"],
     searchIntent: "Informational",
-    author: {
-      name: "Hamza",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      role: "Web Developer & Digital Marketing Expert",
-      bio: "Hamza is a Web Developer and Digital Marketing Expert with 5+ years of experience in web development and digital marketing, agency owner of Mehzan Digital."
-    },
+    author: HAMZA_AUTHOR,
     date: "Aug 28, 2026",
     updatedDate: "Aug 30, 2026",
     readTime: "7 min read",

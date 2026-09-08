@@ -427,7 +427,7 @@ async function startServer() {
           const proto = req.get("x-forwarded-proto") || req.protocol || "https";
           const queryStr = req.url.includes("?") ? req.url.split("?")[1] : "";
           const routeState = parseRoute(req.path, queryStr);
-          const statusCode = (routeState.isNotFound || routeState.tab === "404") ? 404 : 200;
+          const statusCode = routeState.is410 ? 410 : (routeState.isNotFound || routeState.tab === "404") ? 404 : 200;
 
           const injectedHtml = injectSEOMetadataIntoHTML(template, req.path, queryStr, host, proto);
           res.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -467,7 +467,7 @@ async function startServer() {
         const proto = req.get("x-forwarded-proto") || req.protocol || "https";
         const queryStr = req.url.includes("?") ? req.url.split("?")[1] : "";
         const routeState = parseRoute(req.path, queryStr);
-        const statusCode = (routeState.isNotFound || routeState.tab === "404") ? 404 : 200;
+        const statusCode = routeState.is410 ? 410 : (routeState.isNotFound || routeState.tab === "404") ? 404 : 200;
 
         const injectedHtml = injectSEOMetadataIntoHTML(rawHtml, req.path, queryStr, host, proto);
         res.setHeader("Content-Type", "text/html; charset=utf-8");
